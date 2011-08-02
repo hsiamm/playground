@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<element type="facebookilike" group="Web Service">
+	<name>Facebook I like</name>
+	<author>YOOtheme</author>
+	<creationDate>September 2010</creationDate>
+	<copyright>Copyright (C) 2007 - 2011 YOOtheme GmbH</copyright>
+	<authorEmail>info@yootheme.com</authorEmail>
+	<authorUrl>http://www.yootheme.com</authorUrl>
+	<version>1.0.1</version>
+	<description>Facebook I like button</description>
+	<params>
+		<param name="name" type="text" default="" label="Name" description="Name used in item editor" />
+		<param name="description" type="text" default="" label="Description" description="DESCRIPTION_TOOLTIP_ITEM_EDITOR" />
+		<param name="access" type="zooaccesslevel" default="" label="Access Level" description="DETAILACCESS" />
+		<param name="default" type="radio" default="1" label="Default value" description="Default value">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+	</params>
+	<params group="render">
+		<param name="showlabel" type="radio" default="0" label="Show Label" description="Show/Hide element label">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+		<param name="altlabel" type="text" default="" label="Alternative Label" description="CUSTOM_LABEL" />
+		<param name="height" type="text" default="35" label="Height" description="Height of the I like button" />
+		<param name="width" type="text" default="400" label="Width" description="Width of the I like button" />
+		<param name="show_faces" type="radio" default="false" label="Show Faces" description="Show profile pictures below the button.">
+			<option value="false">JNO</option>
+			<option value="true">JYES</option>
+		</param>
+		<param name="layout" type="list" default="standard" label="Layout" description="Determines the size and amount of social context to display next to the button.">
+			<option value="standard">standard</option>
+			<option value="button_count">button_count</option>
+			<option value="box_count">box_count</option>
+		</param>
+		<param name="action" type="list" default="like" label="Action" description="The verb to display in the button.">
+			<option value="like">like</option>
+			<option value="recommend">recommend</option>
+		</param>
+		<param name="colorscheme" type="list" default="like" label="Color Scheme" description="The colorscheme of the plugin.">
+			<option value="light">light</option>
+			<option value="dark">dark</option>
+		</param>
+		<param name="ref" type="text" default="" label="Ref" description="A label for tracking referrals" />
+		<param name="locale" type="text" default="en-US" label="Locale" description="Enter proper country code or leave blank." />
+	</params>
+    <params group="submission">
+		<param name="altlabel" type="text" default="" label="Alternative Label" description="CUSTOM_LABEL" />
+		<param name="required" type="radio" default="0" label="Required" description="Required Field">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
+	</params>
+</element>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<type version="1.0.0" name="Class">
+  <params>
+    <param type="text" identifier="bbcdf21d-538c-44a6-a610-ae0d44231faa" name="Dates" description="Dates of the class" access="1" default="Sunday, September 25, 2011 to Sunday, November 6, 2011" repeatable="0"/>
+    <param type="text" identifier="a4dbc779-3d4e-4e9d-a6fa-4ae80cf537bf" name="Times" description="Times of the class" access="1" default="7:00pm to 8:30pm" repeatable="0"/>
+    <param type="text" identifier="601d851e-74e7-4483-88d1-645e168eab25" name="Number of weeks" description="Example: 4 weeks" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="89da3d28-8ad4-4e39-9291-9c6de3a3f7c9" name="Homework" description="Example: 2-3 hours/week" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="8572e862-0093-4495-9015-1bb61ca27dfb" name="Class Fee" description="Example: $15" access="1" default="$30" repeatable="0"/>
+    <param type="text" identifier="3a93ed1f-382b-4d84-98c0-5061af342d8b" name="Instructor" description="Who is teaching the class." access="1" default="" repeatable="0"/>
+    <param type="text" identifier="3f4be974-e0c5-4256-887f-c4f3ffd353a6" name="Open to:" description="What type of person the class is open to" access="1" default="" repeatable="0"/>
+    <param type="textarea" identifier="acd8f0c9-89f2-4a1d-a946-6e604d886f8a" name="Class description &amp; Syllabus" description="Enter the description and syllabus for the class into the text box below (try to be fairly brief)" access="1" default="" jplugins="1" repeatable="0"/>
+  </params>
+</type>
