@@ -28,38 +28,26 @@ $params = $item->getParams('site');
 </h1>
 <?php endif; ?>
 
-<?php if ($this->checkPosition('date_time')) : ?>
-<p class="pos-date_time">
-	<?php echo $this->renderPosition('date_time'); ?>
+<?php if ($this->checkPosition('start_date')) : ?>
+<h2 class="pos-start_date">
+	<?php echo $this->renderPosition('start_date'); ?>
+</h2>
+<?php endif; ?>
+
+<?php if ($this->checkPosition('end_date')) { ?>
+<h2 class="pos-end_date">
+	<?php echo $this->renderPosition('end_date'); ?>
+</h2>
+<?php } ?>
+
+<?php if ($this->checkPosition('weeks_times')) { ?>
+<p class="pos-weeks_times">
+	<?php echo $this->renderPosition('weeks_times'); ?>
 </p>
-<?php endif; ?>
+<?php } ?>
 
-<?php if ($this->checkPosition('homework')) : ?>
-<h2 class="pos-homework">
-	Homework: <?php echo $this->renderPosition('homework'); ?>
-</h2>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('class_fee')) : ?>
-<h2 class="pos-class_fee">
-	<?php echo $this->renderPosition('class_fee'); ?>
-</h2>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('instructor')) : ?>
-<h2 class="pos-instructor">
-	Instructor: <?php echo $this->renderPosition('instructor'); ?>
-</h2>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('open_to')) : ?>
-<h2 class="pos-open_to">
-	Open to: <?php echo $this->renderPosition('open_to'); ?>
-</h2>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('class_description')) : ?>
-<h2 class="pos-class_description">
-	Class Description: <?php echo $this->renderPosition('class_description'); ?>
-</h2>
-<?php endif; ?>
+<?php if ($this->checkPosition('class_description')) { ?>
+<p class="pos-class_description">
+	<?php echo $this->renderPosition('class_description'); ?>
+</p>
+<?php } ?>

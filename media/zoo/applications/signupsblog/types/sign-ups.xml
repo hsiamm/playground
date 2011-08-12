@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<type version="1.0.0" name="Sign-Ups">
+  <params>
+    <param type="image" identifier="283c38f8-e215-47dd-b828-c644f22b7f5f" name="Image" description="" access="1" load_lightbox="0" upload_directory="images/signups" max_upload_size="512"/>
+    <param type="text" identifier="fe651460-c66b-409b-a910-08da30d167ee" name="Image Link" description="" access="1" default="" repeatable="0"/>
+    <param type="textarea" identifier="dab10834-17a9-476b-b741-ec78b6fe757a" name="Sign-up Description" description="" access="1" default="" jplugins="1" repeatable="0"/>
+  </params>
+</type>

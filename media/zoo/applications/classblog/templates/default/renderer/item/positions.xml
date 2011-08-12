@@ -3,19 +3,16 @@
     <positions layout="full">
         <position name="title">Title</position>
         <position name="location">Location</position>
-        <position name="date_time">Date and Time</position>
-        <position name="instructor">Instructor</position>
-        <position name="class_fee">Class Fee</position>
-        <position name="open_to">Open to:</position>
+        <position name="start_date">Start date</position>
+        <position name="end_date">End date</position>
+        <position name="weeks_times">Weeks and Times</position>
         <position name="class_description">Class Description</position>
     </positions>
     <positions layout="teaser">
         <position name="title">Title</position>
         <position name="location">Location</position>
-        <position name="date_time">Date and Time</position>
-        <position name="instructor">Instructor</position>
-        <position name="class_fee">Class Fee</position>
-        <position name="open_to">Open to:</position>
-        <position name="class_description">Class Description</position>
+        <position name="start_date">Start date</position>
+        <position name="end_date">End date</position>
+        <position name="weeks_times">Weeks and Times</position>
     </positions>
 </renderer>

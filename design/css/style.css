@@ -1,0 +1,635 @@
+@charset "utf-8";
+
+/* 
+html5doctor.com Reset Stylesheet
+v1.4.1 
+2010-03-01
+Author: Richard Clark - http://richclarkdesign.com
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary { 
+    display:block;
+}
+
+ul, dl {
+    list-style:none;
+	width:100%;
+}
+
+a {
+  text-decoration:none;
+  }
+
+html,body {margin:0;padding:0;} 
+
+/* end reset */
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/*
+Theme Name: The Austin Stone Community Church
+Designer: The Austin Stone Community Church
+Developers: The Austin Stone Community Church
+
+
+Colors:
+
+tan:		#E7E6DD
+blue:		#365871
+yellow:		#FFDD00
+grey:		#77787B
+black:		#duh
+
+*/
+
+
+/*~~~~~~~~~~~ Generic Styles ~~~~~~~~~~~~~~*/
+
+body
+{
+	background-color: #e7e6dd;
+	color: #000;
+}
+
+a {
+	text-decoration:  none;
+	color: #000;
+}
+
+a:hover {
+	border: none;
+	text-decoration: none;
+	color: #000;
+}
+
+p {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0 0 15px 0;
+	color: #000;
+}
+
+
+p, h4, a {
+	border-bottom: 2px solid #ffdd00;
+	text-decoration:  none;
+	color: #000;
+}
+
+p, h4, a:hover {
+	border: none;
+	text-decoration: none;
+	color: #000;
+}
+
+h1 {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 26px;
+	line-height: 26px;
+	margin: 0 0 15px 0;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+h1.title {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 26px;
+	margin: 0 0 10px 0;
+	color: #000;
+	text-transform: uppercase;
+	font-weight: normal;	
+}
+
+h2 {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 16px;
+	line-height: 25px;
+	margin: 0 0 13px 0;	
+	color: #000;
+	text-transform: uppercase;
+	font-weight: normal;	
+}
+
+h2.jumbo {
+	font-family: "alternate-gothic-no-1-d-1", "alternate-gothic-no-1-d-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 180px;
+	color: #ffdd00;
+	text-align: center;
+	line-height: 180px;
+}
+
+h2 a {
+	text-decoration:  none;
+	color: #365871;
+}
+
+h2 a:hover {
+	text-decoration: none;
+	color: #365871;
+}
+
+
+blockquote {
+	font-family: Georgia, Times, serif;
+	font-size: 18px;
+	line-height: 27px;
+	margin: 0 0 15px 0;
+	color: #000;
+	text-transform: none;
+	font-weight: normal;
+	font-style: italic;
+}
+
+h3 {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0 0 10px 0;
+	color: #77787B;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+h3.month_partner {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 26px;
+	color: #000;
+	letter-spacing: 4px;
+	line-height: 20px;
+	text-align: center;
+	margin: -125px 0 90px 0;
+}
+
+h4 {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0 0 15px 0;
+	color: #000;
+	font-weight: 400;
+}
+
+h5 {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 10px;
+	margin: 0 0 10px 0;
+	text-transform: uppercase;
+	font-weight: normal;
+	letter-spacing:.1em;
+}
+
+h5.drop {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 10px;
+	margin: 0 0 10px 0;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+h5.drop a {
+	font-size: 10px;
+	text-decoration: none;
+	color: #ffdd00;
+}
+
+h5.drop a:hover {
+	font-size: 10px;
+	text-decoration: none;
+	color: #ffdd00;
+}
+
+ul.interior {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0 0 15px 0;
+	color: #000;
+	line-height: 18px;
+	margin: 5px 0 0 12px;
+	list-style-type: disc;
+}
+
+li.interior {
+	margin-bottom: 18px;
+}
+
+
+
+::selection {
+background:#ffdd00;
+}
+::-moz-selection {
+background:#ffdd00;
+color:#000;
+}
+::-webkit-selection {
+background:#ffdd00;
+color:#000;
+}
+
+
+/*~~~~~~~~~~~ Special Little Guys ~~~~~~~~~~~~~~*/
+
+.nomar {
+margin:0;
+}
+
+.blue {
+	color:#365871; 
+}
+
+.rule_wh {
+	width: 100%;
+	float: left;
+	height: 1px;
+	border-bottom: 1px solid #fff;
+	margin: 30px 0;
+}
+
+.rule_wh_short {
+	width: 100%;
+	float: left;
+	height: 1px;
+	border-bottom: 1px solid #fff;
+	margin: 20px 0;
+}
+
+.rule_bl {
+	width: 100%;
+	float: left;
+	height: 1px;
+	border-bottom: 1px solid #000;
+	margin: 30px 0;
+}
+
+.rule_partner {
+	width: 100%;
+	float: left;
+	height: 1px;
+	border-bottom: 1px solid #365871;
+}
+
+/*~~~~~~~~~~~ Main ~~~~~~~~~~~~~~*/
+
+.container {
+    width:960px;
+    height:auto;
+    margin:0px auto;
+    padding:0px;
+    clear:both;
+}
+
+.map_drop {
+	float:left;
+	width: auto;
+	margin: 7px 10px 0 10px;
+}
+
+.top_right {
+	float: right;
+	width: auto;
+	margin: 7px 0 0 0;
+}
+
+.logo {
+	float: left;
+	background-image: url('../images/logo.png');
+	background-repeat: no-repeat;
+	margin: 0 10px;
+	width: 282px;
+	height: 57px;
+	text-indent: -9999px;
+}
+
+.top {
+	float: left;
+	width: 100%;
+	height: 25px;
+	background-color: #000;
+	color: #ffdd00;
+	margin: 0 auto;
+}
+
+.image_main {
+	width: 100%;
+	height: 360px;
+	margin-top: 30px;
+	background-color: #999;
+	background-image: url('../images/stevie_home.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+
+
+
+/*~~~~~~~~~~~ Menu ~~~~~~~~~~~~~~*/
+
+#menu {
+	position: relative;
+	float: right;
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	margin-top: 28px;
+	z-index: -400px;
+}
+
+ul#menunav {
+	font-size: 14px;
+	list-style-type:none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 400;
+}
+
+li#menunav {
+	display:inline;
+}
+
+
+#menunav a {
+	color:#000;
+	margin: 0 8px;
+	text-decoration: none;
+	padding: 7px;
+	border: none;
+}
+
+#menunav a:hover {
+	color:#000;
+	text-decoration: none;
+	background-color: #fff;
+	padding: 7px;
+	border: none;
+}
+
+body#home a#homenav,
+body#about a#aboutnav,
+body#connect a#connectnav,
+body#resources a#resourcesnav,
+body#stories a#storiesnav {
+color: #000;
+background-color: #ffdd00;
+padding: 7px; 
+}
+
+
+
+/*~~~~~~~~~~~ Columns ~~~~~~~~~~~~~~*/
+.onecol {
+	width: 940px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.twocol {
+	width: 460px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.threecol {
+	width: 300px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.threecol_2 {
+	width: 620px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.fourcol {
+	width: 220px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.fourcol_3 {
+	width: 660px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.fivecol {
+	width: 172px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.fivecol_2 {
+	width: 344px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.fivecol_3 {
+	width: 516px;
+	height: auto;
+	float: left;
+	margin: 0 10px;	
+}
+
+.sixcol {
+	width: 140px;
+	height: auto;
+	float: left;
+	margin: 0 10px;
+}
+
+
+
+
+
+/*!~~~~~~~~~~~styles~~~~~~~~~~~~~*/
+.home_sermon {
+	float: left;
+	width: 340px;
+	height: auto;
+	margin: 20px 10px 0 10px;
+	padding: 10px;
+	background: rgb(255, 221, 0); /* The Fallback */
+	background: rgba(255, 221, 0, 0.9);
+}
+
+.home_hap {
+	float: left;
+	width: 340px;
+	height: auto;
+	margin: 10px 10px 0 10px;
+	padding: 10px;
+	background-color: #fff;
+	background: rgb(255, 255, 255); /* The Fallback */
+	background: rgba(255, 255, 255, 0.9);	
+}
+
+.bump {
+	width: 100%;
+	height: 30px;
+}
+
+.bumpbump {
+	width: 100%;
+	height: 45px;
+}
+
+.hot_left {
+	float: left;
+	width: 210px;
+	height: 42px;
+	background-image: url('../images/arrow.png');
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: 180px 7px;
+	margin: 0 10px 20px 0;
+	padding: 0 0 0 10px;	
+	line-height: 42px;
+}
+
+.hot_right {
+	float: left;
+	width: 210px;
+	height: 42px;
+	background-image: url('../images/arrow.png');
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: 180px 7px;
+	margin: 0 0 10px 10px;
+	padding: 0 0 0 10px;
+	line-height: 42px;
+}
+
+.hot_right h2, .hot_left h2, .hot_threecol h2 {
+	color: #365871;
+	line-height: 42px;
+}
+
+.hot_threecol {
+	float: left;
+	width: 290px;
+	height: 42px;
+	background-image: url('../images/arrow.png');
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: 260px 7px;
+	margin: 0 10px 0 0;
+	padding: 0 0 0 10px;	
+	line-height: 42px;
+}
+
+.partner_class {
+	width: 300px;
+	height: auto;
+	background-color: #fff;
+	float: right;
+	padding: 10px 0;	
+}
+
+
+
+
+
+/*!~~~~~~~~~~~Footer~~~~~~~~~~~~~*/
+
+.twitter {
+	width:100%;
+	float:left;
+	background-color:#ffdd00;
+	height: 35px;
+
+}
+
+.twitter h4 {
+	color: #000;
+	text-transform: none;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 35px; 
+}
+
+.footer {
+	width: 100%;
+	height:auto;
+	background-color: #fff;
+}
+
+.texas {
+	width: 222px;
+	height: 24px;
+	margin: 30px auto 0 auto;
+	text-indent: -9999px;
+	background-image: url('../images/texas.png');	 
+}
+
+/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >8-O !!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+pre {
+	line-height:1.5em !important;
+	margin:0 0 0;
+	width: auto;
+	overflow:hidden;
+	clear:both;
+	padding-bottom: 10px;
+}
+
+
+small {
+	display:block;
+	font-size:.9em;
+	margin:0 0 0;	
+}
+
+.expand { margin:0 0 21px;position:relative;}
+.expand pre { margin:9px 0; }
+.expand h4 {  font-size:1.1em; }
+.expand .content { display:none; overflow:hidden; }
+.expand .content .inner { margin:1px 0; display:none; }
+.expand p { margin:0; }
+.expand small { color:; }
+#content .expand small {
+	position:static;
+}
+
+.expand h5 {
+	font-size:1.1em;
+	padding:0 0 0;
+}
+
+strong {
+	font-weight:bold;
+}
