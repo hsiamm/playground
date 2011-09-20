@@ -46,6 +46,7 @@ RewriteRule .* index.php [F]
 # www redirect (or vice versa), place that code here. Ensure those
 # redirects use the correct RewriteRule syntax and the [R=301,L] flags.
 #
+Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
 ## End - Custom redirects
 
 ##
@@ -75,3 +76,14 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule .* index.php [L]
 #
 ## End - Joomla! core SEF Section.
+
+
+#### put your redirects below ####
+#
+# here's an example:
+# Redirect permanent /old-url http://austinstone.org/new-url
+#
+# now the realy stuff is below
+#
+
+Redirect permanent /resources/bible_reading_plan/ http://austinstone.org/resources/bible-reading-plan
