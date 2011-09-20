@@ -29,7 +29,7 @@
 		</param>
 		<param name="altlabel" type="text" default="" label="Alternative Label" description="CUSTOM_LABEL" />
 		<param name="separated_by" type="zoolist" default="Div" label="Separated by" description="CHOOSE_SEPARATOR_REPEATED_ELEMENTS">
-			<option name="Paragraph"><![CDATA[tag=[<p>%s</p>]]]></option>
+			<option name="None"><![CDATA[tag=[%s]]]></option>
 			<option name="Div"><![CDATA[tag=[<div>%s</div>]]]></option>
 			<option name="List Item"><![CDATA[tag=[<li>%s</li>]]]></option>
 			<option name="Unordered List"><![CDATA[tag=[<li>%s</li>] enclosing_tag=[<ul>%s</ul>]]]></option>

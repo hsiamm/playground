@@ -53,7 +53,7 @@
 		<fields name="params" >
 			<fieldset name="basic" addfieldpath="/modules/mod_zooitem/fields">
 				<field name="theme" type="filename" default="" label="Theme" description="Visual style" path="/tmpl/" />
-				<field name="layout" type="filename" default="" label="Layout" description="The Item Layout" path="/renderer/item/" />
+				<field name="layout" type="filename" default="" label="Layout" description="The Item Layout" path="/renderer/item" />
 				<field name="media_position" type="list" default="left" label="Media Position" description="MEDIAPOSITION_DESCRIPTION">
 					<option value="left">Left</option>
 					<option value="right">Right</option>

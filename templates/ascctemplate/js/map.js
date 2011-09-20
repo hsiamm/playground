@@ -1,11 +1,6 @@
 var map;
 
 function initialize() {
-    console.log("init12");
-    
-    var austin_high = new google.maps.LatLng(30.272142, -97.764577);
-    var st_johns = new google.maps.LatLng(30.3340649, -97.7067932);
-    var west_campus = new google.maps.LatLng(30.286642, -97.773685);
     
     var ascc_style = [ {
         featureType: "landscape", 
@@ -95,7 +90,7 @@ function initialize() {
     
     var myOptions = {
         zoom: 12,
-        center: new google.maps.LatLng(30.315246813076392, -97.61060717207029),
+        center: new google.maps.LatLng(30.31006007422863, -97.70605089765621),
         panControl: false,
         zoomControl: true,
         mapTypeControl: true,
@@ -113,22 +108,32 @@ function initialize() {
     map.setMapTypeId('ascc');
     
     /* Markers */
+    var austin_high = new google.maps.LatLng(30.272142, -97.764577);
+    var austin_high_image = '/images/downtown-newmarker1.png';
+    var st_johns = new google.maps.LatLng(30.3340649, -97.7067932);
+    var st_johns_image = '/images/stjohn-newmarker1.png';
+    var west_campus = new google.maps.LatLng(30.286642, -97.773685);
+    var west_campus_image = '/images/west-newmarker1.png';
+    
     var austin_high_marker = new google.maps.Marker({
         position: austin_high, 
         map: map, 
-        title:"Austin High Campus"
+        title:"Austin High Campus",
+        icon: austin_high_image
     }); 
     
     var st_johns_marker = new google.maps.Marker({
         position: st_johns, 
         map: map, 
-        title:"St John's Campus"
+        title:"St John's Campus",
+        icon: st_johns_image
     }); 
     
     var west_campus_marker = new google.maps.Marker({
         position: west_campus, 
         map: map, 
-        title:"West Campus"
+        title:"West Campus",
+        icon: west_campus_image
     });
 }
 

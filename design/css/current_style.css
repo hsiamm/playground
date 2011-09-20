@@ -1,0 +1,202 @@
+/* /CURRENT
+------------------------------------------------ */
+
+.current_item {
+	width:460px;
+	height:140px;
+	margin: 20px 0 0 0;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #fff;
+}
+
+.current_item img {
+	width:140px;
+	height:140px;
+	margin:0 20px 10px 0;
+	float:left;
+}
+
+.current_item h2, .current_item p {
+	float:left;
+	width:300px;
+}
+
+.rule_item {
+	width:100%;
+	float:left;
+	height:1px;
+	border-bottom: 1px solid #fff;
+	margin:10px 0 20px 0;
+}
+
+.serve_featured {
+	width:420px;
+	height:225px;
+	padding:20px;
+	margin: 30px 0 20px 0;
+	background: #77787B;
+}
+
+.serve_featured_content
+{
+    width:auto;
+    height:auto;
+}
+
+.serve_opp {
+	width:420px;
+	height:auto;
+	padding:20px;
+	background: #fff;
+}
+
+.serve_opp h2 {
+	margin: 0;
+	line-height: 20px;
+	
+}
+
+
+
+/* SLIDER
+================= */
+
+#slider {
+    width:420px;
+    margin:0 auto;
+    position:relative;
+}
+
+
+/*
+	Slideshow style
+*/
+
+#slides {
+    position:absolute;
+    top:5px;
+    left:0px;
+    z-index:100;
+}
+
+/*
+	Slides container
+	Important:
+	Set the width of your slides container
+	If height not specified height will be set by the slide content
+	Set to display none, prevents content flash
+*/
+
+.slides_container {
+    width:420px;
+    height:auto;
+    overflow:hidden;
+    position:relative;
+    display:none;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	Offeset for the 20px of padding
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+#slides .slide {
+    padding:0px;
+    width:420px;
+    height:160px;
+    display:block;
+}
+
+/*
+	Next/prev buttons
+*/
+#slides .next,#slides .prev {
+    position:absolute;
+    top:160px;
+    left:355px;
+    display:block;
+    z-index:101;
+    color:#fff;
+    font-size: 14px;
+    font-family:"news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+}
+
+#slides .next {
+    left:395px;
+}
+
+#slides a.next {
+    border: none;
+    height:34px;
+	width:32px;
+	background-image: url('../images/big_arrow_wb_right.png');
+	background-repeat: no-repeat;
+	-webkit-transition: opacity .2s ease-in; /*safari and chrome */
+ 	-o-transition: opacity .2s ease-in; /* opera */
+}
+
+#slides a.prev {
+    border: none;
+    height:34px;
+	width:32px;
+	background-image: url('../images/big_arrow_wb_left.png');
+	background-repeat: no-repeat;
+	-webkit-transition: opacity .2s ease-in; /*safari and chrome */
+ 	-o-transition: opacity .2s ease-in; /* opera */
+}
+
+#slides a.next:hover, #slides a.prev:hover  {
+    border: none;
+    opacity: 0.7;
+	filter: alpha(opacity=70);
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+}
+
+/*
+	Type and anchors
+*/
+
+#slides .link {
+    display:block;
+    margin-top:10px;
+    font-weight:800;
+}
+
+/*
+	Pagination
+*/
+
+.pagination {
+	margin:-190px 0 0 0;
+	width:auto;
+	float: right;
+}
+
+.pagination li {
+	float:left;
+	margin:0 5px;
+	list-style:none;
+}
+
+.pagination li a {
+	display:block;
+	width:10px;
+	height:10px;
+	padding-top:0;
+	background-image:url(../images/pagination.png);
+	background-position:0 0;
+	float:left;
+	overflow:hidden;
+	text-indent: -9999px;
+	border-bottom: none;
+}
+
+.pagination li.current a {
+	background-position:0 -12px;
+	color:#fff;
+	border-bottom: none;
+}

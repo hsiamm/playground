@@ -45,13 +45,11 @@ foreach($this->items as $item) {
 // render columns
 $count = count($columns);
 if ($count) {
-	echo '<div class="items items-col-'.$count.'">';
 	for ($j = 0; $j < $count; $j++) {
 		$first = ($j == 0) ? ' first' : null;
 		$last  = ($j == $count - 1) ? ' last' : null;
-		echo '<div class="width'.intval(100 / $count).$first.$last.'">'.$columns[$j].'</div>';
+		echo $columns[$j];
 	}
-	echo '</div>';
 }
 
 // render pagination

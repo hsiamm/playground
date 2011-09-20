@@ -12,9 +12,13 @@ $pageRef = $_SERVER['REQUEST_URI'];
 <script type="text/javascript" src="http://use.typekit.com/itk0lox.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/styles.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/fancybox.css" type="text/css" media="screen" />
+
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/jquery.fancybox-1.3.4.pack.js"></script>
 <script>
+    // show Texas flag
     $(document).ready(function() {
         var flag = false;
         $(".texas").click(function() {
@@ -27,40 +31,74 @@ $pageRef = $_SERVER['REQUEST_URI'];
     });
 </script>
 <script>
+    // Show search bar
     $(document).ready(function(){
         var shown = false;
         $("#search").click(function () {
-            if (shown){
+            if (shown)
                 $("#searchText").hide('fast');
-            }
-            else {
+            else 
                 $("#searchText").toggle('slide');
-            }
             shown = !shown;
         });
     });
 </script> 
 <script>
+    // Show map
     $(document).ready(function(){
         var down = false;
         var first = true;
         $("#map_toggle").click(function () {
             if (down){
-                $(this).text("Hide Worship Times & Locations");
-                $("#map_canvas").slideUp('slow');
+                $(this).text("Show Worship Times & Locations");
+                $("#map_div").slideUp('slow', function() {
+                    $(".map_info").hide();
+                    $("#map_canvas").hide();
+                });
             }
             else {
-                $(this).text("Show Worship Times & Locations");
-                $("#map_canvas").slideDown('slow', function() {
+                $(this).text("Hide Worship Times & Locations");
+                $("#map_div").slideDown('slow', function() {
+                    // if opening for first time, initialize the map
                     if (first)
                         initialize();
-                    pan();
+                    first = false;
                 });
+                $("#map_canvas").show();
+                $(".map_info").show();
             }
             down = !down;
         });
     });
 </script>
+<script>
+    // Make the top level navigation stay highlighted when in sub-menu
+    $(document).ready(function(){
+        var listItem = document.getElementById("menunav").getElementsByTagName('ul');
+        console.log(listItem);
+        for(var i=0;i<listItem.length;i++) {
+            listItem[i].onmouseover=function() {
+                var changeStyle = this.parentNode.getElementsByTagName('a');
+                console.log("over: " + changeStyle[0]);
+                $(changeStyle[0]).addClass('current');
+            }
+
+            listItem[i].onmouseout=function() {
+                var changeStyle = this.parentNode.getElementsByTagName('a');
+                console.log("out: " + changeStyle[0]);
+                $(changeStyle[0]).removeClass('current');
+            }
+        }  
+    });
+</script>
+
+<!--[if IE]>
+<style>
+#drop {
+margin-top: -4px;
+}
+</style>
+<![EndIf]-->
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/map.js"></script>
@@ -78,11 +116,9 @@ $pageRef = $_SERVER['REQUEST_URI'];
 
             <div class="top_right" style="width:350px;">
                 <h5><span id="search" style="float:right; padding-left:10px;">Search</span>
-                <form method="post" action="/">
-                    <input style="float:right; height:10px; padding:0 10px; display:none;" id="searchText" type="text" name="keywords" maxlength="100" placeholder="Search" />
-                </form>
-                <span style="float:right; border-right: 1px solid #fff;padding:0 10px;"><a href="/new-here">New Here</a></span>
-                <span style="float:right; border-right: 1px solid #fff;padding-right:10px;">Give</span></h5>
+                    <jdoc:include type="modules" name="search" />
+                    <a class="new_here_top" href="/connect/new-here">New Here</a>
+                    <a class="give_top" href="/give">Give</a></h5> 
             </div><!--/top_right-->
         </div>
 
@@ -90,13 +126,33 @@ $pageRef = $_SERVER['REQUEST_URI'];
 
     <div style="clear:both;"></div>
 
-    <div id="map_canvas"></div>
+    <div id="map_div">
+        <div id="map_canvas"></div>
+        <div style="clear:both;"></div>
+        <div class="map_info">
+            <div class="container">
+                <h2 class="white">Our Services:</h2>
+                <h2 class="white left_rule">Downtown Campus<br>
+				9:00&nbsp;&nbsp;11:15&nbsp;&nbsp;5:00&nbsp;7:00</h2>
+
+                <h2 class="white left_rule">St. John Campus<br>
+				9:15&nbsp;&nbsp;11:15&nbsp;&nbsp;5:00&nbsp;7:00</h2>
+                <h2 class="white left_rule">West Campus<br>
+				10:00</h2>
+
+                <div class="map_button">
+                    <a href="/about/times-locations"><p class="caption caps">More Details</p></a>
+                </div>
+            </div><!-- /container -->
+        </div>
+    </div>
+    <div style="clear:both;"></div>
 
     <div class="container">
-        <div class="bump">&nbsp;</div>
-        <a href="<?php echo $this->baseurl ?>/" class="logo">
-            The Austin Stone Community Church
-        </a>
+        <div class="bump">&nbsp;</div>		
+        <div class="logo">
+            <a href="<?php echo $this->baseurl ?>">The Austin Stone Community Church</a>
+        </div>
 
         <div id="menu">
             <jdoc:include type="modules" name="menu" />
@@ -115,13 +171,15 @@ $pageRef = $_SERVER['REQUEST_URI'];
                 <jdoc:include type="modules" name="current_hap" />
             </div> <!-- /container -->
         </div> <!-- /image_main -->
-    <?php } ?>
 
-    <div class="bumpbump">&nbsp;</div>
+        <div class="bumpbump">&nbsp;</div>
+    <?php } else { ?>
+        <div class="bump">&nbsp;</div>
+    <?php } ?>
 
     <div class="container">
         <jdoc:include type="component" />
-    </div> <?php // End component                                                                   ?>
+    </div> <!-- /container -->
 
     <div style="clear:both;"></div>
     <div class="bump">&nbsp;</div>
@@ -130,28 +188,51 @@ $pageRef = $_SERVER['REQUEST_URI'];
     <div class="footer">
         <div class="twitter">
             <div class="container">
-                <jdoc:include type="modules" name="twitter" />
+                <div class="onecol">
+                    <jdoc:include type="modules" name="twitter" />
+                </div>
             </div> <!-- /container -->
         </div> <!-- /twitter -->
 
-        <div class="container">		
-            <div class="bumpbump">&nbsp;</div>	
-            <jdoc:include type="modules" name="follow_us" />
+        <div class="container">
+            <div class="bumpbump"></div>
+            <div class="sixcol">
+                <h2 class="blue">Follow Us</h2>
+                <h4>We frequently share information online. Here's where you can find us.</h4>
+                <a href="http://twitter.com/#!/theaustinstone"><img src="design/images/twitter.png" alt="Twitter" /></a> 
+                <a href="http://www.facebook.com/theaustinstone"><img src="design/images/fb.png" alt="Facebook" /></a> 
+                <a href="http://vimeo.com/theaustinstone"><img src="design/images/vimeo.png" alt="Vimeo" /></a> 
+                <a href="http://www.youtube.com/user/theaustinstonechurch"><img src="design/images/youtube.png" alt="YouTube" /></a></div>
+            <div class="sixcol">
+                <h2 class="blue">Stay Connected</h2>
+                <p class="sans"><em>The City</em> is the central communication tool for our church. <a href="https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/">Join today</a>.</p>
+                <p class="sans"><a href="https://austinstone.onthecity.org/"><em>The City</em></a> &nbsp;|&nbsp;<a href="http://austinstone.onthecity.org/plaza"><em>The City</em> Plaza</a></p>
+            </div>				
 
-            <jdoc:include type="modules" name="stay_connected" />			
-
-            <jdoc:include type="modules" name="office" />				
-
-            <jdoc:include type="modules" name="footer_menu" />
-
-            <jdoc:include type="modules" name="get_in_touch" />
-
-            <div style="clear:both;"></div>			
-
+            <div class="sixcol">
+                <h2 class="blue">Office</h2>
+                <p class="sans">1033 La Posada Dr. #210<br /> Austin, Tx 78752<br /> 512.708.8860</p>
+                <p class="sans"><a href="mailto:info@austinstone.org">info@austinstone.org</a></p>
+            </div>
+            <div class="sixcol" style="height: 100px;"></div>
+            <div class="threecol">
+                <h2 class="blue">Go Here</h2>
+            </div>
+            <div class="sixcol">
+                <h4><a href="/connect/new-here">I'M NEW HERE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="https://theaustinstone.wufoo.com/forms/get-connected-to-missional-community/">JOIN A GROUP</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="/about/contact">CONTACT US</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+            </div>
+            <div class="sixcol">
+                <h4><a href="/connect/current">CURRENT HAPPENINGS</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="/resources/sermons">OUR SERMON ARCHIVE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="/about/times-locations">OUR CAMPUSES /<br />WORSHIP TIMES</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+            </div>
+            <div style="clear: both;"></div>
             <div class="texas_flag"></div>
             <div class="texas">Texas is awesome</div>
-
-        </div> <!-- /container -->
+        </div>
+        <!--/container-->
         <div class="bump">&nbsp;</div>
     </div> <!-- /footer -->        
 

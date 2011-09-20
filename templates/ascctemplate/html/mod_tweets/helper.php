@@ -28,14 +28,14 @@ class modTweetsHelper
 		$quantity = $params->get('quantity','3');
 		$cachetime = $params->get('cachetime','30') * 60;
 		$subtract = strlen($user) + 2;
-                $tweetUrl = "https://api.twitter.com/1/statuses/user_timeline.rss?include_entities=true&&exclude_replies=true&include_rts=true&screen_name=".$user."&count=2";
-		//$tweetURL = "http://twitter.com/statuses/user_timeline/".$user.".rss";
+                $tweetUrl = "https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=theaustinstone&count=2&include_rts=1&exclude_replies=1";
 		$cachefile = $user.".xml";
 		$cachepathfile = $cache.DS.$cachefile;
 		
 		if (!file_exists($cachepathfile) || (time() - $cachetime) > filemtime($cachepathfile))
 		{
 			$file = file_get_contents($tweetURL);
+                        print $file;
 			if ($file)
 				file_put_contents($cachepathfile, $file);
 			else

@@ -1,0 +1,24 @@
+/* NEW HERE
+------------------------------------------------ */
+
+.hot_new_here {
+	float: left;
+	width: 280px;
+	height: 55px;
+	background-color: #fff;
+	margin:0;
+	padding:10px;	
+	line-height: 42px;
+}
+
+.hot_new_here h2 {
+	width:200px;
+	text-align:left;
+	margin:7px 0 0 0;
+}
+
+.hot_new_here h3 {
+	font-size: 19px;
+	margin: 3px 0 0 0;
+	color:#365871;
+}

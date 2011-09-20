@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
+<install version="1.5" type="component" method="upgrade">
+	<name>NoNumber!-installer - UNINSTALL ME!</name>
+	<description>COM_NONUMBER-INSTALLER-UNINSTALLME_DESC</description>
+	<version>2.8.4</version>
+	<creationDate>July 2011</creationDate>
+	<author>NoNumber! (Peter van Westen)</author>
+	<authorEmail>peter@nonumber.nl</authorEmail>
+	<authorUrl>http://www.nonumber.nl</authorUrl>
+	<copyright>Copyright © 2011 NoNumber! All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<!-- Installation -->
+	<installfile>installer.php</installfile>
+
+	<!-- Administration Files -->
+	<administration>
+		<files>
+			<filename>installer.xml</filename>
+			<filename>extensions.php</filename>
+			<filename>index.html</filename>
+			<folder>elements</folder>
+			<folder>files</folder>
+			<folder>files_15</folder>
+			<folder>language</folder>
+		</files>
+	</administration>
+</install>

@@ -40,15 +40,16 @@
 	<div class="container">	
 		<div class="onecol"><h1>A Church For The City</h1></div>
 		<div class="twocol">
-			<p>Short ribs tri-tip swine tail meatloaf, cow corned beef spare ribs. Turkey cow ball tip beef ribs ham hock spare ribs rump, pork belly salami beef. Tri-tip bresaola pastrami pork belly, sausage jowl venison t-bone swine chuck salami ground round. Boudin strip steak shank, bresaola biltong venison fatback t-bone pork belly ribeye ball tip. Venison tail salami chuck ham corned beef, meatloaf short loin pastrami jerky turkey pork belly beef ground round. Pancetta swine tongue, shank biltong tri-tip sausage.</p>
+			<p>The Austin Stone Community Church exists to exalt the name of Christ in our city, our nation and around the world. We seek to be a community who gives glory to Christ above all things and welcomes all people to join us in worshipping Him.</p> 
+			<p>We want to bless our city, believing that as we seek its peace, we will display the grace, freedom and life that Jesus Christ offers to anyone who believes in Him.</p>
 		</div>
 		
 		<div class="twocol">
-			<div class="hot_left"><h2>I'm New Here</h2></div>
-			<div class="hot_right"><h2>Current Happenings</h2></div>
+			<a href="/connect/new-here" class="hot_left"><h2>I'm New Here</h2></a>
+			<a href="/connect/current-happenings" class="hot_right"><h2>Current Happenings</h2></a>
 			<div style="clear:both;"></div>
-			<div class="hot_left"><h2>Our Campuses</h2></div>
-			<div class="hot_right"><h2>Our Sermon Archive</h2></div>		
+			<a href="/about/times-locations" class="hot_left"><h2>Our Campuses</h2></a>
+			<a href="/resources/sermons" class="hot_right"><h2>Our Sermon Archive</h2></a>		
 		</div>
 		
 		<div style="clear:both;"></div>

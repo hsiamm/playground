@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Class">
   <params>
-    <param type="date" identifier="98f175b0-96fa-401a-9583-d47f3b83e4e4" name="Start date" description="" access="1" repeatable="0"/>
-    <param type="date" identifier="7ea580aa-7a46-4c1b-961f-feb739485fd0" name="End date" description="" access="1" repeatable="0"/>
-    <param type="link" identifier="591309db-4d33-4c05-9583-df773e8552c8" name="Regonline form" description="" access="1" repeatable="0"/>
-    <param type="text" identifier="bbcdf21d-538c-44a6-a610-ae0d44231faa" name="Dates" description="Dates of the class" access="1" default="Sunday, September 25, 2011 to Sunday, November 6, 2011" repeatable="0"/>
-    <param type="text" identifier="a4dbc779-3d4e-4e9d-a6fa-4ae80cf537bf" name="Times" description="Times of the class" access="1" default="7:00pm to 8:30pm" repeatable="0"/>
+    <param type="select" identifier="af2f5385-2629-469e-9d98-9aafe7b4ea6c" name="Status" description="" access="1" default="Open" multiple="0">
+      <option name="Open" value="open"/>
+      <option name="Waitlist" value="waitlist"/>
+      <option name="Closed" value="closed"/>
+    </param>
+    <param type="select" identifier="23c51773-2821-4500-aff4-288d40077efd" name="Location" description="" access="1" default="" multiple="0">
+      <option name="Austin High Campus" value="austin-high"/>
+      <option name="St. John Campus" value="st-john"/>
+    </param>
+    <param type="text" identifier="8df8fbc0-aa78-46cd-872d-9d9722d13fc0" name="Regonline form" description="" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="8ec757c9-819f-4a86-a2c6-e541173009a1" name="Day of the Week (2 letter)" description="" access="1" default="SU" repeatable="0"/>
+    <param type="text" identifier="bbcdf21d-538c-44a6-a610-ae0d44231faa" name="Dates" description="Dates of the class" access="1" default="Sep 25 - Oct 30" repeatable="0"/>
+    <param type="text" identifier="a4dbc779-3d4e-4e9d-a6fa-4ae80cf537bf" name="Times" description="Times of the class" access="1" default="7:00-8:30pm" repeatable="0"/>
     <param type="text" identifier="601d851e-74e7-4483-88d1-645e168eab25" name="Number of weeks" description="Example: 4 weeks" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="89da3d28-8ad4-4e39-9291-9c6de3a3f7c9" name="Homework" description="Example: 2-3 hours/week" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="89da3d28-8ad4-4e39-9291-9c6de3a3f7c9" name="Homework" description="Example: 1–2 Hours of Homework per Week" access="1" default="1–2 Hours of Homework per Week" repeatable="0"/>
     <param type="text" identifier="8572e862-0093-4495-9015-1bb61ca27dfb" name="Class Fee" description="Example: $15" access="1" default="$30" repeatable="0"/>
     <param type="text" identifier="3a93ed1f-382b-4d84-98c0-5061af342d8b" name="Instructor" description="Who is teaching the class." access="1" default="" repeatable="0"/>
     <param type="text" identifier="3f4be974-e0c5-4256-887f-c4f3ffd353a6" name="Open to:" description="What type of person the class is open to" access="1" default="" repeatable="0"/>

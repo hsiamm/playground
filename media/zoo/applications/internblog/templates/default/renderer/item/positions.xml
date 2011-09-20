@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <renderer>
-	<positions layout="full">
-		<position name="name">Name</position>
-		<position name="intern">Intern</position>
-		<position name="job_title">Job Title</position>
-		<position name="picture">Picture</position>
-		<position name="blog">Blog</position>
-		<position name="email">Email</position>
-		<position name="twitter">Twitter</position>
-	</positions>
-	<positions layout="teaser">
-		<position name="name">Name</position>
-		<position name="intern">Intern</position>
-		<position name="job_title">Job Title</position>
-		<position name="picture">Picture</position>
-		<position name="blog">Blog</position>
-		<position name="email">Email</position>
-		<position name="twitter">Twitter</position>
-	</positions>
+    <positions layout="full">
+        <position name="name">Name</position>
+        <position name="intern">Intern</position>
+        <position name="categories">Categories</position>
+        <position name="job_title">Job Title</position>
+        <position name="picture">Picture</position>
+        <position name="blog">Blog</position>
+        <position name="email">Email</position>
+        <position name="twitter">Twitter</position>
+    </positions>
+    <positions layout="teaser">
+        <position name="name">Name</position>
+        <position name="intern">Intern</position>
+        <position name="categories">Categories</position>
+        <position name="job_title">Job Title</position>
+        <position name="picture">Picture</position>
+        <position name="blog">Blog</position>
+        <position name="email">Email</position>
+        <position name="twitter">Twitter</position>
+    </positions>
 </renderer>

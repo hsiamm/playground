@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Service Opporunities">
   <params>
-    <param type="link" identifier="03940957-3187-4d12-875f-580cb23321fd" name="External Sign Up Page" description="" access="1" repeatable="0"/>
-    <param type="email" identifier="f19be932-8036-4414-88af-ce360762cc38" name="Sign Up Email" description="" access="1" repeatable="0"/>
+    <param type="text" identifier="dd454587-9ed9-4daf-b1b5-112995f2a1cc" name="Sign Up Link" description="" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="4d41033b-33a0-4791-9dec-c1d71dea3037" name="Sign Up Email" description="" access="1" default="" repeatable="0"/>
     <param type="textarea" identifier="bc9c20e5-fc73-4fba-9a8e-7051b2a5e8ba" name="Description" description="" access="1" default="" jplugins="1" repeatable="0"/>
     <param type="text" identifier="774e9207-95b1-47dc-9832-39d85a1e8989" name="Time Commitment" description="" access="1" default="1 hour/month" repeatable="0"/>
   </params>

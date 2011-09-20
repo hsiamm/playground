@@ -2,17 +2,32 @@
 <renderer>
     <positions layout="full">
         <position name="title">Title</position>
+        <position name="status">Status</position>
+        <position name="link">Link</position>
+        <position name="categories">Categories</position>
         <position name="location">Location</position>
-        <position name="start_date">Start date</position>
-        <position name="end_date">End date</position>
-        <position name="weeks_times">Weeks and Times</position>
+        <position name="day_of_week">Day of Week</position>
+        <position name="time">Time</position>
+        <position name="weeks">Weeks</position>
+        <position name="fee">Fee</position>
+        <position name="dates">Dates</position>
+        <position name="instructors">Instructors</position>
         <position name="class_description">Class Description</position>
+        <position name="homework">Homework</position>
     </positions>
     <positions layout="teaser">
         <position name="title">Title</position>
+        <position name="status">Status</position>
+        <position name="link">Link</position>
+        <position name="categories">Categories</position>
         <position name="location">Location</position>
-        <position name="start_date">Start date</position>
-        <position name="end_date">End date</position>
-        <position name="weeks_times">Weeks and Times</position>
+        <position name="day_of_week">Day of Week</position>
+        <position name="time">Time</position>
+        <position name="weeks">Weeks</position>
+        <position name="fee">Fee</position>
+        <position name="dates">Dates</position>
+        <position name="instructors">Instructors</position>
+        <position name="class_description">Class Description</position>
+        <position name="homework">Homework</position>
     </positions>
 </renderer>

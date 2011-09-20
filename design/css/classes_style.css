@@ -1,0 +1,245 @@
+/* CLASSES
+------------------------------------------------ */
+
+.class_sort {
+	width: 940px;
+	height: auto;
+	float: left;
+	margin: 10px;
+	padding: 0;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #fff;	
+}
+
+.class_sort h2 {
+	margin-top:11px;
+	margin-bottom:0;
+}
+
+.class_popout_wrapper {
+	float:left;
+	border-right: 1px solid #fff;
+	padding:10px 0;
+	width:300px;
+	height:25px;
+	margin:0 20px 0 0;
+}
+
+.class_popout {
+	float:left;
+	height:25px;
+	width:140px;
+	background-color: #77787B;
+	color:#ffdd00;
+	margin-right: 10px;
+}
+
+.class_popout h4 {
+	text-align: center;
+	line-height: 25px;
+}
+
+.class {
+	width: 300px;
+	height: auto;
+	float: left;
+	margin: 10px;
+}
+
+.class_general {
+	width:260px;
+	height:215px;
+	background-color:#fff;
+	padding:20px;
+}
+
+.class h1 {
+	float:left;
+	color:#000;
+	font-size: 22px;
+}
+
+.class_info {
+	float:right;
+	margin-top: -40px;
+}
+
+.class h3 {
+	text-align: right;
+	margin: 10px 0;
+	color:#000;
+}
+
+.class_signup {
+	float:left;
+	background:#ffdd00;
+	text-align: center;
+	width:80px;
+	height:22px;
+	margin-bottom: 10px;
+}
+
+.class_signup p.caption {
+	line-height: 23px;
+}
+
+.rule_class {
+	width: 100%;
+	float: left;
+	height: 1px;
+	border-bottom: 1px solid #000;
+	margin:0 0 10px 0;
+}
+
+.class_details_button {
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: 0px;
+	width:260px;
+	height:25px;
+	padding:0 20px;
+	background-color: #fff;
+	margin:0;
+	font-weight: 400;
+	text-align: right;
+	color:#365871;
+	text-transform: uppercase;
+}
+
+.class_details {
+	width: 260px;
+	height:255px;
+	padding:0 20px 0 20px;
+	background-color: #fff;
+}
+
+
+
+/* CLASS CATEGORY ICONS
+------------------------------ */
+
+.class_cat_bible {
+	float: left;
+	background-image: url('../images/class_cat_bible.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+.class_cat_xian_life {
+	float: left;
+	background-image: url('../images/class_cat_xian_life.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+.class_cat_connect {
+	float: left;
+	background-image: url('../images/class_cat_connect.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+.class_cat_theology {
+	float: left;
+	background-image: url('../images/class_cat_theology.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+.class_cat_lifestage {
+	float: left;
+	background-image: url('../images/class_cat_lifestage.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+.class_cat_skills {
+	float: left;
+	background-image: url('../images/class_cat_skills.png');
+	background-repeat: no-repeat;
+	margin: 0 10px 0 0;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+}
+
+
+
+/* Class dropdown sort
+------------------------*/
+
+a.class_sort_button {
+	float:left;
+	width: 165px;
+	height:25px;
+	padding:0 0 0 10px;
+	margin:10px 10px 0 10px;
+	background-color: #fff;
+	background-image: url('../images/arrow_black.png');
+	background-position: 150px 6px;
+	background-repeat: no-repeat;
+}
+
+.class_sort_button h2 {
+	line-height: 4px;
+	font-size:14px;
+}
+
+ul.class_sort_options {
+	border-top:1px solid #365871;
+	padding:5px 0 0 0;
+	background-color:#fff;
+	float: left;
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+	margin: 0 10px;	
+	color: #000;
+	font-weight: 400;
+	width:175px;
+}
+
+ul.class_sort_options li {
+	background-color: #fff;
+	line-height: 22px;
+	height:22px;
+	padding: 0 10px;
+}
+
+.class_sort_options a {
+	color:#77787B;
+	border: none;
+	background: none;
+}
+
+.class_sort_options a:hover {
+	color:#000;
+	border: none;
+	background: none;
+}
+
+
+
+
+/*
+bible
+christian life & practice
+get connected
+theology
+stage of life
+skills training*/
+

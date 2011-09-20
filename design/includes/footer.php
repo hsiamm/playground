@@ -15,56 +15,47 @@
 			<div class="bumpbump">&nbsp;</div>	
 			<div class="sixcol">
 				<h2 class="blue">Follow Us</h2>
-				<h4>We frequently share information online. Here's where you can find us.</h4>
-				<img src="images/twitter.png" alt="Twitter"/>
-				<img src="images/fb.png" alt="Facebook"/>
-				<img src="images/vimeo.png" alt="Vimeo"/>
-				<img src="images/youtube.png" alt="YouTube"/><br>
+				<p class="sans">We frequently share information online. Here's where you can find us.</p>
+				<a href="http://twitter.com/#!/theaustinstone"><img src="images/twitter.png" alt="Twitter"/></a>
+				<a href="http://www.facebook.com/theaustinstone"><img src="images/fb.png" alt="Facebook"/></a>
+				<a href="http://vimeo.com/theaustinstone"><img src="images/vimeo.png" alt="Vimeo"/></a>
+				<a href="http://www.youtube.com/user/theaustinstonechurch"><img src="images/youtube.png" alt="YouTube"/></a><br>
 			</div>
 			
 			<div class="sixcol">
 				<h2 class="blue">Stay Connected</h2>
-				<h4><em>The City</em><br>
-				<em>The City</em> Plaza</h4>
-				<img src="images/city_logo.png" alt="Join The City"/>
+				<p class="sans"><em>The City</em> is the central communication tool for our church. <a href="https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/">Join today</a>.</p>
+				<p class="sans"><a href="https://austinstone.onthecity.org/"><em>The City</em></a> &nbsp;|&nbsp;<a href="http://austinstone.onthecity.org/plaza"><em>The City</em> Plaza</a></p>
+				<!--<img src="images/city_logo.png" alt="Join The City"/>-->
 			</div>				
 
 			<div class="sixcol">
 				<h2 class="blue">Office</h2>				
-				<h4>1033 La Posada Dr. #210<br>
+				<p class="sans">1033 La Posada Dr. #210<br>
 				Austin, Tx 78752<br>
-				512.708.8860</h4>
-				<h4><a href="">info@austinstone.org</a></h4>
+				512.708.8860</p>
+				<p class="sans"><a href="mailto:info@austinstone.org">info@austinstone.org</a></p>
 			</div>				
 			
-			<div class="sixcol">
+			<div class="sixcol" style="height:100px;">
 				&nbsp;
 			</div>
 			
-			<div class="sixcol">
+			<div class="threecol">
 				<h2 class="blue">Go Here</h2>
-				<h4>I'M NEW HERE <img src="images/arrow_y.png" alt="Go"/></h4>
-				<h4>JOIN A GROUP <img src="images/arrow_y.png" alt="Go"/></h4>
-				<h4 class="nomar">CONTACT US <img src="images/arrow_y.png" alt="Go"/></h4>					
 			</div>
 			
 			<div class="sixcol">
-				<h2>&nbsp;</h2>
-				<h4>CURRENT HAPPENINGS <img src="images/arrow_y.png" alt="Go"/></h4>
-				<h4>OUR SERMON ARCHIVE <img src="images/arrow_y.png" alt="Go"/></h4>
-				<h4>OUR CAMPUSES / <img src="images/arrow_y.png" alt="Go"/><br>WORSHIP TIMES</h4>					
+				<h4><a href="/connect/new-here">I'M NEW HERE</a> <img src="images/arrow_y.png" alt="Go"/></h4>
+				<h4><a href="https://theaustinstone.wufoo.com/forms/get-connected-to-missional-community/">JOIN A GROUP</a> <img src="images/arrow_y.png" alt="Go"/></h4>
+				<h4><a href="/about/contact">CONTACT US</a> <img src="images/arrow_y.png" alt="Go"/></h4>					
+			</div>
+			
+			<div class="sixcol">
+				<h4><a href="/connect/current-happenings">CURRENT HAPPENINGS</a> <img src="images/arrow_y.png" alt="Go"/></h4>
+				<h4><a href="/resources/sermons">OUR SERMON ARCHIVE</a> <img src="images/arrow_y.png" alt="Go"/></h4>
+				<h4><a href="/about/times-locations">OUR CAMPUSES /<br>WORSHIP TIMES</a> <img src="images/arrow_y.png" alt="Go"/></h4>					
 			</div>	
-
-			<!--<div class="sixcol_2">	
-				<div class="rule_bl">&nbsp;</div>
-						
-					<div id="preload" class="expand">
-						<h2 class="blue"><a href="#" class="show">Get In Touch With Us</a></h2>
-						<div class="content">
-							<img src="images/form.jpg" alt="Go"/>
-						</div>
-					</div>
-			</div>-->
 
 			<div style="clear:both;"></div>			
 			

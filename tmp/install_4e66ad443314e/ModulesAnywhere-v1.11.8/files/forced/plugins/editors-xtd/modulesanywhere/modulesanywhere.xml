@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="plugin" group="system" version="1.6">
+	<name>PLG_EDITORS-XTD_MODULESANYWHERE</name>
+	<description>PLG_EDITORS-XTD_MODULESANYWHERE_DESC</description>
+	<version>1.11.8</version>
+	<creationDate>July 2011</creationDate>
+	<author>NoNumber! (Peter van Westen)</author>
+	<authorEmail>peter@nonumber.nl</authorEmail>
+	<authorUrl>http://www.nonumber.nl</authorUrl>
+	<copyright>Copyright © 2011 NoNumber! All Rights Reserved</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+
+	<!-- Files -->
+	<files>
+		<filename plugin="editorbuttons">modulesanywhere.php</filename>
+		<filename>modulesanywhere.inc.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+	</files>
+
+	<!-- Parameters -->
+	<config>
+		<fields name="params" addfieldpath="/plugins/system/nonumberelements/fields">
+			<fieldset name="basic">
+				<field name="@loadlanguage" type="nn_loadlanguage" extension="plg_editors-xtd_modulesanywhere" />
+				<field name="@license" type="nn_license" extension="MODULES_ANYWHERE" />
+				<field name="@version" type="nn_version" extension="MODULES_ANYWHERE" xml="/plugins/editors-xtd/modulesanywhere/modulesanywhere.xml" />
+				<field name="@dependency" type="nn_dependency"
+					label="MA_THE_SYSTEM_PLUGIN"
+					file="/plugins/system/modulesanywhere/modulesanywhere.php" />
+				<field name="@header" type="nn_header"
+					label="MODULES_ANYWHERE"
+					description="MODULES_ANYWHERE_DESC"
+					xml="/plugins/editors-xtd/modulesanywhere/modulesanywhere.xml"
+					image="/plugins/editors-xtd/modulesanywhere/images/logo.png"
+					image_w="60" image_h="80"
+					url="http://www.nonumber.nl/modulesanywhere"
+					help_url="http://www.nonumber.nl/modulesanywhere" />
+
+				<field name="button_text" type="text" default="Insert Module" label="MA_BUTTON_TEXT" description="MA_BUTTON_TEXT_DESC" />
+				<field name="button_icon" type="radio" default="1" label="MA_SHOW_ICON" description="MA_SHOW_ICON_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="enable_frontend" type="radio" default="1" label="MA_ENABLE_IN_FRONTEND" description="MA_ENABLE_IN_FRONTEND_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="@block_tag_a" type="nn_block" start="1" label="MA_DEFAULT_DATA_TAG_SETTINGS" description="MA_DEFAULT_DATA_TAG_SETTINGS_DESC" />
+					<field name="div_enable" type="radio" default="0" label="MA_EMBED_IN_A_DIV" description="MA_EMBED_IN_A_DIV_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="div_width" type="text" default="" label="MA_WIDTH" description="MA_WIDTH_DESC" />
+					<field name="div_height" type="text" default="" label="MA_HEIGHT" description="MA_HEIGHT_DESC" />
+					<field name="div_float" type="radio" default="" label="MA_ALIGNMENT" description="MA_ALIGNMENT_DESC">
+						<option value="">JNONE</option>
+						<option value="left">JGLOBAL_LEFT</option>
+						<option value="right">JGLOBAL_RIGHT</option>
+					</field>
+					<field name="div_class" type="text" default="" label="MA_DIV_CLASSNAME" description="MA_DIV_CLASSNAME_DESC" />
+				<field name="@block_tag_b" type="nn_block" end="1" />
+			</fieldset>
+		</fields>
+	</config>
+</install>

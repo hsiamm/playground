@@ -14,6 +14,7 @@
 	<params group="application-config">
 		<param name="items_per_page" type="text" size="3" default="15" label="Items Per Page" description="Number of items to show on a page" />
 		<param name="item_order" type="list" default="rdate" label="Item Order" description="ITEM_ORDER">
+                        <option value="categories">Categories</option>
 			<option value="rdate">Latest first</option>
 			<option value="date">Latest last</option>
 			<option value="alpha">Alphabetical</option>
@@ -26,6 +27,7 @@
 	<params group="category-config">
 		<param name="items_per_page" type="textglobal" size="3" default="15" label="Items Per Page" description="Number of items to show on a page" />
 		<param name="item_order" type="listglobal" default="rdate" label="Item Order" description="ITEM_ORDER">
+                        <option value="categories">Categories</option>
 			<option value="rdate">Latest first</option>
 			<option value="date">Latest last</option>
 			<option value="alpha">Alphabetical</option>

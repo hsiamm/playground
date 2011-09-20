@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Person - Staff">
   <params>
+    <param type="radio" identifier="d7daa806-3479-421d-8a66-4813f6458eb8" name="Placeholder?" description="" access="1" default="No">
+      <option name="Yes" value="yes"/>
+      <option name="No" value="no"/>
+    </param>
     <param type="image" identifier="f98a46e7-a524-486d-854a-0078982e5b19" name="Headshot" description="Must be less than 512 KB" access="1" load_lightbox="0" upload_directory="images/staffpics" max_upload_size="512"/>
     <param type="text" identifier="43963ca5-a280-4737-bdac-a0e0689e940f" name="Job Title" description="" access="1" default="" repeatable="0"/>
-    <param type="email" identifier="93bfa239-7873-4a1a-a160-322218b56a12" name="Email" description="" access="1" repeatable="0"/>
+    <param type="text" identifier="4e50d242-c8ab-415e-b0fe-3e61d6eaf068" name="Email" description="" access="1" default="@austinstone.org" repeatable="0"/>
+    <param type="text" identifier="469685cb-e373-412a-9d52-ab3497a48f21" name="What I Do" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="765421ed-4434-4a54-8bde-639b64311d77" name="Twitter" description="Their twitter name, no @ sign" access="1" default="" repeatable="0"/>
     <param type="textarea" identifier="4b686386-9863-4505-9f5c-63b779a04e7e" name="Bio" description="" access="1" default="" jplugins="1" repeatable="0"/>
-    <param type="text" identifier="919e8599-c2fe-46ae-b177-78dcef40d77b" name="Spouse's name if married" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="278956b7-de5e-4111-af94-ae1c0daa398d" name="Children" description="" access="1" default="" repeatable="0"/>
-    <param type="textarea" identifier="d7c483ed-b6d6-466d-b389-29dfbaa7f576" name="Vision for the Austin Stone" description="" access="1" default="" jplugins="1" repeatable="0"/>
-    <param type="text" identifier="f3ab1beb-7fb8-4b43-b1ae-4300f96baf52" name="Favorite Verse" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="7eec99e3-ee9a-4b82-b1ee-4e05dfc7867d" name="Education/Degrees" description="" access="1" default="" repeatable="0"/>
   </params>
 </type>

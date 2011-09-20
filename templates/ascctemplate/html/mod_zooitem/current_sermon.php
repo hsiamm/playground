@@ -15,13 +15,13 @@ $count = count($items);
 
 ?>
 
-<div class="current_sermon">
-    <h4>Current Sermon Series:</h4>
+<div class="home_sermon">
+    <h4 class="nomar grey">CURRENT SERMON SERIES:</h4>
     
     <?php if (!empty($items)) : ?>
         <?php $i = 0;
         foreach ($items as $item) : ?>
-            <?php echo $renderer->render('item.' . $layout, compact('item', 'params')); ?>
+            <h2 class="nomar"><?php echo $renderer->render('item.' . $layout, compact('item', 'params')); ?></h2>
             <?php $i++;
         endforeach; ?>
 

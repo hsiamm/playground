@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <renderer>
-	<positions layout="full">
-		<position name="top">Top</position>
-		<position name="title">Title</position>
-		<position name="subtitle">Subtitle</position>
-		<position name="meta">Meta</position>
-		<position name="media">Media</position>
-		<position name="content">Content</position>
-		<position name="taxonomy">Taxonomy</position>
-		<position name="bottom">Bottom</position>
-		<position name="related">Related</position>
-		<position name="author">Author</position>
-	</positions>
-	<positions layout="teaser">
-		<position name="title">Title</position>
-		<position name="subtitle">Subtitle</position>
-		<position name="meta">Meta</position>
-		<position name="media">Media</position>
-		<position name="content">Content</position>
-		<position name="links">Links</position>
-	</positions>
-	<positions layout="feed">
-		<position name="description">Description</position>
-	</positions>
-	<positions layout="submission">
-		<position name="content">Content</position>
-		<position name="media">Media</position>
-		<position name="meta">Meta</position>
-	</positions>
+    <positions layout="full">
+        <position name="categories">Categories</position>
+        <position name="title">Title</position>
+        <position name="speaker">Speaker</position>
+        <position name="date">Date</position>
+        <position name="passage">Passage</position>
+        <position name="audio_file">Audio File</position>
+        <position name="video_name">Video Name</position>
+        <position name="video_size">Video Size</position>
+        <position name="video_duration">Video Duration</position>
+        <position name="vimeo_link">Vimeo Link</position>
+        <position name="vimeo_name">Vimeo Name</position>
+        <position name="vimeo_embed">Vimeo Embed</position>
+    </positions>
+    <positions layout="teaser">
+        <position name="categories">Categories</position>
+        <position name="title">Title</position>
+        <position name="speaker">Speaker</position>
+        <position name="date">Date</position>
+        <position name="passage">Passage</position>
+        <position name="audio_file">Audio File</position>
+        <position name="video_name">Video Name</position>
+        <position name="video_size">Video Size</position>
+        <position name="video_duration">Video Duration</position>
+        <position name="vimeo_link">Vimeo Link</position>
+        <position name="vimeo_name">Vimeo Name</position>
+        <position name="vimeo_embed">Vimeo Embed</position>
+    </positions>
+    <positions layout="feed">
+        <position name="description">Description</position>
+        <position name="testing">Testing</position>
+        <position name="testing2">Testing2</position>
+    </positions>
+    <positions layout="submission">
+        <position name="content">Content</position>
+        <position name="media">Media</position>
+        <position name="meta">Meta</position>
+    </positions>
 </renderer>

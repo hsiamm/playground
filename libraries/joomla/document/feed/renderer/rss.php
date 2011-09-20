@@ -135,7 +135,7 @@ class JDocumentRendererRSS extends JDocumentRenderer
 			else {
 				$feed.= "			<guid isPermaLink=\"false\">".htmlspecialchars($data->items[$i]->guid, ENT_COMPAT, 'UTF-8')."</guid>\n";
 			}
-			
+                        
 			$feed.= "			<description><![CDATA[".$this->_relToAbs($data->items[$i]->description)."]]></description>\n";
 
 			if ($data->items[$i]->authorEmail!="") {

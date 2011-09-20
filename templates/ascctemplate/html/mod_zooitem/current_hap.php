@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="home_hap">
-    <h4 class="nomar">THINGS TO KNOW:</h4>
+    <h4 class="nomar grey">THINGS TO KNOW:</h4>
     
     <?php if (!empty($items)) : ?>
         <?php $i = 0;

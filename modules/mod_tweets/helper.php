@@ -28,17 +28,18 @@ class modTweetsHelper
 		$quantity = $params->get('quantity','3');
 		$cachetime = $params->get('cachetime','30') * 60;
 		$subtract = strlen($user) + 2;
-		$tweetURL = "http://twitter.com/statuses/user_timeline/".$user.".rss";
+		$tweetURL = "https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=_jasonkennedy&count=2&include_rts=1&exclude_replies=1";
 		$cachefile = $user.".xml";
 		$cachepathfile = $cache.DS.$cachefile;
 		
 		if (!file_exists($cachepathfile) || (time() - $cachetime) > filemtime($cachepathfile))
 		{
 			$file = file_get_contents($tweetURL);
+                        print $file;
 			if ($file)
 				file_put_contents($cachepathfile, $file);
 			else
-				return $tweets['error'] = "Unable to get latest tweets at this time.";
+				return $tweets['error'] = "Unable to get latest tweets at this time. Cache Error.";
 		}
 		
 		if ($quantity > 20 || $quantity < 0)
@@ -49,7 +50,7 @@ class modTweetsHelper
 		$twitter = simplexml_load_file($cachepathfile);
 
 		if (!$twitter)
-			 return $tweets['error'] = "Unable to get latest tweets at this time.";
+			 return $tweets['error'] = "Unable to get latest tweets at this time. Other Error.";
 		
 		// Ready for some exciting dishing out
 		$i = 0;

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="search">
+	<name>Fly06 Modules Search Plugin</name>
+	<author>Frédéric Leroy (aka Fly06)</author>
+	<creationDate>March 2011</creationDate>
+	<copyright>Copyright (C) 2009 - 2011 Fly06.Fr. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@fly06.fr</authorEmail>
+	<authorUrl>http://www.fly06.fr/</authorUrl>
+	<version>2.0 Beta</version>
+	<description>Allows Searching of Modules Content</description>
+	<files>
+		<filename plugin="modules">modules.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB.plg_search_modules.ini</language>
+		<language tag="fr-FR">language/fr-FR.plg_search_modules.ini</language>
+	</languages>
+<params>
+ 		<param name="search_modules_type_1" type="radio" default="1" label="Search Html Modules" description="Search in html modules (module=mod_custom). CPU Usage: Low">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>	
+ 		<param name="search_modules_type_2" type="radio" default="0" label="Search Cached Modules" description="Search in non html but cached modules (module &lt;&gt; mod_custom and cache = 1). CPU Usage: Medium">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>	
+ 		<param name="search_modules_type_3" type="radio" default="0" label="Search Non Cached Modules" description="Search in non html and non cached modules (module &lt;&gt; mod_custom and cache=0 or cache property not defined). CPU Usage: Medium/High depending on the module complexity - Offline/Local testing required before turning this option on.">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>			
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+ 		<param name="process_cached_modules" type="radio" default="0" label="Process Cached Modules" description="Process cached modules if cache not found or cache not activated. CPU Usage: Medium/High depending on the module complexity - Offline/Local testing required before turning this option on.">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="search_modules_positions" type="text" size="40" default="" label="Search Modules Positions" description="Inclusive - Comma-separated list of modules positions (e.g.: user1, user2, left). Leave this field empty if you want to search in all modules positions."/>
+		<param name="no_search_modules" type="text" size="40" default="" label="No Search Modules" description="Exclusive - Comma-separated list of modules names (e.g.: mod_mainmenu, mod_breadcrumbs, mod_wrapper). Leave this field empty if you want to search in all modules names."/>
+		<param name="no_search_modules_ids" type="text" size="40" default="" label="No Search Modules Ids" description="Exclusive - Comma-separated list of modules ids (e.g.: 12, 3, 45). Leave this field empty if you want to search in all modules ids."/>
+		<param name="@spacer" type="spacer" default="" label="" description="" />		
+ 		<param name="groupby_moduleid" type="radio" default="0" label="Groupby Module Id" description="If set to yes, only one page per module will be returned in the search results (the page with the smallest Itemid).">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>	
+ 		<param name="show_module_frequency" type="radio" default="0" label="Show Module Frequency" description="Append the number of menu item(s) per module to the section sub-title. IMPORTANT: Only applicable when the groupby_moduleid is set to yes.">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>	
+		<param name="@spacer" type="spacer" default="" label="" description="" />		
+ 		<param name="include_assigned_all_modules" type="radio" default="0" label="Include Assigned All Modules" description="Set this parameter to yes if you want to include the modules shown on all menu items in the search scope. IMPORTANT: This is actually not a very good idea unless the groupby_moduleid parameter is set to yes too.">	
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="search_limit" type="text" size="5" default="10" label="Search Limit" description="Number of search items to return"/>		
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		 		<field name="search_modules_type_1" type="radio" default="1" label="Search Html Modules" description="Search in html modules (module=mod_custom). CPU Usage: Low">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>	
+		 		<field name="search_modules_type_2" type="radio" default="0" label="Search Cached Modules" description="Search in non html but cached modules (module &lt;&gt; mod_custom and cache = 1). CPU Usage: Medium">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>	
+		 		<field name="search_modules_type_3" type="radio" default="0" label="Search Non Cached Modules" description="Search in non html and non cached modules (module &lt;&gt; mod_custom and cache=0 or cache property not defined). CPU Usage: Medium/High depending on the module complexity - Offline/Local testing required before turning this option on.">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>			
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+		 		<field name="process_cached_modules" type="radio" default="0" label="Process Cached Modules" description="Process cached modules if cache not found or cache not activated. CPU Usage: Medium/High depending on the module complexity - Offline/Local testing required before turning this option on.">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="search_modules_positions" type="text" size="40" default="" label="Search Modules Positions" description="Inclusive - Comma-separated list of modules positions (e.g.: user1, user2, left). Leave this field empty if you want to search in all modules positions."/>
+				<field name="no_search_modules" type="text" size="40" default="" label="No Search Modules" description="Exclusive - Comma-separated list of modules names (e.g.: mod_mainmenu, mod_breadcrumbs, mod_wrapper). Leave this field empty if you want to search in all modules names."/>
+				<field name="no_search_modules_ids" type="text" size="40" default="" label="No Search Modules Ids" description="Exclusive - Comma-separated list of modules ids (e.g.: 12, 3, 45). Leave this field empty if you want to search in all modules ids."/>
+				<field name="@spacer" type="spacer" default="" label="" description="" />		
+		 		<field name="groupby_moduleid" type="radio" default="0" label="Groupby Module Id" description="If set to yes, only one page per module will be returned in the search results (the page with the smallest Itemid).">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>	
+		 		<field name="show_module_frequency" type="radio" default="0" label="Show Module Frequency" description="Append the number of menu item(s) per module to the section sub-title. IMPORTANT: Only applicable when the groupby_moduleid is set to yes.">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>	
+				<field name="@spacer" type="spacer" default="" label="" description="" />		
+		 		<field name="include_assigned_all_modules" type="radio" default="0" label="Include Assigned All Modules" description="Set this parameter to yes if you want to include the modules shown on all menu items in the search scope. IMPORTANT: This is actually not a very good idea unless the groupby_moduleid parameter is set to yes too.">	
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="search_limit" type="text" size="5" default="10" label="Search Limit" description="Number of search items to return"/>		
+			</fieldset>
+		</fields>
+	</config>
+</install>

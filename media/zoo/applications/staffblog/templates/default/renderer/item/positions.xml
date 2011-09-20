@@ -9,11 +9,7 @@
 		<position name="email">Email</position>
 		<position name="twitter">Twitter</position>
                 <position name="bio">Bio</position>
-                <position name="married">Married</position>
-                <position name="children">Children</position>
-                <position name="education">Education</position>
-                <position name="vision">Vision</position>
-                <position name="verse">Verse</position>
+                <position name="what_i_do">What I Do</position>
 	</positions>
 	<positions layout="teaser">
 		<position name="name">Name</position>
@@ -23,5 +19,7 @@
 		<position name="blog">Blog</position>
 		<position name="email">Email</position>
 		<position name="twitter">Twitter</position>
+                <position name="bio">Bio</position>
+                <position name="what_i_do">What I Do</position>
 	</positions>
 </renderer>

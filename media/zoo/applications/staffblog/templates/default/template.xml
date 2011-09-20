@@ -32,6 +32,7 @@
 			<option value="2">J2</option>
 			<option value="3">J3</option>
 			<option value="4">J4</option>
+                        <option value="5">J5</option>
 		</param>
 		<param name="items_order" type="list" default="0" label="Items Order" description="ITEMS_ORDER_ACROSS_DOWN">
 			<option value="0">Across</option>
