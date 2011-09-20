@@ -237,7 +237,7 @@ margin-top: -4px;
                 <h4><a href="/about/contact">CONTACT US</a> <img src="images/arrow_y.png" alt="Go" /></h4>
             </div>
             <div class="sixcol">
-                <h4><a href="/connect/current">CURRENT HAPPENINGS</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="/connect/current-happenings">CURRENT HAPPENINGS</a> <img src="images/arrow_y.png" alt="Go" /></h4>
                 <h4><a href="/resources/sermons">OUR SERMON ARCHIVE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
                 <h4><a href="/about/times-locations">OUR CAMPUSES /<br />WORSHIP TIMES</a> <img src="images/arrow_y.png" alt="Go" /></h4>
             </div>

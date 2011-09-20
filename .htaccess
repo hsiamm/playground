@@ -47,6 +47,8 @@ RewriteRule .* index.php [F]
 # redirects use the correct RewriteRule syntax and the [R=301,L] flags.
 #
 Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
+Redirect permanent /thecity https://austinstone.onthecity.org/session/new
+Redirect permanent /jointhecity https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/
 ## End - Custom redirects
 
 ##

@@ -10,20 +10,41 @@
         return $ret;
     }
 
-    $url = "https://api.twitter.com/1/statuses/user_timeline.xml?include_entities=false&include_rts=true&exclude_replies=true&screen_name=theaustinstone&count=5";
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    //print $response;
-    echo "Twitter isn't working, sorry for the confusion!";
+    $cache = JPATH_BASE . DS . 'cache';
+    if (!is_writable($cache))
+        echo 'Cache folder is unwriteable. Solution: chmod 755 ' . $cache;
 
-    $xml_obj = new SimpleXMLElement($response);
+    $user = 'theaustinstone';
+    $quantity = '5';
+    $cachetime = '30' * 60;
+    $tweetURL = "https://api.twitter.com/1/statuses/user_timeline.xml?include_entities=false&include_rts=true&exclude_replies=true&screen_name=" . $user . "&count=" . $quantity;
+    $cachefile = $user . ".xml";
+    $cachepathfile = $cache . DS . $cachefile;
 
-    foreach ($xml_obj->status as $status) {
-        echo twitterify($status->text);
-        return; //only print first one
+    if (!file_exists($cachepathfile) || (time() - $cachetime) > filemtime($cachepathfile)) {
+        $ch = curl_init($tweetURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        $file = file_get_contents($response);
+        if ($file)
+            file_put_contents($cachepathfile, $file);
+        else
+            echo "Unable to get latest tweets at this time. ";
     }
+
+    $twitter = simplexml_load_file($cachepathfile);
+
+    if (!$twitter)
+        echo "Check back another time, we're down!";
+
+    /* $xml_obj = new SimpleXMLElement($response);
+
+      foreach ($xml_obj->status as $status) {
+      echo twitterify($status->text);
+      return; //only print first one
+      } */
     ?>
 
 </h4>
