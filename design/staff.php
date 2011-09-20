@@ -24,9 +24,10 @@
 	<div class="bump">&nbsp;</div>		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:22px;">Worship Christ</p></div>	
+				
 			<div class="staff_photo">
 				<img src="images/staff1.jpg" style="margin-bottom:5px;" alt=""/>
+				<div class="staff_cat_top"><p class="caption caps" style="line-height:22px;">Worship Christ</p></div>
 			</div>
 				
 			<div class="staff_sub">
@@ -46,7 +47,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff2.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -68,7 +69,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff4.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -90,7 +91,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff1.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -112,7 +113,7 @@
 		
 		
 		<!--<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff_category_bg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -124,7 +125,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff2.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -146,7 +147,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>	
 			<div class="staff_photo">
 				<img src="images/staff4.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -168,7 +169,7 @@
 		
 
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff4.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -201,7 +202,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff1.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -223,7 +224,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff2.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -245,7 +246,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff4.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -267,7 +268,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff1.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>
@@ -289,7 +290,7 @@
 		
 		
 		<div class="fivecol_staff">
-			<div style="float:left;width:172px;background:#fff;height:20px;text-align:center;"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
+			<div class="staff_cat_top"><p class="caption caps" style="line-height:20px;">Worship Christ</p></div>
 			<div class="staff_photo">
 				<img src="images/staff2.jpg" style="margin-bottom:5px;" alt=""/>
 			</div>

@@ -9,10 +9,18 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+$category = $this->renderPosition('categories');
+$category = str_replace('Elder', '', $category);
+$category = str_replace('Deacon', '', $category);
 ?>
 
 <div class="fivecol_staff">
 
+    <?php if (!strpos($category, 'Staff')) { ?>
+        <div class="staff_cat_top"> 
+            <p class="caption caps" style="line-height:22px;"><?php echo $category; ?></p> 
+        </div> 
+    <?php } ?>
     <div class="staff_photo">
         <?php if ($this->checkPosition('picture')) { ?>
             <?php echo $this->renderPosition('picture'); ?>
@@ -20,12 +28,6 @@ defined('_JEXEC') or die('Restricted access');
             <img src="images/staff_pics/staff2.jpg" style="margin-bottom:5px;" alt=""/>
         <?php } ?>
     </div>
-
-    <?php if ($this->checkPosition('placeholder')) { ?>
-        <div class="staff_category"> 
-            <h3 class="nomar black"><?php echo $this->renderPosition('name'); ?></h3> 
-        </div> 
-    <?php } ?>
 
     <div class="staff_sub">
         <?php if ($this->checkPosition('blog')) { ?>
