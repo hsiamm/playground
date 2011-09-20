@@ -16,7 +16,7 @@
     $response = curl_exec($ch);
     curl_close($ch);
     //print $response;
-    //echo "Twitter is down, sorry for the confusion!";
+    echo "Twitter isn't working, sorry for the confusion!";
 
     $xml_obj = new SimpleXMLElement($response);
 
