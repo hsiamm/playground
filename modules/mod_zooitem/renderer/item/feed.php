@@ -29,7 +29,6 @@ $title = trim($title);
     <itunes:summary><?php echo trim(str_replace('&nbsp;', '', $this->renderPosition('description'))); ?></itunes:summary>
     <enclosure url="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('mp3')); ?>" length="<?php echo trim($this->renderPosition('size')); ?>" type="audio/x-mp3" />
     <link>http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('mp3')); ?></link>
-    <feedburner:origEnclosureLink>http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('mp3')); ?></feedburner:origEnclosureLink>
     <guid>http://austinstone.org<?php $arr = explode('"', $this->renderPosition('guid'), 3);
         echo $arr[1]; ?></guid>
     <itunes:duration><?php echo trim($this->renderPosition('duration')); ?></itunes:duration>
