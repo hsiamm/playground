@@ -30,8 +30,8 @@
         $file = file_get_contents($response);
         if ($file)
             file_put_contents($cachepathfile, $file);
-        else
-            echo "Unable to get latest tweets at this time. ";
+        //else
+            //echo "Unable to get latest tweets at this time. ";
     }
 
     $twitter = simplexml_load_file($cachepathfile);
