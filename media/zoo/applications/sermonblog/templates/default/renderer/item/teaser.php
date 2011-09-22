@@ -28,6 +28,15 @@ $params = $item->getParams('site');
         <?php echo $this->renderPosition('speaker'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('date'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('passage'); ?>
+        <!--<div id="custom-tweet-button">
+            <?php
+            $arr = explode('"', $this->renderPosition('guid'), 3);
+            $shareURL = "?url=";
+            $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
+            $shareURL .= "&text=Check out this sermon from Austin Stone! ";
+            ?>
+            <a href="https://twitter.com/share<?php //echo $shareURL; ?>" target="_blank">Tweet</a>
+        </div>-->
     </h4>
 
     <?php if ($this->checkPosition('vimeo_embed')) { ?>

@@ -77,6 +77,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
         }  
     });
 </script>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
 
 <div class="twocol">
     <?php if ($this->params->get('template.show_title')) : ?>

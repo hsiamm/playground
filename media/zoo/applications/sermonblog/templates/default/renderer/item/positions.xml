@@ -13,6 +13,7 @@
         <position name="vimeo_link">Vimeo Link</position>
         <position name="vimeo_name">Vimeo Name</position>
         <position name="vimeo_embed">Vimeo Embed</position>
+        <position name="guid">GUID</position>
     </positions>
     <positions layout="teaser">
         <position name="categories">Categories</position>
@@ -27,15 +28,6 @@
         <position name="vimeo_link">Vimeo Link</position>
         <position name="vimeo_name">Vimeo Name</position>
         <position name="vimeo_embed">Vimeo Embed</position>
-    </positions>
-    <positions layout="feed">
-        <position name="description">Description</position>
-        <position name="testing">Testing</position>
-        <position name="testing2">Testing2</position>
-    </positions>
-    <positions layout="submission">
-        <position name="content">Content</position>
-        <position name="media">Media</position>
-        <position name="meta">Meta</position>
+        <position name="guid">GUID</position>
     </positions>
 </renderer>

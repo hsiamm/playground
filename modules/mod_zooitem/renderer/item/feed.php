@@ -27,6 +27,6 @@ date_default_timezone_set('America/Chicago');
     <itunes:summary><?php echo str_replace('&nbsp;','',$this->renderPosition('description')); ?></itunes:summary>
     <enclosure url="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('mp3')); ?>" length="<?php echo trim($this->renderPosition('size')); ?>" type="audio/x-mp3" />
     <link>http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('mp3')); ?></link>
-    <guid>http://dev.austinstone.org<?php $arr = explode('"',$this->renderPosition('guid'),3); echo $arr[1]; ?></guid>
+    <guid>http://austinstone.org<?php $arr = explode('"',$this->renderPosition('guid'),3); echo $arr[1]; ?></guid>
     <itunes:duration><?php echo $this->renderPosition('duration'); ?></itunes:duration>
 </item>

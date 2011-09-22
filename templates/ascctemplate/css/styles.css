@@ -165,14 +165,13 @@ h5.drop a:hover {
     text-decoration: none;
     padding: 7px;
     border: none;
-    -webkit-transition: color .2s ease-in; /*safari and chrome */
-    -o-transition: color .2s ease-in; /* opera */
 }
 
 #menunav a:hover {
     color:#000;
     text-decoration: none;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, .90);
     padding: 7px;
     border: none;
 }
@@ -708,7 +707,8 @@ ul#menunav {
 #menunav a.current {
     color:#000;
     text-decoration: none;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, .90);
     padding: 7px;
     border: none;
 }
@@ -1528,6 +1528,15 @@ h2.sermon_title {
     background-repeat: no-repeat;
     height: 25px;
     width: 30px;
+}
+
+#custom-tweet-button a {
+    display: block;
+    background: url('/images/twitter.png') no-repeat;
+}
+
+#custom-tweet-button a:hover {
+    border: none;
 }
 
 /* CURRENT ---------------------------------- */

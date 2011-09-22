@@ -50,22 +50,31 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="sermon" style="height: 500px;">
     <h3 class="series_label">
-<?php echo $this->renderPosition('categories'); ?>
+        <?php echo $this->renderPosition('categories'); ?>
     </h3>
 
-<?php if ($this->checkPosition('title')) { ?>
+    <?php if ($this->checkPosition('title')) { ?>
         <h2 class="sermon_title nomar">
-        <?php echo $this->renderPosition('title'); ?>
+            <?php echo $this->renderPosition('title'); ?>
         </h2>
-        <?php } ?>
+    <?php } ?>
 
     <h4 class="grey nomar">
-<?php echo $this->renderPosition('speaker'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+        <?php echo $this->renderPosition('speaker'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('date'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('passage'); ?>
+        <!--<div id="custom-tweet-button">
+            <?php
+            $arr = explode('"', $this->renderPosition('guid'), 3);
+            $shareURL = "?url=";
+            $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
+            $shareURL .= "&text=Check out this sermon from Austin Stone! ";
+            ?>
+            <a href="https://twitter.com/share<?php //echo $shareURL; ?>" target="_blank">Tweet</a>
+        </div>-->
     </h4>
 
-<?php if ($this->checkPosition('vimeo_embed')) { ?>
+    <?php if ($this->checkPosition('vimeo_embed')) { ?>
         <h4 class="blue nomar"><?php echo $this->renderPosition('vimeo_name'); ?></h4>
     <?php } ?>
 
@@ -82,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
             <div class="sermon_video"><a class="pop" href="http://vimeo.com/29166738"><img src="/images/sermon_video.png"></img></a></div>
             <div class="download_mp3">Download MP3</div>
         </div>
-<?php } else { ?>
+    <?php } else { ?>
         <div class="sermon_player">
             <div style="width:360px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
                 <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="360" height="25">
@@ -94,6 +103,6 @@ defined('_JEXEC') or die('Restricted access');
             </div>
             <a href="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>"><div class="download_mp3">Download MP3</div></a>
         </div>
-<?php } ?>
+    <?php } ?>
 
 </div><!-- /sermon -->

@@ -77,6 +77,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
         }  
     });
 </script>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
 
 <div class="twocol">
     <?php if ($this->params->get('template.show_title')) : ?>
@@ -96,12 +97,13 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
             {modulepos current_sermon_sermons}
 
             <div class="sermon_sort">
-                <h4 class="yellow nomar">SOR THROUGH SERMONS:</h4>
+                <h4 class="yellow nomar">SORT THROUGH SERMONS:</h4>
                 <h2 class="white">
                     <a id="month" href="#">BY MONTH</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a id="series" href="#">BY SERIES</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a id="speaker" href="#">BY SPEAKER</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a href="/resources/sermons/">ALL</a></h2>
                     
                 <div id="series_sort" class="sermon_sort_options">
                     <ul class="left">
+                        <a href="/resources/sermons/category/from-israel"><li>From Israel</li></a>
                         <a href="/resources/sermons/category/heaven-hell"><li>Heaven & Hell</li></a>
                         <a href="/resources/sermons/category/the-history-of-redemption"><li>The History of Redemption</li></a>
                         <a href="/resources/sermons/category/temptation"><li>Temptation</li></a>

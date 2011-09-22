@@ -46,9 +46,6 @@ RewriteRule .* index.php [F]
 # www redirect (or vice versa), place that code here. Ensure those
 # redirects use the correct RewriteRule syntax and the [R=301,L] flags.
 #
-Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
-Redirect permanent /thecity https://austinstone.onthecity.org/session/new
-Redirect permanent /jointhecity https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/
 ## End - Custom redirects
 
 ##
@@ -88,4 +85,11 @@ RewriteRule .* index.php [L]
 # now the realy stuff is below
 #
 
-Redirect permanent /resources/bible_reading_plan/ http://austinstone.org/resources/bible-reading-plan
+Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
+Redirect permanent /thecity https://austinstone.onthecity.org/session/new
+Redirect permanent /jointhecity https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/
+Redirect permanent /current/this_week http://austinstone.org/about/times-locations
+Redirect permanent /who/staff http://austinstone.org/about/staff
+Redirect permanent /resources/new_to_the_stone http://austinstone.org/connect/new-here
+Redirect permanent /signup http://austinstone.org/connect/current-happenings
+Redirect permanent /who/contact http://austinstone.org/about/contact
