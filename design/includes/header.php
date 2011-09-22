@@ -9,13 +9,13 @@
         <link rel="icon" href="" type="image/x-icon" />
         <link rel="shortcut icon" href="" type="image/x-icon" />
 
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/sermon_style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/current_style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/map_style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/classes_style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/related_org_style.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="http://dev.austinstone.org/design/css/new_here_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/sermon_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/current_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/map_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/classes_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/related_org_style.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/design/css/new_here_style.css" media="screen">
                 
 		<script type="text/javascript" src="http://use.typekit.com/itk0lox.js"></script>
 		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
