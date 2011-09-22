@@ -39,12 +39,12 @@
     if (!$twitter)
         echo "Check back another time, we're down!";
 
-    /* $xml_obj = new SimpleXMLElement($response);
+     //$xml_obj = new SimpleXMLElement($twitter);
 
-      foreach ($xml_obj->status as $status) {
+      foreach ($twitter->status as $status) {
       echo twitterify($status->text);
       return; //only print first one
-      } */
+      } 
     ?>
 
 </h4>

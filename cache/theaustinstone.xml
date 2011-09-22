@@ -1,1 +1,135 @@
-[{"in_reply_to_user_id":null,"truncated":false,"user":{"notifications":false,"profile_background_image_url_https":"https:\/\/si0.twimg.com\/profile_background_images\/239504486\/ascc_background-color.png","profile_link_color":"1D7FC6","protected":false,"show_all_inline_media":false,"geo_enabled":false,"favourites_count":3,"friends_count":4635,"profile_sidebar_border_color":"CCCCCC","followers_count":4696,"profile_image_url_https":"https:\/\/si0.twimg.com\/profile_images\/1326442762\/ascc_social_logo_normal.png","name":"The Austin Stone","default_profile_image":false,"time_zone":"Central Time (US & Canada)","verified":false,"profile_use_background_image":false,"utc_offset":-21600,"profile_image_url":"http:\/\/a3.twimg.com\/profile_images\/1326442762\/ascc_social_logo_normal.png","description":"A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.","is_translator":false,"statuses_count":501,"profile_background_color":"e8e6d4","follow_request_sent":false,"lang":"en","profile_background_image_url":"http:\/\/a0.twimg.com\/profile_background_images\/239504486\/ascc_background-color.png","screen_name":"TheAustinStone","location":"Austin, TX","profile_text_color":"555555","profile_sidebar_fill_color":"F7F6F3","url":"http:\/\/www.austinstone.org","id_str":"16931785","default_profile":false,"listed_count":116,"profile_background_tile":true,"id":16931785,"contributors_enabled":false,"following":true,"created_at":"Thu Oct 23 18:04:14 +0000 2008"},"in_reply_to_status_id":null,"favorited":false,"in_reply_to_status_id_str":null,"place":null,"geo":null,"coordinates":null,"in_reply_to_screen_name":null,"in_reply_to_user_id_str":null,"source":"\u003Ca href=\"http:\/\/www.hootsuite.com\" rel=\"nofollow\"\u003EHootSuite\u003C\/a\u003E","id_str":"102753737768046593","contributors":null,"retweeted":false,"id":102753737768046593,"retweet_count":5,"text":"Our DNA series begins TODAY! We are walking through who we our, our vision and the heartbeat of our church. Don't miss it! #ascc #tc","created_at":"Sun Aug 14 14:49:34 +0000 2011"}]
+<?xml version="1.0" encoding="UTF-8"?>
+<statuses type="array">
+<status>
+  <created_at>Wed Sep 21 19:07:01 +0000 2011</created_at>
+  <id>116589263084204032</id>
+  <text>RT @forthecity: The #centraltxfires may be out, but help is still needed. Pls serve, give, &amp; spread the word http://t.co/v3LThOYX</text>
+  <source>&lt;a href=&quot;http://twitter.com/#!/download/iphone&quot; rel=&quot;nofollow&quot;&gt;Twitter for iPhone&lt;/a&gt;</source>
+
+  <truncated>false</truncated>
+  <favorited>false</favorited>
+  <in_reply_to_status_id></in_reply_to_status_id>
+  <in_reply_to_user_id></in_reply_to_user_id>
+  <in_reply_to_screen_name></in_reply_to_screen_name>
+  <retweet_count>6</retweet_count>
+  <retweeted>false</retweeted>
+
+  <retweeted_status>
+    <created_at>Wed Sep 21 16:50:49 +0000 2011</created_at>
+    <id>116554990981623808</id>
+    <text>The #centraltxfires may be out, but help is still needed. Pls serve, give, &amp; spread the word http://t.co/v3LThOYX</text>
+    <source>&lt;a href=&quot;http://cotweet.com/?utm_source=sp1&quot; rel=&quot;nofollow&quot;&gt;CoTweet&lt;/a&gt;</source>
+
+    <truncated>false</truncated>
+    <favorited>false</favorited>
+    <in_reply_to_status_id></in_reply_to_status_id>
+    <in_reply_to_user_id></in_reply_to_user_id>
+    <in_reply_to_screen_name></in_reply_to_screen_name>
+    <retweet_count>6</retweet_count>
+    <retweeted>false</retweeted>
+
+    <user>
+      <id>24973185</id>
+      <name>TheFortheCityNetwork</name>
+      <screen_name>forthecity</screen_name>
+      <location>Austin, TX</location>
+      <description>A strategy leader, coordinator, and advocate for city renewal through empowerment &amp; collaboration; @justinlopez</description>
+
+      <profile_image_url>http://a0.twimg.com/profile_images/674547300/For_the_City_-_Twitter_normal.JPG</profile_image_url>
+      <profile_image_url_https>https://si0.twimg.com/profile_images/674547300/For_the_City_-_Twitter_normal.JPG</profile_image_url_https>
+      <url>http://www.forthecity.org</url>
+      <protected>false</protected>
+      <followers_count>1188</followers_count>
+      <profile_background_color>9AE4E8</profile_background_color>
+
+      <profile_text_color>333333</profile_text_color>
+      <profile_link_color>0084B4</profile_link_color>
+      <profile_sidebar_fill_color>DDFFCC</profile_sidebar_fill_color>
+      <profile_sidebar_border_color>BDDCAD</profile_sidebar_border_color>
+      <friends_count>114</friends_count>
+      <created_at>Tue Mar 17 22:48:20 +0000 2009</created_at>
+
+      <favourites_count>23</favourites_count>
+      <utc_offset>-21600</utc_offset>
+      <time_zone>Central Time (US &amp; Canada)</time_zone>
+      <profile_background_image_url>http://a1.twimg.com/profile_background_images/13450885/city_twitter_background.jpg</profile_background_image_url>
+      <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/13450885/city_twitter_background.jpg</profile_background_image_url_https>
+
+      <profile_background_tile>true</profile_background_tile>
+      <profile_use_background_image>true</profile_use_background_image>
+      <notifications></notifications>
+      <geo_enabled>false</geo_enabled>
+      <verified>false</verified>
+      <following></following>
+      <statuses_count>509</statuses_count>
+
+      <lang>en</lang>
+      <contributors_enabled>false</contributors_enabled>
+      <follow_request_sent></follow_request_sent>
+      <listed_count>49</listed_count>
+      <show_all_inline_media>false</show_all_inline_media>
+      <default_profile>false</default_profile>
+
+      <default_profile_image>false</default_profile_image>
+      <is_translator>false</is_translator>
+    </user>
+    <geo/>
+    <coordinates/>
+    <place/>
+    <possibly_sensitive>false</possibly_sensitive>
+
+    <contributors/>
+  </retweeted_status>
+  <user>
+    <id>16931785</id>
+    <name>The Austin Stone</name>
+    <screen_name>TheAustinStone</screen_name>
+    <location>Austin, TX</location>
+
+    <description>A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.</description>
+    <profile_image_url>http://a3.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url>
+    <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
+    <url>http://www.austinstone.org</url>
+    <protected>false</protected>
+    <followers_count>5144</followers_count>
+
+    <profile_background_color>e8e6d4</profile_background_color>
+    <profile_text_color>555555</profile_text_color>
+    <profile_link_color>1D7FC6</profile_link_color>
+    <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
+    <friends_count>5118</friends_count>
+
+    <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
+    <favourites_count>3</favourites_count>
+    <utc_offset>-21600</utc_offset>
+    <time_zone>Central Time (US &amp; Canada)</time_zone>
+    <profile_background_image_url>http://a0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url>
+
+    <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url_https>
+    <profile_background_tile>true</profile_background_tile>
+    <profile_use_background_image>false</profile_use_background_image>
+    <notifications></notifications>
+    <geo_enabled>false</geo_enabled>
+    <verified>false</verified>
+
+    <following></following>
+    <statuses_count>559</statuses_count>
+    <lang>en</lang>
+    <contributors_enabled>false</contributors_enabled>
+    <follow_request_sent></follow_request_sent>
+    <listed_count>118</listed_count>
+    <show_all_inline_media>false</show_all_inline_media>
+
+    <default_profile>false</default_profile>
+    <default_profile_image>false</default_profile_image>
+    <is_translator>false</is_translator>
+  </user>
+  <geo/>
+  <coordinates/>
+  <place/>
+
+  <possibly_sensitive>false</possibly_sensitive>
+  <contributors/>
+</status>
+</statuses>
