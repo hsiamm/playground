@@ -7,12 +7,12 @@
         <position name="date">Date</position>
         <position name="passage">Passage</position>
         <position name="audio_file">Audio File</position>
-        <position name="video_name">Video Name</position>
-        <position name="video_size">Video Size</position>
-        <position name="video_duration">Video Duration</position>
-        <position name="vimeo_link">Vimeo Link</position>
-        <position name="vimeo_name">Vimeo Name</position>
-        <position name="vimeo_embed">Vimeo Embed</position>
+        <position name="video_name">Sermon Video Name</position>
+        <position name="video_link">Sermon Video Link</position>
+        <position name="video_embed">Sermon Video Embed</position>
+        <position name="extra_name">Extra Video Name</position>
+        <position name="extra_link">Extra Video Link</position>
+        <position name="extra_embed">Extra Vimeo Embed</position>
         <position name="guid">GUID</position>
     </positions>
     <positions layout="teaser">
@@ -22,12 +22,12 @@
         <position name="date">Date</position>
         <position name="passage">Passage</position>
         <position name="audio_file">Audio File</position>
-        <position name="video_name">Video Name</position>
-        <position name="video_size">Video Size</position>
-        <position name="video_duration">Video Duration</position>
-        <position name="vimeo_link">Vimeo Link</position>
-        <position name="vimeo_name">Vimeo Name</position>
-        <position name="vimeo_embed">Vimeo Embed</position>
+        <position name="video_name">Sermon Video Name</position>
+        <position name="video_link">Sermon Video Link</position>
+        <position name="video_embed">Sermon Video Embed</position>
+        <position name="extra_name">Extra Video Name</position>
+        <position name="extra_link">Extra Video Link</position>
+        <position name="extra_embed">Extra Vimeo Embed</position>
         <position name="guid">GUID</position>
     </positions>
 </renderer>

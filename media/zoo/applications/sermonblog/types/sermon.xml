@@ -8,13 +8,11 @@
     <param type="text" identifier="23acd162-7884-4117-9321-a4a8da54d638" name="Audio: Filename" description="Upload the mp3 to the sermons directory and include the filename here with .mp3" access="1" default=".mp3" repeatable="0"/>
     <param type="text" identifier="168fe90a-6c30-4b28-8f40-ee16f9d29f1b" name="Audio: Size in bytes" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="ea1a9fd7-6fdf-482b-9022-48d877e2a717" name="Audio: Duration" description="" access="1" default="0:00:00" repeatable="0"/>
-    <param type="text" identifier="cbbe8590-aa30-4002-8fa0-4e6a6482e809" name="Video: Filename" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="58c9aec7-9011-4934-9568-b6127e18bb30" name="Video: File Size" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="97075d7d-5317-446d-beb3-fae102b87ba7" name="Video: Duration" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="2da9f82d-5cb4-4a6a-ae21-01357c31bd2c" name="Related: Filename" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="d0e2bbc7-13ab-4b7a-beca-87bad80fbe66" name="Related: Link Text" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="01ac22d7-b23f-4027-a173-bad4c1138f20" name="Video: Vimeo Link" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="4e12c63a-4574-4e48-8669-bb5c46f45e61" name="Video: Link text" description="" access="1" default="" repeatable="0"/>
-    <param type="textarea" identifier="5d020a19-9611-4104-a571-3113ddeb2392" name="Video: Embed Code from Vimeo" description="" access="1" default="" jplugins="0" repeatable="0"/>
+    <param type="text" identifier="cbbe8590-aa30-4002-8fa0-4e6a6482e809" name="Sermon Video: Name" description="" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="58c9aec7-9011-4934-9568-b6127e18bb30" name="Sermon Video: Vimeo Link" description="" access="1" default="" repeatable="0"/>
+    <param type="textarea" identifier="622eaf59-47c4-4ec6-9a88-ba7671e470c1" name="Sermon Video: Embed Code" description="" access="1" default="" jplugins="1" repeatable="0"/>
+    <param type="text" identifier="01ac22d7-b23f-4027-a173-bad4c1138f20" name="Extra Video: Vimeo Link" description="" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="4e12c63a-4574-4e48-8669-bb5c46f45e61" name="Extra Video: Name" description="" access="1" default="" repeatable="0"/>
+    <param type="textarea" identifier="5d020a19-9611-4104-a571-3113ddeb2392" name="Extra Video: Embed Code" description="" access="1" default="" jplugins="0" repeatable="0"/>
   </params>
 </type>
