@@ -29,7 +29,14 @@
 				<h2 class="nomar">Current Happening Numero Uno <img src="images/arrow_g.png" alt="Go"/></h2>
 				<h2 class="nomar">Current Happening Numero Dos <img src="images/arrow_g.png" alt="Go"/></h2>
 				<h2 class="nomar">Current Happening Numero Tres <img src="images/arrow_g.png" alt="Go"/></h2>				
-			</div><!--/current_hap-->						
+			</div><!--/current_hap-->	
+			
+			<div style="clear:both;"></div>
+			
+			<div class="alert" style="width:250px;background:#000;height:30px;line-height:30px;padding:10px;">
+				<h2 class="notar yellow">Road Closures this Sunday <img src="images/arrow_y.png" alt="Go"/></h2>
+			</div><!--/alert-->	
+								
 		</div><!--/container-->
     </div><!--/image_main-->	
 	
