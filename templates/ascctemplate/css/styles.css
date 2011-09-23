@@ -108,15 +108,16 @@ p a:hover, ul.bullet a:hover {
 }
 
 .alert h2 a {
-    color: #ffdd00;
+    color: #fff;
     background-color: none;
+    line-height: 45px;
     text-decoration: none;
     -webkit-transition: color .2s ease-in; /*safari and chrome */
     -o-transition: color .2s ease-in; /* opera */
 }
 
 .alert h2 a:hover {
-    color:#fff;
+    color:#ffdd00;
 }
 
 h4 a {
@@ -893,8 +894,8 @@ ul.dropdown ul {
 .alert {
 	width:250px;
 	background:#000;
-	height:auto;
-	padding:10px 10px 1px 10px;
+	height: 45px;
+	padding:0 10px;
 	margin: 10px 10px 0 10px;
 }
 
