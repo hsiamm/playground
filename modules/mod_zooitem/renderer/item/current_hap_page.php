@@ -19,7 +19,7 @@ $media_position = $params->get('media_position', 'top');
             <?php echo $this->renderPosition('picture'); ?>
         </a>
     <?php } else { ?>
-        <img src="http://placehold.it/140x140" />
+        <img src="http://austinstone.org/images/signups/stone_current.png" />
     <?php } ?>
 
     <h2><?php echo $this->renderPosition('title'); ?></h2>

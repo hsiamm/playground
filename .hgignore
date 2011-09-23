@@ -1,3 +1,4 @@
 syntax: glob
 configuration.php
 robots.txt
+tmp/
