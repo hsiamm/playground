@@ -107,6 +107,18 @@ p a:hover, ul.bullet a:hover {
     color:#77787B;
 }
 
+.alert h2 a {
+    color: #ffdd00;
+    background-color: none;
+    text-decoration: none;
+    -webkit-transition: color .2s ease-in; /*safari and chrome */
+    -o-transition: color .2s ease-in; /* opera */
+}
+
+.alert h2 a:hover {
+    color:#fff;
+}
+
 h4 a {
     color:#000;
     background-color: none;
@@ -877,6 +889,15 @@ ul.dropdown ul {
     background: rgb(255, 221, 0); /* The Fallback */
     background: rgba(255, 221, 0, 0.9);	
 }
+
+.alert {
+	width:250px;
+	background:#000;
+	height:auto;
+	padding:10px 10px 1px 10px;
+	margin: 10px 10px 0 10px;
+}
+
 
 .bump {
     width: 100%;

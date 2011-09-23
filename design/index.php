@@ -33,8 +33,8 @@
 			
 			<div style="clear:both;"></div>
 			
-			<div class="alert" style="width:250px;background:#000;height:30px;line-height:30px;padding:10px;">
-				<h2 class="notar yellow">Road Closures this Sunday <img src="images/arrow_y.png" alt="Go"/></h2>
+			<div class="alert">
+				<h2 class="notar yellow"><a href="design/roads.php">Road Closures this Sunday <img src="images/arrow_y.png" alt="Go"/></a></h2>
 			</div><!--/alert-->	
 								
 		</div><!--/container-->
