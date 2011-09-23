@@ -2136,13 +2136,16 @@ ul.class_sort_options li {
     height: 24px;
     margin: 30px auto 0 auto;
     text-indent: -9999px;
+    cursor: pointer;
     background-image: url('/images/texas.png');	 
 }
 
 .texas_flag {
+    position:absolute;
     width: 68px;
     height: 50px;
-    margin: 0 auto 0 auto;
+    margin: -10px 0 0 -26px;
+    left:50%;
     display: none;
     background-repeat: no-repeat;
     background-image: url('/images/flag.png');

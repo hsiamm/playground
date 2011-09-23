@@ -1,5 +1,5 @@
 syntax: glob
 configuration.php
 robots.txt
-tmp/
-images/
+tmp/*
+images
