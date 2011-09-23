@@ -64,18 +64,26 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo $this->renderPosition('date'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('passage'); ?>
         <!--<div id="custom-tweet-button">
-            <?php
-            $arr = explode('"', $this->renderPosition('guid'), 3);
-            $shareURL = "?url=";
-            $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
-            $shareURL .= "&text=Check out this sermon from Austin Stone! ";
-            ?>
-            <a href="https://twitter.com/share<?php //echo $shareURL; ?>" target="_blank">Tweet</a>
+        <?php
+        $arr = explode('"', $this->renderPosition('guid'), 3);
+        $shareURL = "?url=";
+        $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
+        $shareURL .= "&text=Check out this sermon from Austin Stone! ";
+        ?>
+            <a href="https://twitter.com/share<?php //echo $shareURL;  ?>" target="_blank">Tweet</a>
         </div>-->
     </h4>
 
-    <?php if ($this->checkPosition('vimeo_embed')) { ?>
-        <h4 class="blue nomar"><?php echo $this->renderPosition('vimeo_name'); ?></h4>
+    <?php if ($this->checkPosition('extra_embed')) { ?>
+        <?php $videoid = str_replace(' ', '-', trim($this->renderPosition('extra_name'))); ?>
+        <a class="video-pop" href="#<?php echo $videoid; ?>">
+            <h4 class="blue nomar"><img style="height:12px;" src="/images/camera-icon.png"/><?php echo $this->renderPosition('extra_name'); ?></h4>
+        </a>
+        <div style="display:none;">
+            <div id="<?php echo $videoid; ?>">
+                <?php echo $this->renderPosition('extra_embed'); ?>
+            </div>
+        </div>
     <?php } ?>
 
     <?php if ($this->checkPosition('video_name')) { ?>
@@ -88,7 +96,13 @@ defined('_JEXEC') or die('Restricted access');
                     <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:400px;padding-top:5px"></audio>
                 </object>
             </div>
-            <div class="sermon_video"><a class="pop" href="http://vimeo.com/29166738"><img src="/images/sermon_video.png"></img></a></div>
+            <?php $sermonvideoid = str_replace(' ', '-', trim($this->renderPosition('video_name'))); ?>
+            <div class="sermon_video"><a class="video-pop" href="#<?php echo $sermonvideoid; ?>"><img src="/images/sermon_video.png"></img></a></div>
+            <div style="display:none;">
+                <div id="<?php echo $sermonvideoid; ?>">
+                    <?php echo $this->renderPosition('video_embed'); ?>
+                </div>
+            </div>
             <div class="download_mp3">Download MP3</div>
         </div>
     <?php } else { ?>
