@@ -74,8 +74,8 @@ defined('_JEXEC') or die('Restricted access');
         </div>-->
     </h4>
 
-    <?php if ($this->checkPosition('extra_embed')) { ?>
-        <h4 class="blue nomar"><?php echo $this->renderPosition('extra_name'); ?></h4>
+    <?php if ($this->checkPosition('vimeo_embed')) { ?>
+        <h4 class="blue nomar"><?php echo $this->renderPosition('vimeo_name'); ?></h4>
     <?php } ?>
 
     <?php if ($this->checkPosition('video_name')) { ?>
