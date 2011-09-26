@@ -185,9 +185,9 @@ margin-top: -4px;
     			
     			<div style="clear:both;"></div>
 			
-				<div class="alert">
+				<!--<div class="alert">
 					<h2 class="nomar yellow"><a href="/roads">Road Closures this Sunday <img src="images/arrow_y.png" alt="Go"/></a></h2>
-				</div><!--/alert-->	
+				</div>/alert-->	
             </div> <!-- /container -->
         </div> <!-- /image_main -->
 
