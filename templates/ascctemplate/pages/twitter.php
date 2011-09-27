@@ -16,8 +16,8 @@
 
     $user = 'theaustinstone';
     $quantity = '5';
-    $cachetime = '1';
-    //$cachetime = '30' * 60;
+    //$cachetime = '1';
+    $cachetime = '30' * 60;
     $tweetURL = "https://api.twitter.com/1/statuses/user_timeline.xml?include_entities=false&include_rts=true&exclude_replies=true&screen_name=" . $user . "&count=" . $quantity;
     $cachefile = $user . ".xml";
     $cachepathfile = $cache . DS . $cachefile;
