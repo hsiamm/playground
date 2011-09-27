@@ -26,8 +26,9 @@
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($ch);
         curl_close($ch);
-        
-        $file = file_get_contents($response);
+        echo "*";
+
+        $file = $response;
         if ($file)
             file_put_contents($cachepathfile, $file);
         //else
@@ -35,16 +36,17 @@
     }
 
     $twitter = simplexml_load_file($cachepathfile);
+    print $twitter;
 
     if (!$twitter)
         echo "Check back another time, we're down!";
 
-     //$xml_obj = new SimpleXMLElement($twitter);
+    //$xml_obj = new SimpleXMLElement($twitter);
 
-      foreach ($twitter->status as $status) {
-      echo twitterify($status->text);
-      return; //only print first one
-      } 
+    foreach ($twitter->status as $status) {
+        echo twitterify($status->text);
+        return; //only print first one
+    }
     ?>
 
 </h4>

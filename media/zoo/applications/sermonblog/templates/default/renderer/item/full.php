@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
                     <?php echo $this->renderPosition('video_embed'); ?>
                 </div>
             </div>
-            <div class="download_mp3">Download MP3</div>
+            <a href="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>"><div class="download_mp3">Download MP3</div></a>
         </div>
     <?php } else { ?>
         <div class="sermon_player">
