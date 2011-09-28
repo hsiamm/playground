@@ -1089,15 +1089,15 @@ tr.alt_day {
 	float:left;
 	border-right: 1px solid #fff;
 	padding:10px 0;
-	width:300px;
+	width:240px;
 	height:25px;
-	margin:0 20px 0 0;
+	margin:0 25px 0 0;
 }
 
 .trips-types_pop {
 	float:left;
 	height:25px;
-	width:140px;
+	width:80px;
 	background-color: #77787B;
 	color:#ffdd00;
 	margin-right: 10px;
@@ -1112,7 +1112,7 @@ tr.alt_day {
 	margin-right: 10px;
 }
 
-.trips_popout h4 {
+.trips-commitments_pop h4, .trips-types_pop h4  {
 	text-align: center;
 	line-height: 25px;
 }

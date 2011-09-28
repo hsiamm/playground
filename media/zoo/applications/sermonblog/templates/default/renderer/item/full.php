@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <script>
     function popup($url) {
-        window.open( $url, "Share on Twitter", "status = 1, height = 450, width = 550, resizable = 0" );
+        window.open($url,"Share","status=1,height=450,width=550,resizable=0");
     }
 
     $(document).ready(function() {

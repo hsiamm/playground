@@ -32,7 +32,7 @@
 		</div>
 		
 		<div class="trips_sort">
-			<div class="class_popout_wrapper">
+			<div class="trips_popout_wrapper">
 				<div class="trips-commitments_pop">
 					<h4 class="yellow caps">Trip Commitments</h4>
 				</div>
@@ -41,18 +41,17 @@
 				</div>
 			</div>
 			
-			<h2 style="float:left;margin-right:15px;">Filter Schedule</h2>
+			<h2 style="float:left;margin-right:15px;">Filter Trips</h2>
 			
-			<a href="" class="class_sort_button"><h2 class="nomar">By Category</h2></a>
+			<a href="" class="trips_sort_button"><h2 class="nomar">By Trip Type</h2></a>
 			
-			<a href="" class="class_sort_button"><h2 class="nomar">By Campus</h2></a>
-			<ul class="class_sort_options">
-				<a href=""><li>Bible</li></a>
-				<a href=""><li>Christian Life & Practice</li></a>
-				<a href=""><li>Get Connected</li></a>
-				<a href=""><li>Theology</li></a>
-				<a href=""><li>Stage of Life</li></a>
-				<a href=""><li>Skills Training</li></a>
+			<a href="" class="trips_sort_button"><h2 class="nomar">By Trip Location</h2></a>
+			<ul class="trips_sort_options">
+				<a href=""><li>Construction</li></a>
+				<a href=""><li>Education</li></a>
+				<a href=""><li>Evangelism</li></a>
+				<a href=""><li>Exposure</li></a>
+				<a href=""><li>Medical</li></a>
 			</ul>
 			
 		</div>
