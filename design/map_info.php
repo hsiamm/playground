@@ -87,6 +87,43 @@
 				</li>
 			</ul>
 		</div>
+		
+		<div style="clear:both;"></div>
+		
+		<div class="trips_categories">
+			<h1 class="title">Trips Categories</h1>
+			<ul>
+				<li>
+					<img src="images/trips_cat_construction.png" style="float:left;margin:0 10px 45px 0;" />
+					<h2 class="nomar blue">Construction</h2>
+					<p>Team members will engage in physical labor to help with various projects in cooperation with national partners. Examples include building latrines, homes, digging trenches, painting, etc.</p>
+				</li>
+				<div style="clear:both;"></div>
+				<li>
+					<img src="images/trips_cat_education.png" style="float:left;margin:0 10px 45px 0;" />
+					<h2 class="nomar blue">Education</h2>
+					<p>Team members will participate in a variety of teaching environments. Opportunities vary from grade school environments to basic lessons for adults. Topics range from Bible lessons to basic health and language lessons.</p>
+				</li>
+				<div style="clear:both;"></div>
+				<li>
+					<img src="images/trips_cat_evangelism.png" style="float:left;margin:0 10px 60px 0;" />
+					<h2 class="nomar blue">Evangelism</h2>
+					<p>Team members will participate in partnership with the local church (when local churches exist) in sharing the good news of the gospel in word through a variety of means, which may include home visits, speaking in public, or personal relationship development.</p>
+				</li>
+				<div style="clear:both;"></div>
+				<li>
+					<img src="images/trips_cat_exposure.png" style="float:left;margin:0 10px 45px 0;" />
+					<h2 class="nomar blue">Exposure</h2>
+					<p>Team members will spend a significant amount of time listening to and learning about the culture and how the Lord is working among the people.</p>
+				</li>
+				<div style="clear:both;"></div>
+				<li>
+					<img src="images/trips_cat_medical.png" style="float:left;margin:0 10px 45px 0;" />
+					<h2 class="nomar blue">Medical</h2>
+					<p>Team members have the opportunity to serve in clinics and other settings to meet the medical needs of many while praying for them and taking advantage of opportunities to share the good news of the gospel. *In most cases, basic medical training will be provided during team training..</p>
+				</li>
+			</ul>
+		</div>		
 
 
 

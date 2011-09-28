@@ -120,6 +120,10 @@ p a:hover, ul.bullet a:hover {
     color:#ffdd00;
 }
 
+h2.sermon_title a {
+    color: #000;
+}
+
 h4 a {
     color:#000;
     background-color: none;
@@ -1542,23 +1546,17 @@ h2.sermon_title {
 .sermon_video {
     float: left;
     margin-left: 10px;
-}
-
-.sermon_video a {
-    background-color: #fff;
-    background-image: url('/images/sermon-video.png');
-    background-repeat: no-repeat;
     height: 25px;
     width: 30px;
 }
 
-#custom-tweet-button a {
-    display: block;
-    background: url('/images/twitter.png') no-repeat;
+#custom-tweet-button {
+    float: left;
+    margin-left: 10px;
 }
 
-#custom-tweet-button a:hover {
-    border: none;
+#custom-tweet-button a {
+    cursor: pointer;
 }
 
 /* CURRENT ---------------------------------- */

@@ -63,15 +63,6 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo $this->renderPosition('speaker'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('date'); ?>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
         <?php echo $this->renderPosition('passage'); ?>
-        <!--<div id="custom-tweet-button">
-        <?php
-        $arr = explode('"', $this->renderPosition('guid'), 3);
-        $shareURL = "?url=";
-        $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
-        $shareURL .= "&text=Check out this sermon from Austin Stone! ";
-        ?>
-            <a href="https://twitter.com/share<?php //echo $shareURL;  ?>" target="_blank">Tweet</a>
-        </div>-->
     </h4>
 
     <?php if ($this->checkPosition('extra_embed')) { ?>
@@ -88,11 +79,11 @@ defined('_JEXEC') or die('Restricted access');
 
     <?php if ($this->checkPosition('video_name')) { ?>
         <div class="sermon_player">
-            <div style="width:320px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
-                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="320" height="25">
+            <div style="width:285px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
+                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="285" height="25">
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
-                    <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=320&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
+                    <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=285&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
                     <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:400px;padding-top:5px"></audio>
                 </object>
             </div>
@@ -107,16 +98,27 @@ defined('_JEXEC') or die('Restricted access');
         </div>
     <?php } else { ?>
         <div class="sermon_player">
-            <div style="width:360px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
-                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="360" height="25">
+            <div style="width:325px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
+                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="325" height="25">
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
-                    <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=360&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
+                    <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=325&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
                     <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:400px;padding-top:5px"></audio>
                 </object>
             </div>
             <a href="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>"><div class="download_mp3">Download MP3</div></a>
         </div>
     <?php } ?>
+    <div id="custom-tweet-button">
+        <?php
+        $arr = explode('"', $this->renderPosition('guid'), 3);
+        $shareURL = "?url=";
+        $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
+        $shareURL .= "&text=Check out this sermon from Austin Stone! ";
+        ?>
+        <a href="https://twitter.com/share<?php echo $shareURL; ?>" target="_blank">
+            <img src="/images/sermons/twitter.png" />
+        </a>
+    </div>
 
 </div><!-- /sermon -->
