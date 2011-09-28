@@ -26,7 +26,10 @@ $params = $item->getParams('site');
 
     <?php if ($this->checkPosition('title')) { ?>
         <h2 class="sermon_title nomar">
-            <?php echo $this->renderPosition('title'); ?>
+            <?php $arr = explode('"', $this->renderPosition('guid'), 3); ?>
+            <a href="<?php echo $arr[1]; //prints the permalink ?>">
+                <?php echo $this->renderPosition('title'); ?>
+            </a>
         </h2>
     <?php } ?>
 
@@ -87,7 +90,7 @@ $params = $item->getParams('site');
         $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
         $shareURL .= "&text=Check out " . urlencode(trim($this->renderPosition('title'))) . ".";
         ?>
-        <a onClick="popup(<?php echo "'".$shareURL."'"; ?>)" target="_blank">
+        <a onClick="popup(<?php echo "'" . $shareURL . "'"; ?>)" target="_blank">
             <img src="/images/sermons/twitter.png" />
         </a>
     </div>
