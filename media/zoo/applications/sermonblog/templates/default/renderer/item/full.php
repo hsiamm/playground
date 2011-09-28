@@ -12,7 +12,16 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <script>
+    function popup($url) {
+        window.open( $url, "Share on Twitter", "status = 1, height = 450, width = 550, resizable = 0" );
+    }
+
     $(document).ready(function() {
+        $("a.video-pop").fancybox({
+            'overlayColor'  : '#000',
+            'overlayOpacity' : 0.75
+        });
+        
         $(".sermon_sort h2 a").click(function() {
             var id = $(this).attr('id');
             var item = document.getElementById(id);
@@ -47,6 +56,7 @@ defined('_JEXEC') or die('Restricted access');
         }  
     });
 </script>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
 
 <div class="sermon" style="height: 500px;">
     <h3 class="series_label">
@@ -112,11 +122,11 @@ defined('_JEXEC') or die('Restricted access');
     <div id="custom-tweet-button">
         <?php
         $arr = explode('"', $this->renderPosition('guid'), 3);
-        $shareURL = "?url=";
+        $shareURL = "https://twitter.com/share?url=";
         $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
-        $shareURL .= "&text=Check out this sermon from Austin Stone! ";
+        $shareURL .= "&text=Check out " . urlencode(trim($this->renderPosition('title'))) . ".";
         ?>
-        <a href="https://twitter.com/share<?php echo $shareURL; ?>" target="_blank">
+        <a onClick="popup(<?php echo "'" . $shareURL . "'"; ?>)" target="_blank">
             <img src="/images/sermons/twitter.png" />
         </a>
     </div>

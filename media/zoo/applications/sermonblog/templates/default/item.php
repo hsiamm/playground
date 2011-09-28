@@ -54,16 +54,6 @@ if (!($image = $this->application->getImage('content.image'))) {
 $css_class = $this->application->getGroup() . '-' . $this->template->name;
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {    
-        $("a.pop").fancybox({
-            'overlayColor'  : '#fff',
-            'overlayOpacity' : 0.9
-        });
-    });
-</script>
-<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
-
 <div class="twocol">
     <?php if ($this->params->get('template.show_title')) : ?>
         <h1><?php echo $this->application->getParams()->get('content.title') ?></h1>
