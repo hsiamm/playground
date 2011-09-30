@@ -10,6 +10,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+//get the item id
+$arr = explode('"', $this->renderPosition('item_link'), 3);
+$itemID = substr($arr[1], 20);
+
 $location = $this->renderPosition('locale');
 $categories = $this->renderPosition('categories');
 $classfix = '';
@@ -87,23 +91,58 @@ $classfix = trim($classfix);
         <div class="bump">&nbsp;</div>
 
         <?php if (strpos($this->renderPosition('status'), 'Open')) { ?>
-            <div class="trips_funds_pop">
+            <div class="trips_funds_pop fancy_pop" href="#inline_funds_<?php echo $itemID; ?>">
                 <h4 class="yellow caps">When Are Funds Due?</h4>
+            </div>
+            <div style="display: none;">
+                <div id="inline_funds_<?php echo $itemID; ?>" style="width:440px;height:auto;overflow:auto;">
+                    <div class="trip_funds_due">
+                        <?php if ($this->checkPosition('timeline_dates')) { ?>
+                            <h1 class="title">When are funds due?</h1>
+                            <?php $dates = explode('|', $this->renderPosition('timeline_dates')); ?>
+                            <?php $costs = explode('|', $this->renderPosition('timeline_cost')); ?>
+                            <ul class="bullet">
+                                <li><?php echo $dates[0] . "&nbsp;|&nbsp;" . $costs[0]; ?></li>
+                                <li><?php echo $dates[1] . "&nbsp;|&nbsp;" . $costs[1]; ?></li>
+                                <li><?php echo $dates[2] . "&nbsp;|&nbsp;" . $costs[2]; ?></li>
+                            </ul>
+                        <?php } else { ?>
+                            <h2 class="nomar blue">No timeline set for funds yet.</h2>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
             <div class="trips_apply">
                 <a href="<?php echo trim($this->renderPosition('link')); ?>"><h4 class="black caps">Start Application</h4></a>
             </div>
         <?php } else if (strpos($this->renderPosition('status'), 'Closed')) { ?>
-            <div class="trips_funds_pop">
+            <div class="trips_funds_pop fancy_pop" href="#inline_funds_<?php echo $itemID; ?>">
                 <h4 class="yellow caps">When Are Funds Due?</h4>
             </div>
+            <div style="display: none;">
+                <div id="inline_funds_<?php echo $itemID; ?>" style="width:440px;height:auto;overflow:auto;">
+                    <div class="trip_funds_due">
+                        <?php if ($this->checkPosition('timeline_dates')) { ?>
+                            <h1 class="title">When are funds due?</h1>
+                            <?php $dates = explode('|', $this->renderPosition('timeline_dates')); ?>
+                            <?php $costs = explode('|', $this->renderPosition('timeline_cost')); ?>
+                            <ul class="bullet">
+                                <li><?php echo $dates[0] . "&nbsp;|&nbsp;" . $costs[0]; ?></li>
+                                <li><?php echo $dates[1] . "&nbsp;|&nbsp;" . $costs[1]; ?></li>
+                                <li><?php echo $dates[2] . "&nbsp;|&nbsp;" . $costs[2]; ?></li>
+                            </ul>
+                        <?php } else { ?>
+                            <h1 class="title">No timeline set for funds yet.</h1>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
             <div class="trips_capacity">
-
                 <h4 class="black caps">Trip At Capacity</h4>
             </div>
         <?php } else if (strpos($this->renderPosition('status'), 'Not Finalized')) { ?>
             <div class="trips_nodate">
-                <p class="sans"><em>Trip dates are not yet finalized and will be updated as soon as possible. We will open the trip for registration when dates are confirmed.</em></p>
+                <p class="trips nomar"><em>Trip dates are not yet finalized and will be updated as soon as possible.</em></p>
             </div>
         <?php } ?>
 

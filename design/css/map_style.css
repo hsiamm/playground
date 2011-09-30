@@ -43,6 +43,21 @@
 	height:auto;
 }
 
+.trip_commitments {
+	padding:20px;
+	background-color: #fff;
+	width:560px;
+	height:auto;
+}
+
+.trip_funds_due {
+	padding:20px;
+	background-color: #fff;
+	width:300px;
+	height:auto;
+}
+
+
 .class_categories, .trips_types {
 	padding:20px;
 	background-color: #fff;

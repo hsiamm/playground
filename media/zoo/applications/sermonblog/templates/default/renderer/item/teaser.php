@@ -17,10 +17,8 @@ $params = $item->getParams('site');
     function popup($url) {
         window.open($url,"Share","status=1,height=450,width=550,resizable=0");
     }
-</script>
-<script>
+    
     function fbs_click($url) {
-        t=document.title;
         window.open('http://www.facebook.com/sharer.php?u='+$url,'sharer','toolbar=0,status=0,width=626,height=336');
         return false;
     }
@@ -105,7 +103,7 @@ $params = $item->getParams('site');
         $arr = explode('"', $this->renderPosition('guid'), 3);
         $shareURL = "https://twitter.com/share?url=";
         $shareURL .= urlencode("http://austinstone.org" . $arr[1]);
-        $shareURL .= "&text=Check out " . urlencode(trim($this->renderPosition('title'))) . ".";
+        $shareURL .= "&text=Check out " . urlencode(trim($this->renderPosition('title')) . " #ascc");
         ?>
         <a onClick="popup(<?php echo "'" . $shareURL . "'"; ?>)" target="_blank">
             <img src="/images/sermons/twitter.png" />

@@ -90,8 +90,36 @@
 		
 		<div style="clear:both;"></div>
 		
+		
+		<div class="trip_commitments">
+			<h1 class="title">Trip Commitments:</h1>
+			<p>Our desire is to be good stewards, financially and spiritually, of the resources that God has given us. We also strive to prepare our teams to show the unity in Christ and a heart of service to those we will meet.</p>
+			<p>To help us achieve this, we ask each team member to commit to:</p>
+			<ul class="bullet">
+				<li>Actively participate in providing the funds for your trip, either through personal means or fundraising activities. If the full amount of funds is not raised before the trip, the team member agrees to pay the remaining balance within 30 days of returning from the trip</li>
+				<li>Attend the first training meeting and attend at least 80% of subsequent training meetings and debrief sessions</li>
+				<li>Submit to the authority of the team leader(s), to serve with a spirit of humility, and to strive for biblical unity with your team and our national partners.</li>
+				<li>Consistently seek to abide in Christ through daily time in the scriptures and prayer leading up to, during, and after the trip</li>
+			</ul>
+			<p>If you have any questions about these requirements, please email us: <a href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a></p>
+		</div>	
+		
+		<div style="clear:both;">&nbsp;</div>
+		
+		<div class="trip_funds_due">
+			<h1 class="title">When Are Funds Due?</h1>
+			<ul class="bullet">
+				<li>Date 1 &nbsp;|&nbsp; Price</li>
+				<li>Date 1 &nbsp;|&nbsp; Price</li>
+				<li>Date 1 &nbsp;|&nbsp; Price</li>
+			</ul>
+		</div>				
+		
+
+		<div style="clear:both;">&nbsp;</div>
+		
 		<div class="trips_types">
-			<h1 class="title">Trips Categories</h1>
+			<h1 class="title">Trips Types</h1>
 			<ul>
 				<li>
 					<img src="images/trips_types_construction.png" style="float:left;margin:0 10px 45px 0;" />

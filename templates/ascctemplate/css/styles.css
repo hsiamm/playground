@@ -2313,7 +2313,7 @@ a.new_here_top {
     margin:0 25px 0 0;
 }
 
-.trips_types_pop {
+#trips_types {
     float:left;
     height:25px;
     width:80px;
@@ -2322,7 +2322,7 @@ a.new_here_top {
     margin-right: 10px;
 }
 
-.trips_commitments_pop {
+#trips_commitment {
     float:left;
     height:25px;
     width:120px;
@@ -2353,15 +2353,48 @@ a.new_here_top {
     background-color: #ffdd00;
     margin: 0 0 0 20px;
 }
+
 .trips_nodate {
     float:left;
-    height:40px;
-    padding: 10px;
-    width:400px;
+    height:30px;
+    width:390px;
     background-color: #F2F2F2;
+    padding: 0 10px;
 }
 
-.trips_commitments_pop h4, .trips_types_pop h4 {
+.trip_funds_due {
+    background-color: #FFFFFF;
+    height: auto;
+    padding: 20px;
+    width: 300px;
+}
+
+.trip_commitments {
+    background-color: #FFFFFF;
+    height: auto;
+    padding: 20px;
+    width: 560px;
+}
+
+.trips_types {
+    background-color: #FFFFFF;
+    height: auto;
+    padding: 20px;
+    width: 600px;
+}
+
+p.trips {
+    line-height: 32px;
+    font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.fancy_pop {
+    cursor: pointer;
+}
+
+.trips_pop h4 {
     text-align: center;
     line-height: 25px;
 }

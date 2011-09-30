@@ -17,6 +17,7 @@
         <position name="timeline_cost">Timeline Costs</position>
         <position name="Prayer Points">Prayer Points</position>
         <position name="note">Note</position>
+        <position name="item_link">Item Link</position>
     </positions>
     <positions layout="teaser">
         <position name="title">Title</position>
@@ -35,5 +36,6 @@
         <position name="timeline_cost">Timeline Costs</position>
         <position name="Prayer Points">Prayer Points</position>
         <position name="note">Note</position>
+        <position name="item_link">Item Link</position>
     </positions>
 </renderer>
