@@ -100,77 +100,77 @@ defined('_JEXEC') or die('Restricted access');
         <div class="class_popout" id="classes_commitment" href="#inline_commit">
             <h4 class="yellow caps">Class Commitments</h4>
         </div>
-			<!-- FANCYBOX1-->
-			<div style="display: none;">
-				<div id="inline_commit" style="width:440px;height:315px;overflow:auto;">
-					
-					<div class="commitments">
-						<h1 class="title">Class Commitments:</h1>
-						<p>Because our classes rely heavily on discussion and community, we ask participants to commit to the following before signing up. Space is limited, so please do not take a spot in a class if you cannot:</p>
-						<ul class="bullet">
-							<li>Attend the first class of the semester</li>
-							<li>Attend at least 80% of the class meetings. For most classes this will mean missing no more than one class.</li>
-							<li>Each class may have additional requirements to enable you to get the most out of the semester.</li>
-						</ul>
-						<p>If you have any questions about these requirements, please email us: <a href="mailto:gettrained@austinstone.org">gettrained@austinstone.org</a></p>
-					</div>
-			
-					
-				</div>
-			</div>
-			<!-- /FANCYBOX1-->        
-        
+        <!-- FANCYBOX1-->
+        <div style="display: none;">
+            <div id="inline_commit" style="width:440px;height:315px;overflow:auto;">
+
+                <div class="commitments">
+                    <h1 class="title">Class Commitments:</h1>
+                    <p>Because our classes rely heavily on discussion and community, we ask participants to commit to the following before signing up. Space is limited, so please do not take a spot in a class if you cannot:</p>
+                    <ul class="bullet">
+                        <li>Attend the first class of the semester</li>
+                        <li>Attend at least 80% of the class meetings. For most classes this will mean missing no more than one class.</li>
+                        <li>Each class may have additional requirements to enable you to get the most out of the semester.</li>
+                    </ul>
+                    <p>If you have any questions about these requirements, please email us: <a href="mailto:gettrained@austinstone.org">gettrained@austinstone.org</a></p>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- /FANCYBOX1-->        
+
         <div class="class_popout" id="classes_categories" href="#inline_category">
             <h4 class="yellow caps">Class Categories</h4>
         </div>        
-			<!-- FANCYBOX2-->
-			<div style="display: none;">
-				<div id="inline_category" style="width:645px;height:525px;overflow:auto;">
-					
-					<div class="class_categories">
-						<h1 class="title">Class Categories</h1>
-						<ul>
-							<li>
-								<img src="images/class_cat_bible.png" style="float:left;margin:0 10px 45px 0;" />
-								<h2 class="nomar blue">Bible</h2>
-								<p>Classes built around specific books, sections, or major themes of the Bible. In addition to developing a greater understanding of the material at hand, these classes provide throning in how to study the Bible.</p>
-							</li>
-							<div style="clear:both;"></div>
-							<li>
-								<img src="images/class_cat_xian_life.png" style="float:left;margin:0 10px 45px 0;" />
-								<h2 class="nomar blue">Christian Life &amp; Practice</h2>
-								<p>Classes focused on spiritual formation. Christian Life &amp; Practice classes focus on developing disciplines and community towards becoming better apprentices &ndash; foolwers, learners, doers &ndash; of Jesus.</p>
-							</li>
-							<div style="clear:both;"></div>
-							<li>
-								<img src="images/class_cat_connect.png" style="float:left;margin:0 10px 60px 0;" />
-								<h2 class="nomar blue">Get Connected</h2>
-								<p>Classes designed to help you get connected at The Austin Stone. Most of these classes include a small group component with group meetings outside of class to facilitate community and mission, with many groups continuing after the class semester.</p>
-							</li>
-							<div style="clear:both;"></div>
-							<li>
-								<img src="images/class_cat_theology.png" style="float:left;margin:0 10px 45px 0;" />
-								<h2 class="nomar blue">Theology</h2>
-								<p>Classes that walk through core Christian beliefs with an emphasis on how theology should inform our choices and pursuits in everyday life.</p>
-							</li>
-							<div style="clear:both;"></div>
-							<li>
-								<img src="images/class_cat_lifestage.png" style="float:left;margin:0 10px 45px 0;" />
-								<h2 class="nomar blue">Stage of Life</h2>
-								<p>Classes designed to help you engage with the specific opportunities and challenges of various stages of life while providing a community of peers to learn and grow alongside.</p>
-							</li>
-							<div style="clear:both;"></div>
-							<li>
-								<img src="images/class_cat_skills.png" style="float:left;margin:0 10px 60px 0;" />
-								<h2 class="nomar blue">Skills Training</h2>
-								<p>Classes that provide training in living on mission in specific environments or contexts.</p>
-							</li>
-						</ul>
-					</div>
-								
-				</div>
-			</div>
-			<!-- /FANCYBOX2-->          
+        <!-- FANCYBOX2-->
+        <div style="display: none;">
+            <div id="inline_category" style="width:645px;height:525px;overflow:auto;">
+
+                <div class="class_categories">
+                    <h1 class="title">Class Categories</h1>
+                    <ul>
+                        <li>
+                            <img src="images/class_cat_bible.png" style="float:left;margin:0 10px 45px 0;" />
+                            <h2 class="nomar blue">Bible</h2>
+                            <p>Classes built around specific books, sections, or major themes of the Bible. In addition to developing a greater understanding of the material at hand, these classes provide throning in how to study the Bible.</p>
+                        </li>
+                        <div style="clear:both;"></div>
+                        <li>
+                            <img src="images/class_cat_xian_life.png" style="float:left;margin:0 10px 45px 0;" />
+                            <h2 class="nomar blue">Christian Life &amp; Practice</h2>
+                            <p>Classes focused on spiritual formation. Christian Life &amp; Practice classes focus on developing disciplines and community towards becoming better apprentices &ndash; foolwers, learners, doers &ndash; of Jesus.</p>
+                        </li>
+                        <div style="clear:both;"></div>
+                        <li>
+                            <img src="images/class_cat_connect.png" style="float:left;margin:0 10px 60px 0;" />
+                            <h2 class="nomar blue">Get Connected</h2>
+                            <p>Classes designed to help you get connected at The Austin Stone. Most of these classes include a small group component with group meetings outside of class to facilitate community and mission, with many groups continuing after the class semester.</p>
+                        </li>
+                        <div style="clear:both;"></div>
+                        <li>
+                            <img src="images/class_cat_theology.png" style="float:left;margin:0 10px 45px 0;" />
+                            <h2 class="nomar blue">Theology</h2>
+                            <p>Classes that walk through core Christian beliefs with an emphasis on how theology should inform our choices and pursuits in everyday life.</p>
+                        </li>
+                        <div style="clear:both;"></div>
+                        <li>
+                            <img src="images/class_cat_lifestage.png" style="float:left;margin:0 10px 45px 0;" />
+                            <h2 class="nomar blue">Stage of Life</h2>
+                            <p>Classes designed to help you engage with the specific opportunities and challenges of various stages of life while providing a community of peers to learn and grow alongside.</p>
+                        </li>
+                        <div style="clear:both;"></div>
+                        <li>
+                            <img src="images/class_cat_skills.png" style="float:left;margin:0 10px 60px 0;" />
+                            <h2 class="nomar blue">Skills Training</h2>
+                            <p>Classes that provide training in living on mission in specific environments or contexts.</p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- /FANCYBOX2-->          
     </div>
 
     <h2 style="float:left;margin-right:15px;">Filter Schedule</h2>
@@ -187,9 +187,9 @@ defined('_JEXEC') or die('Restricted access');
             <a id="skills" class="filter"><li>Skills Training</li></a>
         </ul>
     </div>
-	
-	<div style="float:left;width:15px;height:auto;margin:15px 6px 0 6px;"><h3>or</h3></div>
-    
+
+    <div style="float:left;width:15px;height:auto;margin:15px 6px 0 6px;"><h3>or</h3></div>
+
     <div class="class_sort_location">
         <a id="location" class="class_sort_button"><h2 class="nomar">By Campus</h2></a>
         <ul id="location_filter" class="class_sort_options">
@@ -199,6 +199,14 @@ defined('_JEXEC') or die('Restricted access');
         </ul>
     </div>
 </div>
+
+<div class="bump"></div>
+<div class="onecol">
+    <blockquote>
+        Fall classes are now underway. Check back soon for Spring registration.
+    </blockquote>
+</div>
+<div class="clear:both;">&nbsp;</div>
 
 <?php
 
