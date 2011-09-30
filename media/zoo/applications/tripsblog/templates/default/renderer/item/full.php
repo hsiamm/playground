@@ -10,88 +10,103 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+$location = $this->renderPosition('locale');
+$categories = $this->renderPosition('categories');
+$classfix = '';
+if (strpos($location, 'North Africa'))
+    $classfix .= 'north-africa ';
+else if (strpos($location, 'North America'))
+    $classfix .= 'north-america ';
+else if (strpos($location, 'Dominican Republic'))
+    $classfix .= 'dominican ';
+else if (strpos($location, 'Haiti'))
+    $classfix .= 'haiti ';
+else if (strpos($location, 'Horn of Africa'))
+    $classfix .= 'horn-africa ';
+else if (strpos($location, 'Central Asia'))
+    $classfix .= 'asia ';
+else if (strpos($location, 'India'))
+    $classfix .= 'india ';
 
+if (strpos($categories, 'Construction'))
+    $classfix .= 'construction ';
+if (strpos($categories, 'Education'))
+    $classfix .= 'education ';
+if (strpos($categories, 'Evangelism'))
+    $classfix .= 'evangelism ';
+if (strpos($categories, 'Exposure'))
+    $classfix .= 'exposure ';
+if (strpos($categories, 'Medical'))
+    $classfix .= 'medical ';
+
+$classfix = trim($classfix);
 ?>
 
-<?php if ($this->checkPosition('top')) : ?>
-<div class="pos-top">
-	<?php echo $this->renderPosition('top', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
+<div class="trips_item <?php echo $classfix; ?>">
+    <div class="trips_general">
+        <div class="trips_details">
 
-<?php if (($view->params->get('template.item_media_alignment') == "above") && $this->checkPosition('media')) : ?>
-<div class="pos-media media-<?php echo $view->params->get('template.item_media_alignment'); ?>">
-	<?php echo $this->renderPosition('media', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
+            <?php if (strpos($categories, 'Construction')) { ?>
+                <div class="trips_types_construction"></div>
+            <?php } if (strpos($categories, 'Education')) { ?>
+                <div class="trips_types_education"></div>
+            <?php } if (strpos($categories, 'Evangelism')) { ?>
+                <div class="trips_types_evangelism"></div>
+            <?php } if (strpos($categories, 'Exposure')) { ?>
+                <div class="trips_types_exposure"></div>
+            <?php } if (strpos($categories, 'Medical')) { ?>
+                <div class="trips_types_medical"></div>
+            <?php } ?>
 
-<?php if ($this->checkPosition('title')) : ?>
-<h1 class="pos-title"><?php echo $this->renderPosition('title'); ?></h1>
-<?php endif; ?>
+            <h1 class="blue nomar"><?php echo $this->renderPosition('title'); ?></h1>
+            <?php if ($this->checkPosition('subtitle')) { ?>
+                <h2><?php echo $this->renderPosition('subtitle'); ?></h2>
+            <?php } ?>
 
-<?php if ($this->checkPosition('meta')) : ?>
-<p class="pos-meta">
-	<?php echo $this->renderPosition('meta'); ?>
-</p>
-<?php endif; ?>
+            <?php if ($this->checkPosition('start_date')) { ?>
+                <h3 class="grey"><?php echo $this->renderPosition('start_date'); ?>&ndash;<?php echo $this->renderPosition('end_date'); ?></h3>
+            <? } else { ?>
+                <h3 class="grey"><?php echo $this->renderPosition('relative_dates'); ?></h3>
+            <?php } ?>
 
-<?php if ($this->checkPosition('subtitle')) : ?>
-<h2 class="pos-subtitle">
-	<?php echo $this->renderPosition('subtitle'); ?>
-</h2>
-<?php endif; ?>
 
-<?php if (($view->params->get('template.item_media_alignment') == "top") && $this->checkPosition('media')) : ?>
-<div class="pos-media media-<?php echo $view->params->get('template.item_media_alignment'); ?>">
-	<?php echo $this->renderPosition('media', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
+            <p class="sans"><?php echo $this->renderPosition('description'); ?></p>
+            <?php if (strpos($this->renderPosition('note'), 'Yes')) { ?>
+                <p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
+            <?php } ?>
+            <div style="clear:both;"></div>
+        </div>
 
-<div class="floatbox">
 
-	<?php if ((($view->params->get('template.item_media_alignment') == "left") || ($view->params->get('template.item_media_alignment') == "right")) && $this->checkPosition('media')) : ?>
-	<div class="pos-media media-<?php echo $view->params->get('template.item_media_alignment'); ?>">
-		<?php echo $this->renderPosition('media', array('style' => 'block')); ?>
-	</div>
-	<?php endif; ?>
+        <div style="clear:both;height:15px;"></div>
 
-	<?php if ($this->checkPosition('content')) : ?>
-	<div class="pos-content">
-		<?php echo $this->renderPosition('content', array('style' => 'block')); ?>
-	</div>
-	<?php endif; ?>
+        <div class="rule_trips-l">&nbsp;</div>
+        <div class="trips_price"><h2 class="blue nocap">Trip Cost: <?php echo $this->renderPosition('trip_cost'); ?></h2></div>
+        <div class="rule_trips-r">&nbsp;</div>
 
-</div>
+        <div class="bump">&nbsp;</div>
 
-<?php if (($view->params->get('template.item_media_alignment') == "bottom") && $this->checkPosition('media')) : ?>
-<div class="pos-media media-<?php echo $view->params->get('template.item_media_alignment'); ?>">
-	<?php echo $this->renderPosition('media', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
+        <?php if (strpos($this->renderPosition('status'), 'Open')) { ?>
+            <div class="trips_funds_pop">
+                <h4 class="yellow caps">When Are Funds Due?</h4>
+            </div>
+            <div class="trips_apply">
+                <a href="<?php echo trim($this->renderPosition('link')); ?>"><h4 class="black caps">Start Application</h4></a>
+            </div>
+        <?php } else if (strpos($this->renderPosition('status'), 'Closed')) { ?>
+            <div class="trips_funds_pop">
+                <h4 class="yellow caps">When Are Funds Due?</h4>
+            </div>
+            <div class="trips_capacity">
 
-<?php if ($this->checkPosition('taxonomy')) : ?>
-<ul class="pos-taxonomy">
-	<?php echo $this->renderPosition('taxonomy', array('style' => 'list')); ?>
-</ul>
-<?php endif; ?>
+                <h4 class="black caps">Trip At Capacity</h4>
+            </div>
+        <?php } else if (strpos($this->renderPosition('status'), 'Not Finalized')) { ?>
+            <div class="trips_nodate">
+                <p class="sans"><em>Trip dates are not yet finalized and will be updated as soon as possible. We will open the trip for registration when dates are confirmed.</em></p>
+            </div>
+        <?php } ?>
 
-<?php if ($this->checkPosition('bottom')) : ?>
-<div class="pos-bottom">
-	<?php echo $this->renderPosition('bottom', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('related')) : ?>
-<div class="pos-related">
-	<h3><?php echo JText::_('Related Articles'); ?></h3>
-	<ul>
-		<?php echo $this->renderPosition('related'); ?>
-	</ul>
-</div>
-<?php endif; ?>
-
-<?php if ($this->checkPosition('author')) : ?>
-<div class="pos-author">
-	<?php echo $this->renderPosition('author', array('style' => 'block')); ?>
-</div>
-<?php endif; ?>
+        <div style="clear:both;"></div>
+    </div><!--/trips_general -->			
+</div><!--/trips_item -->

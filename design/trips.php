@@ -33,10 +33,10 @@
 		
 		<div class="trips_sort">
 			<div class="trips_popout_wrapper">
-				<div class="trips-commitments_pop">
+				<div class="trips_commitments_pop">
 					<h4 class="yellow caps">Trip Commitments</h4>
 				</div>
-				<div class="trips-types_pop">
+				<div class="trips_types_pop">
 					<h4 class="yellow caps">Trip Types</h4>
 				</div>
 			</div>
@@ -56,75 +56,100 @@
 			
 		</div>
 		
-		<div class="class">
-			<div class="class_general">
-				<h1 class="title">institutionalized individual</h1>
-				
-				<div style="clear:both;"></div>
-				
-				<div class="class_signup">
-					<p class="caption caps">Sign Up Now</p>
+		<div class="trips_item">
+			<div class="trips_general">
+				<div class="trips_details">	
+					<div class="trips_types_construction"></div>
+					<div class="trips_types_medical"></div>
+					<div class="trips_types_exposure"></div>
+					
+					<h1 class="blue nomar">Haiti</h1>
+					<h2>Church Wide &ndash; Heartline</h2>
+					<h3 class="grey">October 01&ndash;October 07</h3>
+					<p class="sans">Teams will work with Heartline Ministries to assist with local relief and development projects. These projects might include rebuilding houses, installing outhouses and working with orphans. The teams will also visit various ministries in the area and possibly assist in other relief projects associated with the recent earthquake. To learn more about this ministry, check out <a href="http://heartlineministries.org/">Heartline Ministries</a>.</p>
+					<p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
+					<div style="clear:both;"></div>
 				</div>
 				
-				<div style="clear:both;"></div>
-								
-				<div class="class_cat_bible"></div>
-				<div class="class_cat_xian_life"></div>
+				<div style="clear:both;height:15px;"></div>
 				
-				<div class="class_info">
-					<h3>Downtown Campus<br>
-					SU 5:00–6:45pm</h3>
-					<h3>6 Week / Fee: $30<br>
-					Sep 25–oct 30</h3>
-					<h3>Anna Melvin<br>
-					Marcus Hsia<br>
-					Brendan Pittman</h3>
+				<div class="rule_trips-l">&nbsp;</div>
+				<div class="trips_price"><h2 class="blue nocap">Trip Cost: $1400</h2></div>
+				<div class="rule_trips-r">&nbsp;</div>
+				
+				<div class="bump">&nbsp;</div>	
+				<div class="trips_funds_pop">
+					<h4 class="yellow caps">When Are Funds Due?</h4>
 				</div>
-				<div style="clear:both;margin-top:10px;"></div>
-			</div><!-- end class_general -->
-				
-			<p class="class_details_button">More Details</p>
-			
-		</div><!-- END CLASS -->
+				<div class="trips_apply">
+					<a href="https://theaustinstone.wufoo.com/forms/short-term-trip-application/"><h4 class="black caps">Start Application</h4></a>
+				</div>
+
+				<div style="clear:both;"></div>
+			</div><!--/trips_general -->			
+		</div><!--/trips_item -->
 		
-		<div class="class">
-			<div class="class_general">
-				<h1 class="title">institutionalized individual</h1>
-				
-				<div style="clear:both;"></div>
-				
-				<div class="class_signup">
-					<p class="caption caps">Sign Up Now</p>
+		<div class="trips_item">
+			<div class="trips_general">
+				<div class="trips_details">	
+					<div class="trips_types_construction"></div>
+					<div class="trips_types_medical"></div>
+					<div class="trips_types_exposure"></div>
+					
+					<h1 class="blue nomar">Haiti</h1>
+					<h2>Church Wide &ndash; Heartline</h2>
+					<h3 class="grey">October 01&ndash;October 07</h3>
+					<p class="sans">Teams will work with Children’s HopeChest to serve local kids in the Good Samaritan School in New Delhi. Children’s HopeChest connects Christian communities with impoverished communities of orphans overseas. This opportunity seeks to make a long-term, transformational impact on this community of orphans and vulnerable children in India. Teams will build relationships and work to empower orphans to survive, thrive, and succeed within their home culture. More information about Children’s HopeChest can be found at their website.
+					Videos about the Good Samaritan School and their vision can be found online at India Experience and Anathi’s Story.</p>
+					<p class="sans">This trip also includes a day trip to Agra to visit the Taj Mahal.</p>
+					<p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
+					<div style="clear:both;"></div>
 				</div>
 				
-				<div style="clear:both;"></div>
-								
-				<div class="class_cat_bible"></div>
-				<div class="class_cat_xian_life"></div>
+				<div style="clear:both;height:15px;"></div>
 				
-				<div class="class_info">
-					<h3>Downtown Campus<br>
-					SU 5:00–6:45pm</h3>
-					<h3>6 Week / Fee: $30<br>
-					Sep 25–oct 30</h3>
-					<h3>Anna Melvin<br>
-					Marcus Hsia<br>
-					Brendan Pittman</h3>
+				<div class="rule_trips-l">&nbsp;</div>
+				<div class="trips_price"><h2 class="blue nocap">Trip Cost: $1400</h2></div>
+				<div class="rule_trips-r">&nbsp;</div>
+				
+				<div class="bump">&nbsp;</div>	
+				<div class="trips_funds_pop">
+					<h4 class="yellow caps">When Are Funds Due?</h4>
 				</div>
-				<div style="clear:both;margin-top:10px;"></div>
-			</div><!-- end class_general -->
+				<div class="trips_capacity">
+					<h4 class="black caps">Trip At Capacity</h4>
+				</div>
+                   
+				<div style="clear:both;"></div>
+			</div><!--/trips_general -->			
+		</div><!--/trips_item -->		
+
+		<div class="trips_item">
+			<div class="trips_general">
+				<div class="trips_details">	
+					<div class="trips_types_construction"></div>
+					<div class="trips_types_medical"></div>
+					<div class="trips_types_exposure"></div>
+					
+					<h1 class="blue nomar">Haiti</h1>
+					<h2>Church Wide &ndash; Heartline</h2>
+					<h3 class="grey">October 01&ndash;October 07</h3>
+					<p class="sans">Teams will work with Heartline Ministries to assist with local relief and development projects. These projects might include rebuilding houses, installing outhouses and working with orphans. The teams will also visit various ministries in the area and possibly assist in other relief projects associated with the recent earthquake. To learn more about this ministry, check out <a href="http://heartlineministries.org/">Heartline Ministries</a>.</p>
+					<p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
+					<div style="clear:both;"></div>
+				</div>				
+				<div style="clear:both;height:15px;"></div>
 				
-			<p class="class_details_button">Less Details</p>
-			
-			<div class="class_details">			
-				<div class="rule_class"></div>
+				<div class="rule_trips-l">&nbsp;</div>
+				<div class="trips_price"><h2 class="blue nocap">Trip Cost: $1400</h2></div>
+				<div class="rule_trips-r">&nbsp;</div>
 				
-				<p>Bridges helps Christians connect with Muslims. Whether you encounter Muslims in the grocery aisle or are preparing for full-time service overseas, Bridges will expand your knowledge of Islam and equip you to bridge the gospel to the Muslim heart and mind. You will be equipped through Biblical teaching about Islam and what Muslims believe, opening the door for better understanding between belief systems. Class fee includes additional materials.</p>
-				
-				<h5 class="nomar">1&ndash;2 Hours of Homework per Week</h5>
-			</div>
-			
-		</div><!-- END CLASS -->
+				<div class="bump">&nbsp;</div>	
+				<div class="trips_nodate"><p class="sans"><em>Trip dates are not yet finalized and will be updated as soon as possible. We will open the trip for registration when dates are confirmed.</em></p></div>
+                   
+				<div style="clear:both;"></div>
+			</div><!--/trips_general -->			
+		</div><!--/trips_item -->
 
 			
 	</div><!--/container-->

@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Trip">
   <params>
-    <param type="select" identifier="929f1cb5-5997-49a7-9340-1ecc4a799491" name="Trip Locale" description="" access="1" default="" multiple="0">
-      <option name="Central Asia" value="central-asia"/>
-      <option name="Dominican Republic" value="dominican-republic"/>
-      <option name="Haiti" value="haiti"/>
-      <option name="Horn of Africa" value="horn-of-africa"/>
+    <param type="select" identifier="9f49e714-b1e0-4d29-89f6-c075a19fea03" name="Trip Locale" description="" access="1" default="" multiple="0">
       <option name="India" value="india"/>
       <option name="North Africa" value="north-africa"/>
+      <option name="Dominican Republic" value="dominican-republic"/>
+      <option name="Central Asia" value="central-asia"/>
       <option name="North America" value="north-america"/>
+      <option name="Horn of Africa" value="horn-of-africa"/>
+      <option name="Haiti" value="haiti"/>
     </param>
-    <param type="select" identifier="07d360ba-b77d-4873-9d69-1e72c25597b7" name="Current Calendar" description="" access="1" default="" multiple="0">
-      <option name="Care &amp; Counseling" value="care-counseling"/>
-      <option name="Church Wide" value="church-wide"/>
-      <option name="Missional Community" value="missional-community"/>
-      <option name="Get Trained" value="get-trained"/>
-      <option name="Make Disciples" value="make-disciples"/>
-      <option name="College" value="college"/>
-      <option name="Teen Rock" value="teen-rock"/>
-      <option name="KidStuff" value="kidstuff"/>
+    <param type="radio" identifier="715fd13d-35a6-4dea-8c1a-41ed9affe08b" name="Status" description="" access="1" default="">
+      <option name="Open" value="open"/>
+      <option name="Closed" value="closed"/>
+      <option name="Not Finalized" value="not-finalized"/>
+    </param>
+    <param type="radio" identifier="47b4acc2-514e-4550-ad80-38b413e8960c" name="No Refund Note?" description="" access="1" default="">
+      <option name="Yes" value="yes"/>
+      <option name="No" value="no"/>
     </param>
     <param type="date" identifier="b765ce3e-db99-43f5-96b8-b79b87b39632" name="Start Date" description="" access="1" repeatable="0"/>
     <param type="date" identifier="cca05cd7-413b-4030-910b-a212f0043de5" name="End Date" description="" access="1" repeatable="0"/>

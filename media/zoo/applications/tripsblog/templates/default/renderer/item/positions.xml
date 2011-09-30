@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <renderer>
-	<positions layout="full">
-		<position name="title">Title</position>
-		<position name="subtitle">Subtitle</position>
-		<position name="restrictions">Restrictions</position>
-		<position name="location">Location</position>
-		<position name="trip_cost">Trip Cost</position>
-		<position name="link">Link To App</position>
-                <position name="relative_dates">Relative Dates</position>
-		<position name="Prayer Points">Prayer Points</position>
-	</positions>
-	<positions layout="teaser">
-		<position name="title">Title</position>
-		<position name="subtitle">Subtitle</position>
-		<position name="restrictions">Restrictions</position>
-		<position name="location">Location</position>
-		<position name="trip_cost">Trip Cost</position>
-		<position name="link">Link To App</position>
-                <position name="relative_dates">Relative Dates</position>
-		<position name="Prayer Points">Prayer Points</position>
-	</positions>
-	<positions layout="feed">
-		<position name="description">Description</position>
-	</positions>
+    <positions layout="full">
+        <position name="title">Title</position>
+        <position name="subtitle">Subtitle</position>
+        <position name="locale">Trip Locale</position>
+        <position name="status">Status</position>
+        <position name="categories">Categories</position>
+        <position name="start_date">Start Date</position>
+        <position name="end_date">End Date</position>
+        <position name="location">Location</position>
+        <position name="description">Description</position>
+        <position name="trip_cost">Trip Cost</position>
+        <position name="link">Link To App</position>
+        <position name="relative_dates">Relative Dates</position>
+        <position name="timeline_dates">Timeline Dates</position>
+        <position name="timeline_cost">Timeline Costs</position>
+        <position name="Prayer Points">Prayer Points</position>
+        <position name="note">Note</position>
+    </positions>
+    <positions layout="teaser">
+        <position name="title">Title</position>
+        <position name="subtitle">Subtitle</position>
+        <position name="locale">Trip Locale</position>
+        <position name="status">Status</position>
+        <position name="categories">Categories</position>
+        <position name="start_date">Start Date</position>
+        <position name="end_date">End Date</position>
+        <position name="location">Location</position>
+        <position name="description">Description</position>
+        <position name="trip_cost">Trip Cost</position>
+        <position name="link">Link To App</position>
+        <position name="relative_dates">Relative Dates</position>
+        <position name="timeline_dates">Timeline Dates</position>
+        <position name="timeline_cost">Timeline Costs</position>
+        <position name="Prayer Points">Prayer Points</position>
+        <position name="note">Note</position>
+    </positions>
 </renderer>

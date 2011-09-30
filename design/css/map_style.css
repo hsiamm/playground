@@ -43,14 +43,14 @@
 	height:auto;
 }
 
-.class_categories, .trips_categories {
+.class_categories, .trips_types {
 	padding:20px;
 	background-color: #fff;
 	width:600px;
 	height:auto;
 }
 
-.class_categories ul li p, .trips_categories ul li p {
+.class_categories ul li p, .trips_types ul li p {
 	font-size:11px;
 	margin-bottom: 0;
 }

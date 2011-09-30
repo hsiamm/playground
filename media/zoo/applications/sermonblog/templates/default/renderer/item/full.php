@@ -26,11 +26,9 @@ defined('_JEXEC') or die('Restricted access');
             var id = $(this).attr('id');
             var item = document.getElementById(id);
             $(".sermon_sort_options").slideUp("slow");
-            console.log($(item).css('display'));
+
             if ($(item).css('display') == 'inline')
                 $("#" + id + "_sort").slideDown("slow");
-            console.log($(item).css('display'));
-            return false;
         });
     });
     

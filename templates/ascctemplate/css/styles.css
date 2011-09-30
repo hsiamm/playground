@@ -795,6 +795,15 @@ ul.dropdown ul {
     margin: 0 10px;
 }
 
+.twocol_trips {
+    width: 420px;
+    height: auto;
+    float: left;
+    margin: 0;
+    background:#77787B;
+    padding: 20px; 	
+}
+
 .threecol {
     width: 300px;
     height: auto;
@@ -896,11 +905,11 @@ ul.dropdown ul {
 }
 
 .alert {
-	width:250px;
-	background:#000;
-	height: 45px;
-	padding:0 10px;
-	margin: 10px 10px 0 10px;
+    width:250px;
+    background:#000;
+    height: 45px;
+    padding:0 10px;
+    margin: 10px 10px 0 10px;
 }
 
 
@@ -1548,6 +1557,15 @@ h2.sermon_title {
     margin-left: 10px;
     height: 25px;
     width: 30px;
+}
+
+#custom-facebook-button {
+    float: left;
+    margin-left: 10px;
+}
+
+#custom-facebook-button a {
+    cursor: pointer;
 }
 
 #custom-tweet-button {
@@ -2267,3 +2285,299 @@ a.new_here_top {
     padding:0 10px;
 }
 
+/*!~~~~~~~~~~~Trips~~~~~~~~~~~~~*/
+
+.trips_sort {
+    width: 940px;
+    height: auto;
+    float: left;
+    margin: 10px;
+    padding: 0;
+    top: 0;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;	
+    position: relative;
+}
+
+.trips_sort h2 {
+    margin-top:11px;
+    margin-bottom:0;
+}
+
+.trips_popout_wrapper {
+    float:left;
+    border-right: 1px solid #fff;
+    padding:10px 0;
+    width:240px;
+    height:25px;
+    margin:0 25px 0 0;
+}
+
+.trips_types_pop {
+    float:left;
+    height:25px;
+    width:80px;
+    background-color: #77787B;
+    color:#ffdd00;
+    margin-right: 10px;
+}
+
+.trips_commitments_pop {
+    float:left;
+    height:25px;
+    width:120px;
+    background-color: #77787B;
+    margin-right: 10px;
+}
+
+.trips_funds_pop {
+    float:left;
+    height:30px;
+    width:140px;
+    background-color: #77787B;
+    margin: 0 0 0 60px;
+}
+
+.trips_capacity {
+    float:left;
+    height:30px;
+    width:140px;
+    background-color: #77787B;
+    margin: 0 0 0 20px;
+}
+
+.trips_apply {
+    float:left;
+    height:30px;
+    width:140px;
+    background-color: #ffdd00;
+    margin: 0 0 0 20px;
+}
+.trips_nodate {
+    float:left;
+    height:40px;
+    padding: 10px;
+    width:400px;
+    background-color: #F2F2F2;
+}
+
+.trips_commitments_pop h4, .trips_types_pop h4 {
+    text-align: center;
+    line-height: 25px;
+}
+
+.trips_funds_pop h4, .trips_apply h4, .trips_capacity h4 {
+    text-align: center;
+    line-height: 32px;
+}
+
+.trips_item {
+    width: 460px;
+    height: auto;
+    float: left;
+    margin: 10px;
+}
+
+.trips_general {
+    width:420px;
+    height:auto;
+    background-color:#fff;
+    padding:20px;
+}
+
+.trips_details {
+    height: 380px;
+    width: auto;
+    float: left;
+}
+
+.trips_item h1 {	
+    font-size: 22px;
+}
+
+.trips_item h2 {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.trips_item h3 {
+    font-size: 11px;
+}
+
+.trips_price {
+    text-align: center;
+    width: 120px;
+    height: 16px;
+    margin: 0 auto;
+}
+
+.trips_info {
+    float:right;
+    margin-top: -40px;
+}
+
+.trips_signup {
+    float:left;
+    background:#ffdd00;
+    text-align: center;
+    width:80px;
+    height:22px;
+    margin-bottom: 10px;
+}
+
+.trips_signup p.caption {
+    line-height: 23px;
+}
+
+.rule_trips-l {
+    width: 150px;
+    float: left;
+    height: 1px;
+    border-top: 4px double #ccc;
+    margin:5px 0 1px 0;
+}
+
+.rule_trips-r {
+    width: 150px;
+    float: right;
+    height: 1px;
+    border-top: 4px double #ccc;
+    margin:-11px 0 1px 0;
+}
+
+.trips_details_button {
+    font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+    font-size: 12px;
+    line-height: 0px;
+    width:260px;
+    height:25px;
+    padding:0 20px;
+    background-color: #fff;
+    margin:0;
+    font-weight: 400;
+    text-align: right;
+    color:#365871;
+    text-transform: uppercase;
+}
+
+
+
+/* TRIPS TYPES ICONS
+------------------------------ */
+
+.trips_types_construction {
+    float: right;
+    background-image: url('/images/trips_types_construction.png');
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 28px;
+    text-indent: -9999px;
+    margin-left: 5px;
+}
+
+.trips_types_education {
+    float: right;
+    background-image: url('/images/trips_types_education.png');
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 28px;
+    text-indent: -9999px;
+    margin-left: 5px;	
+}
+
+.trips_types_evangelism {
+    float: right;
+    background-image: url('/images/trips_types_evangelism.png');
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 28px;
+    text-indent: -9999px;
+    margin-left: 5px;	
+}
+
+.trips_types_exposure {
+    float: right;
+    background-image: url('/images/trips_types_exposure.png');
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 28px;
+    text-indent: -9999px;
+    margin-left: 5px;	
+}
+
+.trips_types_medical {
+    float: right;
+    background-image: url('/images/trips_types_medical.png');
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 28px;
+    text-indent: -9999px;
+    margin-left: 5px;	
+}
+
+
+/* Trips dropdown sort
+------------------------*/
+
+a.trips_sort_button {
+    float:left;
+    width: 165px;
+    height:25px;
+    padding:0 0 0 10px;
+    margin:10px 10px 0 10px;
+    background-color: #fff;
+    background-image: url('/images/arrow_black.png');
+    background-position: 150px 6px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.trips_sort_button h2 {
+    line-height: 4px;
+    font-size:14px;
+}
+
+ul.trips_sort_options {
+    display: none;
+    border-top:1px solid #365871;
+    padding:5px 0 0 0;
+    background-color:#77787B;
+    float: left;
+    font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+    font-size: 12px;
+    margin: 0 10px -175px;	
+    color: #000;
+    font-weight: 400;
+    width:175px;
+    cursor: pointer;
+    z-index: 900;
+}
+
+ul.trips_sort_options li {
+    background-color: #77787B;
+    line-height: 22px;
+    height:22px;
+    padding: 0 10px;
+}
+
+.trips_sort_options a {
+    color:#fff;
+    border: none;
+    background: none repeat scroll 0 0 transparent;
+}
+
+.trips_sort_options a:hover {
+    color:#ffdd00;
+    border: none;
+    background: none;
+}
+
+.trips_sort_type {
+    float: left;
+    width: 195px;
+}
+
+.trips_sort_location {
+    float: left;
+    width: 195px;
+}

@@ -1094,7 +1094,7 @@ tr.alt_day {
 	margin:0 25px 0 0;
 }
 
-.trips-types_pop {
+.trips_types_pop {
 	float:left;
 	height:25px;
 	width:80px;
@@ -1103,52 +1103,101 @@ tr.alt_day {
 	margin-right: 10px;
 }
 
-.trips-commitments_pop {
+.trips_commitments_pop {
 	float:left;
 	height:25px;
 	width:120px;
 	background-color: #77787B;
-	color:#ffdd00;
 	margin-right: 10px;
 }
 
-.trips-commitments_pop h4, .trips-types_pop h4  {
+.trips_funds_pop {
+	float:left;
+	height:30px;
+	width:140px;
+	background-color: #77787B;
+	margin: 0 0 0 60px;
+}
+
+.trips_capacity {
+	float:left;
+	height:30px;
+	width:140px;
+	background-color: #77787B;
+	margin: 0 0 0 20px;
+}
+
+.trips_apply {
+	float:left;
+	height:30px;
+	width:140px;
+	background-color: #ffdd00;
+	margin: 0 0 0 20px;
+}
+.trips_nodate {
+	float:left;
+	height:40px;
+	padding: 10px;
+	width:400px;
+	background-color: #F2F2F2;
+}
+
+.trips_commitments_pop h4, .trips_types_pop h4 {
 	text-align: center;
 	line-height: 25px;
 }
 
-.class {
-	width: 300px;
+.trips_funds_pop h4, .trips_apply h4, .trips_capacity h4 {
+	text-align: center;
+	line-height: 32px;
+}
+
+.trips_item {
+	width: 460px;
 	height: auto;
 	float: left;
 	margin: 10px;
 }
 
-.class_general {
-	width:260px;
-	height:215px;
+.trips_general {
+	width:420px;
+	height:auto;
 	background-color:#fff;
 	padding:20px;
 }
 
-.class h1 {
-	float:left;
-	color:#000;
+.trips_details {
+	height: 345px;
+	width: auto;
+	float: left;
+}
+
+.trips_item h1 {	
 	font-size: 22px;
 }
 
-.class_info {
+.trips_item h2 {
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.trips_item h3 {
+	font-size: 11px;
+}
+
+.trips_price {
+	text-align: center;
+	width: 120px;
+	height: 16px;
+	margin: 0 auto;
+}
+
+.trips_info {
 	float:right;
 	margin-top: -40px;
 }
 
-.class h3 {
-	text-align: right;
-	margin: 10px 0;
-	color:#000;
-}
-
-.class_signup {
+.trips_signup {
 	float:left;
 	background:#ffdd00;
 	text-align: center;
@@ -1157,19 +1206,27 @@ tr.alt_day {
 	margin-bottom: 10px;
 }
 
-.class_signup p.caption {
+.trips_signup p.caption {
 	line-height: 23px;
 }
 
-.rule_class {
-	width: 100%;
+.rule_trips-l {
+	width: 150px;
 	float: left;
 	height: 1px;
-	border-bottom: 1px solid #000;
-	margin:0 0 10px 0;
+	border-top: 4px double #ccc;
+	margin:5px 0 1px 0;
 }
 
-.class_details_button {
+.rule_trips-r {
+	width: 150px;
+	float: right;
+	height: 1px;
+	border-top: 4px double #ccc;
+	margin:-11px 0 1px 0;
+}
+
+.trips_details_button {
 	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
 	font-size: 12px;
 	line-height: 0px;
@@ -1184,13 +1241,115 @@ tr.alt_day {
 	text-transform: uppercase;
 }
 
-.class_details {
-	width: 260px;
-	height:255px;
-	padding:0 20px 0 20px;
-	background-color: #fff;
+
+
+/* TRIPS TYPES ICONS
+------------------------------ */
+
+.trips_types_construction {
+	float: right;
+	background-image: url('../images/trips_types_construction.png');
+	background-repeat: no-repeat;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	margin-left: 5px;
 }
 
+.trips_types_education {
+	float: right;
+	background-image: url('../images/trips_types_education.png');
+	background-repeat: no-repeat;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	margin-left: 5px;	
+}
+
+.trips_types_evangelism {
+	float: right;
+	background-image: url('../images/trips_types_evangelism.png');
+	background-repeat: no-repeat;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	margin-left: 5px;	
+}
+
+.trips_types_exposure {
+	float: right;
+	background-image: url('../images/trips_types_exposure.png');
+	background-repeat: no-repeat;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	margin-left: 5px;	
+}
+
+.trips_types_medical {
+	float: right;
+	background-image: url('../images/trips_types_medical.png');
+	background-repeat: no-repeat;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	margin-left: 5px;	
+}
+
+
+
+
+/* Trips dropdown sort
+------------------------*/
+
+a.trips_sort_button {
+	float:left;
+	width: 165px;
+	height:25px;
+	padding:0 0 0 10px;
+	margin:10px 10px 0 10px;
+	background-color: #fff;
+	background-image: url('../images/arrow_black.png');
+	background-position: 150px 6px;
+	background-repeat: no-repeat;
+}
+
+.trips_sort_button h2 {
+	line-height: 4px;
+	font-size:14px;
+}
+
+ul.trips_sort_options {
+	border-top:1px solid #365871;
+	padding:5px 0 0 0;
+	background-color:#fff;
+	float: left;
+	font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+	font-size: 12px;
+	margin: 0 10px;	
+	color: #000;
+	font-weight: 400;
+	width:175px;
+}
+
+ul.trips_sort_options li {
+	background-color: #fff;
+	line-height: 22px;
+	height:22px;
+	padding: 0 10px;
+}
+
+.trips_sort_options a {
+	color:#77787B;
+	border: none;
+	background: none;
+}
+
+.trips_sort_options a:hover {
+	color:#000;
+	border: none;
+	background: none;
+}
 
 
 
