@@ -1,0 +1,406 @@
+@charset "utf-8";
+
+/* 
+html5doctor.com Reset Stylesheet
+v1.4.1 
+2010-03-01
+Author: Richard Clark - http://richclarkdesign.com
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary { 
+    display:block;
+}
+
+ul, dl {
+    list-style:none;
+    width:100%;
+}
+
+a {
+    text-decoration:none;
+    background: none;
+}
+
+html,body {margin:0;padding:0;} 
+
+/* end reset */
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+/*
+Theme Name: The Austin Stone - For The City Book
+Designer: The Austin Stone Community Church
+Developers: The Austin Stone Community Church
+
+
+Colors:
+
+beige:		#EEEDE8
+gold:		#EAC754
+orange:		#CF9046
+grey:		#434343
+
+*/
+
+
+
+
+/*~~~~~~~~~~~ Generic Styles ~~~~~~~~~~~~~~*/
+
+body	{
+    background: #EEEDE8;
+}
+
+p	{
+    font-family: Helvetica, Arial, Verdana, Sans-Serif;
+    font-size: 14px;
+    color: #424242;
+    line-height: 23px;
+    margin: 0;
+}
+
+p a {
+    color: #424242;
+    border-bottom: 2px solid #eac754;
+}
+
+p a:hover {
+    color: #424242;
+    background-color: #eac754;
+}
+
+a {
+    color: #424242;
+}
+
+a:hover {
+    color: #424242;
+}
+
+h1 {
+    color: #CF9046;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size:22px; 
+    font-weight: normal;
+}
+
+h2 {
+    color: #CF9046;
+    text-transform: uppercase;
+    font-size:16px;
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+
+::selection {
+    background:#EAC754;
+    color: #434343;
+}
+::-moz-selection {
+    background:#EAC754;
+    color:#434343;
+}
+::-webkit-selection {
+    background:#EAC754;
+    color:#434343;
+}
+
+
+
+/*~~~~~~~~~~~ Main ~~~~~~~~~~~~~~*/
+
+#top {
+    width: 100%;
+    height: 18px;
+    margin-top: -2px;
+    background-image: url('bg.png');
+    text-indent: -9999px;
+    position: fixed;
+    top: 0;
+}
+
+.container {
+    height: auto;
+    width: 960px;
+    margin: 133px auto 150px auto;
+    /*border: 1px solid blue;*/
+}
+
+
+
+
+/*~~~~~~~~~~~ Shop Icons ~~~~~~~~~~~~~~*/
+
+#shop_kindle {
+    position: fixed;
+    right: 5%;
+    top: 35px;
+    width: 130px;
+    height: 81px;
+}
+
+#shop_kindle a {
+    width: 162px;
+    height: 81px;
+    background-image: url('shop_kindle.png');
+    background-position: 0 0;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+#shop_kindle a:hover {
+    background-position: -162px 0;
+}
+
+#shop_amazon {
+    position: fixed;
+    right: 5%;
+    top: 116px;
+    width: 130px;
+    height: 81px;
+}
+
+#shop_amazon a {
+    width: 162px;
+    height: 82px;
+    background-image: url('shop_book.png');
+    background-position: 0 0;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+#shop_amazon a:hover {
+    background-position: -162px 0;
+}
+
+/*~~~~~~~~~~~ Content ~~~~~~~~~~~~~~*/
+
+.logo {
+    float: left;
+    width: 464px;
+    height: 94px;
+    text-indent: -9999px;
+    background-image: url('ftc_head.png');
+}
+
+.intro {
+    float: left;
+    width: 464px;
+    height: auto;
+    margin: 40px 0 40px 0;
+
+}
+
+.video {
+    float: left;
+    width: 465px;
+}
+
+.book {
+    float: left;
+    width: 339px;
+    height: 433px;
+    background-image: url('ftc_book.png');
+    text-indent: -9999px;
+    margin: 160px 0 0 147px;
+    clear: right;
+}
+
+.col2 {
+    float: left;
+    width: 466px;
+}
+
+.col_intensives {
+    float: left;
+    width: 720px;
+}
+
+.mid {
+    float: left;
+    width: 959px;
+    margin-top: 75px;
+}
+
+.col4_a{
+    float: left;
+    width: 218px;
+    height: auto;
+    margin-right: 30px;
+}
+
+.col4_b{
+    float: left;
+    width: 218px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.col4_a p{
+    font-size: 12px;
+}
+
+.col4_c{
+    float: left;
+    width: 216px;
+    height: auto;
+    margin-right: 30px;
+}
+
+.col4_d {
+    float: right;
+    width: 216px;
+    height: auto;
+}
+
+
+.col4_kindle {
+    float: left;
+    width: 117px;
+    height: 175px;
+    margin-left: 76px;
+}
+
+.col4_kindle a {
+    width: 117px;
+    height: 174px;
+    background-image: url('kindle_icon.png');
+    background-position: 0 0;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.col4_kindle a:hover {
+    background-position: -117px 0;
+}
+
+
+.col4_book {
+    float: left;
+    width: 120px;
+    height: 184px;
+    margin-left: 105px;
+}
+
+.col4_book a {
+    width: 110px;
+    height: 184px;
+    background-image: url('book_icon.png');
+    background-position: 0 0;
+    display: block;
+    background-repeat: no-repeat;
+}
+
+.col4_book a:hover {
+    background-position: 0 -184px;
+}
+
+.quote_a {
+    float: left;
+    width: 454px;
+    margin: 15px 30px 0 0;
+    font-family: Georgia, Times, sans-serif;
+}
+
+.quote_a p {
+    font-family: Georgia, Times, sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    font-style: italic;
+}
+
+.quote_b {
+    float: left;
+    width: 454px;
+    margin: 15px 0 50px 0;
+    font-family: Georgia, Times, sans-serif;
+}
+
+.quote_b p {
+    font-family: Georgia, Times, sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    font-style: italic;
+}
+.quote_center {
+    width: 454px;
+    margin: 0 auto;
+}
+
+.quote_center p {
+    font-family: Georgia, Times, sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    font-style: italic;
+}
+
+.quote_name {
+    color:#CF9046; 
+    text-transform:uppercase;
+    font-style:normal;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.footer {
+    float: left;
+    width: 960px;
+    height: 200px;
+    margin-bottom: 150px;
+}
+
+
+
+@-webkit-keyframes slide {
+    from {
+    bottom: -1000px;
+}
+to {
+    bottom: 2650px;
+}
+}
+
+.arrow {
+    -webkit-animation-name: slide;
+    -webkit-animation-duration: 120s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-direction: alternate;
+    margin: 0 auto;
+    position: relative;
+    background-image: url('arrow.png');
+    background-repeat: no-repeat;
+    width: 960px;
+    height: 773px;
+    text-indent: -9999px;
+    z-index: -9999;
+}
+
+
