@@ -214,7 +214,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
     <p class="sans">Need some study hints?</p>
     <p class="sans">REAP (Read, Examine, Apply, Pray) is a straight forward way to process what you're reading, either on your own or with a small group of people.</p>
 
-    <p class="sans"><a href="">Here are some instructions and a quick example</a>.</p>
+    <p class="sans"><a href="/files/reap.pdf">Here are some instructions and a quick example</a>.</p>
     <p class="sans"><strong>TIP:</strong> To read the entire Bible in one year, read from all four columns each day. To read through the Bible in two or four years, select two or one column this year and the remaining columns in subsequent years.</p>
     <div class="rule_wh_short">&nbsp;</div>
     <p class="sans"><a href="/reap"><strong>Go back to the ESV Study Bible Plan</strong></a>.</p>
