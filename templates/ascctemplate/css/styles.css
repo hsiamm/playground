@@ -244,6 +244,15 @@ a.hot_right:hover, a.hot_left:hover, a.hot_threecol:hover, a.hot_fivecol_2:hover
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 }
 
+.home_image_info h2 a {
+	color: #ffdd00;
+    -webkit-transition: color .2s ease-in; /*safari and chrome */
+    -o-transition: color .2s ease-in; /* opera */
+}
+
+.home_image_info h2 a:hover {
+	color: #fff;
+}
 
 /*~~~~~~~~~~~~LINKS~~~~~~~~~~~~*/
 
@@ -550,7 +559,7 @@ ul.affirm li {
     float: right;
     height: auto;
     width: auto;
-    margin: 7px 0 0 0;
+    margin: 7px 10px 0 0;
 }
 
 #search {
@@ -695,13 +704,33 @@ div.search div.pagination span.pagenav a {
     height: 360px;
     margin-top: 30px;
     background-color: #999;
-    background-image: url('/images/atx_wide.jpg');
+    background-image: url('/home_images/bg_mark.jpg');
     background-position: center center;
     background-repeat: no-repeat;
 }
 
+.home_image_info {
+	float:right;
+	width:auto;
+	background:#000;
+	margin-top:100px;
+	height:35px;
+	text-align:right;
+	padding:0 10px;
+}
 
+.letter {
+	background: #fff;
+	margin-top: 50px;
+	padding: 80px 220px 80px 220px;
+	width: 500px;
+	height: auto;
+}
 
+.letter p {
+	font-size: 14px;
+	line-height: 21px;
+}
 
 /*~~~~~~~~~~~ Menu ~~~~~~~~~~~~~~*/
 
