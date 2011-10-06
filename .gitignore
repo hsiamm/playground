@@ -1,0 +1,6 @@
+configuration.php
+robots.txt
+tmp/
+images/
+*~
+*.*~
