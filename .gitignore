@@ -1,5 +1,6 @@
 configuration.php
 robots.txt
+cache/
 tmp/
 images/
 images
