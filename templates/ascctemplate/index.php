@@ -186,7 +186,7 @@ margin-top: -4px;
     			
     			<div style="clear:both;"></div>
     			<div class="onecol">
-	    			<div class="home_image_info"><h2 class="nomar white nocap" style="line-height:35px;">A note about Mark. <a href="/mark">Read the letter from Matt</a>.</h2></div>
+	    			<div class="home_image_info"><h2 class="nomar white nocap" style="line-height:35px;">A note about Mark. <a href="/mark">Read the letter from Kevin</a>.</h2></div>
 	    		</div>
             </div> <!-- /container -->
         </div> <!-- /image_main -->
