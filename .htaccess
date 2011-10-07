@@ -96,3 +96,4 @@ Redirect permanent /who/contact http://austinstone.org/about/contact
 Redirect permanent /counseling http://ministries.austinstone.org/counseling
 Redirect permanent /gettrained http://ministries.austinstone.org/gettrained
 Redirect permanent /makedisciples http://ministries.austinstone.org/makedisciples
+Redirect permanent /mystory https://theaustinstone.wufoo.com/forms/tell-us-your-story/

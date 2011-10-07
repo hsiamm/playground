@@ -1,66 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statuses type="array">
 <status>
-  <created_at>Mon Sep 26 16:46:19 +0000 2011</created_at>
-  <id>118365795796516866</id>
-  <text>Jesus asked, &quot;Who do you say that I am?&quot;.... From Israel Series - The Gates of Hades: http://t.co/mN2SBhIa #israelseries</text>
-  <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
-  <truncated>false</truncated>
-  <favorited>false</favorited>
-  <in_reply_to_status_id></in_reply_to_status_id>
-  <in_reply_to_user_id></in_reply_to_user_id>
-  <in_reply_to_screen_name></in_reply_to_screen_name>
-  <retweet_count>16</retweet_count>
-  <retweeted>false</retweeted>
-  <user>
-    <id>16931785</id>
-    <name>The Austin Stone</name>
-    <screen_name>TheAustinStone</screen_name>
-    <location>Austin, TX</location>
-    <description>A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.</description>
-    <profile_image_url>http://a3.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url>
-    <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
-    <url>http://www.austinstone.org</url>
-    <protected>false</protected>
-    <followers_count>5233</followers_count>
-    <profile_background_color>e8e6d4</profile_background_color>
-    <profile_text_color>555555</profile_text_color>
-    <profile_link_color>1D7FC6</profile_link_color>
-    <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
-    <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
-    <friends_count>5213</friends_count>
-    <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
-    <favourites_count>3</favourites_count>
-    <utc_offset>-21600</utc_offset>
-    <time_zone>Central Time (US &amp; Canada)</time_zone>
-    <profile_background_image_url>http://a0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url>
-    <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url_https>
-    <profile_background_tile>true</profile_background_tile>
-    <profile_use_background_image>false</profile_use_background_image>
-    <notifications></notifications>
-    <geo_enabled>false</geo_enabled>
-    <verified>false</verified>
-    <following></following>
-    <statuses_count>571</statuses_count>
-    <lang>en</lang>
-    <contributors_enabled>false</contributors_enabled>
-    <follow_request_sent></follow_request_sent>
-    <listed_count>118</listed_count>
-    <show_all_inline_media>false</show_all_inline_media>
-    <default_profile>false</default_profile>
-    <default_profile_image>false</default_profile_image>
-    <is_translator>false</is_translator>
-  </user>
-  <geo/>
-  <coordinates/>
-  <place/>
-  <possibly_sensitive>false</possibly_sensitive>
-  <contributors/>
-</status>
-<status>
-  <created_at>Sun Sep 25 15:30:04 +0000 2011</created_at>
-  <id>117984220386820096</id>
-  <text>Downtown Campus: Road closures will affect AM services, check the map: http://t.co/lvov6RwA</text>
+  <created_at>Fri Oct 07 15:00:05 +0000 2011</created_at>
+  <id>122325328227074048</id>
+  <text>The Gospel of Mark starts this Sunday! Read this letter from Kevin: http://t.co/ODT8g2t0 #ascc</text>
   <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
   <truncated>false</truncated>
   <favorited>false</favorited>
@@ -79,13 +22,70 @@
     <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
     <url>http://www.austinstone.org</url>
     <protected>false</protected>
-    <followers_count>5234</followers_count>
+    <followers_count>5294</followers_count>
     <profile_background_color>e8e6d4</profile_background_color>
     <profile_text_color>555555</profile_text_color>
     <profile_link_color>1D7FC6</profile_link_color>
     <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
     <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
-    <friends_count>5214</friends_count>
+    <friends_count>5297</friends_count>
+    <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
+    <favourites_count>3</favourites_count>
+    <utc_offset>-21600</utc_offset>
+    <time_zone>Central Time (US &amp; Canada)</time_zone>
+    <profile_background_image_url>http://a0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url>
+    <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url_https>
+    <profile_background_tile>true</profile_background_tile>
+    <profile_use_background_image>false</profile_use_background_image>
+    <notifications>false</notifications>
+    <geo_enabled>false</geo_enabled>
+    <verified>false</verified>
+    <following>true</following>
+    <statuses_count>580</statuses_count>
+    <lang>en</lang>
+    <contributors_enabled>false</contributors_enabled>
+    <follow_request_sent>false</follow_request_sent>
+    <listed_count>118</listed_count>
+    <show_all_inline_media>false</show_all_inline_media>
+    <default_profile>false</default_profile>
+    <default_profile_image>false</default_profile_image>
+    <is_translator>false</is_translator>
+  </user>
+  <geo/>
+  <coordinates/>
+  <place/>
+  <possibly_sensitive>false</possibly_sensitive>
+  <contributors/>
+</status>
+<status>
+  <created_at>Wed Oct 05 16:00:10 +0000 2011</created_at>
+  <id>121615673595146242</id>
+  <text>Feeling called to missions? Read last weeks bulletin story &quot;Leaving it All Behind&quot;: http://t.co/wcNP6klb #ascc</text>
+  <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
+  <truncated>false</truncated>
+  <favorited>false</favorited>
+  <in_reply_to_status_id></in_reply_to_status_id>
+  <in_reply_to_user_id></in_reply_to_user_id>
+  <in_reply_to_screen_name></in_reply_to_screen_name>
+  <retweet_count>6</retweet_count>
+  <retweeted>false</retweeted>
+  <user>
+    <id>16931785</id>
+    <name>The Austin Stone</name>
+    <screen_name>TheAustinStone</screen_name>
+    <location>Austin, TX</location>
+    <description>A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.</description>
+    <profile_image_url>http://a3.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url>
+    <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
+    <url>http://www.austinstone.org</url>
+    <protected>false</protected>
+    <followers_count>5294</followers_count>
+    <profile_background_color>e8e6d4</profile_background_color>
+    <profile_text_color>555555</profile_text_color>
+    <profile_link_color>1D7FC6</profile_link_color>
+    <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
+    <friends_count>5294</friends_count>
     <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
     <favourites_count>3</favourites_count>
     <utc_offset>-21600</utc_offset>
@@ -98,7 +98,7 @@
     <geo_enabled>false</geo_enabled>
     <verified>false</verified>
     <following></following>
-    <statuses_count>571</statuses_count>
+    <statuses_count>579</statuses_count>
     <lang>en</lang>
     <contributors_enabled>false</contributors_enabled>
     <follow_request_sent></follow_request_sent>
@@ -115,9 +115,9 @@
   <contributors/>
 </status>
 <status>
-  <created_at>Sun Sep 25 13:30:06 +0000 2011</created_at>
-  <id>117954028205387776</id>
-  <text>Reminder: Marathon road closures will affect AM services. Check map for alt. routes: http://t.co/lvov6RwA</text>
+  <created_at>Tue Oct 04 19:59:30 +0000 2011</created_at>
+  <id>121313515788181504</id>
+  <text>First Tuesday prayer tonight! 7 PM at the St. John campus! Join us as we ask God to move in our city and the nations! #ascc</text>
   <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
   <truncated>false</truncated>
   <favorited>false</favorited>
@@ -136,13 +136,13 @@
     <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
     <url>http://www.austinstone.org</url>
     <protected>false</protected>
-    <followers_count>5234</followers_count>
+    <followers_count>5295</followers_count>
     <profile_background_color>e8e6d4</profile_background_color>
     <profile_text_color>555555</profile_text_color>
     <profile_link_color>1D7FC6</profile_link_color>
     <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
     <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
-    <friends_count>5213</friends_count>
+    <friends_count>5297</friends_count>
     <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
     <favourites_count>3</favourites_count>
     <utc_offset>-21600</utc_offset>
@@ -155,64 +155,7 @@
     <geo_enabled>false</geo_enabled>
     <verified>false</verified>
     <following></following>
-    <statuses_count>571</statuses_count>
-    <lang>en</lang>
-    <contributors_enabled>false</contributors_enabled>
-    <follow_request_sent></follow_request_sent>
-    <listed_count>118</listed_count>
-    <show_all_inline_media>false</show_all_inline_media>
-    <default_profile>false</default_profile>
-    <default_profile_image>false</default_profile_image>
-    <is_translator>false</is_translator>
-  </user>
-  <geo/>
-  <coordinates/>
-  <place/>
-  <possibly_sensitive>false</possibly_sensitive>
-  <contributors/>
-</status>
-<status>
-  <created_at>Sun Sep 25 00:00:11 +0000 2011</created_at>
-  <id>117750208129019905</id>
-  <text>Make sure you don't miss week 3 of our &quot;From Israel&quot; series tomorrow! Invite your friends and coworkers. #israelseries</text>
-  <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
-  <truncated>false</truncated>
-  <favorited>false</favorited>
-  <in_reply_to_status_id></in_reply_to_status_id>
-  <in_reply_to_user_id></in_reply_to_user_id>
-  <in_reply_to_screen_name></in_reply_to_screen_name>
-  <retweet_count>4</retweet_count>
-  <retweeted>false</retweeted>
-  <user>
-    <id>16931785</id>
-    <name>The Austin Stone</name>
-    <screen_name>TheAustinStone</screen_name>
-    <location>Austin, TX</location>
-    <description>A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.</description>
-    <profile_image_url>http://a3.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url>
-    <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
-    <url>http://www.austinstone.org</url>
-    <protected>false</protected>
-    <followers_count>5233</followers_count>
-    <profile_background_color>e8e6d4</profile_background_color>
-    <profile_text_color>555555</profile_text_color>
-    <profile_link_color>1D7FC6</profile_link_color>
-    <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
-    <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
-    <friends_count>5213</friends_count>
-    <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
-    <favourites_count>3</favourites_count>
-    <utc_offset>-21600</utc_offset>
-    <time_zone>Central Time (US &amp; Canada)</time_zone>
-    <profile_background_image_url>http://a0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url>
-    <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url_https>
-    <profile_background_tile>true</profile_background_tile>
-    <profile_use_background_image>false</profile_use_background_image>
-    <notifications></notifications>
-    <geo_enabled>false</geo_enabled>
-    <verified>false</verified>
-    <following></following>
-    <statuses_count>571</statuses_count>
+    <statuses_count>580</statuses_count>
     <lang>en</lang>
     <contributors_enabled>false</contributors_enabled>
     <follow_request_sent></follow_request_sent>
@@ -228,16 +171,16 @@
   <contributors/>
 </status>
 <status>
-  <created_at>Sat Sep 24 22:00:09 +0000 2011</created_at>
-  <id>117719999992430592</id>
-  <text>Marathon road closures affecting our AM services this Sunday! Check map for alt. routes: http://t.co/lvov6RwA</text>
+  <created_at>Sun Oct 02 15:30:08 +0000 2011</created_at>
+  <id>120520949643751426</id>
+  <text>&quot;Love Your Enemies&quot; is the final video in our 4 week #israelseries! Join us for an amazingly powerful story. #ascc</text>
   <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
   <truncated>false</truncated>
   <favorited>false</favorited>
   <in_reply_to_status_id></in_reply_to_status_id>
   <in_reply_to_user_id></in_reply_to_user_id>
   <in_reply_to_screen_name></in_reply_to_screen_name>
-  <retweet_count>3</retweet_count>
+  <retweet_count>5</retweet_count>
   <retweeted>false</retweeted>
   <user>
     <id>16931785</id>
@@ -249,13 +192,13 @@
     <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
     <url>http://www.austinstone.org</url>
     <protected>false</protected>
-    <followers_count>5234</followers_count>
+    <followers_count>5295</followers_count>
     <profile_background_color>e8e6d4</profile_background_color>
     <profile_text_color>555555</profile_text_color>
     <profile_link_color>1D7FC6</profile_link_color>
     <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
     <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
-    <friends_count>5214</friends_count>
+    <friends_count>5297</friends_count>
     <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
     <favourites_count>3</favourites_count>
     <utc_offset>-21600</utc_offset>
@@ -268,7 +211,7 @@
     <geo_enabled>false</geo_enabled>
     <verified>false</verified>
     <following></following>
-    <statuses_count>571</statuses_count>
+    <statuses_count>580</statuses_count>
     <lang>en</lang>
     <contributors_enabled>false</contributors_enabled>
     <follow_request_sent></follow_request_sent>
@@ -281,7 +224,62 @@
   <geo/>
   <coordinates/>
   <place/>
-  <possibly_sensitive>false</possibly_sensitive>
+  <contributors/>
+</status>
+<status>
+  <created_at>Sun Oct 02 13:30:10 +0000 2011</created_at>
+  <id>120490759777554432</id>
+  <text>Today is the last Sunday of our 4-week Israel Series. You don't want to miss the final video on &quot;Love Your Enemies&quot;. #ascc</text>
+  <source>&lt;a href=&quot;http://www.hootsuite.com&quot; rel=&quot;nofollow&quot;&gt;HootSuite&lt;/a&gt;</source>
+  <truncated>false</truncated>
+  <favorited>false</favorited>
+  <in_reply_to_status_id></in_reply_to_status_id>
+  <in_reply_to_user_id></in_reply_to_user_id>
+  <in_reply_to_screen_name></in_reply_to_screen_name>
+  <retweet_count>5</retweet_count>
+  <retweeted>false</retweeted>
+  <user>
+    <id>16931785</id>
+    <name>The Austin Stone</name>
+    <screen_name>TheAustinStone</screen_name>
+    <location>Austin, TX</location>
+    <description>A Church for the City. Need a hashtag shorter than @theaustinstone? Use #ascc.</description>
+    <profile_image_url>http://a3.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url>
+    <profile_image_url_https>https://si0.twimg.com/profile_images/1326442762/ascc_social_logo_normal.png</profile_image_url_https>
+    <url>http://www.austinstone.org</url>
+    <protected>false</protected>
+    <followers_count>5294</followers_count>
+    <profile_background_color>e8e6d4</profile_background_color>
+    <profile_text_color>555555</profile_text_color>
+    <profile_link_color>1D7FC6</profile_link_color>
+    <profile_sidebar_fill_color>F7F6F3</profile_sidebar_fill_color>
+    <profile_sidebar_border_color>CCCCCC</profile_sidebar_border_color>
+    <friends_count>5297</friends_count>
+    <created_at>Thu Oct 23 18:04:14 +0000 2008</created_at>
+    <favourites_count>3</favourites_count>
+    <utc_offset>-21600</utc_offset>
+    <time_zone>Central Time (US &amp; Canada)</time_zone>
+    <profile_background_image_url>http://a0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url>
+    <profile_background_image_url_https>https://si0.twimg.com/profile_background_images/239504486/ascc_background-color.png</profile_background_image_url_https>
+    <profile_background_tile>true</profile_background_tile>
+    <profile_use_background_image>false</profile_use_background_image>
+    <notifications></notifications>
+    <geo_enabled>false</geo_enabled>
+    <verified>false</verified>
+    <following></following>
+    <statuses_count>580</statuses_count>
+    <lang>en</lang>
+    <contributors_enabled>false</contributors_enabled>
+    <follow_request_sent></follow_request_sent>
+    <listed_count>118</listed_count>
+    <show_all_inline_media>false</show_all_inline_media>
+    <default_profile>false</default_profile>
+    <default_profile_image>false</default_profile_image>
+    <is_translator>false</is_translator>
+  </user>
+  <geo/>
+  <coordinates/>
+  <place/>
   <contributors/>
 </status>
 </statuses>

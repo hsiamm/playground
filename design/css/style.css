@@ -501,7 +501,18 @@ margin:0;
 	color: #000;
 }
 
+.letter {
+	background: #fff;
+	margin-top: 50px;
+	padding: 80px 220px 80px 220px;
+	width: 500px;
+	height: auto;
+}
 
+.letter p {
+	font-size: 14px;
+	line-height: 21px;
+}
 
 /*~~~~~~~~~~~ Main ~~~~~~~~~~~~~~*/
 
