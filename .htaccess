@@ -96,4 +96,11 @@ Redirect permanent /who/contact http://austinstone.org/about/contact
 Redirect permanent /counseling http://ministries.austinstone.org/counseling
 Redirect permanent /gettrained http://ministries.austinstone.org/gettrained
 Redirect permanent /makedisciples http://ministries.austinstone.org/makedisciples
+Redirect permanent /college http://ministries.austinstone.org/college
+Redirect permanent /operations http://ministries.austinstone.org/ops
+Redirect permanent /ops http://ministries.austinstone.org/ops
+Redirect permanent /familyministries http://ministries.austinstone.org/familyministries
+Redirect permanent /teenrock http://ministries.austinstone.org/teenrock
+Redirect permanent /kidstuff http://ministries.austinstone.org/kidstuff
+Redirect permanent /worshipchrist http://ministries.austinstone.org/worshipchrist
 Redirect permanent /mystory https://theaustinstone.wufoo.com/forms/tell-us-your-story/
