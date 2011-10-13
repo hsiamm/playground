@@ -36,7 +36,6 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
         // choose which scripture
         $('.reap').click(function() {
             var id = $(this).attr('id');
-            console.log(id);
             $(".reap").removeClass("reap_current");
             $(".reap_scripture").hide();
   

@@ -36,7 +36,6 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
         // choose which scripture
         $('.reap').click(function() {
             var id = $(this).attr('id');
-            console.log(id);
             $(".reap").removeClass("reap_current");
             $(".reap_scripture").hide();
   
@@ -66,7 +65,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             $("#passage_" + id + "_1").fadeIn("slow");
             $("#" + id + "_1").addClass("reap_current"); 
             return false;
-        });
+         });
        
     });
 </script>

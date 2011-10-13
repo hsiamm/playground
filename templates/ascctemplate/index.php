@@ -76,17 +76,14 @@ $pageRef = $_SERVER['REQUEST_URI'];
     // Make the top level navigation stay highlighted when in sub-menu
     $(document).ready(function(){
         var listItem = document.getElementById("menunav").getElementsByTagName('ul');
-        console.log(listItem);
         for(var i=0;i<listItem.length;i++) {
             listItem[i].onmouseover=function() {
                 var changeStyle = this.parentNode.getElementsByTagName('a');
-                console.log("over: " + changeStyle[0]);
                 $(changeStyle[0]).addClass('current');
             }
 
             listItem[i].onmouseout=function() {
                 var changeStyle = this.parentNode.getElementsByTagName('a');
-                console.log("out: " + changeStyle[0]);
                 $(changeStyle[0]).removeClass('current');
             }
         }  
