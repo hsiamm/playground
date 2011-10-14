@@ -53,6 +53,14 @@ if (!($image = $this->application->getImage('content.image'))) {
 
 $css_class = $this->application->getGroup() . '-' . $this->template->name;
 ?>
+<script type="text/javascript">
+    $(document).ready(function() {    
+        $("a.video-pop").fancybox({
+            'overlayColor'  : '#fff',
+            'overlayOpacity' : 0.9
+        });
+    });
+</script>
 
 <div class="twocol">
     <?php if ($this->params->get('template.show_title')) : ?>
