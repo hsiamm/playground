@@ -4,6 +4,7 @@
         <position name="title">Title</position>
         <position name="hours">Hours</position>
         <position name="description">Description</position>
+        <position name="featured_description">Featured Description</position>
         <position name="signup">Sign up</position>
     </positions>
     <positions layout="teaser">
