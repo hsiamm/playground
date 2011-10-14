@@ -64,7 +64,7 @@ $params = $item->getParams('site');
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=250&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
-                    <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:400px;padding-top:5px"></audio>
+                    <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:250px;line-height:25px;"></audio>
                 </object>
             </div>
             <?php $sermonvideoid = str_replace(' ', '-', trim($this->renderPosition('video_name'))); ?>
@@ -83,7 +83,7 @@ $params = $item->getParams('site');
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=290&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
-                    <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:400px;padding-top:5px"></audio>
+                    <audio src="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>" preload="none" controls style="width:250px;line-height:25px;"></audio>
                 </object>
             </div>
             <a href="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>"><div class="download_mp3">Download MP3</div></a>
