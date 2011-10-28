@@ -704,7 +704,7 @@ div.search div.pagination span.pagenav a {
     height: 360px;
     margin-top: 30px;
     background-color: #999;
-    background-image: url('/home_images/bg_mark.jpg');
+    background-image: url('/home_images/manly_retreat.jpg');
     background-position: center center;
     background-repeat: no-repeat;
 }
@@ -713,7 +713,7 @@ div.search div.pagination span.pagenav a {
 	float:right;
 	width:auto;
 	background:#000;
-	margin-top:100px;
+	margin:105px 140px 0 0;
 	height:35px;
 	text-align:right;
 	padding:0 10px;
