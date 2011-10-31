@@ -176,7 +176,7 @@ h5.drop a:hover {
     text-indent: -9999px;
 }
 
-#menunav a {
+.menunav a {
     color:#000;
     margin: 0 8px;
     text-decoration: none;
@@ -184,7 +184,7 @@ h5.drop a:hover {
     border: none;
 }
 
-#menunav a:hover {
+.menunav a:hover {
     color:#000;
     text-decoration: none;
     background-color: rgb(255, 255, 255);
@@ -200,20 +200,20 @@ ul.dropdown ul li a {
     text-transform: none;
     font-size: 14px;
     line-height: 10px;
-    color: #365871;
+    color: #77787B;
 }
 
 ul.dropdown li:hover > ul {
     visibility: visible;
 }
 
-#drop a {
+.drop a {
     color:#77787B;
     -webkit-transition: color .2s ease-in; /*safari and chrome */
     -o-transition: color .2s ease-in; /* opera */
 }
 
-#drop a:hover {
+.drop a:hover {
     width: auto;
     /* background: #F2F1EA;*/
     background:none;
@@ -805,8 +805,8 @@ ul.dropdown ul {
     padding: 0;
 }
 
-#drop {
-    padding:0;
+.drop {
+    padding: 0;
 }
 
 /*~~~~~~~~~~~ Columns ~~~~~~~~~~~~~~*/

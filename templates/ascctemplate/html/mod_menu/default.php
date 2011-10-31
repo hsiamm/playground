@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
 
         // adds the id menunav if the top menuitem
         if ($item->parent) {
-            $id .= 'menunav';
+            $class .= 'menunav';
         }
 
         if (!empty($class)) {
@@ -58,8 +58,8 @@ defined('_JEXEC') or die;
 
         // The next item is deeper.
         if ($item->deeper) {
-            echo '<ul id="drop">';
-            echo '<div class="rule_menu"></div>';
+            echo '<ul class="drop">';
+            echo '<li class="rule_menu"></li>';
         }
         // The next item is shallower.
         else if ($item->shallower) {
