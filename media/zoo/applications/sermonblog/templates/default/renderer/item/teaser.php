@@ -59,8 +59,8 @@ $params = $item->getParams('site');
 
     <?php if ($this->checkPosition('video_name')) { ?>
         <div class="sermon_player">
-            <div style="width:250px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
-                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="250" height="25">
+            <div class="sermon_player_wrap sermon_size">
+                <object class="sermon_size" type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf">
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=250&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />
@@ -78,8 +78,8 @@ $params = $item->getParams('site');
         </div>
     <?php } else { ?>
         <div class="sermon_player">
-            <div style="width:290px;height:25px;background:#fff;color:#000;line-height:25px;text-align:center;float:left;">
-                <object type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="290" height="25">
+            <div class="sermon_player_wrap sermon_size_big">
+                <object class="sermon_size_big" type="application/x-shockwave-flash" data="/images/sermons/player_mp3_maxi.swf" width="290" height="25">
                     <param name="movie" value="/images/sermons/player_mp3_maxi.swf" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="FlashVars" value="mp3=http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>&amp;width=290&amp;height=25&amp;showvolume=1&amp;loadingcolor=ffdd00&amp;bgcolor1=ffffff&amp;bgcolor2=ffffff&amp;slidercolor1=000000&amp;slidercolor2=000000&amp;sliderovercolor=FFDD00&amp;buttoncolor=000000&amp;buttonovercolor=FFDD00&amp;textcolor=000000" />

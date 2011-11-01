@@ -105,7 +105,7 @@ $pageRef = $_SERVER['REQUEST_URI'];
 
 <!--[if IE]>
 <style>
-#drop {
+.drop {
 margin-top: -4px;
 }
 </style>
