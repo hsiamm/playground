@@ -245,13 +245,13 @@ a.hot_right:hover, a.hot_left:hover, a.hot_threecol:hover, a.hot_fivecol_2:hover
 }
 
 .home_image_info h2 a {
-	color: #ffdd00;
+    color: #ffdd00;
     -webkit-transition: color .2s ease-in; /*safari and chrome */
     -o-transition: color .2s ease-in; /* opera */
 }
 
 .home_image_info h2 a:hover {
-	color: #fff;
+    color: #fff;
 }
 
 /*~~~~~~~~~~~~LINKS~~~~~~~~~~~~*/
@@ -710,26 +710,26 @@ div.search div.pagination span.pagenav a {
 }
 
 .home_image_info {
-	float:right;
-	width:auto;
-	background:#000;
-	margin:80px 140px 0 0;
-	height:35px;
-	text-align:right;
-	padding:0 10px;
+    float:right;
+    width:auto;
+    background:#000;
+    margin:100px 140px 0 0;
+    height:35px;
+    text-align:right;
+    padding:0 10px;
 }
 
 .letter {
-	background: #fff;
-	margin-top: 50px;
-	padding: 80px 220px 80px 220px;
-	width: 500px;
-	height: auto;
+    background: #fff;
+    margin-top: 50px;
+    padding: 80px 220px 80px 220px;
+    width: 500px;
+    height: auto;
 }
 
 .letter p {
-	font-size: 14px;
-	line-height: 21px;
+    font-size: 14px;
+    line-height: 21px;
 }
 
 /*~~~~~~~~~~~ Menu ~~~~~~~~~~~~~~*/
@@ -1518,6 +1518,24 @@ h2.sermon_title {
 
 .sermon_player {
     margin:10px 0 0 0;
+}
+
+.sermon_size {
+    width:250px;
+    height:25px;
+}
+
+.sermon_size_big {
+    width:290px;
+    height:25px;
+}
+
+.sermon_player_wrap {
+    background:#fff;
+    color:#000;
+    line-height:25px;
+    text-align:center;
+    float:left;
 }
 
 .download_mp3 {
