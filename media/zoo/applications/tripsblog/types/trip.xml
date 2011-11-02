@@ -28,7 +28,7 @@
     <param type="text" identifier="1fc05a8d-3dfb-491e-9e98-531eda8266cc" name="Trip Cost" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="2bea4358-5924-44f1-b6f8-b21cf877504d" name="Cost Timeline: Date" description="" access="1" default="" repeatable="1"/>
     <param type="text" identifier="ae517748-7bd1-4314-8a10-7976b4091eb3" name="Cost Timeline: Cost" description="" access="1" default="" repeatable="1"/>
-    <param type="text" identifier="c1eb9439-b74a-47be-9109-eebfed8fc7ba" name="Link to Application" description="" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="c1eb9439-b74a-47be-9109-eebfed8fc7ba" name="Link to Application" description="" access="1" default="https://theaustinstone.wufoo.com/forms/short-term-trip-application/" repeatable="0"/>
     <param type="text" identifier="d3060097-97a1-4f17-aad2-780069359ac9" name="Relative Dates" description="" access="1" default="" repeatable="0"/>
     <param type="textarea" identifier="188724e1-f58d-469b-9648-016b8de8de82" name="Prayer Points" description="" access="1" default="" jplugins="1" repeatable="0"/>
   </params>
