@@ -34,6 +34,16 @@ if (!($image = $this->application->getImage('content.image'))) {
 $css_class = $this->application->getGroup() . '-' . $this->template->name;
 ?>
 
+<script>
+    function popup($url) {
+        window.open($url,"Share","status=1,height=450,width=550,resizable=0");
+    }
+    
+    function fbs_click($url) {
+        window.open('http://www.facebook.com/sharer.php?u='+$url,'sharer','toolbar=0,status=0,width=626,height=336');
+        return false;
+    }
+</script>
 <script type="text/javascript">
     $(document).ready(function() {    
         $("a.video-pop").fancybox({

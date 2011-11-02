@@ -13,18 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 // init vars
 $params = $item->getParams('site');
 ?>
-<script>
-    function popup($url) {
-        window.open($url,"Share","status=1,height=450,width=550,resizable=0");
-    }
-    
-    function fbs_click($url) {
-        window.open('http://www.facebook.com/sharer.php?u='+$url,'sharer','toolbar=0,status=0,width=626,height=336');
-        return false;
-    }
-</script>
-
-
 <div class="sermon">
     <h3 class="series_label">
         <?php echo $this->renderPosition('categories'); ?>
