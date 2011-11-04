@@ -1010,6 +1010,19 @@ ul.dropdown ul {
     float: left;
 }
 
+/* ~~~~~~~~~~ Identity ~~~~~~~~~~~~~~~~~ */
+#ident2 {
+    border: 5px solid #fff; 
+    height: 184px;
+    width: 290px;
+}
+
+/* ~~~~~~~~~~ Core Values ~~~~~~~~~~~~~~~ */
+#core_values {
+    margin: 80px 20px 0 20px; 
+    width: 260px;
+}
+
 /* ~~~~~~~~~~ About ~~~~~~~~~~~~~~~~~ */
 
 .partner_class {
