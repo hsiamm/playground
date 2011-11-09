@@ -31,7 +31,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
 </script>
 <script type="text/javascript">
     $(document).ready(function() {    
-        $("a.video-pop").fancybox({
+        $(".iframe").fancybox({
             'overlayColor'  : '#000',
             'overlayOpacity' : 0.9
         });

@@ -56,12 +56,7 @@ $params = $item->getParams('site');
                 </object>
             </div>
             <?php $sermonvideoid = str_replace(' ', '-', trim($this->renderPosition('video_name'))); ?>
-            <div class="sermon_video"><a class="video-pop" href="#<?php echo $sermonvideoid; ?>"><img src="/images/sermon_video.png"></img></a></div>
-            <div style="display:none;">
-                <div id="<?php echo $sermonvideoid; ?>">
-                    <?php echo $this->renderPosition('video_embed'); ?>
-                </div>
-            </div>
+            <div class="sermon_video"><a class="iframe" href="<?php echo trim($this->renderPosition('video_link')); ?>"><img src="/images/sermon_video.png"></img></a></div>
             <a href="http://files.austinstone.org/audio/mp3/<?php echo trim($this->renderPosition('audio_file')); ?>"><div class="download_mp3">Download MP3</div></a>
         </div>
     <?php } else { ?>
