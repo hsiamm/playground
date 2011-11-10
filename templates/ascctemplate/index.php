@@ -182,9 +182,9 @@ margin-top: -4px;
                 <jdoc:include type="modules" name="current_hap" />
     			
     			<div style="clear:both;"></div>
-    			<div class="onecol">
+    			<!--<div class="onecol">
 	    			<div class="home_image_info"><h2 class="nomar white nocap" style="line-height:35px;">Nov 11&ndash;13 at Camp Tejas. <a href="https://theaustinstone.wufoo.com/forms/austin-stone-biblical-manhood-fall-retreat-signup/">Sign up</a>.</h2></div>
-	    		</div>
+	    		</div>-->
             </div> <!-- /container -->
         </div> <!-- /image_main -->
 
