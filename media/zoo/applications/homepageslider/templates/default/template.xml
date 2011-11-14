@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
-	<name>Default</name>
+	<name>Home Page</name>
 	<version>2.4.0</version>
-	<creationDate>March 2011</creationDate>
-	<author>YOOtheme</author>
-	<authorEmail>info@yootheme.com</authorEmail>
-	<authorUrl>http://www.yootheme.com</authorUrl>
-    <copyright>Copyright (C) 2007 - 2011 YOOtheme GmbH</copyright>
+	<creationDate>July 2011</creationDate>
+	<author>Jason Kennedy</author>
+	<authorEmail>jhkennedy@utexas.edu</authorEmail>
+	<authorUrl>http://www.austinstone.org</authorUrl>
     <license></license>
-	<description>Default template for the Blog App</description>
+	<description>Default template for the Staff/Intern Blog Apps</description>
 	<params group="category">
 		<param name="show_title" type="radio" default="1" label="Title" description="Show/Hide title">
 			<option value="0">Hide</option>

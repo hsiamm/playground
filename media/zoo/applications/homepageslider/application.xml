@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <application>
-	<name>Stories Blog</name>
+	<name>Home Page Slider</name>
 	<group>blog</group>
 	<version>2.4.0</version>
-	<creationDate>August 2011</creationDate>
+	<creationDate>September 2011</creationDate>
 	<author>Jason Kennedy</author>
 	<authorEmail>jhkennedy@utexas.edu</authorEmail>
 	<authorUrl>http://www.austinstone.org</authorUrl>
 	<description><![CDATA[
-				This is the stories blog app for ZOO 2.4 developed by Jason Kennedy.
+				This is the home page slider app for ZOO 2.4 developed by Jason Kennedy.
 				]]>
 	</description>
 	<params group="application-config">

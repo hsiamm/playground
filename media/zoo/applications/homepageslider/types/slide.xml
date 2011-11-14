@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<type version="1.0.0" name="Slide">
+  <params>
+    <param type="textarea" identifier="e70e4d58-72fe-453b-830a-903d5472a873" name="Text (one line, very short)" description="" access="1" default="" jplugins="1" repeatable="0"/>
+    <param type="image" identifier="cc2f65d5-5c13-44df-8f31-6f1fdd4a47c2" name="Image" description="" access="1" load_lightbox="0" upload_directory="images/stories/zoo/uploads/" max_upload_size="2000"/>
+  </params>
+</type>

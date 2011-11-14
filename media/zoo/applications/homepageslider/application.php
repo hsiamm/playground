@@ -1,7 +1,7 @@
 <?php
 /**
 * @package   com_zoo Component
-* @file      feed.php
+* @file      application.php
 * @version   2.4.10 June 2011
 * @author    YOOtheme http://www.yootheme.com
 * @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
@@ -11,5 +11,4 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-// render description
-echo $this->renderPosition('description', array('style' => 'block'));
+class HomePageSliderApplication extends Application {}

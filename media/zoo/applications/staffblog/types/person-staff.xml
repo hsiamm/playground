@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Person - Staff">
   <params>
-    <param type="radio" identifier="d7daa806-3479-421d-8a66-4813f6458eb8" name="Placeholder?" description="" access="1" default="No">
-      <option name="Yes" value="yes"/>
-      <option name="No" value="no"/>
-    </param>
     <param type="image" identifier="f98a46e7-a524-486d-854a-0078982e5b19" name="Headshot" description="Must be less than 512 KB" access="1" load_lightbox="0" upload_directory="images/staffpics" max_upload_size="512"/>
     <param type="text" identifier="43963ca5-a280-4737-bdac-a0e0689e940f" name="Job Title" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="4e50d242-c8ab-415e-b0fe-3e61d6eaf068" name="Email" description="" access="1" default="@austinstone.org" repeatable="0"/>
