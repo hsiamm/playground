@@ -9,6 +9,10 @@
       <option name="North America" value="north-america"/>
       <option name="Horn of Africa" value="horn-of-africa"/>
       <option name="Haiti" value="haiti"/>
+      <option name="Europe" value="europe"/>
+      <option name="West Africa" value="west-africa"/>
+      <option name="Central Africa" value="central-africa"/>
+      <option name="Asia" value="asia"/>
     </param>
     <param type="radio" identifier="715fd13d-35a6-4dea-8c1a-41ed9affe08b" name="Status" description="" access="1" default="">
       <option name="Open" value="open"/>

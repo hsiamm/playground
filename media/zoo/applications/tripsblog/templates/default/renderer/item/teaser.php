@@ -28,9 +28,17 @@ else if (strpos($location, 'Haiti'))
 else if (strpos($location, 'Horn of Africa'))
     $classfix .= 'horn-africa ';
 else if (strpos($location, 'Central Asia'))
-    $classfix .= 'asia ';
+    $classfix .= 'central-asia ';
 else if (strpos($location, 'India'))
     $classfix .= 'india ';
+else if (strpos($location, 'Europe'))
+    $classfix .= 'europe ';
+else if (strpos($location, 'West Africa'))
+    $classfix .= 'west-africa ';
+else if (strpos($location, 'Central Africa'))
+    $classfix .= 'central-africa ';
+else if (strpos($location, 'Asia'))
+    $classfix .= 'asia ';
 
 if (strpos($categories, 'Construction'))
     $classfix .= 'construction ';

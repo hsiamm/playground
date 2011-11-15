@@ -157,13 +157,17 @@ defined('_JEXEC') or die('Restricted access');
         <a id="location" class="trips_sort_button"><h2 class="nomar">By Trip Location</h2></a>
         <ul id="location_filter" class="trips_sort_options">
             <a id="allLoc" class="currentFilter"><li>All</li></a>
-            <a id="asia" class="filter"><li>Central Asia</li></a>
+            <a id="central-asia" class="filter"><li>Central Asia</li></a>
             <a id="dominican" class="filter"><li>Dominican Republic</li></a>
             <a id="haiti" class="filter"><li>Haiti</li></a>
             <a id="horn-africa" class="filter"><li>Horn of Africa</li></a>
             <a id="india" class="filter"><li>India</li></a>
             <a id="north-africa" class="filter"><li>North Africa</li></a>
             <a id="north-america" class="filter"><li>North America</li></a>
+            <a id="europe" class="filter"><li>Europe</li></a>
+            <a id="west-africa" class="filter"><li>West Africa</li></a>
+            <a id="central-africa" class="filter"><li>Central Africa</li></a>
+            <a id="asia" class="filter"><li>Asia</li></a>
         </ul>
     </div>
 
