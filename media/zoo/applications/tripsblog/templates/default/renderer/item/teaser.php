@@ -59,15 +59,15 @@ $classfix = trim($classfix);
         <div class="trips_details">
 
             <?php if (strpos($categories, 'Construction')) { ?>
-                <div class="trips_types_construction"></div>
+                <div class="trips_types_construction" title="Construction"></div>
             <?php } if (strpos($categories, 'Education')) { ?>
-                <div class="trips_types_education"></div>
+                <div class="trips_types_education" title="Education"></div>
             <?php } if (strpos($categories, 'Evangelism')) { ?>
-                <div class="trips_types_evangelism"></div>
+                <div class="trips_types_evangelism" title="Evangelism"></div>
             <?php } if (strpos($categories, 'Exposure')) { ?>
-                <div class="trips_types_exposure"></div>
+                <div class="trips_types_exposure" title="Exposure"></div>
             <?php } if (strpos($categories, 'Medical')) { ?>
-                <div class="trips_types_medical"></div>
+                <div class="trips_types_medical" title="Medical"></div>
             <?php } ?>
 
             <h1 class="blue nomar"><?php echo $this->renderPosition('title'); ?></h1>
