@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="twocol">
     <p>Jesus said, &ldquo;As the Father has sent me, so I send you&rdquo; (John 20:21). Throughout this year and next you will have incredible opportunities to join God on mission among the nations. There are several ways to participate with us. You can help make others aware of the opportunities to serve; you can support those who are going through prayer or financially; or you can apply to go with one of the teams.</p>
 
-    <p>Teams that go will participate in several types of ministry: education, evangelism, medical, exposure, and construction. No matter which role you participate in, our ultimate goal is to develop disciples of Jesus Christ who share His heart and vision for the entire world. <a href="https://theaustinstone.wufoo.com/forms/short-term-trip-application/">Start the general trip application</a> <strong>(you only need to do this once, even if you're applying for multiple trips)</strong>.</p>
+    <p>Teams that go will participate in several types of ministry: education, evangelism, medical, exposure, and construction. No matter which role you participate in, our ultimate goal is to develop disciples of Jesus Christ who share His heart and vision for the entire world.</p>
 </div>
 <div class="twocol_trips"> 
     <h4 class="yellow nomar caps">A note about trip costs</h4>

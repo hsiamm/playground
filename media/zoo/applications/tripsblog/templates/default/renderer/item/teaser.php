@@ -82,10 +82,9 @@ $classfix = trim($classfix);
             <?php } ?>
 
 
-            <p class="sans"><?php echo $this->renderPosition('description'); ?></p>
-            <?php if (strpos($this->renderPosition('note'), 'Yes')) { ?>
-                <p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
-            <?php } ?>
+            <p><?php echo $this->renderPosition('description'); ?></p>
+                <p class="grey"><em>Please note, all trip funds including deposits are non-refundable.</em></p>
+           
             <div style="clear:both;"></div>
         </div>
 
