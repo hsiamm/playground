@@ -366,14 +366,17 @@ blockquote {
 }
 
 blockquote a {
-    color:#000;
+    color: #000;
     background-color: none;
+    -webkit-transition: background-color .2s ease-in; /*safari and chrome */
+    -o-transition: background-color .2s ease-in; /* opera */
     text-decoration: none;
+    border-bottom: 2px solid #ffdd00;
 }
 
 blockquote a:hover {
-    background-color: none;
-    border-bottom: 2px solid #ffdd00;	
+    color: #000;
+    background-color: #ffdd00;
 }
 
 h3 {
