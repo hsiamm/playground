@@ -215,10 +215,10 @@ margin-top: -4px;
             <div class="sixcol">
                 <h2 class="blue">Follow Us</h2>
                 <h4>We frequently share information online. Here's where you can find us.</h4>
-                <a href="http://twitter.com/#!/theaustinstone"><img src="design/images/twitter.png" alt="Twitter" /></a> 
-                <a href="http://www.facebook.com/theaustinstone"><img src="design/images/fb.png" alt="Facebook" /></a> 
-                <a href="http://vimeo.com/theaustinstone"><img src="design/images/vimeo.png" alt="Vimeo" /></a> 
-                <a href="http://www.youtube.com/user/theaustinstonechurch"><img src="design/images/youtube.png" alt="YouTube" /></a></div>
+                <a href="http://twitter.com/#!/theaustinstone"><img src="images/twitter.png" alt="Twitter" /></a> 
+                <a href="http://www.facebook.com/theaustinstone"><img src="images/fb.png" alt="Facebook" /></a> 
+                <a href="http://vimeo.com/theaustinstone"><img src="images/vimeo.png" alt="Vimeo" /></a> 
+                <a href="http://www.youtube.com/user/theaustinstonechurch"><img src="images/youtube.png" alt="YouTube" /></a></div>
             <div class="sixcol">
                 <h2 class="blue">Stay Connected</h2>
                 <p class="sans"><em>The City</em> is the central communication tool for our church. <a href="https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/">Join today</a>.</p>
