@@ -365,6 +365,17 @@ blockquote {
     font-style: italic;
 }
 
+blockquote a {
+    color:#000;
+    background-color: none;
+    text-decoration: none;
+}
+
+blockquote a:hover {
+    background-color: none;
+    border-bottom: 2px solid #ffdd00;	
+}
+
 h3 {
     font-family: "news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
     font-size: 12px;
