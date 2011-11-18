@@ -10,6 +10,11 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+//get the item id
+$arr = explode('"', $this->renderPosition('item_link'), 3);
+$itemID = substr($arr[1], 20);
+
 $location = $this->renderPosition('locale');
 $categories = $this->renderPosition('categories');
 $classfix = '';
@@ -24,9 +29,17 @@ else if (strpos($location, 'Haiti'))
 else if (strpos($location, 'Horn of Africa'))
     $classfix .= 'horn-africa ';
 else if (strpos($location, 'Central Asia'))
-    $classfix .= 'asia ';
+    $classfix .= 'central-asia ';
 else if (strpos($location, 'India'))
     $classfix .= 'india ';
+else if (strpos($location, 'Europe'))
+    $classfix .= 'europe ';
+else if (strpos($location, 'West Africa'))
+    $classfix .= 'west-africa ';
+else if (strpos($location, 'Central Africa'))
+    $classfix .= 'central-africa ';
+else if (strpos($location, 'Asia'))
+    $classfix .= 'asia ';
 
 if (strpos($categories, 'Construction'))
     $classfix .= 'construction ';
@@ -47,15 +60,15 @@ $classfix = trim($classfix);
         <div class="trips_details">
 
             <?php if (strpos($categories, 'Construction')) { ?>
-                <div class="trips_types_construction"></div>
+                <div class="trips_types_construction" title="Construction"></div>
             <?php } if (strpos($categories, 'Education')) { ?>
-                <div class="trips_types_education"></div>
+                <div class="trips_types_education" title="Education"></div>
             <?php } if (strpos($categories, 'Evangelism')) { ?>
-                <div class="trips_types_evangelism"></div>
+                <div class="trips_types_evangelism" title="Evangelism"></div>
             <?php } if (strpos($categories, 'Exposure')) { ?>
-                <div class="trips_types_exposure"></div>
+                <div class="trips_types_exposure" title="Exposure"></div>
             <?php } if (strpos($categories, 'Medical')) { ?>
-                <div class="trips_types_medical"></div>
+                <div class="trips_types_medical" title="Medical"></div>
             <?php } ?>
 
             <h1 class="blue nomar"><?php echo $this->renderPosition('title'); ?></h1>
@@ -70,10 +83,9 @@ $classfix = trim($classfix);
             <?php } ?>
 
 
-            <p class="sans"><?php echo $this->renderPosition('description'); ?></p>
-            <?php if (strpos($this->renderPosition('note'), 'Yes')) { ?>
-                <p class="grey"><em>Please note, all trip funds including deposits are non-refundable. For additional information regarding our financial policy, please contact us at <a class="grey" href="mailto:makedisciples@austinstone.org">makedisciples@austinstone.org</a>.</em></p>
-            <?php } ?>
+            <p><?php echo $this->renderPosition('description'); ?></p>
+                <p class="grey"><em>Please note, all trip funds including deposits are non-refundable.</em></p>
+           
             <div style="clear:both;"></div>
         </div>
 
@@ -87,23 +99,83 @@ $classfix = trim($classfix);
         <div class="bump">&nbsp;</div>
 
         <?php if (strpos($this->renderPosition('status'), 'Open')) { ?>
-            <div class="trips_funds_pop">
+            <div class="trips_funds_pop fancy_pop" href="#inline_funds_<?php echo $itemID; ?>">
                 <h4 class="yellow caps">When Are Funds Due?</h4>
+            </div>
+            <div style="display: none;">
+                <div id="inline_funds_<?php echo $itemID; ?>" style="width:440px;height:auto;overflow:auto;">
+                    <div class="trip_funds_due">
+                        <?php if ($this->checkPosition('timeline_dates')) { ?>
+                            <h1 class="title">When are funds due?</h1>
+                            <?php $dates = explode('|', $this->renderPosition('timeline_dates')); ?>
+                            <?php $costs = explode('|', $this->renderPosition('timeline_cost')); ?>
+                            <ul class="bullet">
+                                <li><?php echo $dates[0] . "&nbsp;|&nbsp;" . $costs[0]; ?></li>
+                                <li><?php echo $dates[1] . "&nbsp;|&nbsp;" . $costs[1]; ?></li>
+                                <li><?php echo $dates[2] . "&nbsp;|&nbsp;" . $costs[2]; ?></li>
+                            </ul>
+                        <?php } else { ?>
+                            <h2 class="nomar blue">No timeline set for funds yet.</h2>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
             <div class="trips_apply">
+            	<?php $type=$this->renderPosition('type'); ?>
+            	
+            	<?php if (strpos($type,'CRU')) { ?>
+            	<div class="fancy_pop" href="#cru"><h4 class="black caps">Start Application</h4></div>
+            	<div style="display: none;">
+                <div id="cru" style="width:440px;height:auto;overflow:auto;">
+                	<div class="trip_funds_due">
+	            		<h1 class="title"><a href="<?php echo trim($this->renderPosition('link')); ?>">Click here</a> to go to the CRU website to begin the application process.</h1>
+                	</div>
+                </div>
+                </div>
+            	<?php } else if (strpos($type,'In-house')) { ?>
                 <a href="<?php echo trim($this->renderPosition('link')); ?>"><h4 class="black caps">Start Application</h4></a>
+                <?php } else { ?>
+             	<div class="fancy_pop" href="#journey"><h4 class="black caps">Start Application</h4></div>
+	            	<div style="display: none;">
+	                <div id="journey" style="width:440px;height:auto;overflow:auto;">
+	                	<div class="trip_funds_due">
+		            		<ul class="bullet">
+	                            <li>Follow <a href="https://www.formspring.com/forms/?164673-MrI2dGIKUF">this link</a> to the Journey Form.</li>
+	                            <li>Fill out and submit the “Journey” form (Indicate your interest in the South Asia Exposure Team).</li>
+	                        </ul>
+	                	</div>
+	                </div>
+                </div>               
+                <?php } ?>
             </div>
         <?php } else if (strpos($this->renderPosition('status'), 'Closed')) { ?>
-            <div class="trips_funds_pop">
+            <div class="trips_funds_pop fancy_pop" href="#inline_funds_<?php echo $itemID; ?>">
                 <h4 class="yellow caps">When Are Funds Due?</h4>
             </div>
+            <div style="display: none;">
+                <div id="inline_funds_<?php echo $itemID; ?>" style="width:440px;height:auto;overflow:auto;">
+                    <div class="trip_funds_due">
+                        <?php if ($this->checkPosition('timeline_dates')) { ?>
+                            <h1 class="title">When are funds due?</h1>
+                            <?php $dates = explode('|', $this->renderPosition('timeline_dates')); ?>
+                            <?php $costs = explode('|', $this->renderPosition('timeline_cost')); ?>
+                            <ul class="bullet">
+                                <li><?php echo $dates[0] . "&nbsp;|&nbsp;" . $costs[0]; ?></li>
+                                <li><?php echo $dates[1] . "&nbsp;|&nbsp;" . $costs[1]; ?></li>
+                                <li><?php echo $dates[2] . "&nbsp;|&nbsp;" . $costs[2]; ?></li>
+                            </ul>
+                        <?php } else { ?>
+                            <h1 class="title">No timeline set for funds yet.</h1>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
             <div class="trips_capacity">
-
                 <h4 class="black caps">Trip At Capacity</h4>
             </div>
         <?php } else if (strpos($this->renderPosition('status'), 'Not Finalized')) { ?>
             <div class="trips_nodate">
-                <p class="sans"><em>Trip dates are not yet finalized and will be updated as soon as possible. We will open the trip for registration when dates are confirmed.</em></p>
+                <p class="trips nomar"><em>Trip dates are not yet finalized and will be updated as soon as possible.</em></p>
             </div>
         <?php } ?>
 

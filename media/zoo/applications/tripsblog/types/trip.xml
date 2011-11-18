@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <type version="1.0.0" name="Trip">
   <params>
+    <param type="radio" identifier="9199b221-2a09-4a15-8ef0-f8f44521845d" name="Trip Type" description="Indicate whether trip is in-house, or external." access="1" default="">
+      <option name="In-house" value="in-house"/>
+      <option name="CRU" value="cru"/>
+      <option name="Frontier/Journey" value="frontier"/>
+    </param>
     <param type="select" identifier="9f49e714-b1e0-4d29-89f6-c075a19fea03" name="Trip Locale" description="" access="1" default="" multiple="0">
       <option name="India" value="india"/>
       <option name="North Africa" value="north-africa"/>

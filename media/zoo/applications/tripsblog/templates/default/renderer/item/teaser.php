@@ -120,7 +120,32 @@ $classfix = trim($classfix);
                 </div>
             </div>
             <div class="trips_apply">
+            	<?php $type=$this->renderPosition('type'); ?>
+            	
+            	<?php if (strpos($type,'CRU')) { ?>
+            	<div class="fancy_pop" href="#cru"><h4 class="black caps">Start Application</h4></div>
+            	<div style="display: none;">
+                <div id="cru" style="width:440px;height:auto;overflow:auto;">
+                	<div class="trip_funds_due">
+	            		<h1 class="title"><a href="<?php echo trim($this->renderPosition('link')); ?>">Click here</a> to go to the CRU website to begin the application process.</h1>
+                	</div>
+                </div>
+                </div>
+            	<?php } else if (strpos($type,'In-house')) { ?>
                 <a href="<?php echo trim($this->renderPosition('link')); ?>"><h4 class="black caps">Start Application</h4></a>
+                <?php } else { ?>
+             	<div class="fancy_pop" href="#journey"><h4 class="black caps">Start Application</h4></div>
+	            	<div style="display: none;">
+	                <div id="journey" style="width:440px;height:auto;overflow:auto;">
+	                	<div class="trip_funds_due">
+		            		<ul class="bullet">
+	                            <li>Follow <a href="https://www.formspring.com/forms/?164673-MrI2dGIKUF">this link</a> to the Journey Form.</li>
+	                            <li>Fill out and submit the “Journey” form (Indicate your interest in the South Asia Exposure Team).</li>
+	                        </ul>
+	                	</div>
+	                </div>
+                </div>               
+                <?php } ?>
             </div>
         <?php } else if (strpos($this->renderPosition('status'), 'Closed')) { ?>
             <div class="trips_funds_pop fancy_pop" href="#inline_funds_<?php echo $itemID; ?>">

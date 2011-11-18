@@ -3,6 +3,7 @@
     <positions layout="full">
         <position name="title">Title</position>
         <position name="subtitle">Subtitle</position>
+        <position name="type">Trip Type</position>        
         <position name="locale">Trip Locale</position>
         <position name="status">Status</position>
         <position name="categories">Categories</position>
@@ -20,6 +21,7 @@
     <positions layout="teaser">
         <position name="title">Title</position>
         <position name="subtitle">Subtitle</position>
+        <position name="type">Trip Type</position>        
         <position name="locale">Trip Locale</position>
         <position name="status">Status</position>
         <position name="categories">Categories</position>

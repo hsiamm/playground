@@ -11,6 +11,32 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
+<!-- SLIDER -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="/templates/ascctemplate/js/slides.min.jquery.js"></script>
+
+<script>
+    $(function(){
+        // Set starting slide to 1
+        var startSlide = 1;
+        // Get slide number if it exists
+        if (window.location.hash) {
+            startSlide = window.location.hash.replace('#','');
+        }
+        // Initialize Slides
+        $('#slides').slides({
+            preload: true,
+            preloadImage: 'images/loading.gif',
+            generatePagination: false,
+            play: 30000,
+            pause: 2500,
+            hoverPause: true,
+            generateNextPrev: false,
+            generatePagination: false
+        });
+    });
+</script>
+<!-- END SLIDER -->
 <script>
     $(document).ready(function() {
         $(".fancy_pop").fancybox({
@@ -63,6 +89,59 @@ defined('_JEXEC') or die('Restricted access');
 
     <p>Teams that go will participate in several types of ministry: education, evangelism, medical, exposure, and construction. No matter which role you participate in, our ultimate goal is to develop disciples of Jesus Christ who share His heart and vision for the entire world.</p>
 </div>
+
+<!-- TRIPS FEATURED --><!--
+<div class="trips_featured">
+
+    <div id="slider">
+        <div id="slides">
+            <div class="slides_container">
+                
+<div class="slide">
+    <div class="serve_featured_content">
+        <h1 class="serve"> Story Team Copy Editors </h1>
+        <h4 class="caps white"> 10 hours/month </h4>
+
+        <p class="sans white"> The Story Team is looking for a few experienced copy editors to help produce written stories for print and web. This involves a skilled level of editorial experience, as well as a willingness to invest in our writers. Approximately 10 hours a month. If you're interested in this opportunity, please sign up and attach a short resume or summary of your experience. </p>
+        <div style="float:left;" class="map_button">
+            <a href="https://theaustinstone.wufoo.com/forms/story-team-copy-editor/"><p class="show caption caps">Sign Up</p></a>
+        </div>
+    </div>
+</div>
+<div class="slide">
+    <div class="serve_featured_content">
+        <h1 class="serve"> Resource Team </h1>
+        <h4 class="caps white"> 1.5 hours/month </h4>
+
+        <p class="sans white"> The Resource Team is looking for individuals to help at one of our three campuses. We are looking for people that love books and are passionate about ensuring our body is well-resourced. The team serves before and after each service, and you may commit to a weekly, biweekly, or monthly schedule. </p>
+        <div style="float:left;" class="map_button">
+            <a href="https://theaustinstone.wufoo.com/forms/resource-team/"><p class="show caption caps">Sign Up</p></a>
+        </div>
+    </div>
+</div>
+<div class="slide">
+    <div class="serve_featured_content">
+        <h1 class="serve"> Front Desk Help </h1>
+        <h4 class="caps white"> 4-8 hours/week (flexible) </h4>
+
+        <p class="sans white"> Looking for consistent and reliable volunteers to serve at the offices of The Austin Stone Community Church.<br /><br />More details below. </p>
+        <div style="float:left;" class="map_button">
+            <a href="https://theaustinstone.wufoo.com/forms/austin-stone-front-desk-help/"><p class="show caption caps">Sign Up</p></a>
+        </div>
+    </div>
+</div>	
+            </div>
+            <a href="#" class="prev"></a>
+            <a href="#" class="next"></a>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+
+</div>
+
+
+<div style="clear:both;"></div>-->
+
 <div class="twocol_trips"> 
     <h4 class="yellow nomar caps">A note about trip costs</h4>
     <p class="white">While international travel is expensive, don't get overwhelmed by the overall cost of the trip you're interested in. A major part of the pre-trip preparation involves raising funds for your trip and we'll teach you how. This process is a major opportunity to rely on God while allowing those who can't physically go to share in your time abroad.</p>

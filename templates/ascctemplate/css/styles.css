@@ -842,7 +842,7 @@ ul.dropdown ul {
     width: 420px;
     height: auto;
     float: left;
-    margin: 0;
+    margin: 0 10px;
     background:#77787B;
     padding: 20px; 	
 }
@@ -2362,6 +2362,21 @@ a.new_here_top {
 }
 
 /*!~~~~~~~~~~~Trips~~~~~~~~~~~~~*/
+.trips_featured {
+	float:left;
+    width:420px;
+    height:225px;
+    padding:20px;
+    margin: 0 10px;
+    background: red;
+}
+
+.trips_featured_content
+{
+    width:auto;
+    height:auto;
+}
+
 
 .trips_sort {
     width: 940px;
