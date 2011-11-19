@@ -2367,9 +2367,9 @@ a.new_here_top {
 .trips_featured {
 	float:left;
     width:450px;
+    margin: 0 10px;
     height:358px;
     border: 5px solid #fff;
-    margin: 0 10px;
     background: #000;
 }
 
@@ -2395,17 +2395,6 @@ a.new_here_top {
 .trips_sort h2 {
     margin-top:11px;
     margin-bottom:0;
-}
-
-h4.application a {
-    color: #ffdd00;
-    -webkit-transition:color .2s ease-in; /*safari and chrome */
-    -o-transition: color .2s ease-in; /* opera */
-}
-
-h4.application a:hover {
-    border: none;
-    color: #000;
 }
 
 .trips_popout_wrapper {
@@ -2601,7 +2590,7 @@ p.trips {
 ================= */
 
 .trips_featured #slider {
-    width:460px;
+    width:450px;
     margin:0 auto;
     position:relative;
 }
@@ -2627,7 +2616,7 @@ p.trips {
 */
 
 .trips_featured .slides_container {
-    width:460px;
+    width:450px;
     height:auto;
     overflow:hidden;
     position:relative;
@@ -2665,7 +2654,7 @@ p.trips {
 }
 
 .trips_featured #slides .next {
-    left:415px;
+    left:412px;
 }
 
 .trips_featured #slides a.next {
