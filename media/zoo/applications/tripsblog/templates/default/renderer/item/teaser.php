@@ -127,7 +127,7 @@ $classfix = trim($classfix);
             	<div style="display: none;">
                 <div id="cru" style="width:440px;height:auto;overflow:auto;">
                 	<div class="trip_funds_due">
-	            		<h4 class="title"><a href="<?php echo trim($this->renderPosition('link')); ?>">Click here</a> to go to the CRU website to begin the application process.</h4>
+	            		<p class="sans">NOTE: The application is located on the CRU website. <a href="<?php echo trim($this->renderPosition('link')); ?>">Click here</a> to leave this page and begin the application process.</p>
                 	</div>
                 </div>
                 </div>
@@ -138,7 +138,7 @@ $classfix = trim($classfix);
 	            	<div style="display: none;">
 	                <div id="journey" style="width:440px;height:auto;overflow:auto;">
 	                	<div class="trip_funds_due">
-		            		<h4 class="black caps">To apply for this opportunity please follow the following steps:</h4>
+		            		<h4 class="black caps">To apply for this opportunity please follow these steps:</h4>
 		            		<ul class="bullet">
 	                            <li>Follow <a href="https://www.formspring.com/forms/?164673-MrI2dGIKUF">this link</a> to the Journey Form.</li>
 	                            <li>Fill out and submit the “Journey” form (Indicate your interest in the South Asia Exposure Team).</li>

@@ -62,12 +62,84 @@ defined('_JEXEC') or die('Restricted access');
     <p>Jesus said, &ldquo;As the Father has sent me, so I send you&rdquo; (John 20:21). Throughout this year and next you will have incredible opportunities to join God on mission among the nations. There are several ways to participate with us. You can help make others aware of the opportunities to serve; you can support those who are going through prayer or financially; or you can apply to go with one of the teams.</p>
 
     <p>Teams that go will participate in several types of ministry: education, evangelism, medical, exposure, and construction. No matter which role you participate in, our ultimate goal is to develop disciples of Jesus Christ who share His heart and vision for the entire world.</p>
-</div>
+
 <div class="twocol_trips"> 
     <h4 class="yellow nomar caps">A note about trip costs</h4>
     <p class="white">While international travel is expensive, don't get overwhelmed by the overall cost of the trip you're interested in. A major part of the pre-trip preparation involves raising funds for your trip and we'll teach you how. This process is a major opportunity to rely on God while allowing those who can't physically go to share in your time abroad.</p>
-
+</div><!--/twocol_trips-->
 </div>
+<script src="/templates/ascctemplate/js/slides.min.jquery.js"></script>
+
+<script>
+    $(function(){
+        // Set starting slide to 1
+        var startSlide = 1;
+        // Get slide number if it exists
+        if (window.location.hash) {
+            startSlide = window.location.hash.replace('#','');
+        }
+        // Initialize Slides
+        $('#slides').slides({
+            preload: true,
+            preloadImage: 'images/loading.gif',
+            generatePagination: false,
+            play: 7000,
+            pause: 500,
+            slideSpeed: 1150,
+            hoverPause: true,
+            effect: 'slide',
+            randomize: true,
+            generateNextPrev: false,
+            generatePagination: false
+        });
+    });
+</script>
+<!--TRIPS FEATURED -->
+<div class="trips_featured">
+    <div id="slider">
+        <div id="slides">
+            <div class="slides_container">
+                
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips1.jpg" alt="India"/> 
+				    </div>
+				</div><!--/slide-->
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips2.jpg" alt="India"/> 
+				    </div>
+				</div><!--/slide-->
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips3.jpg" alt="Ethiopia"/> 
+				    </div>
+				</div><!--/slide-->
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips4.jpg" alt="Ethiopia"/> 
+				    </div>
+				</div><!--/slide-->
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips5.jpg" alt="Cairo"/> 
+				    </div>
+				</div><!--/slide-->
+				<div class="slide">
+				    <div class="trips_featured_content">
+				       <img src="images/trips_slider/slide_trips6.jpg" alt="Cairo"/> 
+				    </div>
+				</div><!--/slide-->												
+            </div><!--/slides_container-->
+            <a href="#" class="prev"></a>
+            <a href="#" class="next"></a>
+        </div><!--/slides-->
+        <div style="clear:both;"></div>
+    </div><!--/slider-->
+</div><!--/TRIPS FEATURED --> 
+
+<div style="clear:both;"></div>
+<div class="bumpbump">&nbsp;</div>
 
 <div class="trips_sort">
     <div class="trips_popout_wrapper">

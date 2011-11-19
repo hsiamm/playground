@@ -842,7 +842,7 @@ ul.dropdown ul {
     width: 420px;
     height: auto;
     float: left;
-    margin: 0 10px;
+    margin-top: 13px;
     background:#77787B;
     padding: 20px; 	
 }
@@ -1887,6 +1887,8 @@ h1.serve {
     border-bottom: none;
 }
 
+
+
 /* CLASSES
 ------------------------------------------------ */
 
@@ -2364,11 +2366,11 @@ a.new_here_top {
 /*!~~~~~~~~~~~Trips~~~~~~~~~~~~~*/
 .trips_featured {
 	float:left;
-    width:420px;
-    height:225px;
-    padding:20px;
+    width:450px;
+    height:358px;
+    border: 5px solid #fff;
     margin: 0 10px;
-    background: red;
+    background: #000;
 }
 
 .trips_featured_content
@@ -2393,6 +2395,17 @@ a.new_here_top {
 .trips_sort h2 {
     margin-top:11px;
     margin-bottom:0;
+}
+
+h4.application a {
+    color: #ffdd00;
+    -webkit-transition:color .2s ease-in; /*safari and chrome */
+    -o-transition: color .2s ease-in; /* opera */
+}
+
+h4.application a:hover {
+    border: none;
+    color: #000;
 }
 
 .trips_popout_wrapper {
@@ -2457,7 +2470,7 @@ a.new_here_top {
     background-color: #FFFFFF;
     height: auto;
     padding: 20px;
-    width: 300px;
+    width: 400px;
 }
 
 .trip_commitments {
@@ -2584,6 +2597,150 @@ p.trips {
     text-transform: uppercase;
 }
 
+/* TRIPS SLIDER
+================= */
+
+.trips_featured #slider {
+    width:460px;
+    margin:0 auto;
+    position:relative;
+}
+
+
+/*
+	Slideshow style
+*/
+
+.trips_featured #slides {
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:100;
+}
+
+/*
+	Slides container
+	Important:
+	Set the width of your slides container
+	If height not specified height will be set by the slide content
+	Set to display none, prevents content flash
+*/
+
+.trips_featured .slides_container {
+    width:460px;
+    height:auto;
+    overflow:hidden;
+    position:relative;
+    display:none;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	Offeset for the 20px of padding
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+.trips_featured #slides .slide {
+    padding:0px;
+    width:450px;
+    height:358px;
+    display:block;
+}
+
+/*
+	Next/prev buttons
+*/
+.trips_featured #slides .next,.trips_featured #slides .prev {
+    position:absolute;
+    top:320px;
+    left:375px;
+    display:block;
+    z-index:101;
+    color:#fff;
+    font-size: 14px;
+    font-family:"news-gothic-std-1","news-gothic-std-2", Arial Narrow, Arial, Helvetica, Verdana, sans-serif;
+}
+
+.trips_featured #slides .next {
+    left:415px;
+}
+
+.trips_featured #slides a.next {
+    border: none;
+    height:34px;
+    width:32px;
+    background-image: url('/images/big_arrow_y_right.png');
+    background-repeat: no-repeat;
+    -webkit-transition:opacity .2s ease-in; /*safari and chrome */
+    -o-transition: opacity .2s ease-in; /* opera */
+}
+
+.trips_featured #slides a.prev {
+    border: none;
+    height:34px;
+    width:32px;
+    background-image: url('/images/big_arrow_y_left.png');
+    background-repeat: no-repeat;
+    -webkit-transition:opacity .2s ease-in; /*safari and chrome */
+    -o-transition: opacity .2s ease-in; /* opera */
+}
+
+.trips_featured #slides a.next:hover,.trips_featured #slides a.prev:hover  {
+    border: none;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+}
+
+/*
+	Type and anchors
+*/
+
+.trips_featured #slides .link {
+    display:block;
+    margin-top:10px;
+    font-weight:800;
+}
+
+/*
+	Pagination
+*/
+
+.pagination {
+    margin:-220px 0 0 0;
+    width:auto;
+    float: right;
+    position: relative;
+}
+
+.pagination li {
+    float:left;
+    margin:0 5px;
+    list-style:none;
+}
+
+.pagination li a {
+    display:block;
+    width:10px;
+    height:10px;
+    padding-top:0;
+    background-image:url('/images/pagination.png');
+    background-position:0 0;
+    float:left;
+    overflow:hidden;
+    text-indent: -9999px;
+    border-bottom: none;
+    z-index: 9000;
+}
+
+.pagination li.current a {
+    background-position:0 -12px;
+    color:#fff;
+    border-bottom: none;
+}
 
 
 /* TRIPS TYPES ICONS
