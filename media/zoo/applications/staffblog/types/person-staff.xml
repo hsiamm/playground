@@ -3,7 +3,7 @@
   <params>
     <param type="image" identifier="f98a46e7-a524-486d-854a-0078982e5b19" name="Headshot" description="Must be less than 512 KB" access="1" load_lightbox="0" upload_directory="images/staffpics" max_upload_size="512"/>
     <param type="text" identifier="43963ca5-a280-4737-bdac-a0e0689e940f" name="Job Title" description="" access="1" default="" repeatable="0"/>
-    <param type="text" identifier="4e50d242-c8ab-415e-b0fe-3e61d6eaf068" name="Email" description="" access="1" default="@austinstone.org" repeatable="0"/>
+    <param type="text" identifier="4e50d242-c8ab-415e-b0fe-3e61d6eaf068" name="Email" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="469685cb-e373-412a-9d52-ab3497a48f21" name="What I Do" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="765421ed-4434-4a54-8bde-639b64311d77" name="Twitter" description="Their twitter name, no @ sign" access="1" default="" repeatable="0"/>
     <param type="textarea" identifier="4b686386-9863-4505-9f5c-63b779a04e7e" name="Bio" description="" access="1" default="" jplugins="1" repeatable="0"/>
