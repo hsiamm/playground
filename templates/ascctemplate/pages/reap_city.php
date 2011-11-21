@@ -108,7 +108,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "yesterday_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
+                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
@@ -145,7 +145,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "today_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
+                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
@@ -183,7 +183,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "tomorrow_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
+                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
