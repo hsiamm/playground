@@ -85,6 +85,7 @@ RewriteRule .* index.php [L]
 # now the real stuff is below
 #
 
+Redirect permanent /first http://austinstone.org/times-locations#tuesday
 Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
 Redirect permanent /thecity https://austinstone.onthecity.org/session/new
 Redirect permanent /jointhecity https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/
