@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
     <p>Don't let course fees prevent you from registering. <br> <a href="https://theaustinstone.wufoo.com/forms/gt-get-trained-class-scholarship/">Apply for a needs-based scholarship</a>.</p>
 </div>
 
-<div style="clear:both";>&nbsp;</div>
+<div style="clear:both;">&nbsp;</div>
 
 
 
@@ -203,7 +203,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="bump"></div>
 <div class="onecol">
     <blockquote>
-        Fall classes are now underway. Check back soon for Spring registration.
+        Fall classes are now underway. Check back soon for Spring registration. Look below for Spring classes offered.
     </blockquote>
 </div>
 <div class="clear:both;">&nbsp;</div>

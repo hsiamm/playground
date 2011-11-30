@@ -43,15 +43,18 @@ $classfix = trim($classfix);
 
         <div style="clear:both;"></div>
 
+        <!--
         <div class="class_signup">
-            <?php if (strpos($status, 'Open')) { ?>
-                <a href="http://<?php echo trim($this->renderPosition('link')); ?>"><p class="caption caps">Sign Up Now</p></a>
-            <?php } else if (strpos($status, 'Waitlist')) { ?>
-                <a href="http://<?php echo trim($this->renderPosition('link')); ?>"><p class="caption caps">Join Waitlist</p></a>
-            <?php } else { ?>
+        <?php //if (strpos($status, 'Open')) { ?>
+                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Sign Up Now</p></a>
+        <?php // } else if (strpos($status, 'Waitlist')) { ?>
+                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Join Waitlist</p></a>
+        <?php //} else { ?>
                 <a style="background:#77787B; cursor:default;" href="#"><p class="caption caps"><del>Sign Up Now</del></p></a>
-            <?php } ?>
+        <?php //} ?>
         </div>
+        -->
+        <div class="bump"></div>
 
         <div style="clear:both;"></div>
 
