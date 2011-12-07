@@ -718,16 +718,13 @@ div.search div.pagination span.pagenav a {
     height: 360px;
     margin-top: 30px;
     background-color: #999;
-    background-image: url('/home_images/xmas-schedule.jpg');
-    background-position: center center;
-    background-repeat: no-repeat;
 }
 
 .home_image_info {
     float:right;
     width:auto;
     background:#000;
-    margin:100px 140px 0 0;
+    margin:-58px 90px 0 0;
     height:35px;
     text-align:right;
     padding:0 10px;
@@ -927,6 +924,12 @@ ul.dropdown ul {
 }
 
 /*!~~~~~~~~~~~styles~~~~~~~~~~~~~*/
+.home_modules {
+    position: absolute;
+    height: 360px;
+    margin-top: -360px;
+}
+
 .home_sermon {
     float: left;
     width: 340px;
@@ -2365,7 +2368,7 @@ a.new_here_top {
 
 /*!~~~~~~~~~~~Trips~~~~~~~~~~~~~*/
 .trips_featured {
-	float:left;
+    float:left;
     width:450px;
     margin: 0 10px;
     height:358px;

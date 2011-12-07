@@ -57,4 +57,8 @@
         <position name="description">Description</position>
         <position name="signup">Sign up</position>
     </positions>
+    <positions layout="home_page_slider">
+        <position name="image">Image</position>
+        <position name="text">Text</position>
+    </positions>
 </renderer>

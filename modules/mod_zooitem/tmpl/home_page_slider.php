@@ -15,12 +15,16 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="wrapper1">
     <ul id="slider1">
-        <?php
-        // render items
-        if (count($this->items)) {
-            echo $this->partial('items');
-        }
-        ?>
+        <?php if (!empty($items)) : ?>
+            <?php $i = 0;
+            foreach ($items as $item) : ?>
+                <h2 class="nomar"><?php echo $renderer->render('item.' . $layout, compact('item', 'params')); ?></h2>
+                <?php $i++;
+            endforeach; ?>
+
+        <?php else : ?>
+            <?php echo JText::_('COM_ZOO_NO_ITEMS_FOUND'); ?>
+        <?php endif; ?>
     </ul>
 </div>
 

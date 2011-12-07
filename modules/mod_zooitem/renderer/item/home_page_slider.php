@@ -13,13 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 // init vars
 $params = $item->getParams('site');
 ?>
+<li>
+    <div class="content" style="background-image: url('<?php echo trim($this->renderPosition('image')); ?>');"></div>
 
-<div class="content" style="background-image: url('<?php echo $this->renderPosition('image'); ?>');"></div>
-
-<?php if ($this->checkPosition('text')) { ?>
-    <div class="container">
-        <div class="home_image_info">
-            <h2 class="nomar white nocap" style="line-height:35px;"><?php echo $this->renderPosition('text'); ?></h2>
+    <?php if ($this->checkPosition('text')) { ?>
+        <div class="container">
+            <div class="home_image_info">
+                <h2 class="nomar white nocap" style="line-height:35px;"><?php echo $this->renderPosition('text'); ?></h2>
+            </div>
         </div>
-    </div>
-<?php } ?>
+    <?php } ?>
+</li>

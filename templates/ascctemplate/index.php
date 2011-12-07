@@ -89,6 +89,28 @@ $pageRef = $_SERVER['REQUEST_URI'];
         }  
     });
 </script>
+
+<!-- Anything Slider -->
+<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/anythingslider.css">
+<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/jquery.anythingSlider.js"></script>
+<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/jquery.anythingSlider.fx.js"></script>
+<script>
+    $(function () {
+        $('#slider1').anythingSlider({
+            expand : true,
+            autoPlay : true,
+            startStopped : false,
+            pauseOnHover : false,
+            buildNavigation : false,
+            buildStartStop : false,
+            delay : 3000, /* milliseconds */
+            animationTime : 600, /* milliseconds transition */
+            appendForwardTo: $('#forward'),
+            appendBackTo: $('#back')
+        });
+    });
+</script>
+
 <script type="text/javascript">
 
     var _gaq = _gaq || [];
@@ -175,17 +197,24 @@ margin-top: -4px;
     <?php // test if home page, if so, show image_main
     if ($pageRef == '/') { ?>
         <div class="image_main">
-            <div class="container">
-                <jdoc:include type="modules" name="current_sermon" />
 
-                <div style="clear:both;"></div>
-                <jdoc:include type="modules" name="current_hap" />
-    			
-    			<div style="clear:both;"></div>
-    			<!--<div class="onecol">
-	    			<div class="home_image_info"><h2 class="nomar white nocap" style="line-height:35px;">Nov 11&ndash;13 at Camp Tejas. <a href="https://theaustinstone.wufoo.com/forms/austin-stone-biblical-manhood-fall-retreat-signup/">Sign up</a>.</h2></div>
-	    		</div>-->
+            <jdoc:include type="modules" name="home_page_slider" />
+
+            <div class="container">
+                <div class="home_modules">
+                    <jdoc:include type="modules" name="current_sermon" />
+
+                    <div style="clear:both;"></div>
+                    <jdoc:include type="modules" name="current_hap" />
+
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="slider_controls">
+                    <div id="forward"></div>
+                    <div id="back"></div>
+                </div>
             </div> <!-- /container -->
+
         </div> <!-- /image_main -->
 
         <div class="bumpbump">&nbsp;</div>
