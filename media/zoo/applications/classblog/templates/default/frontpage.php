@@ -194,7 +194,7 @@ defined('_JEXEC') or die('Restricted access');
         <a id="location" class="class_sort_button"><h2 class="nomar">By Campus</h2></a>
         <ul id="location_filter" class="class_sort_options">
             <a id="allLoc" class="currentFilter"><li>All</li></a>
-            <a id="austinhigh" class="filter"><li>Austin High</li></a>
+            <a id="downtown" class="filter"><li>Downtown</li></a>
             <a id="stjohn" class="filter"><li>St. John</li></a>
         </ul>
     </div>

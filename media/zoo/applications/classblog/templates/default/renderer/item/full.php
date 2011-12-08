@@ -17,8 +17,8 @@ $location = $this->renderPosition('location');
 $categories = $this->renderPosition('categories');
 $status = $this->renderPosition('status');
 $classfix = '';
-if (strpos($location, 'Austin High'))
-    $classfix .= 'austinhigh ';
+if (strpos($location, 'Downtown'))
+    $classfix .= 'downtown ';
 else
     $classfix .= 'stjohn ';
 if (strpos($categories, 'Bible'))
