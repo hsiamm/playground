@@ -203,7 +203,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="bump"></div>
 <div class="onecol">
     <blockquote>
-        Fall classes are now underway. Check back soon for Spring registration. Look below for Spring classes offered.
+        Below is a preview of Spring 2012 classes. Registration will open in early 2012.
     </blockquote>
 </div>
 <div class="clear:both;">&nbsp;</div>
