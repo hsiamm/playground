@@ -148,7 +148,7 @@ div.anythingSlider .anythingWindow {
 .back a:hover, div.anythingSlider .back a.hover {  }
 .back.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
 /* forward arrow */
-#forward { height: 29px; width: 31px; float: right; margin-top: 100px; margin-left: 15px;}
+#forward { height: 29px; width: 31px; float: right; margin-top: 100px; margin-left: 7px;}
 .forward a { background: url(/images/big_arrow_b_right.png) no-repeat; }
 .forward a:hover, div.anythingSlider .forward a.hover {  }
 .forward.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
