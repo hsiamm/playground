@@ -104,7 +104,7 @@ $pageRef = $_SERVER['REQUEST_URI'];
             buildNavigation : false,
             buildStartStop : false,
             delay : 8000, /* milliseconds */
-            animationTime : 1500, /* milliseconds transition */
+            animationTime : 700, /* milliseconds transition */
             appendForwardTo: $('#forward'),
             appendBackTo: $('#back')
         });

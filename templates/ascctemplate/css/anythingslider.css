@@ -143,12 +143,12 @@ div.anythingSlider .anythingWindow {
 /* hide text, target the span so IE7 doesn't text-indent the link */
 .arrow a span { display: block; text-indent: -9999px; }
 /* back arrow */
-#back { height: 29px; width: 31px; float: right; margin-top: 100px;}
+#back { height: 29px; width: 31px; float: right; margin: 100px 0 0 10px;}
 .back a { background: url(/images/big_arrow_b_left.png) no-repeat; }
 .back a:hover, div.anythingSlider .back a.hover {  }
 .back.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
 /* forward arrow */
-#forward { height: 29px; width: 31px; float: right; margin-top: 100px; margin-left: 7px;}
+#forward { height: 29px; width: 31px; float: right; margin: 100px 10px 0 7px;}
 .forward a { background: url(/images/big_arrow_b_right.png) no-repeat; }
 .forward a:hover, div.anythingSlider .forward a.hover {  }
 .forward.disabled { display: none; } /* disabled arrows, hide or reduce opacity: opacity: .5; filter: alpha(opacity=50); */
