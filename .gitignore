@@ -3,6 +3,7 @@ robots.txt
 cache/
 tmp/
 images/
+home_images/
 images
 *~
 *.*~
