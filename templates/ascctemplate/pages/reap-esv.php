@@ -110,7 +110,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
                         <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
-            </div><!-- /reap -->
+            </div><!-- /reap-->
         <?php } ?>
     </div>
 

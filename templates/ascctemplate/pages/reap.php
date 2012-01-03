@@ -90,7 +90,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <span id="today">Today</span> | 
             <span id="tomorrow">Tomorrow &rarr;</span>
         </p>
-    </div><!--/reap_top-->
+    </div><!--/reap_top -->
 </div>
 
 <div style="clear:both;"></div>
