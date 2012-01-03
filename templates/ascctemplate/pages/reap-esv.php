@@ -20,7 +20,7 @@ $date = $today;
 $date_long = $today_long;
 
 $key = "IP";
-$plan = "one-year-tract";
+$plan = "esv-study-bible";
 $format = "crossway-xml-1.0";
 $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles & Prophets", 4 => "Gospels & Epistles");
 ?>
@@ -44,7 +44,6 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             return false;
         });
         
-        
         //change day to grey
         $(".caption span").click(function(){
             $(".reap").removeClass("reap_current");
@@ -66,7 +65,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             $("#passage_" + id + "_1").fadeIn("slow");
             $("#" + id + "_1").addClass("reap_current"); 
             return false;
-        });
+         });
        
     });
 </script>
@@ -108,7 +107,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "yesterday_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
+                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
@@ -145,7 +144,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "today_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
+                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
@@ -183,7 +182,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
             <div class="reap" id="<?php echo "tomorrow_" . $count; ?>"><a href="#">
                     <div class="reap_verse">
                         <h2 class="reap_book nomar"><?php echo str_replace('-', '&ndash;', $passage->reference); ?></h2>
-                       <!-- <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>-->
+                        <h3 class="reap_sub nomar"><?php echo $type[$count]; ?></h3>
                         <div class="reap_rule">&nbsp;</div>
                     </div></a>
             </div><!-- /reap -->
@@ -215,8 +214,9 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
 
     <p class="sans"><a href="/files/reap.pdf">Here are some instructions and a quick example</a>.</p>
     <p class="sans"><strong>TIP:</strong> To read the entire Bible in one year, read from all four columns each day. To read through the Bible in two or four years, select two or one column this year and the remaining columns in subsequent years.</p>
+    <p class="sans nomar"><a href="/files/reading-plan.pdf">Download a PDF</a> of our reading plan for the whole year.</p>
     <div class="rule_wh_short">&nbsp;</div>
-    <p class="sans"><a href="/reap-esv"><strong>Go to the ESV Study Bible Plan</strong></a>.</p>
+    <p class="sans"><a href="/reap"><strong>Go back to the M'Cheyne One Year Reading Plan</strong></a>.</p>
 </div>
 
 <?php
@@ -230,16 +230,13 @@ function getReadingForDayOfWeek($dayOfWeek) {
     $day_date = date("Y-m-d", strtotime($year . "-W" . $week . "-" . $dayOfWeek));
 
     // requests reading plan info, strips out each verse info
-    $url = "http://www.esvapi.org/v2/rest/readingPlanInfo?key=IP&reading-plan=one-year-tract&date=$day_date&output-format=crossway-xml-1.0";
+    $url = "http://www.esvapi.org/v2/rest/readingPlanInfo?key=IP&reading-plan=esv-study-bible&date=$day_date&output-format=crossway-xml-1.0";
     $xml_obj = new SimpleXMLElement(getResponseFromURL($url));
-    print $xml_obj;
     foreach ($xml_obj->info as $verse_info) {
-        $arr1 = explode(";", $verse_info->{'private'}, 2);
-        $arr2 = explode(";", $verse_info->{'family'}, 2);
-        echo '<td>' . str_replace('-', '&ndash;', $arr1[0]) . '</td>';
-        echo '<td>' . str_replace('-', '&ndash;', $arr1[1]) . '</td>';
-        echo '<td>' . str_replace('-', '&ndash;', $arr2[0]) . '</td>';
-        echo '<td>' . str_replace('-', '&ndash;', $arr2[1]) . '</td>';
+        echo '<td>' . str_replace('-', '&ndash;', $verse_info->{'psalms-wisdom'}) . '</td>';
+        echo '<td>' . str_replace('-', '&ndash;', $verse_info->{'pentateuch-history'}) . '</td>';
+        echo '<td>' . str_replace('-', '&ndash;', $verse_info->{'chronicles-prophets'}) . '</td>';
+        echo '<td>' . str_replace('-', '&ndash;', $verse_info->{'gospels-epistles'}) . '</td>';
     }
 }
 ?>
@@ -253,10 +250,10 @@ function getReadingForDayOfWeek($dayOfWeek) {
     <table>
         <tr>
             <td></td>
-            <td><h3 class="nomar">Old<br>Testament</h3></td>
-            <td><h3 class="nomar">New<br>Testament</h3></td>
-            <td><h3 class="nomar">Old<br>Testament</h3></td>
-            <td><h3 class="nomar">New<br>Testament</h3></td>
+            <td><h3 class="nomar">Psalm<br>&amp; Wisdom</h3></td>
+            <td><h3 class="nomar">History<br>of Israel</h3></td>
+            <td><h3 class="nomar">Chronicles<br>&amp; Prophets</h3></td>
+            <td><h3 class="nomar">Gospels<br>&amp; Epistles</h3></td>
         </tr>
         <tr class="alt_day">
             <td class="day grey">Sunday:</td>
