@@ -14,6 +14,7 @@
         <position name="instructors">Instructors</position>
         <position name="class_description">Class Description</position>
         <position name="homework">Homework</position>
+        <position name="sp-notes">Special Notes</position>
     </positions>
     <positions layout="teaser">
         <position name="title">Title</position>
@@ -29,5 +30,6 @@
         <position name="instructors">Instructors</position>
         <position name="class_description">Class Description</position>
         <position name="homework">Homework</position>
+		<position name="sp-notes">Special Notes</position>
     </positions>
 </renderer>

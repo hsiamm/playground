@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <div class="fivecol_2"> 
-    <p>Our classes fill up fast and we want to hold spots for those who are able to commit. The last day for refunds will be September 10th.</p>
+    <p>Our classes fill up fast and we want to hold spots for those who are able to commit. The last day for refunds will be <strong>February 2</strong>.</p>
     <p>Don't let course fees prevent you from registering. <br> <a href="https://theaustinstone.wufoo.com/forms/gt-get-trained-class-scholarship/">Apply for a needs-based scholarship</a>.</p>
 </div>
 

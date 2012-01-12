@@ -19,8 +19,8 @@
     <param type="text" identifier="8572e862-0093-4495-9015-1bb61ca27dfb" name="Class Fee" description="Example: $15" access="1" default="$30" repeatable="0"/>
     <param type="text" identifier="3a93ed1f-382b-4d84-98c0-5061af342d8b" name="Instructor" description="Who is teaching the class." access="1" default="" repeatable="0"/>
     <param type="text" identifier="3f4be974-e0c5-4256-887f-c4f3ffd353a6" name="Open to:" description="What type of person the class is open to" access="1" default="" repeatable="0"/>
+    <param type="text" identifier="074cc0d1-db8a-4b49-b9d5-607977424017" name="Special Notes" description="special notes for classes" access="1" default="Open" repeatable="0"/>
     <param type="textarea" identifier="acd8f0c9-89f2-4a1d-a946-6e604d886f8a" name="Class description &amp; Syllabus" description="Enter the description and syllabus for the class into the text box below (try to be fairly brief)" access="1" default="" jplugins="1" repeatable="0"/>
     <param type="textarea" identifier="6055f16b-c2d8-4f28-bad2-9e121e3d1a82" name="Quotes" description="" access="1" default="" jplugins="1" repeatable="0"/>
   </params>
 </type>
-<!--comment-->

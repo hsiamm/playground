@@ -84,6 +84,10 @@ $classfix = trim($classfix);
 
                 <?php echo str_replace('-', '&ndash;', $this->renderPosition('dates')); ?></h3>
             <h3><?php echo str_replace(',', '<br>', $this->renderPosition('instructors')); ?></h3>
+            
+            <?php if ($this->checkPosition('sp-notes')) : ?>
+			<h3 class="nomar sp-notes"><em><?php echo $this->renderPosition('sp-notes'); ?></em></h3>
+			 <?php endif; ?>           
         </div>
         <div style="clear:both;margin-top:10px;"></div>
     </div>
