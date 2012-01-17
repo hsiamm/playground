@@ -9,6 +9,7 @@
     <param type="select" identifier="23c51773-2821-4500-aff4-288d40077efd" name="Location" description="" access="1" default="" multiple="0">
       <option name="Downtown Campus" value="downtown"/>
       <option name="St. John Campus" value="st-john"/>
+      <option name="West Campus" value="west-campus"/>
     </param>
     <param type="text" identifier="8df8fbc0-aa78-46cd-872d-9d9722d13fc0" name="Regonline form" description="" access="1" default="" repeatable="0"/>
     <param type="text" identifier="8ec757c9-819f-4a86-a2c6-e541173009a1" name="Day of the Week (2 letter)" description="" access="1" default="SU" repeatable="0"/>

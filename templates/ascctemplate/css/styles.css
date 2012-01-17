@@ -1982,7 +1982,6 @@ h1.serve {
     color:#000;
 }
 
-h3
 
 .class_signup a {
     float:left;
@@ -1990,7 +1989,7 @@ h3
     text-align: center;
     width:80px;
     height:22px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     -webkit-transition:opacity .2s ease-in; /*safari and chrome */
     -o-transition: opacity .2s ease-in; /* opera */
 }

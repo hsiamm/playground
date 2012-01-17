@@ -19,8 +19,11 @@ $status = $this->renderPosition('status');
 $classfix = '';
 if (strpos($location, 'Downtown'))
     $classfix .= 'downtown ';
+else if (strpos($location, 'West Campus'))
+$classfix .= 'west ';    
 else
     $classfix .= 'stjohn ';
+    
 if (strpos($categories, 'Bible'))
     $classfix .= 'bible ';
 if (strpos($categories, 'Christian Life'))

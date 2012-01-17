@@ -196,6 +196,7 @@ defined('_JEXEC') or die('Restricted access');
             <a id="allLoc" class="currentFilter"><li>All</li></a>
             <a id="downtown" class="filter"><li>Downtown</li></a>
             <a id="stjohn" class="filter"><li>St. John</li></a>
+            <a id="west" class="filter"><li>West</li></a>
         </ul>
     </div>
 </div>
