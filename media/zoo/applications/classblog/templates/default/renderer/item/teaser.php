@@ -46,17 +46,17 @@ $classfix = trim($classfix);
 
         <div style="clear:both;"></div>
 
-        <!--
+       
         <div class="class_signup">
-        <?php //if (strpos($status, 'Open')) { ?>
-                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Sign Up Now</p></a>
-        <?php // } else if (strpos($status, 'Waitlist')) { ?>
-                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Join Waitlist</p></a>
-        <?php //} else { ?>
+        <?php if (strpos($status, 'Open')) { ?>
+                <a href="http://<?php echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Sign Up Now</p></a>
+        <?php  } else if (strpos($status, 'Waitlist')) { ?>
+                <a href="http://<?php echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Join Waitlist</p></a>
+        <?php } else { ?>
                 <a style="background:#77787B; cursor:default;" href="#"><p class="caption caps"><del>Sign Up Now</del></p></a>
-        <?php //} ?>
+        <?php } ?>
         </div>
-        -->
+
         <div class="bump"></div>
 
         <div style="clear:both;"></div>
@@ -77,9 +77,9 @@ $classfix = trim($classfix);
 
         <div class="class_info">
             <?php if (strpos($status, 'Closed')) { ?>
-                <h3 style="color:red;">Sorry, class closed</h3>
+                <h3 style="color:red;margin-top:1px;">Sorry, class closed</h3>
             <?php } else if (strpos($status, 'Waitlist')) { ?>
-                <h3 style="color:red;">Class full, join waitlist</h3>
+                <h3 style="color:red;margin-top:1px;">Class full, join waitlist</h3>
             <?php } ?>
             <h3><?php echo $this->renderPosition('location'); ?><br>
                 <?php echo $this->renderPosition('day_of_week'); ?> <?php echo str_replace('-', '&ndash;', $this->renderPosition('time')); ?></h3>
