@@ -14,7 +14,7 @@
     if (!is_writable($cache))
         echo 'Cache folder is unwriteable. Solution: chmod 755 ' . $cache;
 
-    $user = 'jeremy_rodgers';
+    $user = 'theaustinstone';
     $quantity = '5';
     //$cachetime = '1';
     $cachetime = '30' * 60;
