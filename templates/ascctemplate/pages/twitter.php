@@ -1,4 +1,4 @@
-<h4>RECENTLY ON TWITTER&nbsp;//&nbsp;
+<h4>RECENTLY ON TWITTER &nbsp;//&nbsp;
 
     <?php
 
@@ -14,7 +14,7 @@
     if (!is_writable($cache))
         echo 'Cache folder is unwriteable. Solution: chmod 755 ' . $cache;
 
-    $user = 'theaustinstone';
+    $user = 'jeremy_rodgers';
     $quantity = '5';
     //$cachetime = '1';
     $cachetime = '30' * 60;
