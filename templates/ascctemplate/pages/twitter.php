@@ -1,4 +1,4 @@
-<h4>RECENTLY ON TWITTER &nbsp;//&nbsp;
+<h4>RECENTLY ON TWITTER&nbsp;//&nbsp;
 
     <?php
 
