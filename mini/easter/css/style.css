@@ -280,7 +280,7 @@ body#faq a#faqnav {
 #stone_logo_foxed a {
 	width: 100px;
 	height: 100px;
-	background-image: url('/images/easter/ascc_logo2.png');
+	background-image: url('../images/ascc_logo2.png');
 	background-position: 0 -100px;
 	display: block;
 	background-repeat: no-repeat;
@@ -301,7 +301,7 @@ body#faq a#faqnav {
 #food_drive a {
 	width: 130px;
 	height: 250px;
-	background-image: url('/images/easter/canned.png');
+	background-image: url('../images/canned.png');
 	background-position: 0 0;
 	display: block;
 	background-repeat: no-repeat;
@@ -321,7 +321,7 @@ body#faq a#faqnav {
 #reg_pack a {
 	width: 660px;
 	height: 215px;
-	background-image: url('/images/easter/kidstuff_reg_packet.png');
+	background-image: url('../images/kidstuff_reg_packet.png');
 	background-position: 0 0;
 	display: block;
 	background-repeat: no-repeat;
@@ -339,7 +339,7 @@ body#faq a#faqnav {
 
 
 #logo_inside {
-	background-image: url('/images/easter/crown.png');
+	background-image: url('../images/crown.png');
 	width: 250px;
 	height:100px;
 	text-indent: -9999px;
@@ -358,7 +358,7 @@ body#faq a#faqnav {
 #logo_foxed a {
 	width: 225px;
 	height: 185px;
-	background-image: url('/images/easter/easter_sprite.png');
+	background-image: url('../images/easter_sprite.png');
 	background-position: 0 -185px;
 	display: block;
 	background-repeat: no-repeat;
@@ -423,7 +423,7 @@ ol.kids {
 #fb_logo_foxed a {
 	width: 40px;
 	height: 39px;
-	background-image: url('/images/easter/fb_logo.png');
+	background-image: url('../images/fb_logo.png');
 	background-position: 0 -41px;
 	display: block;
 	background-repeat: no-repeat;
@@ -444,7 +444,7 @@ ol.kids {
 #twitter_logo_foxed a {
 	width: 40px;
 	height: 39px;
-	background-image: url('/images/easter/twitter_logo.png');
+	background-image: url('../images/twitter_logo.png');
 	background-position: 0 -41px;
 	display: block;
 	background-repeat: no-repeat;
