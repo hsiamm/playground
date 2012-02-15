@@ -12,7 +12,7 @@
 <div id="stone_logo_foxed"><a href="/index"></a>
 </div>
 
-<div id="fb_logo_foxed"><a href="http://www.facebook.com/event.php?eid=163611597026010"></a>
+<div id="fb_logo_foxed"><a href="http://facebook.com/theaustinstone"></a>
 </div>
 
 <div id="twitter_logo_foxed"><a href="https://twitter.com/theaustinstone"></a>
