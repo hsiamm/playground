@@ -139,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
                         <li>
                             <img src="images/class_cat_xian_life.png" style="float:left;margin:0 10px 45px 0;" />
                             <h2 class="nomar blue">Christian Life &amp; Practice</h2>
-                            <p>Classes focused on spiritual formation. Christian Life &amp; Practice classes focus on developing disciplines and community towards becoming better apprentices &ndash; foolwers, learners, doers &ndash; of Jesus.</p>
+                            <p>Classes focused on spiritual formation. Christian Life &amp; Practice classes focus on developing disciplines and community towards becoming better apprentices &ndash; followers, learners, doers &ndash; of Jesus.</p>
                         </li>
                         <div style="clear:both;"></div>
                         <li>
