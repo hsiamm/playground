@@ -2,9 +2,9 @@ configuration.php
 robots.txt
 cache/
 tmp/
-images/
+/images/
 home_images/
 email/
-images
+/images
 *~
 *.*~
