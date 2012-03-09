@@ -1,130 +1,89 @@
-{embed="includes/easter_header"}
+<?php include("includes/header.php"); ?>
 <body id="kids"> 
 
-<div id="logo_foxed"><a href="/easter"></a>
-</div>
-
-<div id="food_drive"><a href="/easter/fooddrive"></a></div>
+<div class="site">
  
 <div class="container">
-
- 
- 	<div id="logo_inside">
- 		<a href="index.php">Easter at The Austin Stone</a>
- 	</div>
  	
- 	{embed="includes/easter_menu"}
-	
-	<div id="inside_wrapper">
+ 	<?php include("includes/menu.php"); ?>
 		
 		<div class="inside_content">
-			<h1>Kids</h1>
-			<img src="/images/easter/cooley.jpg" style="margin-bottom:15px" width="660" height="341" alt="Cooley Pavillion"/>
-			<div class="col3_a">
-				<p>During the Easter service, your children will be cared for by screened and trained volunteers as they have fun learning about the resurrection of Jesus Christ. We will provide programs for kids 8 weeks to 5th graders.</p>
-			</div><!--/col3-->
+			<div class="onecol">
+				<h1>Kids</h1>
+				<img src="/easter/images/cooley.jpg" style="margin-bottom:15px" alt="Cooley Pavillion"/>
+			</div><!--/onecol-->
 			
-			<div class="col3_a">
-				<h2>pre-registration</h2>
-				<p><strong>Sunday, April 10 &amp; 17</strong><br/>
-				<strong>Morning Services Only</strong><br/>
-				Austin High School &amp; <br/>St. John Campus</p>
-				<p class="note">*Pre-registered families can bypass morning registration and <br/>
-				proceed directly to the classroom.</p>
-			</div><!--/col3-->
+			<div class="threecol">
+				<p>During the Easter service, your children will be cared for by screened and trained volunteers as they have fun learning about the resurrection of Jesus Christ. We will provide programs for kids 8 weeks to 3rd graders.</p>
+			</div><!--/threecol-->
 			
-			<div class="col3_b">
+			<div class="threecol">
+				<h2>pre-registration deadline</h2>
+				<p><strong>Sunday, March 25</strong><br/>
+				<p class="note">*Pre-registration will be completed online using the form below.</p>
+			</div><!--/threecol-->
+			
+			<div class="threecol">
 				<h2>day-of registration</h2>
-				<p><strong>Sunday, April 24</strong><br/>
+				<p><strong>Sunday, April 8</strong><br/>
 				<strong>Check-In Time: 9:30</strong><br/>
 				Denton A. Cooley Pavillion next to the Frank Erwin Center</p>
 				<p class="note">*Parents with children under 2, proceed directly to the Frank Erwin Center.</p>
-			</div><!--/col3-->
-		
-		</div><!--/inside_content-->
-		
-		<div class="inside_content">
-		
-			<div class="col2_a">
-				<h2>things to bring</h2>
-				<ul class="kids_a">
-					<li>Wear comfortable shoes and clothes</li>
-					<li>Spare diapers and clothes for children <br/><strong>under 2</strong>	in case of accidents</li>
-					<li>Clearly-labeled diaper bags for children<br/><strong>under 2</strong></li>
-				</ul>
-			</div><!--/col2-->
+			</div><!--/threecol-->
 			
-			<div class="col2_b">
-				<h2>do not bring</h2>
-				<ul class="kids_b">
-					<li>Personal toys or stuffed animals</li>
-					<li>Food, snacks, or candy (bottles for <strong>under 2</strong> are acceptable)</li>
-					<li>Child bags, purses, or backpacks (diaper bags for <strong>under 2</strong> and potty training are acceptable)</li>
-				</ul>
-			</div><!--/col2-->
-								
+			<div style="clear:both;"></div><!--/clear-->
+		
 		</div><!--/inside_content-->
 		
 		<div class="inside_content">
 		
-			<div class="col1">
+			<div class="onecol">
 				<h2>registration packet</h2>
-				<p>1. <strong>Families that pre-register</strong> on the mornings of April 10 and April 17 at either Austin High School or St. John Campus will receive this packet detailing KidStuff programs, arrival and departure.</p>
-				<p>2. <strong>Families registering on the day of the Easter service</strong> will need to <a href="/images/easter/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>
-				
-				<!--
-				<ol class="kids">
-					<li>Pair of matching wristbands that will go on the parent and the child:</li><br/>
-						<div class="col4_li_1">
-							<h3>light blue</h3>
-							<p>Over 8 weeks or <br />still in diapers</p>
-						</div>
-						<div class="col4_li_2">
-							<h3>neon orange</h3>
-							<p>Pre-Kindergarten, <br />no longer in diapers</p>
-						</div>
-						<div class="col4_li_3">
-							<h3>neon lime</h3>
-							<p>Kindergarten, 1st <br/>grade and 2nd grade</p>
-						</div>
-						<div class="col4_li_4">
-							<h3>yellow</h3>
-							<p>3rd grade, 4th grade, <br/>and 5th grade</p>
-						</div>
-					<li style="clear: left;">Map of suggested parking garages and lots</li>
-					<li>Color-coded map detailing child drop-off</li>
-					<li>Handout on our KidStuff program for Easter</li>
-					<li>Handout on our children checkout process</li>
-					<li>For children under 2, a sticker tag for feeding times and special instructions</li>		
-				</ol>
-				-->
-				
-			</div><!--/col1-->		
+				<p><strong>Families that pre-register</strong> by Sunday, March 25 can pick up wristbands and registration packets on:</p>
+				<div class="food_list" style="margin-top:0px;">
+					<ul>
+						<li>Sunday April 1 &ndash; Downtown, St. John, or West Campus</li>
+						<li>Tuesday, April 3 &ndash; 9&ndash;1pm at the church offices</li>
+						<li>Thursday, April 5 &ndash; 9&ndash;1pm at the church offices</li>
+					</ul>
+				</div><br>
+				<p>The church offices are located at <a href="http://g.co/maps/46zj5">1033 La Posada Dr., Austin, TX 78752</a></p>
+				<p><strong>Families registering on the day of the Easter service</strong> will need to <a href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>				
+			</div><!--/onecol-->		
 			
-			<div id="reg_pack"><a href="/images/easter/ASCC_KidStuff_Easter_Packet.pdf"></a></div>	
+			<div class="threecol">
+				<a class="kids-reg" href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">
+					<h2>Download Registration Packet</h2>
+				</a>
+			</div>
+			
+			<div style="clear:both;"></div><!--/clear-->
 								
 		</div><!--/inside_content-->
-				
-	</div> <!--/inside_wrapper-->	
-	
 		
-</div> <!--/container-->
-
- 
- 
- 
- 
- 
- 
- 
- 
-
-<!-- BG -->
-<div id="body-background"><img src="../images/easter/bg_easter.jpg" width="1200" height="675" alt="ASCC_Easter"></div>
-<!-- /BG -->
- 
- 
- 
- 
-</body> 
-</html>
+		<div class="inside_content">
+			<div class="onecol">
+				<div id="wufoo-p6s7a1">
+				Fill out my <a href="http://theaustinstone.wufoo.com/forms/p6s7a1">online form</a>.
+				</div>
+				<script type="text/javascript">var p6s7a1;(function(d, t) {
+				var s = d.createElement(t), options = {
+				'userName':'theaustinstone', 
+				'formHash':'p6s7a1', 
+				'autoResize':true,
+				'height':'936',
+				'async':true,
+				'header':'show', 
+				'ssl':true};
+				s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'wufoo.com/scripts/embed/form.js';
+				s.onload = s.onreadystatechange = function() {
+				var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+				try { p6s7a1 = new WufooForm();p6s7a1.initialize(options);p6s7a1.display(); } catch (e) {}}
+				var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+				})(document, 'script');</script>
+			</div>
+			
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+				
+<?php include("includes/footer.php"); ?>

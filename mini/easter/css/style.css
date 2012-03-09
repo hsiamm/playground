@@ -368,22 +368,22 @@ body#faq a#faqnav {
 	background-position: 0 0;
 }
 
-#inside_wrapper {
+/*#inside_wrapper {
 	height: auto !important;
-	width: 700px;
+	width: 720px;
 	margin: 50px auto;
 	float:left;
-}
+}*/
 
-.inside_content {
-	background: rgb(255, 255, 255); /* The Fallback */
+/*.inside_content {
+	background: rgb(255, 255, 255); /* The Fallback 
 	background: rgba(255, 255, 255, 0.7);
 	padding: 20px;
 	margin: 0 0 15px 0;
 	width: 660px;
 	height: auto !important;
 	float: left;
-}
+}*/
 
 ul.kids_a {
 	font-family: Georgia, Times, Serif;

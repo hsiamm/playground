@@ -6,10 +6,14 @@
 
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
   	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+  	
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="index, follow">
 
-	<link rel="stylesheet" href="css/style.css" type="text/css" /> 
+	<!--<link rel="stylesheet" href="css/style.css" type="text/css" />-->
+	<link rel="stylesheet" href="css/style-2012.css" type="text/css" />
+	<link rel="stylesheet" href="css/responsive.css" type="text/css" /> 
 
- 
  <!--bg -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
 	
@@ -24,10 +28,7 @@
 		});
 	</script> <!-- end bg-->
 	
-	
 	<script type="text/javascript" src="http://use.typekit.com/yqc7lih.js"></script>
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
- 
  
 </head> 
