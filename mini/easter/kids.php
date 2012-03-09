@@ -47,7 +47,7 @@
 						<li>Thursday, April 5 &ndash; 9&ndash;1pm at the church offices</li>
 					</ul>
 				</div><br>
-				<p>The church offices are located at <a href="http://g.co/maps/46zj5">1033 La Posada Dr., Austin, TX 78752</a></p>
+				<p>The church offices are located at <a href="http://g.co/maps/46zj5">1033 La Posada Dr., Austin, TX 78752, Suite 210</a></p>
 				<p><strong>Families registering on the day of the Easter service</strong> will need to <a href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>				
 			</div><!--/onecol-->		
 			
