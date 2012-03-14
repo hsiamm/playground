@@ -39,7 +39,7 @@
 		
 			<div class="onecol">
 				<h2>registration packet</h2>
-				<p><strong>Families that pre-register</strong> by Sunday, March 25 can pick up wristbands and registration packets on:</p>
+				<p><strong>Families that pre-register</strong> by Sunday, March 25 can pick up wristbands on:</p>
 				<div class="food_list" style="margin-top:0px;">
 					<ul>
 						<li>Sunday April 1 &ndash; Downtown, St. John, or West Campus</li>
@@ -48,7 +48,7 @@
 					</ul>
 				</div><br>
 				<p>The church offices are located at <a href="http://g.co/maps/46zj5">1033 La Posada Dr., Austin, TX 78752, Suite 210</a></p>
-				<p><strong>Families registering on the day of the Easter service</strong> will need to <a href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>				
+				<p><strong>All families</strong> need to <a href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>				
 			</div><!--/onecol-->		
 			
 			<div class="threecol">
