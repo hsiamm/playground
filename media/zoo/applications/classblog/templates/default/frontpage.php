@@ -204,7 +204,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="bump"></div>
 <div class="onecol">
     <blockquote>
-        Below is a preview of Spring 2012 classes. Registration will open in early 2012.
+        Below is a preview of Fall 2012 classes. Registration will open in late Summer of 2012.
     </blockquote>
 </div>
 <div class="clear:both;">&nbsp;</div>

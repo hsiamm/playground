@@ -46,17 +46,17 @@ $classfix = trim($classfix);
 
         <div style="clear:both;"></div>
 
-       
+        <!--
         <div class="class_signup">
-        <?php if (strpos($status, 'Open')) { ?>
-                <a href="http://<?php echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Sign Up Now</p></a>
-        <?php  } else if (strpos($status, 'Waitlist')) { ?>
-                <a href="http://<?php echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Join Waitlist</p></a>
-        <?php } else { ?>
+        <?php //if (strpos($status, 'Open')) { ?>
+                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Sign Up Now</p></a>
+        <?php // } else if (strpos($status, 'Waitlist')) { ?>
+                <a href="http://<?php //echo trim($this->renderPosition('link'));  ?>"><p class="caption caps">Join Waitlist</p></a>
+        <?php //} else { ?>
                 <a style="background:#77787B; cursor:default;" href="#"><p class="caption caps"><del>Sign Up Now</del></p></a>
-        <?php } ?>
+        <?php //} ?>
         </div>
-
+        -->
         <div class="bump"></div>
 
         <div style="clear:both;"></div>
@@ -76,26 +76,23 @@ $classfix = trim($classfix);
         <?php } ?>
 
         <div class="class_info">
-            <?php if (strpos($status, 'Closed')) { ?>
-                <h3 style="color:red;">Closed</h3>
-            <?php } else if (strpos($status, 'Waitlist')) { ?>
-                <h3 style="color:red;">Join Wait List</h3>
-            <?php } ?>
+           
             <h3><?php echo $this->renderPosition('location'); ?><br>
                 <?php echo $this->renderPosition('day_of_week'); ?> <?php echo str_replace('-', '&ndash;', $this->renderPosition('time')); ?></h3>
             <h3><?php echo $this->renderPosition('weeks'); ?> / Fee: <?php echo $this->renderPosition('fee'); ?><br>
 
                 <?php echo str_replace('-', '&ndash;', $this->renderPosition('dates')); ?></h3>
             <h3><?php echo str_replace(',', '<br>', $this->renderPosition('instructors')); ?></h3>
-            
-            <?php if ($this->checkPosition('sp-notes')) : ?>
-			<h3 class="nomar sp-notes"><em><?php echo $this->renderPosition('sp-notes'); ?></em></h3>
-			 <?php endif; ?>           
+
+			 
+			 
         </div>
         <div style="clear:both;margin-top:10px;"></div>
     </div>
 
-    <div class="class_details" style="display:block;">			
+    <p class="class_details_button">More Details</p>
+
+    <div class="class_details">			
         <div class="rule_class"></div>
 
         <p><?php echo $this->renderPosition('class_description'); ?></p>

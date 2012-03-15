@@ -62,6 +62,8 @@ defined('_JEXEC') or die('Restricted access');
     <p>Jesus said, &ldquo;As the Father has sent me, so I send you&rdquo; (John 20:21). Throughout this year and next you will have incredible opportunities to join God on mission among the nations. There are several ways to participate with us. You can help make others aware of the opportunities to serve; you can support those who are going through prayer or financially; or you can apply to go with one of the teams.</p>
 
     <p>Teams that go will participate in several types of ministry: education, evangelism, medical, exposure, and construction. No matter which role you participate in, our ultimate goal is to develop disciples of Jesus Christ who share His heart and vision for the entire world.</p>
+    
+    <p>For answers to your questions about our trips, please email <a href= mailto:"makedisciples@austinstone.org">makedisciples@austinstone.org</a></p>
 
 <div class="twocol_trips"> 
     <h4 class="yellow nomar caps">A note about trip costs</h4>
