@@ -9,7 +9,7 @@
         <link rel="icon" href="" type="image/x-icon" />
         <link rel="shortcut icon" href="" type="image/x-icon" />
 
-        <script type="text/javascript" src="http://use.typekit.com/itk0lox.js"></script>
+        <script type="text/javascript" src="http://use.typekit.com/pto8iwc.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
         <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/styles.css" type="text/css" media="screen" />
