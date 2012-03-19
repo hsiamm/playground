@@ -2613,7 +2613,7 @@ p.trips {
 }
 
 .trips_details {
-    height: 480px;
+    height: 500px;
     width: auto;
     float: left;
 }
