@@ -216,7 +216,7 @@ $type = array(1 => "Psalms & Wisdom", 2 => "History of Israel", 3 => "Chronicles
     <p class="sans"><a href="/files/reap-method.pdf">Here are some instructions and a quick example</a>.</p>
     <p class="sans">This plan will take you through the Bible in one year. You can also <a href="/files/reading-plan.pdf">download a PDF</a> of the entire year, if you like.</p>
     <div class="rule_wh_short">&nbsp;</div>
-    <p class="sans"><a href="/reap-esv"><strong>Go to the ESV Study Bible Plan</strong></a>.</p>
+    <p class="sans"><a href="/reap-esv">Go to the ESV Study Bible Plan</a>.</p>
 </div>
 
 <?php

@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
         </div>
         <!-- FANCYBOX1-->
         <div style="display: none;">
-            <div id="inline_commit" style="width:440px;height:315px;overflow:auto;">
+            <div id="inline_commit" style="width:450px;height:360px;overflow:auto;">
 
                 <div class="commitments">
                     <h1 class="title">Class Commitments:</h1>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
         </div>        
         <!-- FANCYBOX2-->
         <div style="display: none;">
-            <div id="inline_category" style="width:645px;height:525px;overflow:auto;">
+            <div id="inline_category" style="width:655px;height:545px;overflow:auto;">
 
                 <div class="class_categories">
                     <h1 class="title">Class Categories</h1>
