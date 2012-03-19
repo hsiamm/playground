@@ -10,8 +10,11 @@ $pageRef = $_SERVER['REQUEST_URI'];
 <jdoc:include type="head" />
 
 <meta property="og:image" content="http://austinstone.org/images/austin_stone.jpg"/> 
+
 <script type="text/javascript" src="http://use.typekit.com/itk0lox.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+
 <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/styles.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/fancybox.css" type="text/css" media="screen" />
 
