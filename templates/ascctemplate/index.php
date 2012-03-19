@@ -11,7 +11,7 @@ $pageRef = $_SERVER['REQUEST_URI'];
 
 <meta property="og:image" content="http://austinstone.org/images/austin_stone.jpg"/> 
 
-<script type="text/javascript" src="http://use.typekit.com/itk0lox.js"></script>
+<script type="text/javascript" src="http://use.typekit.com/pto8iwc.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 
