@@ -15,7 +15,7 @@
 				</div>
 				
 				<div class="twocol">
-				<p>Praise God for filling our volunteer needs for this upcoming Easter service! We are so excited to see the church rally together to serve others on Easter Sunday. If you have any further questions about volunteering, please <a href="mailto:jill.lejcar@austinstone.org">email us</a>.</p>
+				<p>Praise God for filling our volunteer needs for this upcoming Easter service! We are so excited to see the church rally together to serve others on Easter Sunday. If you have any further questions about volunteering, please <a href="mailto:easter@austinstone.org">email us</a>.</p>
 				</div> 
 				
 				<div class="twocol">
