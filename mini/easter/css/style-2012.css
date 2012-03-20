@@ -443,3 +443,8 @@ body#faq a#faqnav {
     filter: alpha(opacity=30);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 }
+
+video {
+    width: 100%;
+    height: auto;
+  }

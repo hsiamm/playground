@@ -9,88 +9,80 @@
 			
 		<div class="inside_content">
 			<div class="onecol">
-				<h1>Food Drive</h1>
-				<img src="http://placehold.it/700x250/ffcb07/ffffff" style="margin-bottom:15px;" alt="Food Drive"/>			
+				<h1>Diaper Drive</h1>
 
 				<div class="blockquote">
-					Our response to God's grace through the resurrected Christ is to share the good news! We do this by sharing what has happened and how Christ is changing our lives. We also do this by serving our city as a demonstration of the redemption and restoration that He will bring to the world.
+					As a way to respond to God’s grace and mercy through the resurrected Christ, The For the City Network is hosting a Diaper Drive on Easter Sunday at the Frank Erwin Center. Check out this short video for all the details.
 				</div>
-			</div><!--/onecol-->
-			
-			<div class="twocol">
-				<p>
-					As you celebrate Easter this year, please also join us in serving our city.  The For the City Network has many ways to get involved in a variety of areas and be "for the city" year-round.  A great first step to serve Austin is by bringing non-perishable food items and hygiene products to the Frank Erwin Center on Easter Sunday. 
-				</p>
-			</div><!--/twocol-->
-			
-			<div class="twocol">
-				<p>
-					These items will be donated to the Capital Area Food Bank, one of the nonprofits at The For the City Center. The CAFB distributes 70,000 lbs. of food per day to over 48,000 people every week as part of its mission to nourish hungry people and lead the community in ending hunger.
-				</p>
-			</div><!--/twocol-->
-			
-			<div class="onecol">
-				<h2>
-					There will be FTCN donation drop-off locations along Red River St. at the Frank Erwin Center.
-				</h2>
-			</div><!--/onecol-->			
 				
-			<div style="clear:both;"></div>
-			
+				<div id="video">
+					<iframe src="http://player.vimeo.com/video/38807205?byline=0&amp;portrait=0&amp;color=FFCB07" width="700" height="394" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+				</div>
+				
+				<div class="bump">&nbsp;</div>
+			</div><!--/onecol-->	
+			<div style="clear:both;"></div><!--/clear-->		
 		</div><!--/inside_content-->	
 				
-		<div class="inside_content">		
+		<div class="inside_content">
+			<div class="onecol">
+				<h2 class="faq">Why a drive on Easter Sunday?</h2>
+				<p>Our prayer is that this collection drive will be a small act of demonstrating the gospel that will spur us on to gospel-centered relationships with the poor and marginalized throughout the year.</p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
 		
+		<div class="inside_content">
 			<div class="onecol">
-				<h1>
-					What To Bring:
-				</h1>
-				
-				<h2>Non-Perishable Food Items</h2>
-				<div class="food_list">
-					<ul>
-						<li>Canned Proteins (tuna, salmon, chicken, peanut butter)</li>
-						<li>Canned Fruits in Own Juices or Light Syrup (Pineapples, peaches, pears)</li>
-						<li>100% Fruit Juices (all sizes, including juice boxes)</li>
-						<li>Grains (pasta, whole wheat pasta, rice, brown rice, macaroni and cheese)</li>
-						<li>Condiments (tomato-based sauces, light soy sauce, ketchup, mustard, light salad dressings)</li>
-						<li>Low Sodium/No Salt Added Canned Vegetables (mixed, green beans, corn)</li>
-						<li>Soups (beef stew, chili, chicken noodle, turkey and rice)</li>
-						<li>Multigrain Cereal (Cheerios, corn flakes, Grape-Nuts, Raisin Bran)</li>
-						<li>Peanut Butter</li>
-					</ul>
-				</div>
-				
-				<h2>Hygiene Products</h2>
-				<div class="food_list">	
-					<ul>
-						<li>Diapers  (adult and youth)</li>
-						<li>Deodorant (for men and women)</li>
-						<li>Feminine products</li>
-					</ul>
-				</div>
-				
-				<div style="clear:both;"></div>
-				
-			</div><!--/onecol-->
-			
-			<div style="clear:both;"></div>
-			
-		</div><!--/inside_content-->	
-				
-		<div class="inside_content">	
+				<h2 class="faq">What do I bring?</h2>
+				<p>Diapers, wipes, and formula.</p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+		
+		<div class="inside_content">
 			<div class="onecol">
-				<p>
-					Please follow <a href="http://twitter.com/forthecity">@forthecity</a> on Twitter for updates and reminders.
-				</p>
-				<h2>
-					Let's be for the city, for God's glory &ndash; on Easter and throughout the year.
-				</h2>
+				<h2 class="faq">Where do I bring these items?</h2>
+				<p>There will be large cardboard bins located around the Frank Erwin Center where you can drop off the items on your way into service.</p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+		
+		<div class="inside_content">
+			<div class="onecol">
+				<h2 class="faq">Who is benefitting from this drive?</h2>
+				<p>Three pregnancy resource centers will receive the donated items: Austin LifeCare, Austin Pregnancy Resource Center, and South Austin Pregnancy Resource Center.</p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+		
+		<div class="inside_content">
+			<div class="onecol">
+				<h2 class="faq">How can I get further involved?</h2>
+				<p>Check out FTCN’s “Connect” page to browse and search for ways to get involved throughout the year: <a href="http://forthecity.org/connect">forthecity.org/connect</a></p>
 				
-			</div><!--/onecol-->
-			
-			<div style="clear:both;"></div>
-			
+				<p>To get involved with these pregnancy resource centers specifically, check out their opportunities <a href="http://forthecity.org/connect/search_results?issue=sanctity_of_life">here</a>.</p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+		
+		<div class="inside_content">
+			<div class="onecol">
+				<h2 class="faq">Questions?</h2>
+				<p>Email FTCN: <a href="mailto:info@forthecity.org">info@forthecity.org</a></p>
+				
+				<p>Follow FTCN on Twitter for updates and reminders: <a href="http://twitter.com/forthecity">@forthecity</a></p>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
+		</div><!--/inside_content-->
+		
+		<div class="inside_content">
+			<div class="onecol">
+				<div class="blockquote">
+					Let’s be for the city – for God’s glory – on Easter and throughout the year.
+				</div>
+			</div>
+			<div style="clear:both;"></div><!--/clear-->
 		</div><!--/inside_content-->
  
 <?php include("includes/footer.php"); ?>
