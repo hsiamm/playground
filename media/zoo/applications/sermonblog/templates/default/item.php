@@ -82,6 +82,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
                         <a href="/resources/sermons/category/counterfeit-love"><li>Counterfeit Love</li></a>
                         <a href="/resources/sermons/category/christmas-in-the-valley-of-vision "><li>Christmas in the Valley of Vision</li></a>                     
                         <a href="/resources/sermons/category/from-israel"><li>From Israel</li></a>
+                        <a href="/resources/sermons/category/dna"><li>DNA</li></a>
                         <a href="/resources/sermons/category/heaven-hell"><li>Heaven & Hell</li></a>
                         <a href="/resources/sermons/category/the-history-of-redemption"><li>The History of Redemption</li></a>
                         <a href="/resources/sermons/category/temptation"><li>Temptation</li></a>
