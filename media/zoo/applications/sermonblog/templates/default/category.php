@@ -113,6 +113,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
 
                 <div id="series_sort" class="sermon_sort_options">
                     <ul class="left">
+	                    <a href="/resources/sermons/category/the-gospel-of-mark"><li>Gospel of Mark</li></a>
                         <a href="/resources/sermons/category/from-israel"><li>From Israel</li></a>
                         <a href="/resources/sermons/category/heaven-hell"><li>Heaven & Hell</li></a>
                         <a href="/resources/sermons/category/the-history-of-redemption"><li>The History of Redemption</li></a>
