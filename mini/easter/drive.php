@@ -51,7 +51,7 @@
 		<div class="inside_content">
 			<div class="onecol">
 				<h2 class="faq">Who is benefitting from this drive?</h2>
-				<p>Three pregnancy resource centers will receive the donated items: Austin LifeCare, Austin Pregnancy Resource Center, and South Austin Pregnancy Resource Center.</p>
+				<p>Three pregnancy resource centers will receive the donated items: <a href="http://www.austinlifecare.com/index.htm">Austin LifeCare</a>, <a href="http://www.austinprc.org/">Austin Pregnancy Resource Center</a>, and <a href="http://saprc.org/site/">South Austin Pregnancy Resource Center</a>.</p>
 			</div>
 			<div style="clear:both;"></div><!--/clear-->
 		</div><!--/inside_content-->
