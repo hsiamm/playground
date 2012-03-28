@@ -51,7 +51,7 @@
 				<p><strong>All families</strong> need to <a href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">download the PDF</a> and take note of the details of KidStuff registration before arrival.</p>				
 			</div><!--/onecol-->		
 			
-			<div class="threecol">
+			<div class="onecol">
 				<a class="kids-reg" href="/easter/images/ASCC_KidStuff_Easter_Packet.pdf">
 					<h2>Download Registration Packet</h2>
 				</a>

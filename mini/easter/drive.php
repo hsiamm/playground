@@ -16,7 +16,7 @@
 				</div>
 				
 				<div id="video">
-					<iframe src="http://player.vimeo.com/video/38807205?byline=0&amp;portrait=0&amp;color=FFCB07" width="700" height="394" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+					<iframe src="http://player.vimeo.com/video/38807205?byline=0&amp;portrait=0&amp;color=FFCB07" width="700" height="394" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><p><a href="http://vimeo.com/38807205">Watch on Vimeo</a>.</p>
 				</div>
 				
 				<div class="bump">&nbsp;</div>

@@ -296,7 +296,7 @@ color:#fff;
 
 .blockquote {
 	font-family: Georgia, Times, Serif;
-	font-style: italic;
+	font-style:normal;
 	font-size: 22px;
 	color: #000;
 	margin: 0px 0 20px 0;
@@ -324,10 +324,10 @@ color:#fff;
 }
 
 .kids-reg h2 {
-	line-height:40px;
 	text-align:center;
-	width:330px;
-	height:40px;
+	width:100%;
+	height:auto;
+	padding:8px 3px;
 	background-color:#ffcb07;
 	color:#000;
 }
