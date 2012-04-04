@@ -75,6 +75,10 @@ body	{
 	background: #193D4F;
 	background-image: url('../images/bg2.png');
 	background-repeat: repeat;
+	font-family: "facitweb",sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 13px;
 }
 
 p {
@@ -453,3 +457,6 @@ a.opac:hover {
     margin:0;
 }
 
+.wufoo .info div {
+	font-size: 13px;
+}
