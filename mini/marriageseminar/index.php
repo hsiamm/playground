@@ -40,7 +40,7 @@
 		
 		<div class="colwhere">
 			<h1>Where</h1>
-			<p>The seminar will be held at our St. John Campus in the For the City Center. The St. John Campus is located at 500 E St Johns Ave.</p>
+			<p>The seminar will be held at our St. John Campus in The For the City Center. The St. John Campus is located at 500 E St Johns Ave.</p>
 		</div>
 		
 		<div style="clear:both;"></div>
