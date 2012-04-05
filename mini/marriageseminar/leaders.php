@@ -6,8 +6,9 @@
 		
 		<div class="col1">
 			<img src="/marriageseminar/images/paul.png" alt="Paul Tripp"/>
-			<h2 style="text-align:center;font-size:18px;margin-top:16px;">Speaker:</h2>
+			<h2 style="text-align:center;font-size:18px;margin-top:10px;">Speaker:</h2>
 			<p style="text-align:center;color:#99C4C2;margin-top:0px;">Paul Tripp</p>
+			<a href="http://www.paultrippministries.com/"><h3 class="button-small">Visit Site &raquo;</h3></a>
 		</div>
 		<div class="col2">
 			<p>Paul Tripp is the president of <a href="http://www.paultrippministries.com/home">Paul Tripp Ministries</a>, a nonprofit organization, whose mission statement is &ldquo;Connecting the transforming power of Jesus Christ to everyday life.&rdquo; This mission leads Paul to weekly speaking engagements around the world.  In addition to being a gifted communicator and sought after conference speaker with Paul Tripp Ministries, Paul is on the pastoral staff at Tenth Presbyterian Church in Philadelphia, Pennsylvania where he preaches on Sunday evenings and leads the Ministry to Center City.</p>
@@ -18,15 +19,10 @@
 		
 		<div class="col1">
 			<img src="/marriageseminar/images/jc.png" alt="Justn Cofield"/>
-			<h2 style="text-align:center;font-size:18px;margin-top:16px;">Worship Leader:</h2>
+			<h2 style="text-align:center;font-size:18px;margin-top:10px;">Worship Leader:</h2>
 			<p style="text-align:center;color:#99C4C2;margin-top:0px;">Justin Cofield</p>
+			<a href="http://www.thejustincofieldband.com/"><h3 class="button-small">Visit Site &raquo;</h3></a>
 		</div>
-				 	
-	<!--	<div class="col1" style="margin:0 30px 0 0;">
-			<img src="/images/parenting_seminar/andy.png" alt="Paul Tripp"/><br>
-			<h2 style="text-align:center;font-size: 18px;">Worship Leader:</h2>
-			<h3 style="text-align:center;color:#231F20;text-transform:none;font-size:14px;">Andy Melvin</h3>
-		</div>-->
 		
 		<div class="col2">
 			<p>Justin Cofield has spent the past 12 years leading people in worship around the country. His desire to invest in people has permeated his life both on and off the stage. He defines himself as: &ldquo;a follower of Jesus, a husband, father, and a lover of the forgotten.&rdquo; He and his wife are passionate about the redemption of all people, including their neighborhood on the East side of Austin, TX.</p>
