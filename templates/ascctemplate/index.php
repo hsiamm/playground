@@ -282,7 +282,7 @@ margin-top: -4px;
             <div class="texas">Texas is awesome</div>
         </div>
         <!--/container-->
-        <div class="bump">&nbsp;</div>
+        <div class="bump">&nbsp;</div> 
     </div> <!-- /footer -->        
 
 </body>
