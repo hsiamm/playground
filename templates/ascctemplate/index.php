@@ -269,7 +269,7 @@ margin-top: -4px;
             </div>
             <div class="sixcol">
                 <h4><a href="/connect/new-here">I'M NEW HERE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
-                <h4><a href="https://theaustinstone.wufoo.com/forms/get-connected-to-missional-community/">JOIN A GROUP</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="https://austinstone.onthecity.org/kiosk/">GET CONNECTED</a> <img src="images/arrow_y.png" alt="Go" /></h4>
                 <h4><a href="/about/contact">CONTACT US</a> <img src="images/arrow_y.png" alt="Go" /></h4>
             </div>
             <div class="sixcol">
