@@ -294,6 +294,12 @@ p.caption span {
     cursor: pointer;
 }
 
+p.story {
+	font-size: 19px;
+	line-height: 25px;
+	color: #424242;
+}
+
 img {
     z-index: -100;
 }
@@ -786,6 +792,7 @@ ul#menunav {
 }
 
 .active a.homenav,
+.active a.campusnav,
 .active a.aboutnav,
 .active a.connectnav,
 .active a.resourcesnav,
@@ -1031,6 +1038,38 @@ ul.dropdown ul {
     padding: 0 0 0 10px;	
     line-height: 42px;
 }
+
+.hot_fourcol-y {
+	float: left;
+	width: 210px;
+	height: 50px;
+	background-color: #ffdd00;
+	margin: 0 20px 0 0;
+	padding: 0 0 0 10px;	
+	line-height: 50px;
+}
+
+.hot_fourcol-b {
+	float: left;
+	width: 210px;
+	height: 50px;
+	background-color: #000;
+	margin: 0 10px 0 0;
+	padding: 0 0 0 10px;	
+	line-height: 50px;
+}
+
+.hot_fourcol-y blockquote {
+	line-height: 50px;
+	margin: 0 0 15px 0;
+	color: #000;
+}
+
+.hot_fourcol-b blockquote {
+	line-height: 50px;
+	margin: 0 0 15px 0;
+	color: #fff;
+} 
 
 .hot_fivecol_2 {
 	float: left;
@@ -3040,4 +3079,68 @@ border-bottom: 1px solid #000;
 
 .story_written-post .rule_bl {
 	margin-top: 80px;
+}
+
+li#story_menunav a.sub-current {
+	border-bottom: 1px solid #000;
+	color:#000;
+}
+
+
+
+
+/*!~~~~~~~~~~~CAMPUSES~~~~~~~~~~~~~*/
+.times-box {
+	background:#fff;
+	padding:20px;
+	width:260px;
+	height:auto;
+	float:left;
+	margin:0 10px;
+}
+
+.worship-time {
+	float:left;
+	width:22.115384615385%;
+}
+
+.worship-time h2 {
+	color:#ffdd00;
+	line-height:30px;
+	text-align:center;
+	font-size:18px;
+	height:30px;
+	background:#424242;
+}
+
+.worship-time h3 {
+	text-align: center;
+}
+
+.campus-link h2 {
+	background-color: #ffdd00;
+	padding:6px 12px;
+	width: auto;
+	float: left;
+	margin:5px 0 0 0;
+}
+
+.campus-link h2:hover {
+	background-color: #424242;
+	color:#fff;
+}
+
+a.connect-button h2 {
+	width:150px;
+	height:45px;
+	background:#ffdd00;
+	text-align:center;
+	line-height:45px;
+	float:left;
+	margin-right:20px;
+}
+
+a.connect-button h2:hover {
+	background: #424242;
+	color:#fff;
 }
