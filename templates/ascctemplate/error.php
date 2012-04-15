@@ -51,7 +51,7 @@
                 <a href="/connect/current-happenings" class="hot_left"><h2>Current Happenings</h2></a>
             </div>
             <div class="fourcol">
-                <a href="/about/times-locations" class="hot_left"><h2>Our Campuses</h2></a>
+                <a href="/campuses/campuses-main" class="hot_left"><h2>Our Campuses</h2></a>
             </div>
             <div class="fourcol">
                 <a href="/resources/sermons" class="hot_left"><h2>Our Sermon Archive</h2></a>
