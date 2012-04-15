@@ -147,7 +147,7 @@ margin-top: -4px;
 
         <div class="container">
             <div class="map_drop">
-                <h5 id="map_toggle">Show Worship Times &amp; Locations</h5>
+                <h5 id="map_toggle">Show Campuses &amp; Worship Times</h5>
             </div><!--/map_drop-->
 
             <div class="top_right" style="width:350px;">
@@ -177,7 +177,7 @@ margin-top: -4px;
 				10:00</h2>
 
                 <div class="map_button">
-                    <a href="/about/times-locations"><p class="caption caps">More Details</p></a>
+                    <a href="/campuses/campuses-main"><p class="caption caps">More Details</p></a>
                 </div>
             </div><!-- /container -->
         </div>
@@ -275,7 +275,7 @@ margin-top: -4px;
             <div class="sixcol">
                 <h4><a href="/connect/current-happenings">CURRENT HAPPENINGS</a> <img src="images/arrow_y.png" alt="Go" /></h4>
                 <h4><a href="/resources/sermons">OUR SERMON ARCHIVE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
-                <h4><a href="/about/times-locations">OUR CAMPUSES /<br />WORSHIP TIMES</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="/campuses/campuses-main">OUR CAMPUSES /<br />WORSHIP TIMES</a> <img src="images/arrow_y.png" alt="Go" /></h4>
             </div>
             <div style="clear: both;"></div>
             <div class="texas_flag"></div>
