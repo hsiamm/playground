@@ -82,7 +82,7 @@ RewriteRule .* index.php [L]
 # here's an example:
 # Redirect permanent /old-url http://austinstone.org/new-url
 #
-# now the real stuff is below
+# now the real stuff is below here
 #
 
 Redirect permanent /first http://austinstone.org/about/times-locations#tuesday
