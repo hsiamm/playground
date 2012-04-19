@@ -4,11 +4,9 @@
 		
 		<?php include("includes/top.php"); ?>
 		
-		<div class="col2">
-			<p>Join us June 1-2 as speaker Paul David Tripp will teach us practical insights for the everyday issues and situations of a real marriage. You will learn learn the practical steps that will help couples know how to get from where they are, to where God wants them to be.</p>
-
-			<p>In this conference, Paul Tripp will explore the experience of realizing that your marriage hasn't escaped the reality of sin or the brokenness of the world. It's what you do next that will make all the difference in the world in the character and quality of your marriage.  The surrounding culture would lead us to believe that a marriage of unity, love, and understanding is rooted in romance. Scripture would rather say that a good marriage is the result of worship. Does this confuse you? Then, this marriage conference is for you.</p>
-			
+		<div class="col2">		
+			<p>Paul David Tripp joins us on June 1&ndash;2 to teach us practical ways to address the everyday issues we face in our marriages. These applications will show couples how to resolve existing struggles and bring them to a place of reconciliation.</p>
+			<p>At this conference, you will discover that no marriage has escaped the effects of sin and brokenness. Our surrounding culture leads us to believe that marriage is rooted in romance. However, through Scripture we see that marriage is actually a result of worship. If you don’t fully understand this truth, then this marriage conference is for you.</p>
 			<p>This conference is for individuals, engaged couples, and married couples at any stage of marriage.</p>
 		</div>
 		
