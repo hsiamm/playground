@@ -527,7 +527,7 @@ ul.affirm li {
 }
 
 .rule_menu {
-    width: 328px;
+    width: 432px;
     float: left;
     height: 1px;
     border-bottom: 1px solid #365871;
@@ -834,7 +834,7 @@ ul.dropdown ul {
     position: absolute;
     left: 8px;
     top: 25px;
-    width: 350px;
+    width: 455px;
     height:270px;
     z-index: 598;
     background: rgb(255, 255, 255); /* The Fallback */
