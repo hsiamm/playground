@@ -112,7 +112,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
                     <a id="month" href="#">BY MONTH</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a id="series" href="#">BY SERIES</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a id="speaker" href="#">BY SPEAKER</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a href="/resources/sermons/">ALL</a></h2>
 
                 <div id="series_sort" class="sermon_sort_options">
-                    <ul class="left">
+                    <ul class="left">                   
 	                    <a href="/resources/sermons/category/the-gospel-of-mark"><li>Gospel of Mark</li></a>
                         <a href="/resources/sermons/category/counterfeit-love"><li>Counterfeit Love</li></a>
                         <a href="/resources/sermons/category/christmas-in-the-valley-of-vision "><li>Christmas in the Valley of Vision</li></a>
@@ -124,6 +124,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
                         <a href="/resources/sermons/category/genesis"><li>Genesis</li></a>
                         <a href="/resources/sermons/category/the-gospel-according-to-noah"><li>The Gospel According to Noah</li></a>
                         <a href="/resources/sermons/category/biblical-manhood"><li>Biblical Manhood</li></a>
+						<a href="/resources/sermons/category/missional-communities "><li>Missional Community</li></a>                         
                         <a href="/resources/sermons/category/and-you-will-be-healed"><li>And You Will Be Healed</li></a>
                         <a href="/resources/sermons/category/1-corinthians"><li>1 Corinthians</li></a>
                         <a href="/resources/sermons/category/singleness-marriage-sex-and-divorce"><li>Singleness, Marriage, Sex, and Divorce</li></a>
