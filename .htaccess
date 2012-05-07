@@ -107,5 +107,22 @@ Redirect permanent /worshipchrist http://ministries.austinstone.org/worshipchris
 Redirect permanent /mystory https://theaustinstone.wufoo.com/forms/tell-us-your-story/
 Redirect permanent /ministries http://austinstone.org/connect/ministries
 Redirect permanent /recovery http://ministries.austinstone.org/recovery/
-RedirectMatch permanent ^/campuses$ http://austinstone.org/campuses/campuses-main
-RedirectMatch permanent ^/campuses/$ http://austinstone.org/campuses/campuses-main
+RedirectMatch permanent ^/campuses$ http://dev.austinstone.org/campuses/campuses-main
+RedirectMatch permanent ^/campuses/$ http://dev.austinstone.org/campuses/campuses-main
+
+
+#### Redirects for KidStuff Summer Olympics Booklet 2012
+
+Redirect permanent /olympics-1 http://www.youtube.com/watch?v=byIpfEVxhs4
+Redirect permanent /olympics-2 http://www.youtube.com/watch?v=XkljgA5SQc8
+Redirect permanent /olympics-3 http://www.youtube.com/watch?v=hDCSk8i5etA
+Redirect permanent /olympics-4 http://www.youtube.com/watch?v=mAH7OWKslGc
+Redirect permanent /olympics-5 http://www.youtube.com/watch?v=GOFheF00fi0
+Redirect permanent /olympics-6 http://www.youtube.com/watch?v=A1Z1v20NE-I
+Redirect permanent /olympics-7 http://www.youtube.com/watch?v=YJ4YgHYwNaU
+Redirect permanent /olympics-8 http://www.youtube.com/watch?v=zASHA-9WhHY
+Redirect permanent /olympics-9 http://www.youtube.com/watch?v=ZWXikm4Bsv8
+Redirect permanent /olympics-10 http://www.youtube.com/watch?v=_1-cgDRRqCE
+Redirect permanent /olympics-11 http://www.youtube.com/watch?v=GemC-btv4yk
+Redirect permanent /olympics-12 http://www.youtube.com/watch?v=JlqlXmQwgo4
+
