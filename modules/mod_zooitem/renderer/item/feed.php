@@ -13,8 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 date_default_timezone_set('GMT');
 
 $title = trim($this->renderPosition('title'));
-if ($this->checkPosition('categories'))
-    $title .= ' [' . trim($this->renderPosition('categories')) . ']';
+/*if ($this->checkPosition('categories'))
+    $title .= ' [' . trim($this->renderPosition('categories')) . ']';*/
 $title = trim($title);
 ?>
 
