@@ -260,7 +260,7 @@ margin-top: -4px;
 
             <div class="sixcol">
                 <h2 class="blue">Office</h2>
-                <p class="sans">1033 La Posada Dr. #210<br /> Austin, Tx 78752<br /> 512.708.8860</p>
+                <p class="sans">1033 La Posada Dr. #210<br /> Austin, TX 78752<br /> 512.708.8860</p>
                 <p class="sans"><a href="mailto:info@austinstone.org">info@austinstone.org</a></p>
             </div>
             <div class="sixcol" style="height: 100px;"></div>
