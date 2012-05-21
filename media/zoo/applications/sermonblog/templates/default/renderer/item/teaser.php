@@ -15,7 +15,13 @@ $params = $item->getParams('site');
 ?>
 <div class="sermon">
     <h3 class="series_label">
-        <?php echo $this->renderPosition('categories'); ?>
+		<?php $string = $this->renderPosition('categories');
+		$first = strtok($string, '|');
+		if (strpos($first, 'iTunes') > 0)
+		echo strtok('|');
+		else
+		echo $first;
+		?>
     </h3>
 
     <?php if ($this->checkPosition('title')) { ?>
