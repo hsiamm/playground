@@ -108,8 +108,8 @@ Redirect permanent /mystory https://theaustinstone.wufoo.com/forms/tell-us-your-
 Redirect permanent /ministries http://austinstone.org/connect/ministries
 Redirect permanent /recovery http://ministries.austinstone.org/recovery/
 Redirect permanent /sms http://mobile-text-alerts.com/austinstone
-RedirectMatch permanent ^/campuses$ http://dev.austinstone.org/campuses/campuses-main
-RedirectMatch permanent ^/campuses/$ http://dev.austinstone.org/campuses/campuses-main
+RedirectMatch permanent ^/campuses$ http://austinstone.org/campuses/campuses-main
+RedirectMatch permanent ^/campuses/$ http://austinstone.org/campuses/campuses-main
 
 
 #### Redirects for KidStuff Summer Olympics Booklet 2012
