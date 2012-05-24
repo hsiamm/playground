@@ -233,12 +233,12 @@ a.new_here_top:hover, a.give_top:hover, #search:hover, #map_toggle:hover {
     background: none;
 }
 
-a.hot_right, a.hot_left, a.hot_threecol, a.hot_fourcol-y, a.hot_fourcol-b, a.hot_fivecol_2, a.hot_new_here, a.staff_email, a.staff_blog, a.hot_story_featured, a.hot_film_featured, a.hot_story_share, a.hot_story_more, a.hot_story_form {
+a.hot_right, a.hot_left, a.hot_threecol, a.hot_fourcol-y, a.hot_fourcol-w, a.hot_fourcol-b, a.hot_fivecol_2, a.hot_new_here, a.staff_email, a.staff_blog, a.hot_story_featured, a.hot_film_featured, a.hot_story_share, a.hot_story_more, a.hot_story_form {
 	-webkit-transition: opacity .2s ease-in; /*safari and chrome */
  	-o-transition: opacity .2s ease-in; /* opera */
 }
 
-a.hot_right:hover, a.hot_left:hover, a.hot_threecol:hover, a.hot_fourcol-y:hover, a.hot_fourcol-b:hover, a.hot_fivecol_2:hover, a.hot_new_here:hover, a.staff_email:hover, a.staff_blog:hover, a.hot_story_featured:hover, a.hot_film_featured:hover, a.hot_story_share:hover, a.hot_story_more:hover, a.hot_story_form:hover {
+a.hot_right:hover, a.hot_left:hover, a.hot_threecol:hover, a.hot_fourcol-y:hover, a.hot_fourcol-w:hover, a.hot_fourcol-b:hover, a.hot_fivecol_2:hover, a.hot_new_here:hover, a.staff_email:hover, a.staff_blog:hover, a.hot_story_featured:hover, a.hot_film_featured:hover, a.hot_story_share:hover, a.hot_story_more:hover, a.hot_story_form:hover {
 	opacity: 0.70;
 	filter: alpha(opacity=70);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
@@ -1049,6 +1049,16 @@ ul.dropdown ul {
 	line-height: 50px;
 }
 
+.hot_fourcol-w {
+	float: left;
+	width: 210px;
+	height: 50px;
+	background-color: #fff;
+	margin: 0 20px 0 0;
+	padding: 0 0 0 10px;	
+	line-height: 50px;
+}
+
 .hot_fourcol-b {
 	float: left;
 	width: 210px;
@@ -1059,11 +1069,12 @@ ul.dropdown ul {
 	line-height: 50px;
 }
 
-.hot_fourcol-y blockquote {
+.hot_fourcol-y blockquote, .hot_fourcol-w blockquote {
 	line-height: 50px;
 	margin: 0 0 15px 0;
 	color: #000;
 }
+
 
 .hot_fourcol-b blockquote {
 	line-height: 50px;
@@ -3086,7 +3097,27 @@ li#story_menunav a.sub-current {
 	color:#000;
 }
 
+.story-photo-nextprev {
+	float:left;
+	background-color: #fff;
+	width:auto;
+	padding: 0 10px;
+	height: 35px;
+	margin-top:10px;
+}
 
+.story-photo-counter {
+	float:left;
+	background-color: #424242;
+	width:auto;
+	padding: 0 10px;
+	height: 35px;
+	margin-top:10px;
+}
+
+.story-photo-nextprev h3, .story-photo-counter h3 {
+	line-height: 35px;	
+}
 
 
 /*!~~~~~~~~~~~CAMPUSES~~~~~~~~~~~~~*/
