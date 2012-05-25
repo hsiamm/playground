@@ -107,6 +107,7 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
                     
                 <div id="series_sort" class="sermon_sort_options">
                     <ul class="left">
+                    	<a href="/resources/sermons/category/partnership-at-the-austin-stone"><li>Partnership at The Austin Stone</li></a>
                         <a href="/resources/sermons/category/the-gospel-of-mark"><li>Gospel of Mark</li></a>
                         <a href="/resources/sermons/category/counterfeit-love"><li>Counterfeit Love</li></a>
                         <a href="/resources/sermons/category/christmas-in-the-valley-of-vision "><li>Christmas in the Valley of Vision</li></a>
