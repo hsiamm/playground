@@ -28,7 +28,9 @@
 		
 		<div class="rule"></div>
 		
-		<div id="wufoo-p6s0x9">
+		<h2 style="text-align:center;margin-bottom:45px;">Thank you for your interest.<br>Unfortunately our Marriage Seminar is sold out.</h2>
+		
+		<!--<div id="wufoo-p6s0x9">
 			Marriage Seminar <a href="http://theaustinstone.wufoo.com/forms/p6s0x9">online form</a>.
 		</div>
 		<script type="text/javascript">var p6s0x9;(function(d, t) {
@@ -45,6 +47,6 @@
 		var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
 		try { p6s0x9 = new WufooForm();p6s0x9.initialize(options);p6s0x9.display(); } catch (e) {}};
 		var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-		})(document, 'script');</script>
+		})(document, 'script');</script>-->
 		
 <?php include("includes/footer.php"); ?>
