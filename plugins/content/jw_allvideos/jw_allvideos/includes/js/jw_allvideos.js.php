@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		4.1
+ * @version		4.4
  * @package		AllVideos (plugin)
- * @author    JoomlaWorks - http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author    JoomlaWorks - http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -16,6 +16,8 @@ header("Expires: ".gmdate("D, d M Y H:i:s", time() + 60 * 60)." GMT");
 ob_start("ob_gzhandler");
 
 // Includes
+echo "/* behaviour.js */\n";
+include(dirname( __FILE__ ).DS."behaviour.js");
 echo "/* jwplayer.js */\n";
 include(dirname( __FILE__ ).DS."mediaplayer".DS."jwplayer.js");
 echo "\n\n";

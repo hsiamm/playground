@@ -1,16 +1,16 @@
 <?php
 /**
- * @version		4.1
+ * @version		4.4
  * @package		AllVideos (plugin)
- * @author    JoomlaWorks - http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author    JoomlaWorks - http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-/* -------------------------------- Embed templates -------------------------------- */
+/* -------------------------------- Embed templates for VIDEO -------------------------------- */
 $mediaplayerEmbed = "
 <div id=\"avID_{SOURCEID}\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" title=\"JoomlaWorks AllVideos Player\"></div>
 <script type=\"text/javascript\">
@@ -45,7 +45,7 @@ $mediaplayerEmbedRemote = "
 		'file': '{SOURCE}',
 		'height': '{HEIGHT}',
 		'width': '{WIDTH}',
-		modes: [
+		'modes': [
 			{ type: 'html5' },
 		  { type: 'flash', src: '{PLUGIN_PATH}/includes/js/mediaplayer/player.swf' },
 		  { type: 'download' }
@@ -64,6 +64,51 @@ $mediaplayerEmbedRemote = "
 </script>
 ";
 
+/* -------------------------------- Embed templates for AUDIO -------------------------------- */
+$audioPlayerEmbed = "
+<div id=\"avID_{SOURCEID}\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" title=\"JoomlaWorks AllVideos Player\"></div>
+<script type=\"text/javascript\">
+	jwplayer('avID_{SOURCEID}').setup({
+		'file': '{SITEURL}/{FOLDER}/{SOURCE}.{FILE_EXT}',
+		'image': '{PLAYER_POSTER_FRAME}',
+		'height': '{HEIGHT}',
+		'width': '{WIDTH}',
+		'modes': [
+		  { 'type': 'flash', src: '{PLUGIN_PATH}/includes/js/mediaplayer/player.swf' },
+		  { 'type': 'html5' },
+		  { 'type': 'download' }
+		],
+		'autostart': '{PLAYER_AUTOPLAY}',
+    'backcolor': '{PLAYER_ABACKGROUND}',
+    'frontcolor': '{PLAYER_AFRONTCOLOR}',
+    'lightcolor': '{PLAYER_ALIGHTCOLOR}',
+    'controlbar': 'bottom'
+	});
+</script>
+";
+
+$audioPlayerEmbedRemote = "
+<div id=\"avID_{SOURCEID}\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" title=\"JoomlaWorks AllVideos Player\"></div>
+<script type=\"text/javascript\">
+	jwplayer('avID_{SOURCEID}').setup({
+		'file': '{SOURCE}',
+		'height': '{HEIGHT}',
+		'width': '{WIDTH}',
+		'modes': [
+		  { type: 'flash', src: '{PLUGIN_PATH}/includes/js/mediaplayer/player.swf' },
+		  { type: 'html5' },
+		  { type: 'download' }
+		],
+		'autostart': '{PLAYER_AUTOPLAY}',
+    'backcolor': '{PLAYER_ABACKGROUND}',
+    'frontcolor': '{PLAYER_AFRONTCOLOR}',
+    'lightcolor': '{PLAYER_ALIGHTCOLOR}',
+    'controlbar': 'bottom'
+	});
+</script>
+";
+
+/* -------------------------------- Embed templates for Quicktime Media -------------------------------- */
 $qtEmbed = "
 <script type=\"text/javascript\">
 	QT_WriteOBJECT_XHTML('{SITEURL}/{FOLDER}/{SOURCE}.{FILE_EXT}', '{WIDTH}', '{HEIGHT}', '', 'autoplay', '{PLAYER_AUTOPLAY}', 'bgcolor', '{PLAYER_BACKGROUNDQT}', 'scale', 'aspect');
@@ -76,6 +121,7 @@ $qtEmbedRemote = "
 </script>
 ";
 
+/* -------------------------------- Embed templates for Windows Media -------------------------------- */
 $wmEmbed = "
 <div id=\"avID_{SOURCEID}\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" title=\"JoomlaWorks AllVideos Player\"></div>
 <script type=\"text/javascript\">
@@ -132,14 +178,14 @@ $tagReplace = array(
 "3g2" 				=> $mediaplayerEmbed,
 "3g2remote" 	=> $mediaplayerEmbedRemote,
 
-"mp3" 				=> $mediaplayerEmbed,
-"mp3remote" 	=> $mediaplayerEmbedRemote,
-"aac" 				=> $mediaplayerEmbed,
-"aacremote" 	=> $mediaplayerEmbedRemote,
-"m4a" 				=> $mediaplayerEmbed,
-"m4aremote" 	=> $mediaplayerEmbedRemote,
-"ogg" 				=> $mediaplayerEmbed,
-"oggremote" 	=> $mediaplayerEmbedRemote,
+"mp3" 				=> $audioPlayerEmbed,
+"mp3remote" 	=> $audioPlayerEmbedRemote,
+"aac" 				=> $audioPlayerEmbed,
+"aacremote" 	=> $audioPlayerEmbedRemote,
+"m4a" 				=> $audioPlayerEmbed,
+"m4aremote" 	=> $audioPlayerEmbedRemote,
+"ogg" 				=> $audioPlayerEmbed,
+"oggremote" 	=> $audioPlayerEmbedRemote,
 
 /* Quicktime */
 "mov" 				=> $qtEmbed,
@@ -218,30 +264,32 @@ $tagReplace = array(
 
 
 /* --- Major 3rd party video providers --- */
-// YouTube
-"youtube" => "<iframe src=\"http://www.youtube.com/embed/{SOURCE}\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" allowfullscreen title=\"JoomlaWorks AllVideos Player\"></iframe>",
-
-// vimeo.com - http://www.vimeo.com/1319796
-"vimeo" => "<iframe src=\"http://player.vimeo.com/video/{SOURCE}?portrait=0\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" title=\"JoomlaWorks AllVideos Player\"></iframe>",
+// blip.tv - http://blip.tv/joomlaworks/k2-for-joomla-dec-2010-4565453
+"blip" => "
+<script type=\"text/javascript\">
+	allvideos.ready(function(){
+		allvideos.embed({
+			'url': 'http://blip.tv/oembed/?callback=bliptv{SOURCEID}&width={WIDTH}&height={HEIGHT}&url={SOURCE}',
+			'callback': 'bliptv{SOURCEID}',
+			'playerID': 'avID_{SOURCEID}'
+		});
+	});
+</script>
+<div id=\"avID_{SOURCEID}\" title=\"JoomlaWorks AllVideos Player\">&nbsp;</div>
+",
 
 // dailymotion.com - http://www.dailymotion.com/featured/video/x35714_cap-nord-projet-1_creation
 "dailymotion" => "<iframe src=\"http://www.dailymotion.com/embed/video/{SOURCE}\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" title=\"JoomlaWorks AllVideos Player\"></iframe>",
 
+// youtube.com - http://www.youtube.com/watch?v=g5lGNkS5TE0
+"youtube" => "<iframe src=\"http://www.youtube.com/embed/{SOURCE}\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" allowfullscreen title=\"JoomlaWorks AllVideos Player\"></iframe>",
+
+// vimeo.com - http://www.vimeo.com/1319796
+"vimeo" => "<iframe src=\"http://player.vimeo.com/video/{SOURCE}\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" title=\"JoomlaWorks AllVideos Player\"></iframe>",
+
 
 
 /* --- Other 3rd party video providers --- */
-// Google Video
-"(google|google.co.uk|google.com.au|google.de|google.es|google.fr|google.it|google.nl|google.pl)" => "
-<object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://video.google.com/googleplayer.swf?docid={SOURCE}&hl=en&fs=true\" title=\"JoomlaWorks AllVideos Player\">
-	<param name=\"movie\" value=\"http://video.google.com/googleplayer.swf?docid={SOURCE}&hl=en&fs=true\" />
-	<param name=\"quality\" value=\"high\" />
-	<param name=\"wmode\" value=\"{PLAYER_TRANSPARENCY}\" />
-	<param name=\"bgcolor\" value=\"{PLAYER_BACKGROUND}\" />
-	<param name=\"allowfullscreen\" value=\"true\" />
-	<param name=\"allowscriptaccess\" value=\"always\" />
-</object>
-",
-
 // 123video.nl - http://www.123video.nl/playvideos.asp?MovieID=248020
 "123video" => "
 <object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://www.123video.nl/123video_emb.swf?mediaSrc={SOURCE}\" title=\"JoomlaWorks AllVideos Player\">
@@ -292,15 +340,15 @@ $tagReplace = array(
 
 // flickr.com - http://www.flickr.com/photos/bswise/5930051523/in/pool-726923@N23/
 "flickr" => "
-<object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://www.flickr.com/apps/video/stewart.swf.v71377\" title=\"JoomlaWorks AllVideos Player\">
-	<param name=\"movie\" value=\"http://www.flickr.com/apps/video/stewart.swf.v71377\" />
+<object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://www.flickr.com/apps/video/stewart.swf?v=109786\" title=\"JoomlaWorks AllVideos Player\">
+	<param name=\"movie\" value=\"http://www.flickr.com/apps/video/stewart.swf?v=109786\" />
 	<param name=\"quality\" value=\"high\" />
 	<param name=\"wmode\" value=\"{PLAYER_TRANSPARENCY}\" />
 	<param name=\"bgcolor\" value=\"{PLAYER_BACKGROUND}\" />
 	<param name=\"autoplay\" value=\"{PLAYER_AUTOPLAY}\" />
 	<param name=\"allowfullscreen\" value=\"true\" />
 	<param name=\"allowscriptaccess\" value=\"always\" />
-	<param name=\"flashvars\" value=\"intl_lang=en-us&amp;div_id=stewart_swf{SOURCE}_div&amp;flickr_notracking=true&amp;flickr_target=_self&amp;flickr_h={HEIGHT}&amp;flickr_w={WIDTH}&amp;flickr_no_logo=true&amp;onsite=true&amp;flickr_noAutoPlay=false&amp;in_photo_gne=true&amp;photo_secret=6e33ea4246&amp;photo_id={SOURCE}&amp;flickr_doSmall=true\" />
+	<param name=\"flashvars\" value=\"intl_lang=en-us&amp;div_id=stewart_swf{SOURCE}_div&amp;flickr_notracking=true&amp;flickr_target=_self&amp;flickr_h={HEIGHT}&amp;flickr_w={WIDTH}&amp;flickr_no_logo=true&amp;onsite=true&amp;flickr_noAutoPlay=false&amp;in_photo_gne=true&amp;photo_secret=&amp;photo_id={SOURCE}&amp;flickr_doSmall=true\" />
 </object>
 ",
 
@@ -360,6 +408,18 @@ $tagReplace = array(
 </object>
 ",
 
+// Google Video
+"(google|google.co.uk|google.com.au|google.de|google.es|google.fr|google.it|google.nl|google.pl)" => "
+<object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://video.google.com/googleplayer.swf?docid={SOURCE}&hl=en&fs=true\" title=\"JoomlaWorks AllVideos Player\">
+	<param name=\"movie\" value=\"http://video.google.com/googleplayer.swf?docid={SOURCE}&hl=en&fs=true\" />
+	<param name=\"quality\" value=\"high\" />
+	<param name=\"wmode\" value=\"{PLAYER_TRANSPARENCY}\" />
+	<param name=\"bgcolor\" value=\"{PLAYER_BACKGROUND}\" />
+	<param name=\"allowfullscreen\" value=\"true\" />
+	<param name=\"allowscriptaccess\" value=\"always\" />
+</object>
+",
+
 // grindtv.com - http://www.grindtv.com/outdoor/video/snowmobile_riding_in_labrador/#60513
 "grindtv" => "
 <object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://static.grindtv.com/player/optics.swf?sa=1&si=1&i={SOURCE}\" title=\"JoomlaWorks AllVideos Player\">
@@ -371,6 +431,20 @@ $tagReplace = array(
 	<param name=\"allowfullscreen\" value=\"true\" />
 	<param name=\"allowscriptaccess\" value=\"always\" />
 </object>
+",
+
+// justin.tv - http://www.justin.tv/jessicaycombinator/b/258383456
+"justin" => "
+<script type=\"text/javascript\">
+	allvideos.ready(function(){
+		allvideos.embed({
+			'url': 'http://api.justin.tv/api/embed/from_url.json?jsonp=justintv{SOURCEID}&width={WIDTH}&height={HEIGHT}&url={SOURCE}',
+			'callback': 'justintv{SOURCEID}',
+			'playerID': 'avID_{SOURCEID}'
+		});
+	});
+</script>
+<div id=\"avID_{SOURCEID}\" title=\"JoomlaWorks AllVideos Player\">&nbsp;</div>
 ",
 
 // kewego.com - http://www.kewego.com/video/iLyROoafYcaT.html
@@ -389,7 +463,7 @@ $tagReplace = array(
 ",
 
 // ku6.com (China) - http://v.ku6.com/special/show_4416694/SaBUoSwhqBgcuTd1.html
-"ku6" => "<script data-vid=\"{SOURCE}\" src=\"http://player.ku6.com/out/v.js\" data-width=\"{WIDTH}\" data-height=\"{HEIGHT}\"></script>",
+"ku6" => "<script data-vid=\"{SOURCE}\" src=\"//player.ku6.com/out/v.js\" data-width=\"{WIDTH}\" data-height=\"{HEIGHT}\"></script>",
 
 // liveleak.com - http://www.liveleak.com/view?i=2eb_1217374911
 "liveleak" => "
@@ -488,6 +562,20 @@ $tagReplace = array(
 </object>
 ",
 
+// soundcloud.com - http://soundcloud.com/sebastien-tellier/look
+"soundcloud" => "
+<script type=\"text/javascript\">
+	allvideos.ready(function(){
+		allvideos.embed({
+			'url': 'http://soundcloud.com/oembed?format=js&iframe=true&callback=soundcloud{SOURCEID}&auto_play={PLAYER_AUTOPLAY}&maxwidth={WIDTH}&url={SOURCE}',
+			'callback': 'soundcloud{SOURCEID}',
+			'playerID': 'avID_{SOURCEID}'
+		});
+	});
+</script>
+<div id=\"avID_{SOURCEID}\" title=\"JoomlaWorks AllVideos Player\">&nbsp;</div>
+",
+
 // southparkstudios.com (clips only) - http://www.southparkstudios.com/clips/388728/it-sounds-like-poo
 "southpark" => "
 <object type=\"application/x-shockwave-flash\" style=\"width:{WIDTH}px;height:{HEIGHT}px;\" data=\"http://media.mtvnservices.com/mgid:cms:item:southparkstudios.com:{SOURCE}\" title=\"JoomlaWorks AllVideos Player\">
@@ -526,6 +614,9 @@ $tagReplace = array(
 	<param name=\"allowscriptaccess\" value=\"always\" />
 </object>
 ",
+
+// twitvid.com - http://www.twitvid.com/PMRZA
+"twitvid" => "<iframe src=\"http://www.twitvid.com/embed.php?guid={SOURCE}\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" title=\"JoomlaWorks AllVideos Player\"></iframe>",
 
 // ustream.tv - http://www.ustream.tv/recorded/15746278
 "ustream" => "
@@ -586,6 +677,9 @@ $tagReplace = array(
 	<param name=\"flashvars\" value=\"vid={SOURCE}&amp;autoPlay={PLAYER_AUTOPLAY}&amp;volume=100&amp;enableFullScreen=1\" />
 </object>
 ",
+
+// yfrog.com - http://yfrog.com/0ia9mcz
+"yfrog" => "<iframe src=\"http://yfrog.com/{SOURCE}:embed\" width=\"{WIDTH}\" height=\"{HEIGHT}\" frameborder=\"0\" title=\"JoomlaWorks AllVideos Player\"></iframe>",
 
 // youku.com (China) - http://v.youku.com/v_show/id_XNzAxNDM3Ng==.html
 "youku" => "
