@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		4.1
+ * @version		4.4
  * @package		AllVideos (plugin)
- * @author    JoomlaWorks - http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author    JoomlaWorks - http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -16,8 +16,8 @@ class plgContentJw_allvideos extends JPlugin {
 
   // JoomlaWorks reference parameters
 	var $plg_name								= "jw_allvideos";
-	var $plg_copyrights_start		= "\n\n<!-- JoomlaWorks \"AllVideos\" Plugin (v4.1) starts here -->\n";
-	var $plg_copyrights_end			= "\n<!-- JoomlaWorks \"AllVideos\" Plugin (v4.1) ends here -->\n\n";
+	var $plg_copyrights_start		= "\n\n<!-- JoomlaWorks \"AllVideos\" Plugin (v4.4) starts here -->\n";
+	var $plg_copyrights_end			= "\n<!-- JoomlaWorks \"AllVideos\" Plugin (v4.4) ends here -->\n\n";
 
 	function plgContentJw_allvideos( &$subject, $params ){
 		parent::__construct( $subject, $params );
@@ -28,7 +28,7 @@ class plgContentJw_allvideos extends JPlugin {
 		$this->renderAllVideos($row, $params, $page = 0);
 	}
 
-	// Joomla! 1.6/1.7
+	// Joomla! 1.6/1.7/2.5
 	function onContentPrepare($context, &$row, &$params, $page = 0){
 		jimport('joomla.html.parameter');
 		$this->renderAllVideos($row, $params, $page = 0);
@@ -76,25 +76,28 @@ class plgContentJw_allvideos extends JPlugin {
 		$pluginParams = new JParameter( $plugin->params );
 
 		/* Preset Parameters */
-		$template						= 'Classic';
-		$skin								= 'bekle';
+		$template								= 'Classic';
+		$skin										= 'bekle';
 		/* Video Parameters */
-		$vfolder 						= ($params->get('vfolder')) ? $params->get('vfolder') : $pluginParams->get('vfolder','images/stories/videos');
-		$vwidth 						= ($params->get('vwidth')) ? $params->get('vwidth') : $pluginParams->get('vwidth',400);
-		$vheight 						= ($params->get('vheight')) ? $params->get('vheight') : $pluginParams->get('vheight',300);
-		$transparency 			= $pluginParams->get('transparency','transparent');
-		$background 				= $pluginParams->get('background','#010101');
-		$backgroundQT				= $pluginParams->get('backgroundQT','black');
-		$controlBarLocation = $pluginParams->get('controlBarLocation','bottom');
+		$vfolder 								= ($params->get('vfolder')) ? $params->get('vfolder') : $pluginParams->get('vfolder','images/stories/videos');
+		$vwidth 								= ($params->get('vwidth')) ? $params->get('vwidth') : $pluginParams->get('vwidth',400);
+		$vheight 								= ($params->get('vheight')) ? $params->get('vheight') : $pluginParams->get('vheight',300);
+		$transparency 					= $pluginParams->get('transparency','transparent');
+		$background 						= $pluginParams->get('background','#010101');
+		$backgroundQT						= $pluginParams->get('backgroundQT','black');
+		$controlBarLocation 		= $pluginParams->get('controlBarLocation','bottom');
 		/* Audio Parameters */
-		$afolder 						= $pluginParams->get('afolder','images/stories/audio');
-		$awidth 						= $pluginParams->get('awidth',300);
-		$aheight 						= $pluginParams->get('aheight',20);
+		$afolder 								= $pluginParams->get('afolder','images/stories/audio');
+		$awidth 								= ($params->get('awidth')) ? $params->get('awidth') : $pluginParams->get('awidth',480);
+		$aheight 								= ($params->get('aheight')) ? $params->get('aheight') : $pluginParams->get('aheight',24);
+		$abackground 						= $pluginParams->get('abackground','#010101');
+		$afrontcolor 						= $pluginParams->get('afrontcolor','#FFFFFF');
+		$alightcolor 						= $pluginParams->get('alightcolor','#00ADE3');
+		$allowAudioDownloading	= $pluginParams->get('allowAudioDownloading',0);
 		/* Global Parameters */
-		$autoplay 					= ($params->get('autoplay')) ? $params->get('autoplay') : $pluginParams->get('autoplay',0);
-		$autoplay						= ($autoplay) ? 'true' : 'false';
+		$autoplay 							= ($params->get('autoplay')) ? $params->get('autoplay') : $pluginParams->get('autoplay',0);
 		/* Performance Parameters */
-		$gzipScripts				= $pluginParams->get('gzipScripts',0);
+		$gzipScripts						= $pluginParams->get('gzipScripts',0);
 
 		// Variable cleanups for K2
 		if(JRequest::getCmd('format')=='raw'){
@@ -124,6 +127,7 @@ class plgContentJw_allvideos extends JPlugin {
 			if($gzipScripts){
 				$document->addScript($pluginLivePath.'/includes/js/jw_allvideos.js.php');
 			} else {
+				$document->addScript($pluginLivePath.'/includes/js/behaviour.js');
 				$document->addScript($pluginLivePath.'/includes/js/mediaplayer/jwplayer.js');
 				$document->addScript($pluginLivePath.'/includes/js/wmvplayer/silverlight.js');
 				$document->addScript($pluginLivePath.'/includes/js/wmvplayer/wmvplayer.js');
@@ -146,9 +150,149 @@ class plgContentJw_allvideos extends JPlugin {
 					$tagcontent 		= preg_replace("/{.+?}/", "", $match);
 					$tagparams 			= explode('|',$tagcontent);
 					$tagsource 			= trim(strip_tags($tagparams[0]));
-					$final_vwidth 	= (@$tagparams[1]) ? $tagparams[1] : $vwidth;
-					$final_vheight 	= (@$tagparams[2]) ? $tagparams[2] : $vheight;
+
+					// Prepare the HTML
+					$output = new JObject;
+
+					// Width/height/source folder split per media type
+					if(in_array($plg_tag, array(
+						'mp3',
+						'mp3remote',
+						'aac',
+						'aacremote',
+						'm4a',
+						'm4aremote',
+						'ogg',
+						'oggremote',
+						'wma',
+						'wmaremote',
+						'soundcloud'
+					))){
+						$final_awidth 	= (@$tagparams[1]) ? $tagparams[1] : $awidth;
+						$final_aheight 	= (@$tagparams[2]) ? $tagparams[2] : $aheight;
+
+						$output->playerWidth = $final_awidth;
+						$output->playerHeight = $final_aheight;
+						$output->folder = $afolder;
+						$output->mediaTypeClass = ' avAudio';
+						if($plg_tag!='soundcloud') $output->mediaType = 'audio';
+						if(in_array($plg_tag, array('mp3','aac','m4a','ogg','wma'))){
+							$output->source = "$siteUrl/$afolder/$tagsource.$plg_tag";
+						} elseif(in_array($plg_tag, array('mp3remote','aacremote','m4aremote','oggremote','wmaremote'))){
+							$output->source = $tagsource;
+						} else {
+							$output->source = '';
+						}
+					} else {
+						$final_vwidth 	= (@$tagparams[1]) ? $tagparams[1] : $vwidth;
+						$final_vheight 	= (@$tagparams[2]) ? $tagparams[2] : $vheight;
+
+						$output->playerWidth = $final_vwidth;
+						$output->playerHeight = $final_vheight;
+						$output->folder = $vfolder;
+						$output->mediaType = 'video';
+						$output->mediaTypeClass = ' avVideo';
+					}
+
+					// Autoplay
 					$final_autoplay = (@$tagparams[3]) ? $tagparams[3] : $autoplay;
+					$final_autoplay	= ($final_autoplay) ? 'true' : 'false';
+
+					// Special treatment for specific video providers
+					if($plg_tag=="dailymotion"){
+						$tagsource = preg_replace("~(http|https):(.+?)dailymotion.com\/video\/~s","",$tagsource);
+						$tagsourceDailymotion = explode('_',$tagsource);
+						$tagsource = $tagsourceDailymotion[0];
+						if($final_autoplay=='true'){
+							if(strpos($tagsource,'?')!==false){
+								$tagsource = $tagsource.'&amp;autoPlay=1';
+							} else {
+								$tagsource = $tagsource.'?autoPlay=1';
+							}
+						}
+					}
+
+					if($plg_tag=="ku6"){
+						$tagsource = str_replace('.html','',$tagsource);
+					}
+
+					if($plg_tag=="metacafe" && substr($tagsource,-1,1)=='/'){
+						$tagsource = substr($tagsource,0,-1);
+					}
+					
+					if($plg_tag=="twitvid"){
+						$tagsource = preg_replace("~(http|https):(.+?)twitvid.com\/~s","",$tagsource);
+						if($final_autoplay=='true'){
+							$tagsource = $tagsource.'&amp;autoplay=1';
+						}
+					}
+
+					if($plg_tag=="vidiac"){
+						$tagsourceVidiac = explode(';',$tagsource);
+						$tagsource = $tagsourceVidiac[0];
+					}
+					
+					if($plg_tag=="vimeo"){
+						$tagsource = preg_replace("~(http|https):(.+?)vimeo.com\/~s","",$tagsource);
+						if(strpos($tagsource,'?')!==false){
+							$tagsource = $tagsource.'&amp;portrait=0';
+						} else {
+							$tagsource = $tagsource.'?portrait=0';
+						}
+						if($final_autoplay=='true'){
+							$tagsource = $tagsource.'&amp;autoplay=1';
+						}
+					}
+
+					if($plg_tag=="yahoo"){
+						$tagsourceYahoo = explode('-',str_replace('.html','',$tagsource));
+						$tagsourceYahoo = array_reverse($tagsourceYahoo);
+						$tagsource = $tagsourceYahoo[0];
+					}
+					
+					if($plg_tag=="yfrog"){
+						$tagsource = preg_replace("~(http|https):(.+?)yfrog.com\/~s","",$tagsource);
+					}
+
+					if($plg_tag=="youmaker"){
+						$tagsourceYoumaker = explode('-',str_replace('.html','',$tagsource));
+						$tagsource = $tagsourceYoumaker[1];
+					}
+
+					if($plg_tag=="youku"){
+						$tagsource = str_replace('.html','',$tagsource);
+						$tagsource = substr($tagsource,3);
+					}
+					
+					if($plg_tag=="youtube"){
+						$tagsource = preg_replace("~(http|https):(.+?)youtube.com\/watch\?v=~s","",$tagsource);
+						$tagsourceYoutube = explode('&',$tagsource);
+						$tagsource = $tagsourceYoutube[0];
+						
+						if(strpos($tagsource,'?')!==false){
+							$tagsource = $tagsource.'&amp;rel=0&amp;fs=1&amp;wmode=transparent';
+						} else {
+							$tagsource = $tagsource.'?rel=0&amp;fs=1&amp;wmode=transparent';
+						}
+						if($final_autoplay=='true'){
+							$tagsource = $tagsource.'&amp;autoplay=1';
+						}
+					}
+					
+					// Poster frame
+					$posterFramePath = $sitePath.DS.str_replace('/',DS,$vfolder);
+					if(JFile::exists($posterFramePath.DS.$tagsource.'.jpg')){
+						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.jpg';
+					} elseif(JFile::exists($posterFramePath.DS.$tagsource.'.png')){
+						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.png';
+					} elseif(JFile::exists($posterFramePath.DS.$tagsource.'.gif')){
+						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.gif';
+					} else {
+						$output->posterFrame = '';
+					}
+
+					// Set a unique ID
+					$output->playerID = 'AVPlayerID_'.substr(md5($tagsource),1,8).'_'.rand();
 
 					// Placeholder elements
 					$findAVparams = array(
@@ -166,71 +310,11 @@ class plgContentJw_allvideos extends JPlugin {
 						"{FILE_EXT}",
 						"{PLUGIN_PATH}",
 						"{PLAYER_POSTER_FRAME}",
-						"{PLAYER_SKIN}"
+						"{PLAYER_SKIN}",
+						"{PLAYER_ABACKGROUND}",
+						"{PLAYER_AFRONTCOLOR}",
+						"{PLAYER_ALIGHTCOLOR}"
 					);
-
-					// Special treatment for specific video providers
-					if($plg_tag=="dailymotion"){
-						$tagsourceDailymotion = explode('_',$tagsource);
-						$tagsource = $tagsourceDailymotion[0];
-					}
-
-					if($plg_tag=="ku6"){
-						$tagsource = str_replace('.html','',$tagsource);
-					}
-
-					if($plg_tag=="metacafe" && substr($tagsource,-1,1)=='/'){
-						$tagsource = substr($tagsource,0,-1);
-					}
-
-					if($plg_tag=="vidiac"){
-						$tagsourceVidiac = explode(';',$tagsource);
-						$tagsource = $tagsourceVidiac[0];
-					}
-
-					if($plg_tag=="yahoo"){
-						$tagsourceYahoo = explode('-',str_replace('.html','',$tagsource));
-						$tagsourceYahoo = array_reverse($tagsourceYahoo);
-						$tagsource = $tagsourceYahoo[0];
-					}
-
-					if($plg_tag=="youmaker"){
-						$tagsourceYoumaker = explode('-',str_replace('.html','',$tagsource));
-						$tagsource = $tagsourceYoumaker[1];
-					}
-
-					if($plg_tag=="youku"){
-						$tagsource = str_replace('.html','',$tagsource);
-						$tagsource = substr($tagsource,3);
-					}
-
-					// Prepare the HTML
-					$output = new JObject;
-
-					$output->playerID = 'AVPlayerID_'.substr(md5($tagsource),1,8).'_'.rand();
-
-					// Poster frame
-					$posterFramePath = $sitePath.DS.str_replace('/',DS,$vfolder);
-					if(JFile::exists($posterFramePath.DS.$tagsource.'.jpg')){
-						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.jpg';
-					} elseif(JFile::exists($posterFramePath.DS.$tagsource.'.png')){
-						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.png';
-					} elseif(JFile::exists($posterFramePath.DS.$tagsource.'.gif')){
-						$output->posterFrame = $siteUrl.'/'.$vfolder.'/'.$tagsource.'.gif';
-					} else {
-						$output->posterFrame = '';
-					}
-
-					// Width/height/source folder
-					if(in_array($plg_tag, array('mp3','mp3remote','aac','aacremote','m4a','m4aremote','ogg','oggremote'))){
-						$output->playerWidth = $awidth;
-						$output->playerHeight = $aheight;
-						$output->folder = $afolder;
-					} else {
-						$output->playerWidth = $final_vwidth;
-						$output->playerHeight = $final_vheight;
-						$output->folder = $vfolder;
-					}
 
 					// Replacement elements
 					$replaceAVparams = array(
@@ -248,7 +332,10 @@ class plgContentJw_allvideos extends JPlugin {
 						$plg_tag,
 						$pluginLivePath,
 						$output->posterFrame,
-						$skin
+						$skin,
+						$abackground,
+						$afrontcolor,
+						$alightcolor
 					);
 
 					// Do the element replace
