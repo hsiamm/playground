@@ -85,7 +85,7 @@ RewriteRule .* index.php [L]
 # now the real stuff is below here
 #
 
-Redirect permanent /first http://austinstone.org/about/times-locations#tuesday
+Redirect permanent /first http://austinstone.org/campuses/campuses-main#tuesday
 Redirect permanent /resources/bible_reading_plan http://austinstone.org/resources/bible-reading-plan
 Redirect permanent /thecity https://austinstone.onthecity.org/session/new
 Redirect permanent /jointhecity https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/
@@ -94,7 +94,8 @@ Redirect permanent /who/staff http://austinstone.org/about/staff
 Redirect permanent /resources/new_to_the_stone http://austinstone.org/connect/new-here
 Redirect permanent /signups http://austinstone.org/connect/current-happenings
 Redirect permanent /who/contact http://austinstone.org/about/contact
-Redirect permanent /counseling http://ministries.austinstone.org/counseling
+Redirect permanent /counseling http://ministries.austinstone.org/care
+Redirect permanent /care http://ministries.austinstone.org/care
 Redirect permanent /gettrained http://ministries.austinstone.org/gettrained
 Redirect permanent /makedisciples http://ministries.austinstone.org/makedisciples
 Redirect permanent /college http://ministries.austinstone.org/college
