@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Joomla! Working Copy - Help</title>
+    <link type="text/css" href="http://help.joomla.org/templates/jw_joomla/css/template_css.css" rel="stylesheet" />
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="contentpane">
+    <table class="contentpaneopen">
+        <tr>
+            <td class="contentheading" width="100%">Working Copy</td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <h2><span class="mw-headline">Description</span></h2>
+                <p>Here you can create a child from your master website by filling the form on the screenshot.</p>
+                
+                <h2><span class="mw-headline">Screenshot</span></h2>
+                <p><span class="image"><img src="working_copy_new.png" alt="Image:Working_Copy_New.png" border="0" /></span></p>
+                
+                <h2><span class="mw-headline">Form Sections</span></h2>
+                <ul>
+                    <li><p><b>General</b>. Here you will enter the general information about the child</p><ul><li>Name: The name of the child site.</li><li>Path: The relative path of the child site.</li><li>Site ID: The unique secret key of the child site, it will be generated automatically.</li><li>Copy Database: You can specify to copy or not the master tables to the child database, use Yes if you are not sure. If you say No, you will need to create appropriate table triggers manually.</li><li>Copy Files: If your site is big you can use this option to not copy the files to the child site, you will need to copy them manually afterwards.</li></ul></li>
+                    <li><p><b>Child Database Settings</b>. Here you will need to enter the child database connection info. It will be used by the child to connect to it's database.</p></li>
+                    <li><p><b>Master Database Settings</b>. Here you will need to enter the master database connection info. It will be used by the child to connect to the master database.</p></li>
+                    <li><p><b>FTP Settings</b>. This setting tells Joomla! to use it's built-in FTP function instead of the normal upload process used by PHP. You can find more info about it in Joomla! Global Configuration Help.</p></li>
+                    <li><p><b>Exclude Files</b>. The files in the exclude list will not be listed in the differences list even if you made a change on them. If you want to exclude all the files in a directory, just specify the relative path of it.</p></li>
+                    <li><p><b>Do Not Copy Files</b>. Unless the Exclude Files list, this files will not be copied to the child site while creating it. If you specify a folder here, it will be created on the child, but the files in it will not be copied.</p></li>
+                    <li><p><b>Exclude Tables</b>. The tables in the exclude list will not be listed in the differences list even if you made a change on them.</p></li>
+                    <li><p><b>Do Not Copy Tables</b>. Unless the Exclude Tables list, this table rows will not be copied to the child site while creating it. Only the table structure will be added to the child.</p></li>
+                </ul>
+
+                <h2><span class="mw-headline">Toolbar</span></h2>
+                <p>At the top right you will see the toolbar:</p>
+                <p><span class="image"><img src="working_copy_new_toolbar.png" alt="Image:Working_Copy_New_toolbar.png" border="0" /></span></p>
+                <ul>
+                    <li><p><b>Save</b>. Saves and/or creates the child if doesn't exist.</p></li>
+                    <li><p><b>Apply</b>. Saves and/or creates the child if doesn't exist and keeps the form in front of you.</p></li>
+                    <li><p><b>Cancel</b>. Cancels unsaved changes and closes the form.</p></li>
+                    <li><p><b>Help</b>. Opens this Help Screen.</p></li>
+                </ul>
+
+                <h2><span class="mw-headline">Quick Notes</span></h2>
+                <ul>
+                    <li><p>You can use the same database for the child, but the prefix should differ.</p></li>
+                    <li><p>If you have big folders containing multi-media files, better to add that folder to Do Not Copy Files list and then copy it manually if you need them.</p></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
