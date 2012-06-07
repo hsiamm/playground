@@ -31,8 +31,6 @@ textarea.wfEditor, textarea.wfNoEditor {
     color: #333;
     line-height: 16px;
 	position: relative;
-	white-space: pre-wrap;
-	word-wrap: break-word;
 	border: 1px solid #CCCCCC;
 }
 textarea.wfEditor:focus, textarea.wfNoEditor:focus {
@@ -42,7 +40,7 @@ textarea.wfEditor:focus, textarea.wfNoEditor:focus {
 
 span.wf_editor_toggle {
 	cursor: pointer;
-	display: inline-block;
+	display: block;
 	padding: 5px;
 	line-height: 20px;
 }

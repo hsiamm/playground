@@ -11,11 +11,11 @@
 * other free or open source software licenses.
 */
 class WFVisualcharsPluginConfig {
-	public function getConfig( &$settings ){
+	public static function getConfig( &$settings ){
 
 		$wf = WFEditor::getInstance();
 		
-		$settings['visualchars'] = $wf->getParam('editor.visualchars', 0);
+		$settings['visualchars'] = $wf->getParam('editor.visualchars', 0, 0, 'boolean');
 	}
 }
 ?>

@@ -9,13 +9,17 @@
  * other free or open source software licenses.
  */
 html {
-	overflow: auto;
+	overflow: hidden;
+	height: 100%;
 }
 body#jce {
-    padding:0 !important;
+    padding: 5px !important;
 	font: 10px Verdana, Arial, Helvetica, sans-serif;
 	background-color: #FFF;
-	margin: 5px;
+	margin: 0;
+	position: relative;
+	height: 100%;
+	overflow: hidden;
 }
 #jce {
 	border: 0 none;
@@ -54,7 +58,6 @@ label {
 }
 label.invalid {
     color:#E00;
-    display:inline;
 }
 input.invalid {
     border:1px solid #E00;
@@ -139,6 +142,7 @@ input[type="text"] {
 }
 input[type="checkbox"] {
 	margin: 2px;
+	vertical-align: middle;
 }
 .show {
     display:block;
@@ -154,6 +158,10 @@ input[type="checkbox"] {
     width:20px;
     height:20px;
     display:block;
+}
+span.loader {
+	display: inline-block;
+	vertical-align: middle;
 }
 .ui-addselect, .mceAddSelectValue {
     background-color:#DDD;
@@ -301,15 +309,16 @@ a.pickcolor:hover span, span.pickcolor_icon:hover {
     background-color:#B2BBD0;
 }
 .mceActionPanel, div.actionPanel {
-    margin-top:5px;
-	float: right;
+    position: absolute;
+    bottom: 25px;
+    right: 4px;
 }
 label, input, select {
     vertical-align:middle;
 	line-height: 16px;
 }
 .disabled {
-	cursor:default !important;
+	cursor:default;
 }
 span[role="button"].disabled {
     opacity:0.3;
@@ -346,8 +355,10 @@ span.ui-slider {
     font-size: 1.1em;
     padding: 0 0 0 32px;
 	margin: 3px 0px;
-	height: 24px;
+	min-height: 24px;
 	background: url('../img/icons-24.png') no-repeat 0 -48px;
+	width: 240px;
+	word-wrap: break-word;
 }
 
 #jce div.ui-dialog div.ui-dialog-content div.alert {
@@ -379,9 +390,17 @@ label[for^="margin_"], label[for^="border_"], label[for="clear"] {
 	min-width: 40px;
 }
 
+label[for="margin_check"] {
+	margin: 0 0 0 5px;
+}
+
 /** Popups **/
 label[for="popup_check"] {
 	margin: 0 0 0 5px;
+}
+
+div#popups_tab {
+	overflow-x : auto;
 }
 
 /** Dialogs **/

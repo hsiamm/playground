@@ -1,17 +1,15 @@
 <?php
 /**
- * @version		$Id: weblinks.php 221 2011-06-11 17:30:33Z happy_noodle_boy $
- * @package     JCE Advlink
- * @copyright   Copyright (C) 2008 - 2009 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license     GNU/GPL
+ * @package   	JCE
+ * @copyright 	Copyright © 2009-2011 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-// no direct access
-defined('_WF_EXT') or die('Restricted access');
+
+defined('_WF_EXT') or die('RESTRICTED');
 class JoomlalinksWeblinks extends JObject
 {
     
@@ -52,7 +50,7 @@ class JoomlalinksWeblinks extends JObject
     {
       	$wf = WFEditorPlugin::getInstance();
 		
-        if ($wf->checkAccess('joomlalinks.weblinks', '1')) {
+        if ($wf->checkAccess('links.joomlalinks.weblinks', 1)) {
             return '<li id="index.php?option=com_weblinks&view=categories"><div class="tree-row"><div class="tree-image"></div><span class="folder weblink nolink"><a href="javascript:;">'.WFText::_('WF_LINKS_JOOMLALINKS_WEBLINKS').'</a></span></div></li>';
         }
     }
@@ -69,10 +67,25 @@ class JoomlalinksWeblinks extends JObject
 				$categories = WFLinkBrowser::getCategory('com_weblinks');
 
 				foreach ($categories as $category) {
+
+					$url = '';
+					
 					$itemid = WFLinkBrowser::getItemId('com_weblinks', array('categories' => null, 'category' => $category->id));
 					
+					if (method_exists('WeblinksHelperRoute', 'getCategoryRoute')) {
+						$id = WeblinksHelperRoute::getCategoryRoute($category->id);
+									
+						if (strpos($id, 'index.php?Itemid=') !== false) {
+							$url 	= $id;
+							$id 	= 'index.php?option=com_weblinks&view=category&id=' . $category->id;
+						}						
+					} else {	
+						$id 	= 'index.php?option=com_weblinks&view=category&id=' . $category->id . $itemid;
+					}
+					
 					$items[] = array(
-						'id'		=>	'index.php?option=com_weblinks&view=category&id=' . $category->id . $itemid,
+						'url'		=> 	$url,
+						'id'		=>	$id,
 						'name'		=>	$category->title . ' / ' . $category->alias,
 						'class'		=>	'folder weblink'
 					);
@@ -89,14 +102,29 @@ class JoomlalinksWeblinks extends JObject
 					if (count($categories)) {				
 						foreach ($categories as $category) {				
 							$children 	= WFLinkBrowser::getCategory('com_weblinks', $category->id);				
+							
+							$url = '';
+							
 							if ($children) {
 								$id = 'index.php?option=com_weblinks&view=category&id=' . $category->id;
 							} else {
-								$itemid = WFLinkBrowser::getItemId('com_weblinks', array('categories' => null, 'category' => $category->slug));
-								$id 	= 'index.php?option=com_weblinks&view=category&id='. $category->slug . $itemid;
+								$itemid = WFLinkBrowser::getItemId('com_weblinks', array('categories' => null, 'category' => $category->id));
+								
+								if (method_exists('WeblinksHelperRoute', 'getCategoryRoute')) {
+									$id = WeblinksHelperRoute::getCategoryRoute($category->id);
+									
+									if (strpos($id, 'index.php?Itemid=') !== false) {
+										$url 	= $id;
+										$id 	= 'index.php?option=com_weblinks&view=category&id=' . $category->id;
+									}
+									
+								} else {
+									$id 	= 'index.php?option=com_weblinks&view=category&id=' . $category->id . $itemid;
+								}	
 							}
 							
 							$items[] = array(
+								'url'		=>  $url,
 								'id'		=>	$id,
 								'name'		=>	$category->title . ' / ' . $category->alias,
 								'class'		=>	'folder weblink'
@@ -106,10 +134,10 @@ class JoomlalinksWeblinks extends JObject
 				}
 
 				$weblinks = self::_weblinks($args->id);
-				
+
 				foreach ($weblinks as $weblink) {
 					$items[] = array(
-						'id'		=>	WeblinksHelperRoute::getWeblinkRoute($weblink->id, $args->id),
+						'id'		=>	WeblinksHelperRoute::getWeblinkRoute($weblink->slug, $weblink->catslug),
 						'name'		=>	$weblink->title . ' / ' . $weblink->alias,
 						'class'		=>	'file'
 					);
@@ -120,23 +148,56 @@ class JoomlalinksWeblinks extends JObject
 	}
 	function _weblinks($id)
 	{
-		$db		= JFactory::getDBO();
-		$user	= JFactory::getUser();	
+		$wf 		= WFEditorPlugin::getInstance();	
+		$db			= JFactory::getDBO();
+		$user		= JFactory::getUser();	
 		
-		$where 	= '';
+		$dbquery	= $db->getQuery(true);
 		
-		if (isset($user->gid)) {
-			$where .= ' AND published = 1';
-		} else {
-			$where .= ' AND state = 1';
-			$where .= ' AND access IN ('.implode(',', $user->authorisedLevels()).')';
+		$section 	= JText::_( 'Web Links' );
+
+		$query 		= 'SELECT a.id AS slug, b.id AS catslug, a.title AS title, a.description AS text, a.url, a.alias';	
+
+		if ($wf->getParam('links.joomlalinks.weblinks_alias', 1) == 1) {
+			if (is_object($dbquery)) {		
+		        //sqlsrv changes
+		        $case_when1  = ' CASE WHEN ';
+		        $case_when1 .= $dbquery->charLength('a.alias');
+		        $case_when1 .= ' THEN ';
+		        $a_id 		= $dbquery->castAsChar('a.id');
+		        $case_when1 .= $dbquery->concatenate(array($a_id, 'a.alias'), ':');
+		        $case_when1 .= ' ELSE ';
+		        $case_when1 .= $a_id.' END as slug';
+	
+		        $case_when2  = ' CASE WHEN ';
+		        $case_when2 .= $dbquery->charLength('b.alias');
+		        $case_when2 .= ' THEN ';
+		        $c_id 		 = $dbquery->castAsChar('b.id');
+		        $case_when2 .= $dbquery->concatenate(array($c_id, 'b.alias'), ':');
+		        $case_when2 .= ' ELSE ';
+		        $case_when2 .= $c_id.' END as catslug';
+			} else {
+				$case_when1 = ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug';
+				$case_when2 = ' CASE WHEN CHAR_LENGTH(b.alias) THEN CONCAT_WS(\':\', b.id, b.alias) ELSE b.id END as catslug';
+			}
+				
+			$query .= ',' . $case_when1 . ',' . $case_when2 ;		
 		}
 		
-		$query = 'SELECT title, id, alias'
-		. ' FROM #__weblinks'
-		. ' WHERE catid = '.(int) $id
+		if (method_exists('JUser', 'getAuthorisedViewLevels')) {
+			$where	 = ' AND a.state = 1';	
+			$where	.= ' AND b.access IN ('.implode(',', $user->getAuthorisedViewLevels()).')';
+		} else {
+			$where	 = ' AND a.published = 1';
+			$where	.= ' AND b.access <= '.(int) $user->get('aid');
+		}
+		
+		$query .= ' FROM #__weblinks AS a'
+		. ' INNER JOIN #__categories AS b ON b.id = '.(int) $id
+		. ' WHERE a.catid = '.(int) $id
 		. $where
-		. ' ORDER BY title'
+		. ' AND b.published = 1'
+		. ' ORDER BY a.title'
 		;
 		
 		$db->setQuery($query, 0);

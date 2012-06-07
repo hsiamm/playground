@@ -11,18 +11,20 @@
 * other free or open source software licenses.
 */
 class WFInlinepopupsPluginConfig {
-	public function getStyles(){	
+	public static function getStyles(){	
 		$wf = WFEditor::getInstance(); 
 		// only required if we're packing css
 		if ($wf->getParam('editor.compress_css', 0)) {
 			jimport('joomla.filesystem.folder');
 			// get UI Theme
-			$theme   = $wf->getParam('editor.dialog_theme', 'jce');
-			$ui      = JFolder::files(JPATH_COMPONENT_ADMINISTRATOR . DS . 'media' . DS . 'css' . DS . 'jquery' . DS . $theme, '\.css$');
+			$theme  = $wf->getParam('editor.dialog_theme', 'jce');
+			$ui 	= JFolder::files(WF_EDITOR_LIBRARIES . DS . 'css' . DS . 'jquery' . DS . $theme, '\.css$');
+
+			$file 	= count($ui) ? basename($ui[0]) : '';
 	                    
 	 		// add ui theme css file
 			return array(
-				JPATH_COMPONENT_ADMINISTRATOR . DS . 'media' . DS . 'css' . DS . 'jquery' . DS . $theme . DS . basename($ui[0]),
+				WF_EDITOR_LIBRARIES . DS . 'css' . DS . 'jquery' . DS . $theme . DS . $file,
 				dirname(dirname(__FILE__)) . DS . 'css' . DS . 'dialog.css'
 			);
 		}

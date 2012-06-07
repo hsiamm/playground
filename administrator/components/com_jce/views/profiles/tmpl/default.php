@@ -1,30 +1,29 @@
-<?php 
+<?php
 /**
- * @version		$Id: default.php 231 2011-06-14 15:47:00Z happy_noodle_boy $
  * @package   	JCE
  * @copyright 	Copyright © 2009-2011 Ryan Demmer. All rights reserved.
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license   	GNU/GPL 2 or later
- * This version may have been modified pursuant
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined('_JEXEC') or die('ERROR_403');
+
+defined('_JEXEC') or die('RESTRICTED');
 ?>
-<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm">
+<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="jce">
 		<table id="profiles-toolbar" cellspacing="0">
 			<tr>
 				<td>
-					<label for="search"><?php echo WFText::_('WF_LABEL_FILTER'); ?>: </label><input type="text" name="search" id="search" size="50" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+					<label for="search"><?php echo WFText::_('WF_LABEL_FILTER'); ?></label><input type="text" name="search" id="search" size="50" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 					<button id="filter_go" onclick="this.form.submit();"><?php echo WFText::_('WF_LABEL_GO'); ?></button>
 					<button id="filter_reset" onclick="document.getElementById('search').value='';this.form.submit();"><?php echo WFText::_('WF_LABEL_RESET'); ?></button>
 				</td>
 
 				<td nowrap="nowrap">
-					<span style="display:inline-block;float:right;">
-						<label for="import"><?php echo WFText::_('WF_PROFILES_IMPORT'); ?>:</label>
+					<span class="upload-container">
+						<label for="import"><?php echo WFText::_('WF_PROFILES_IMPORT'); ?></label>
 						<input type="file" name="import" id="upload" accept="application/xml" />
 						<button id="upload_button"><?php echo WFText::_('WF_PROFILES_IMPORT_IMPORT'); ?></button>								
 					</span>
@@ -88,7 +87,7 @@ defined('_JEXEC') or die('ERROR_403');
 						echo $row->name;
 					} else {	
 					?>
-						<span class="editlinktip hasTip" title="<?php echo WFText::_( 'WF_PROFILES_EDIT' );?>::<?php echo $row->name; ?>">
+						<span class="editlinktip tooltip" title="<?php echo WFText::_( 'WF_PROFILES_EDIT' );?>::<?php echo $row->name; ?>">
 						<a href="<?php echo $link; ?>">
 							<?php echo $row->name; ?></a></span>
 					<?php } ?>

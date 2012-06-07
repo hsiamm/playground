@@ -1,15 +1,15 @@
 <?php
 /**
- * @package      JCE Media Manager - JCE Media Player
- * @copyright 	Copyright (C) 2005 - 2010 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license 		http://www.gnu.org/copyleft/gpl.html GNU/GPL, see licence.txt
+ * @package   	JCE
+ * @copyright 	Copyright © 2009-2011 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined( '_WF_EXT' ) or die( 'RESTRICTED' );
+
+defined( '_WF_EXT' ) or die('RESTRICTED');
 ?>
 <table border="0" cellpadding="4" cellspacing="0" width="100%">
 	<tr>
@@ -20,8 +20,8 @@ defined( '_WF_EXT' ) or die( 'RESTRICTED' );
 	</tr>
 	<tr>
 		<td style="width:30%;">
-			<input type="checkbox" id="youtube_related" checked="checked" />
-			<label for="youtube_related" title="<?php echo WFText::_('WF_AGGREGATOR_YOUTUBE_RELATED_DESC')?>" class="tooltip"><?php echo WFText::_('WF_AGGREGATOR_YOUTUBE_RELATED')?></label>
+			<input type="checkbox" id="youtube_rel" />
+			<label for="youtube_rel" title="<?php echo WFText::_('WF_AGGREGATOR_YOUTUBE_RELATED_DESC')?>" class="tooltip"><?php echo WFText::_('WF_AGGREGATOR_YOUTUBE_RELATED')?></label>
 		</td>
 
 		<td>

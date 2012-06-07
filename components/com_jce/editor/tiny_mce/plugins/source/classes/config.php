@@ -12,27 +12,37 @@
  */
 class WFSourcePluginConfig
 {
-	public function getConfig(&$settings)
+	public static function getConfig(&$settings)
 	{
 		$wf = WFEditor::getInstance();
 
-		$settings['source_higlight'] 	= $wf->getParam('source.highlight', 1, 1);
-		$settings['source_numbers'] 	= $wf->getParam('source.numbers', 1, 1);
-		$settings['source_wrap'] 		= $wf->getParam('source.wrap', 1, 1);
-		$settings['source_theme'] 		= $wf->getParam('source.theme', 'textmate', 'textmate');
-	}
-	
-	public function getStyles() {
-		$wf = WFEditor::getInstance();
+		$settings['source_higlight'] 	= $wf->getParam('source.highlight', 1, 1, 'boolean');
+		$settings['source_numbers'] 	= $wf->getParam('source.numbers', 1, 1, 'boolean');
+		$settings['source_wrap'] 		= $wf->getParam('source.wrap', 1, 1, 'boolean');
 		
-		// return file(s) array
-		if ($wf->getParam('editor.compress_css', 0)) {			
-			return array(dirname(dirname(__FILE__)) . DS . 'css' . DS . 'editor.css');
+		$theme = $wf->getParam('source.theme', 'textmate', 'textmate');
+		
+		// codemirror2 themes...
+		if (preg_match('#(cobalt|default|elegant|monokai|neat|night|rubyblue)#', $theme)) {
+			$theme = 'textmate';
 		}
 		
-		// use document instance	
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true) . '/components/com_jce/editor/tiny_mce/plugins/source/css/editor.css?version=' . $wf->getVersion());
+		$settings['source_theme'] = $theme;
+	}
+	
+	public static function getStyles() {
+		$wf = WFEditor::getInstance();
+		
+		if (JRequest::getWord('layout') === 'plugin') {
+			// return file(s) array
+			if ($wf->getParam('editor.compress_css', 0)) {			
+				return array(dirname(dirname(__FILE__)) . DS . 'css' . DS . 'editor.css');
+			}
+			
+			// use document instance	
+			$document = JFactory::getDocument();
+			$document->addStyleSheet(JURI::root(true) . '/components/com_jce/editor/tiny_mce/plugins/source/css/editor.css?version=' . $wf->getVersion());	
+		}
 	}
 }
 ?>
