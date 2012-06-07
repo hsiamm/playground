@@ -13,39 +13,37 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <!-- Start K2 Category Layout WRITTEN-->
-		<div class="onecol">
-			<h1>Stories</h1>
-		</div>
-		
-		<div class="onecol">
-			<div id="story_menu">
-					<ul id="story_menunav">
-						<li id="story_menunav"><a href="/stories" id="storyhomenav">Stories Main</a></li>
-						<li id="story_menunav"><a href="/stories/film" id="storyfilmsnav">Film</a></li>
-						<li id="story_menunav"><a href="/stories/written" id="storywrittennav">Written</a></li>
-						<li id="story_menunav"><a href="/stories/photo" id="storyphotonav">Photo</a></li>
-						<li id="story_menunav"><a href="/stories/spoken" id="storyaudionav">Spoken</a></li>						
-						<li id="story_menunav"><a href="/stories/about" id="storyaboutnav">About Us</a></li>					
-					</ul>
-			</div> <!-- /story_menu -->
-		</div>
-		
-		<div style="clear:both;"></div>
-		<div class="bump">&nbsp;</div>
+	<div class="onecol">
+		<h1>Stories</h1>
+	</div>
+	
+	<div class="onecol">
+		<div id="story_menu">
+				<ul id="story_menunav">
+					<li id="story_menunav"><a href="/stories" id="storyhomenav">Stories Main</a></li>
+					<li id="story_menunav"><a href="/stories/film" id="storyfilmsnav">Film</a></li>
+					<li id="story_menunav"><a href="/stories/written" id="storywrittennav">Written</a></li>
+					<li id="story_menunav"><a href="/stories/photo" id="storyphotonav">Photo</a></li>
+					<li id="story_menunav"><a href="/stories/spoken" id="storyaudionav">Spoken</a></li>						
+					<li id="story_menunav"><a href="/stories/about" id="storyaboutnav">About Us</a></li>					
+				</ul>
+		</div> <!-- /story_menu -->
+	</div>
 
-<!-- Start K2 Category Layout -->
-<div id="k2Container" class="itemListView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+	<div class="bump" style="height:10px;float:left;"></div>
+	
+	<div class="onecol" style="margin-bottom:10px;text-align:center;">
+		<div class="rule_wh">
+			<img src="../images/written-header-icon.png" alt="film-header-icon" style="margin:-22px 0 0 0;background-color:#DFDED2;padding:10px;" />
+		</div>
+	</div><!--/\/\/\WRITTENrule/\/\/\-->
+
 
 	<?php if($this->params->get('show_page_title')): ?>
 	<!-- Page title -->
 	<div class="componentheading<?php echo $this->params->get('pageclass_sfx')?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
 	</div>
-	<?php endif; ?>
-
-	<?php if($this->params->get('catFeedIcon')): ?>
-	<!-- RSS feed icon -->
-
 	<?php endif; ?>
 
 
@@ -70,17 +68,16 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					// Load category_item.php by default
 					$this->item=$item;
-					echo $this->loadTemplate('item');
+					echo $this->loadTemplate('leading');
 				?>
 			</div>
 			<?php if(($key+1)%($this->params->get('num_leading_columns'))==0): ?>
-			<div class="clr"></div>
 			<?php endif; ?>
 			<?php endforeach; ?>
-			<div class="clr"></div>
 		</div>
 		<?php endif; ?>
 
+		
 		<?php if(isset($this->primary) && count($this->primary)): ?>
 		<!-- Primary items -->
 		<div id="itemListPrimary">
@@ -98,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					// Load category_item.php by default
 					$this->item=$item;
-					echo $this->loadTemplate('item');
+					echo $this->loadTemplate('primary');
 				?>
 			</div>
 			<?php if(($key+1)%($this->params->get('num_primary_columns'))==0): ?>
@@ -108,6 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="clr"></div>
 		</div>
 		<?php endif; ?>
+
 
 		<?php if(isset($this->secondary) && count($this->secondary)): ?>
 		<!-- Secondary items -->
@@ -130,53 +128,19 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 			</div>
 			<?php if(($key+1)%($this->params->get('num_secondary_columns'))==0): ?>
-			<div class="clr"></div>
 			<?php endif; ?>
 			<?php endforeach; ?>
-			<div class="clr"></div>
 		</div>
 		<?php endif; ?>
-
-		<?php if(isset($this->links) && count($this->links)): ?>
-		<!-- Link items -->
-		<div id="itemListLinks">
-			<h4><?php echo JText::_('K2_MORE'); ?></h4>
-			<?php foreach($this->links as $key=>$item): ?>
-
-			<?php
-			// Define a CSS class for the last container on each row
-			if( (($key+1)%($this->params->get('num_links_columns'))==0) || count($this->links)<$this->params->get('num_links_columns') )
-				$lastContainer= ' itemContainerLast';
-			else
-				$lastContainer='';
-			?>
-
-			<div class="itemContainer<?php echo $lastContainer; ?>"<?php echo (count($this->links)==1) ? '' : ' style="width:'.number_format(100/$this->params->get('num_links_columns'), 1).'%;"'; ?>>
-				<?php
-					// Load category_item_links.php by default
-					$this->item=$item;
-					echo $this->loadTemplate('item_links');
-				?>
-			</div>
-			<?php if(($key+1)%($this->params->get('num_links_columns'))==0): ?>
-			<div class="clr"></div>
-			<?php endif; ?>
-			<?php endforeach; ?>
-			<div class="clr"></div>
-		</div>
-		<?php endif; ?>
-
-	</div>
+	</div><!--/item_list-->
 
 	<!-- Pagination -->
 	<?php if(count($this->pagination->getPagesLinks())): ?>
 	<div class="k2Pagination">
-		<?php if($this->params->get('catPagination')) echo $this->pagination->getPagesLinks(); ?>
-		<div class="clr"></div>
-		<?php if($this->params->get('catPaginationResults')) echo $this->pagination->getPagesCounter(); ?>
+		<h5 class="grey" style="font-weight:500;letter-spacing:1px;"><?php if($this->params->get('catPagination')) echo $this->pagination->getPagesLinks(); ?>
+		<?php if($this->params->get('catPaginationResults')) echo $this->pagination->getPagesCounter(); ?></h5>
 	</div>
 	<?php endif; ?>
-
 	<?php endif; ?>
 </div>
 <!-- End K2 Category Layout -->

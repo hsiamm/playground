@@ -58,6 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div style="clear:both;"></div>
 	<div class="bump">&nbsp;</div>
 
+	
 	<div class="onecol">
 		<?php if($this->item->params->get('itemTitle')): ?>
 		<!-- Item title -->
@@ -77,6 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endif; ?>
 	</div><!--/onecol-->
 	
+	
 	<div class="twocol">
 		<blockquote>
 			<?php if(!empty($this->item->fulltext)): ?>
@@ -94,8 +96,12 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->item->introtext; ?>
 			<?php endif; ?>		
 		</blockquote>
+		
+		<div class="rule_wh"></div>	
+		<a href="#" class="hot_fourcol-w"><blockquote>&larr; Watch More Films</blockquote></a>			
 	</div><!--/twocol-->
 	
+
 	<div class="fourcol">
 		<h3>Share story:</h3>
 		<?php if($this->item->params->get('itemTwitterButton',1) || $this->item->params->get('itemFacebookButton',1) || $this->item->params->get('itemGooglePlusOneButton',1)): ?>
@@ -124,13 +130,17 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 			<?php endif; ?>
 		<?php endif; ?>	
-		<div style="clear:both;"></div>
-		<div class="bump">&nbsp;</div>	
-		<a href="#" class="hot_fourcol-b"><blockquote>More written stories</blockquote></a>	
 	</div><!--/foucol-->
+	
+	
 	<div class="fourcol">
-		<h3>Related Stories:</h3>
-		<p class="sans">tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags tags </p>
+		<h3>Related Stories:</h3>		
+		<?php if($this->item->params->get('itemTags') && count($this->item->tags)): ?>
+		<!-- Item tags -->
+		    <?php foreach ($this->item->tags as $tag): ?>
+		    <a href="<?php echo $tag->link; ?>"><p class="sans caps" style="letter-spacing:1px;font-size:11px;font-weight:500;background-color:#fff;color:#000;-moz-border-radius: 3px;border-radius: 3px;margin:0 5px 5px 0;float:left;padding:0 5px;"><?php echo $tag->name; ?></p></a>
+		    <?php endforeach; ?>
+		<?php endif; ?>		
 	</div>	
 
 	<div style="clear:both;"></div>
