@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 			
 			<!-- Item fulltext -->
-			<?php echo $this->item->introtext; ?>
+			<p class="story"><?php echo $this->item->introtext; ?></p>
 			
 			
 			<div class="rule_bl"></div><!--/\/\/\rule/\/\/\-->

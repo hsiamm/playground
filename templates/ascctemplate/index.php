@@ -254,7 +254,7 @@ margin-top: -4px;
                 <a href="http://www.youtube.com/user/theaustinstonechurch"><img src="images/youtube.png" alt="YouTube" /></a></div>
             <div class="sixcol">
                 <h2 class="blue">Stay Connected</h2>
-                <p class="sans"><em>The City</em> is the central communication tool for our church. <a href="https://austinstone.onthecity.org/kiosk/">Join today</a>.</p>
+                <p class="sans"><em>The City</em> is the central communication tool for our church. <a href="https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/">Join today</a>.</p>
                 <p class="sans"><a href="https://austinstone.onthecity.org/"><em>The City</em></a> &nbsp;|&nbsp;<a href="http://austinstone.onthecity.org/plaza"><em>The City</em> Plaza</a></p>
             </div>				
 
@@ -269,7 +269,7 @@ margin-top: -4px;
             </div>
             <div class="sixcol">
                 <h4><a href="/connect/new-here">I'M NEW HERE</a> <img src="images/arrow_y.png" alt="Go" /></h4>
-                <h4><a href="https://austinstone.onthecity.org/kiosk/">GET CONNECTED</a> <img src="images/arrow_y.png" alt="Go" /></h4>
+                <h4><a href="https://theaustinstone.wufoo.com/forms/connect-me-to-the-city/">GET CONNECTED</a> <img src="images/arrow_y.png" alt="Go" /></h4>
                 <h4><a href="/about/contact">CONTACT US</a> <img src="images/arrow_y.png" alt="Go" /></h4>
             </div>
             <div class="sixcol">
