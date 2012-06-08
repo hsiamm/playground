@@ -109,11 +109,11 @@ Redirect permanent /mystory https://theaustinstone.wufoo.com/forms/tell-us-your-
 Redirect permanent /ministries http://austinstone.org/connect/ministries
 Redirect permanent /recovery http://ministries.austinstone.org/recovery/
 Redirect permanent /sms http://mobile-text-alerts.com/austinstone
-Redirect permanent /downtownam austinstone.onthecity.org/plaza/dtam
-Redirect permanent /downtownpm austinstone.onthecity.org/plaza/dtpm
-Redirect permanent /stjohnam austinstone.onthecity.org/plaza/stjam
-Redirect permanent /stjohnpm austinstone.onthecity.org/plaza/stjpm
-Redirect permanent /west austinstone.onthecity.org/plaza/west
+Redirect permanent /downtownam http://austinstone.onthecity.org/plaza/dtam
+Redirect permanent /downtownpm http://austinstone.onthecity.org/plaza/dtpm
+Redirect permanent /stjohnam http://austinstone.onthecity.org/plaza/stjam
+Redirect permanent /stjohnpm http://austinstone.onthecity.org/plaza/stjpm
+Redirect permanent /west http://austinstone.onthecity.org/plaza/west
 RedirectMatch permanent ^/campuses$ http://austinstone.org/campuses/campuses-main
 RedirectMatch permanent ^/campuses/$ http://austinstone.org/campuses/campuses-main
 
