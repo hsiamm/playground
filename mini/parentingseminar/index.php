@@ -60,13 +60,12 @@
 		</div>
 		
 		<div class="col1b details">
-			<h1 class="price">$80</h1>
-			<p style="text-align:center;font-size:12px;font-weight:600;">Max per family</p>
+			<h2 style="text-align:center;color:#FF8800;line-height:24px;height:63px;margin-top:5px;">Limited Childcare Available</h2><p style="text-align:center;font-size:12px;font-weight:600;">$30 per child for the weekend</p>
 		</div>
 
 		<div style="clear:both;">&nbsp;</div>
 				
-		<h2 style="text-align:center;color:#424242;font-size:14px;font-style:italic;">&mdash; Limited Childcare Available. No childcare refunds are available &mdash;</h2>
+		<h2 style="text-align:center;color:#424242;font-size:14px;font-style:italic;">&mdash; Childcare available up to 5th grade. $90 max per family. No childcare refunds are available &mdash;</h2>
 
 		<div style="clear:both;">&nbsp;</div>
 		
