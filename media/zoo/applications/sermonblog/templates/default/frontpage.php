@@ -285,6 +285,13 @@ $css_class = $this->application->getGroup() . '-' . $this->template->name;
                 <div style="clear:both;">&nbsp;</div>
             </div>
         </div><!-- /sermon_sort -->
+        
+        <div style="clear:both;">&nbsp;</div>
+        
+        <div class="times-box" style="width:420px;">
+			<img src="/images/creation-books-web.png" />
+			<p>As we wrap up our Genesis series, we encourage you to check out two great resources from Matt Carter and Halim Suh. Creation Unraveled and Creation Restored will lead you and your missional community to discover Jesus on every page of the book of Genesis. Grab your copy at the Resource Center or <a href="http://lifeway.com/creation">lifeway.com/creation</a>.</p>
+		</div>
 
         <div style="clear:both;">&nbsp;</div>
 
