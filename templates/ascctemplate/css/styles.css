@@ -359,7 +359,6 @@ h2.twenty {
     color:#000;
 }
 
-
 blockquote {
     font-family: "rooney-web", Georgia, Times, serif;
     font-size: 18px;
@@ -477,7 +476,6 @@ ul.affirm {
 ul.affirm li {
     margin-bottom: 18px;
 }
-
 
 
 ::selection {
@@ -764,6 +762,7 @@ div.search div.pagination span.pagenav a {
     line-height: 21px;
 }
 
+
 /*~~~~~~~~~~~ Menu ~~~~~~~~~~~~~~*/
 
 #menu {
@@ -845,6 +844,7 @@ ul.dropdown ul {
 .drop {
     padding: 0;
 }
+
 
 /*~~~~~~~~~~~ Columns ~~~~~~~~~~~~~~*/
 .onecol {
@@ -972,6 +972,7 @@ ul.dropdown ul {
     float: left;
     margin: 0 10px;
 }
+
 
 /*!~~~~~~~~~~~styles~~~~~~~~~~~~~*/
 .home_modules {
@@ -1205,11 +1206,13 @@ ul.dropdown ul {
     width: 290px;
 }
 
+
 /* ~~~~~~~~~~ Core Values ~~~~~~~~~~~~~~~ */
 #core_values {
     margin: 150px 20px 0 20px; 
     width: 260px;
 }
+
 
 /* ~~~~~~~~~~ About ~~~~~~~~~~~~~~~~~ */
 
@@ -1265,6 +1268,7 @@ ul.dropdown ul {
     padding: 4px 10px 0 10px;
     margin: -4px 0 10px;
 }
+
 
 /* NEW HERE
 ------------------------------------------------ */
@@ -1527,6 +1531,7 @@ tr.alt_day {
 .hidden {
     display: none;
 }
+
 
 /* SERMONS
 ------------------------------------------------ */
@@ -1802,6 +1807,36 @@ h2.sermon_title {
     left:50%;
 }
 
+
+/* getting a bit responsive */
+@media screen and (max-width: 1200px) {
+
+	#sermon_scroll_one.fixed {
+		position:absolute;
+	    width:460px;
+	    height:auto;
+	    padding:0px;
+	    clear:both;
+	    margin:10px auto 10px -480px;
+	    z-index: 100;
+	    top:185px;
+	    left:none;
+	}
+	
+	#sermon_scroll_two.fixed {
+		position:absolute;
+	    width:460px;
+	    height:auto;
+	    padding:0px;
+	    clear:both;
+	    margin:10px auto 10px 10px /*490px*/;
+	    z-index: 100;
+	    top:185px;
+	    left:none;
+	}
+
+}
+
 .sermon_video {
     float: left;
     margin-left: 10px;
@@ -1826,6 +1861,7 @@ h2.sermon_title {
 #custom-tweet-button a {
     cursor: pointer;
 }
+
 
 /* CURRENT ---------------------------------- */
 
@@ -1913,7 +1949,6 @@ h1.serve {
 .show {
     cursor: pointer;
 }
-
 
 
 /* SLIDER
@@ -2062,7 +2097,6 @@ h1.serve {
 }
 
 
-
 /* CLASSES
 ------------------------------------------------ */
 
@@ -2146,7 +2180,6 @@ h1.serve {
     color:#000;
 }
 
-
 .class_signup a {
     float:left;
     background:#ffdd00;
@@ -2199,7 +2232,6 @@ h1.serve {
     padding:20px 20px 10px 20px;
     background-color: #fff;
 }
-
 
 
 /* CLASS CATEGORY ICONS
@@ -2284,6 +2316,7 @@ h1.serve {
     text-indent: -9999px;
 }
 
+
 /* Class dropdown sort
 ------------------------*/
 
@@ -2354,6 +2387,7 @@ ul.class_sort_options li {
     background: none;
 }
 
+
 /* RELATED ORGANIZATIONS
 ------------------------------------------------ */
 
@@ -2384,6 +2418,7 @@ ul.class_sort_options li {
     float: left;
     margin: 0 10px 40px 10px;	
 }
+
 
 /*!~~~~~~~~~~~Footer~~~~~~~~~~~~~*/
 
@@ -2459,6 +2494,7 @@ ul.class_sort_options li {
     width: 100%;
     height: 420px;
 }
+
 
 /* MAP INFO BOX
 ------------------------------------------------ */
@@ -2537,6 +2573,7 @@ a.new_here_top {
     border-right: 1px solid #fff;
     padding:0 10px;
 }
+
 
 /*!~~~~~~~~~~~Trips~~~~~~~~~~~~~*/
 .trips_featured {
@@ -2760,6 +2797,7 @@ p.trips {
     color:#365871;
     text-transform: uppercase;
 }
+
 
 /* TRIPS SLIDER
 ================= */
@@ -3112,6 +3150,12 @@ border-bottom: 1px solid #000;
 	margin: 5px 0 20px 0;
 }
 
+.story_written-post p {
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: normal;	
+} 
+
 .story_written-post .rule_bl {
 	margin-top: 80px;
 }
@@ -3155,6 +3199,26 @@ li#story_menunav a.sub-current {
     opacity: 1.00;
     filter: alpha(opacity=100);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+.story-p p {
+    font-family: "rooney-web", Georgia, Times, serif;
+    font-size: 19px;
+    line-height: 26px;
+    margin: 0 0 15px 0;
+    color: #424242;
+    text-transform: none;
+    font-weight: normal;
+}
+
+p.story-p {
+    font-family: "rooney-web", Georgia, Times, serif;
+    font-size: 19px;
+    line-height: 26px;
+    margin: 0 0 15px 0;
+    color: #424242;
+    text-transform: none;
+    font-weight: normal;		
 }
 
 
