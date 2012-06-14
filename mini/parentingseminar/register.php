@@ -8,14 +8,14 @@
 		<div id="menu">
 			<ul id="menunav">
 				<li id="menunav"><a href="/parentingseminar" id="homenav">Home</a></li>
-				<li id="menunav"><a href="/parentingseminar/leaders.php" id="leadersnav">Leader</a></li>
+				<li id="menunav"><a href="/parentingseminar/leaders.php" id="leadersnav">Leaders</a></li>
 				<li id="menunav"><a href="/parentingseminar/register.php" id="registernav">Register</a></li>
 			</ul>
 		</div> <!-- /menu-->
 	</div><!--/sidenav-->
 	
 	<div class="top">			
-		<h4 class="reg">June 01&ndash;02&nbsp; // &nbsp;Register Below</h4>
+		<h4 class="reg">August 03&ndash;04&nbsp; // &nbsp;Register Below</h4>
 	</div>
 
 

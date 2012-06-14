@@ -4,7 +4,7 @@
 		<div id="menu">
 			<ul id="menunav">
 				<li id="menunav"><a href="/parentingseminar" id="homenav">Home</a></li>
-				<li id="menunav"><a href="/parentingseminar/leaders.php" id="leadersnav">Leader</a></li>
+				<li id="menunav"><a href="/parentingseminar/leaders.php" id="leadersnav">Leaders</a></li>
 				<li id="menunav"><a href="/parentingseminar/register.php" id="registernav">Register</a></li>
 			</ul>
 		</div> <!-- /menu-->
