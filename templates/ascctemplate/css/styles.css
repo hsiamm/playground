@@ -254,6 +254,16 @@ a.hot_right:hover, a.hot_left:hover, a.hot_threecol:hover, a.hot_fourcol-y:hover
     color: #fff;
 }
 
+li.home-slide a {
+    color: #ffdd00;
+    -webkit-transition: color .2s ease-in; /*safari and chrome */
+    -o-transition: color .2s ease-in; /* opera */	
+}
+
+li.home-slide a:hover {
+    color: #fff;		
+}
+
 /*~~~~~~~~~~~~LINKS~~~~~~~~~~~~*/
 
 
@@ -906,6 +916,20 @@ ul.dropdown ul {
     height: auto;
     float: left;
     margin: 0 10px;	
+}
+
+.threecol_2-spoken {
+    width: 620px;
+    height: auto;
+    float: left;
+    margin: 0 10px;	
+}
+
+.threecol_2-spoken img {
+	max-width: 590px;
+	border: 10px solid #fff;
+	height:auto;
+	margin-bottom: 10px;	
 }
 
 .fourcol {
