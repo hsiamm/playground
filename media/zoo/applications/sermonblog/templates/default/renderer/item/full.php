@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="sermon" style="height: 500px;">
     <h3 class="series_label">
-        <?php echo $this->renderPosition('categories'); ?>
+        <?php echo str_replace("Send to iTunes?","", $this->renderPosition('categories')); ?>
     </h3>
 
     <?php if ($this->checkPosition('title')) { ?>
