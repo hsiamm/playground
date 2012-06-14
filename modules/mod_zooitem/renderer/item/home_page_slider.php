@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 // init vars
 $params = $item->getParams('site');
 ?>
-<li class=" home-slide nomar white nocap" style="line-height:35px;">
+<li class="home-slide nomar white nocap" style="line-height:35px;">
     <div class="content" style="background-image: url('<?php echo trim($this->renderPosition('image')); ?>');"></div>
 
     <?php if ($this->checkPosition('text')) { ?>
