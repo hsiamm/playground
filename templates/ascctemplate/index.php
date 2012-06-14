@@ -9,7 +9,7 @@ $pageRef = $_SERVER['REQUEST_URI'];
 
 <jdoc:include type="head" />
 
-<meta property="og:image" content="http://austinstone.org/images/austin_stone.jpg"/> 
+<meta property="og:image" content="http://austinstone.org/images/ascc-logo.jpg"/> 
 
 <script type="text/javascript" src="http://use.typekit.com/pto8iwc.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
