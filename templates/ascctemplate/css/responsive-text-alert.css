@@ -1,0 +1,66 @@
+/*  Responsive
+---------------------------------------------------------------------------------------------------- */
+
+/* Desktop! */
+@media screen and (max-width: 960px) {
+
+	.container { /*started at 960*/
+		max-width:640px;
+	}
+	
+	.onecol {
+		width: 620px;
+	}
+	
+	.threecol {
+		margin-bottom: 40px;
+	}
+
+}
+
+@media screen and (max-width: 650px) {
+
+	.container {
+		max-width:460px;
+	}
+	
+	.onecol,
+	.threecol {
+		width: 440px;
+	}
+	
+}
+
+@media screen and (max-device-width: 360px),
+screen and (max-width: 460px) {
+
+	html {
+		-ms-text-size-adjust: none;
+		-webkit-text-size-adjust: none;
+	}
+	
+	.container {
+		max-width:100%;
+	}
+	
+	.onecol,
+	.threecol {
+		width: 100%;
+	}
+	
+	.onecol {
+		margin:0;
+	}
+	
+	.threecol {
+		margin:0 0 40px 0;
+	}
+	
+	.logo {
+		margin-bottom: 0;
+		width: 200px;
+		height:auto;
+		margin: 0 20px 40px 0px;
+	}
+
+}
