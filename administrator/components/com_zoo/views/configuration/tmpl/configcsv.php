@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      configcsv.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -20,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="box-bottom">
 
 	<div class="col col-left width-60">
-		
+
 		<h2><?php echo JText::_('CSV Import'); ?>:</h2>
 		<fieldset class="csv-details creation-form">
 			<legend><?php echo JText::_('File Details:'); ?></legend>
@@ -41,9 +39,9 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 			</div>
 		</fieldset>
-		
+
 		<button class="button-grey" id="submit-button" type="submit"><?php echo JText::_('Next'); ?></button>
-	
+
 	</div>
 </div>
 
@@ -51,6 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="importcsv" />
 <input type="hidden" name="file" value="<?php echo $this->file; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1204 2011-10-17 19:43:49Z joomlaworks $
+ * @version		$Id: view.html.php 1551 2012-04-19 12:04:25Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -19,7 +19,7 @@ class K2ViewUsers extends JView
 
 		$mainframe = &JFactory::getApplication();
 		$document = &JFactory::getDocument();
-		
+		$db = JFactory::getDBO();
 		$params = &JComponentHelper::getParams('com_k2');
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view');
@@ -28,19 +28,32 @@ class K2ViewUsers extends JView
 		$filter_order = $mainframe->getUserStateFromRequest($option.$view.'filter_order', 'filter_order', '', 'cmd');
 		$filter_order_Dir = $mainframe->getUserStateFromRequest($option.$view.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 		$filter_status = $mainframe->getUserStateFromRequest($option.$view.'filter_status', 'filter_status', -1, 'int');
-		$filter_group = $mainframe->getUserStateFromRequest($option.$view.'filter_group', 'filter_group', 1, 'filter_group');
-		$filter_group_k2 = $mainframe->getUserStateFromRequest($option.$view.'filter_group_k2', 'filter_group_k2', '', 'filter_group_k2');
+		$filter_group = $mainframe->getUserStateFromRequest($option.$view.'filter_group', 'filter_group', '', 'string');
+		$filter_group_k2 = $mainframe->getUserStateFromRequest($option.$view.'filter_group_k2', 'filter_group_k2', '', 'string');
 		$search = $mainframe->getUserStateFromRequest($option.$view.'search', 'search', '', 'string');
 		$search = JString::strtolower($search);
 		JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 		$model = & JModel::getInstance('Users', 'K2Model');
-
+		$total = $model->getTotal();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}
 		$users = $model->getData();
 
 		for ($i=0; $i<sizeof($users); $i++){
 
 			$users[$i]->loggedin = $model->checkLogin($users[$i]->id);
 			$users[$i]->profileID = $model->hasProfile($users[$i]->id);
+			if($users[$i]->profileID)
+			{
+				$db->setQuery("SELECT ip FROM #__k2_users WHERE id = ".$users[$i]->profileID);
+				$users[$i]->ip = $db->loadResult();
+			}
+			else 
+			{
+				$users[$i]->ip = '';
+			}
 
 			if ($users[$i]->lastvisitDate == "0000-00-00 00:00:00") {
 				$users[$i]->lvisit = false;
@@ -53,7 +66,7 @@ class K2ViewUsers extends JView
 		}
 
 		$this->assignRef('rows', $users);
-		$total = $model->getTotal();
+		
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
@@ -131,13 +144,18 @@ class K2ViewUsers extends JView
 					$toolbar->appendButton('Custom', $button);
 				}
 			}
+			
+			
+			$document = &JFactory::getDocument();
+			$document->addScriptDeclaration('var K2Language = ["'.JText::_('K2_REPORT_USER_WARNING', true).'"];');
+			
 		}
 		$isAdmin = $mainframe->isAdmin();
 		$this->assignRef('isAdmin', $isAdmin);
 		
 		if($mainframe->isSite()){
 			// CSS
-			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css');
+			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css?v=2.5.7');
 			$document->addStyleSheet(JURI::root(true).'/templates/system/css/general.css');
 			$document->addStyleSheet(JURI::root(true).'/templates/system/css/system.css');
 			if(K2_JVERSION == '16') {

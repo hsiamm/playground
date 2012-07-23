@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      zooinstall.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 class ZooInstall {
@@ -20,16 +18,24 @@ class ZooInstall {
 		// initialize zoo framework
 		require_once($installer->getPath('extension_administrator').'/config.php');
 
+		// get zoo instance
 		$zoo = App::getInstance('zoo');
-
-		// fix joomla 1.5 bug
-		if ($zoo->joomla->isVersion('1.5')) {
-			$installer->getDBO = $installer->getDBO();
-		}
 
 		// copy checksums file
 		if (JFile::exists($installer->getPath('source').'/checksums')) {
 			JFile::copy($installer->getPath('source').'/checksums', $zoo->path->path('component.admin:').'/checksums');
+		}
+
+		try {
+
+			// clean ZOO installation
+			$zoo->modification->clean();
+
+		} catch (Exception $e) {}
+
+		// fix joomla 1.5 bug
+		if ($zoo->joomla->isVersion('1.5')) {
+			$installer->getDBO = $installer->getDBO();
 		}
 
 		// applications
@@ -37,128 +43,70 @@ class ZooInstall {
 		foreach (JFolder::folders($installer->getPath('source').'/applications', '.', false, true) as $folder) {
 			try {
 
+				$obj = new stdClass();
+
 				if ($manifest = $zoo->install->findManifest($folder)) {
 
-					$name = (string) $manifest->name;
-					$status = $zoo->install->installApplicationFromFolder($folder);
-					$applications[] = compact('name', 'status');
+					$obj->name = (string) $manifest->name;
+					$obj->status = $zoo->install->installApplicationFromFolder($folder);
+					$obj->message = $obj->status == 2 ? 'Updated successfully': 'Installed successfully';
 
 				}
 
 			} catch (AppException $e) {
 
-				$name = basename($folder);
-				$status = false;
-				$applications[] = compact('name', 'status');
+				$obj->name = basename($folder);
+				$obj->status = false;
+				$obj->message = JText::_('NOT Installed');
 
 			}
+
+			$applications[] = $obj;
 		}
 
+		// display application installation results
 		self::displayResults($applications, 'Applications', 'Application');
 
 		// additional extensions
-
-		// init vars
-		$error = false;
-		$extensions = array();
-
-		// get plugin files
-		$plugin_files = array();
-		foreach ($zoo->filesystem->readDirectoryFiles(JPATH_PLUGINS, JPATH_PLUGINS.'/', '/\.php$/', true) as $file) {
-			$plugin_files[] = basename($file);
-		}
-
-		// get manifest xml
-		$manifest = $zoo->xml->loadFile($installer->getPath('manifest'));
-
-		// get extensions
-		if (isset($manifest->additional[0])) {
-			$add = $manifest->additional[0];
-			if (count($add->children())) {
-			    $exts = $add->children();
-			    foreach ($exts as $ext) {
-					$ext_installer = new JInstaller();
-					$ext_installer->setOverwrite(true);
-
-					$update = false;
-					if (($ext->getName() == 'module' && (JFolder::exists(JPATH_ROOT.'/modules/'.$ext->attributes()->name) || JFolder::exists(JPATH_ROOT.'/administrator/modules/'.$ext->attributes()->name)))
-						|| ($ext->getName() == 'plugin' && in_array($ext->attributes()->name.'.php', $plugin_files))) {
-						$update = true;
-					}
-
-					$folder = $installer->getPath('source').'/'.$ext->attributes()->folder;
-					$folder = rtrim($folder, "\\/") . '/';
-					if (JFolder::exists($folder)) {
-					    if ($update) {
-							foreach ($zoo->filesystem->readDirectoryFiles($folder, $folder, '/positions\.config$/', true) as $file) {
-								JFile::delete($file);
-							}
-						}
-
-				    	$extensions[] = array(
-							'id' => (string) $ext->attributes()->name,
-							'name' => (string) $ext,
-							'type' => $ext->getName(),
-							'folder' => $folder,
-							'installer' => $ext_installer,
-							'status' => false,
-				    		'update' => $update
-				    	);
-				    }
-			    }
-			}
-		}
+		$extensions = self::_getAdditionalExtensions($zoo, $installer);
 
 		// install additional extensions
-		for ($i = 0; $i < count($extensions); $i++) {
-			if (is_dir($extensions[$i]['folder'])) {
-				if (@$extensions[$i]['installer']->install($extensions[$i]['folder'])) {
-					$extensions[$i]['status'] = $extensions[$i]['update'] ? 2 : 1;
-					if ($extensions[$i]['status'] == 1) {
-						switch ($extensions[$i]['id']) {
+		foreach ($extensions as $extension) {
 
-							// enable ZOO Quick Icons module
-							case 'mod_zooquickicon':
-								$zoo->module->enable($extensions[$i]['id'], 'icon');
-								break;
+			if (JFolder::exists($extension->source_path)) {
+				if (!$extension->preInstall() || !$extension->install()) {
 
-							// enable ZOO search plugin
-							case 'zoosearch':
-								$zoo->plugin->enable($extensions[$i]['id']);
-								break;
+					// rollback on installation errors
+					$installer->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Error'), 'component');
+					foreach ($extensions as $extension) {
+						if ($extension->status) {
+							$extension->abort();
 						}
 					}
-				} else {
-					$error = true;
-					break;
+
+					return false;
 				}
+
+				if ($extension->element == 'mod_zooquickicon') {
+					$zoo->module->enable('mod_zooquickicon', 'icon');
+				}
+
+				if ($extension->type ==  'plugin') {
+					$zoo->plugin->enable($extension->element);
+				}
+
+			} else {
+				$extension->message = 'Extension not included in package';
 			}
+
 		}
 
-		// rollback on installation errors
-		if ($error) {
-			$installer->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Error'), 'component');
-			for ($i = 0; $i < count($extensions); $i++) {
-				if ($extensions[$i]['status']) {
-					$extensions[$i]['installer']->abort(JText::_($extensions[$i]['type']).' '.JText::_('Install').': '.JText::_('Error'), $extensions[$i]['type']);
-					$extensions[$i]['status'] = false;
-				}
-			}
-
-			return false;
-		}
-
+		// display extension installation results
 		self::displayResults($extensions, 'Extensions', 'Extension');
 
-		try {
-			
-			// clean ZOO installation
-			$zoo->modifications->clean();
-			
-		} catch (Exception $e) {}
-	
+		// finally update
 		if ($zoo->update->required()) {
-			$zoo->error->raiseNotice(0, JText::_('ZOO requires an update. Please click <a href="'.$zoo->link().'">here</a>.'));
+			$zoo->error->raiseNotice(0, JText::_('ZOO requires an update. Please click <a href="index.php?option=com_zoo">here</a>.'));
 		}
 
 		return true;
@@ -169,66 +117,30 @@ class ZooInstall {
 		// initialize zoo framework
 		require_once($installer->getPath('extension_administrator').'/config.php');
 
-		// init vars
-		$error = false;
-		$extensions = array();
-		$db = $zoo->database;
+		// get zoo instance
+		$zoo = App::getInstance('zoo');
 
 		// remove media folder
 		if (JFolder::exists(JPATH_ROOT . '/media/zoo/applications/')) {
 			JFolder::delete(JPATH_ROOT . '/media/zoo/applications/');
 		}
 
-		// migrate xml parser to zoos xml parser
-		$manifest = $zoo->xml->loadString(($zoo->joomla->isVersion('1.5') ? $installer->getManifest()->document->toString() : $installer->getManifest()->asFormattedXML()));
-
-		// additional extensions
-		if (isset($manifest->additional[0])) {
-			$add = $manifest->additional[0];
-			if (count($add->children())) {
-				$exts = $add->children();
-				foreach ($exts as $ext) {
-
-					// set query
-					if ($zoo->joomla->isVersion('1.5')) {
-						switch ($ext->getName()) {
-							case 'plugin':
-								$query = 'SELECT * FROM #__plugins WHERE element='.$db->Quote($ext->attributes()->name);
-								break;
-							case 'module':
-								$query = 'SELECT * FROM #__modules WHERE module='.$db->Quote($ext->attributes()->name);
-								break;
-						}
-					} else {
-						$query = 'SELECT *, extension_id as id FROM #__extensions WHERE element = '.$db->Quote($ext->attributes()->name);
-					}
-
-					// query extension id and client id
-					$res = $db->queryObject($query);
-
-					$extensions[] = array(
-						'name' => (string) $ext,
-						'type' => $ext->getName(),
-						'id' => isset($res->id) ? $res->id : 0,
-						'client_id' => isset($res->client_id) ? $res->client_id : 0,
-						'installer' => new JInstaller(),
-						'status' => false);
-				}
-			}
-		}
+		// init vars
+		$extensions = self::_getAdditionalExtensions($zoo, $installer);
 
 		// uninstall additional extensions
-		for ($i = 0; $i < count($extensions); $i++) {
-			if ($extensions[$i]['id'] > 0 && $extensions[$i]['installer']->uninstall($extensions[$i]['type'], $extensions[$i]['id'], $extensions[$i]['client_id'])) {
-				$extensions[$i]['status'] = 1;
-			}
+		foreach ($extensions as $extension) {
+			$extension->uninstall();
 		}
 
-		self::displayResults($extensions, 'Extensions', 'Extension', 'Uninstalled successfully', 'Uninstall FAILED');
+		// display table
+		if ($extensions) {
+			self::displayResults($extensions, 'Extensions', 'Extension');
+		}
 
 	}
 
-	public static function displayResults($result, $name, $type, $msg_success = 'Installed successfully', $msg_failure = 'NOT Installed') {
+	public static function displayResults($result, $name, $type) {
 
 		?>
 
@@ -249,11 +161,10 @@ class ZooInstall {
 				<?php
 					foreach ($result as $i => $ext) : ?>
 					<tr class="row<?php echo $i++ % 2; ?>">
-						<td class="key"><?php echo $ext['name']; ?></td>
+						<td class="key"><?php echo $ext->name; ?></td>
 						<td>
-							<?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
-							<?php $msg_success = $ext['status'] == 2 ? 'Updated successfully' : $msg_success; ?>
-							<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_($msg_success) : JText::_($msg_failure); ?></span>
+							<?php $style = $ext->status ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+							<span style="<?php echo $style; ?>"><?php echo JText::_($ext->message); ?></span>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -262,6 +173,130 @@ class ZooInstall {
 
 		<?php
 
+	}
+
+	protected function _getAdditionalExtensions($app, $installer) {
+
+		// init vars
+		$manifest = simplexml_load_file($installer->getPath('manifest'));
+		$extensions = array();
+
+		// additional extensions
+		if ($additional = $manifest->xpath('additional/*')) {
+			foreach ($additional as $data) {
+				$extensions[] = new AdditionalExtension($app, $installer, $data);
+			}
+		}
+
+		return $extensions;
+	}
+
+}
+
+
+/*
+	Class: AdditionalExtension
+		Additional extension class
+*/
+class AdditionalExtension {
+
+	public $app;
+	public $name;
+	public $element;
+	public $folder;
+	public $type;
+	public $status;
+	public $message;
+	public $data;
+	public $parent;
+	public $installer;
+	public $database;
+	public $update;
+	public $source_path;
+
+	public function __construct($app, $parent, $data) {
+
+		// init vars
+		$this->app = $app;
+		$this->name = (string) $data;
+		$this->element = (string) $data->attributes()->name;
+		$this->folder = (string) $data->attributes()->folder;
+		$this->type = $data->getName();
+		$this->status = false;
+		$this->data = $data;
+		$this->parent = $parent;
+		$this->installer = new JInstaller();
+		$this->database = JFactory::getDBO();
+		$this->source_path = rtrim($this->parent->getPath('source').'/'.$this->folder, "\\/") . '/';
+
+	}
+
+	public function preInstall() {
+
+		$this->update = ($this->type == 'module' && JFolder::exists(JPATH_ROOT.((string) $this->data->attributes()->client == 'administrator' ? '/administrator' : '').'/modules/'.$this->element)) || ($this->type == 'plugin' && JFolder::exists(JPATH_ROOT.'/plugins/'.$this->data->attributes()->group.'/'.$this->element));
+
+		if (JFolder::exists($this->source_path) && $this->update) {
+			foreach ($this->app->filesystem->readDirectoryFiles($this->source_path, $this->source_path, '/(positions\.(config|xml)|metadata\.xml)$/', true) as $file) {
+				JFile::delete($file);
+			}
+		}
+
+		return true;
+
+	}
+
+	public function install() {
+
+		// set message
+		$path = $this->parent->getPath('source').'/'.$this->folder;
+		if (JFolder::exists($this->source_path) && ($this->status = $this->installer->install($path))) {
+			$this->message = $this->update ? 'Updated successfully' : 'Installed successfully';
+		} else {
+			$this->message = JText::_('NOT Installed');
+		}
+
+		return $this->status;
+	}
+
+	public function uninstall() {
+
+		// get extension id and client id
+		$result    = $this->load();
+		$ext_id    = isset($result->id) ? $result->id : 0;
+		$client_id = isset($result->client_id) ? $result->client_id : 0;
+
+		// set message
+		if ($this->status = $ext_id > 0 && $this->installer->uninstall($this->type, $ext_id, $client_id)) {
+			$this->message = JText::_('Uninstalled successfully');
+		} else {
+			$this->message = JText::_('Uninstall FAILED');
+		}
+
+		return $this->status;
+	}
+
+	public function abort() {
+		$this->installer->abort(JText::_($this->type).' '.JText::_('Install').': '.JText::_('Error'), $this->type);
+		$this->status = false;
+	}
+
+	public function load() {
+
+		// set query
+		if ($this->app->joomla->isVersion('1.5')) {
+			switch ($this->type) {
+				case 'plugin':
+					$query = "SELECT * FROM #__plugins WHERE element = '%s'";
+					break;
+				case 'module':
+					$query = "SELECT * FROM #__modules WHERE module = '%s'";
+					break;
+			}
+		} else {
+			$query = "SELECT *, extension_id as id FROM #__extensions WHERE element = '%s'";
+		}
+
+		return $this->app->database->queryObject(sprintf($query, $this->element));
 	}
 
 }

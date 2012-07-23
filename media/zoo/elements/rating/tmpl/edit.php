@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -16,10 +14,10 @@ defined('_JEXEC') or die('Restricted access');
 <div id="<?php echo $this->identifier; ?>">
 	<table>
 		<?php echo $this->app->html->_('zoo.editrow', JText::_('Rating'), $this->getRating()); ?>
-		<?php echo $this->app->html->_('zoo.editrow', JText::_('Votes'), (int) $this->_data->get('votes', 0)); ?>
+		<?php echo $this->app->html->_('zoo.editrow', JText::_('Votes'), (int) $this->get('votes', 0)); ?>
 	</table>
 
-	<?php if ($this->_data->get('votes', 0)) : ?>
+	<?php if ($this->get('votes', 0)) : ?>
 
 		<input name="reset-rating" type="button" class="button" value="<?php echo JText::_('Reset'); ?>"/>
 

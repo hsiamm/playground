@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: categories.php 1046 2011-10-05 18:22:44Z joomlaworks $
+ * @version		$Id: categories.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -32,7 +32,7 @@ class JElementCategories extends JElement
 	function fetchElement($name, $value, &$node, $control_name) {
 		$db = &JFactory::getDBO();
 
-		$query = 'SELECT m.* FROM #__k2_categories m WHERE published = 1 ORDER BY parent, ordering';
+		$query = 'SELECT m.* FROM #__k2_categories m WHERE trash = 0 ORDER BY parent, ordering';
 		$db->setQuery( $query );
 		$mitems = $db->loadObjectList();
 		$children = array();

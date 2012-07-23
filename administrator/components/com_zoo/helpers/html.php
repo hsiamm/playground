@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      html.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -57,7 +55,8 @@ class HTMLHelper extends AppHelper {
 				'dayNamesMin' => array('Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'),
 				'dayNamesShort' => array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
 				'monthNames' => array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
-				'monthNamesShort' => array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'),
+				'monthNamesShort' => array('JANUARY_SHORT', 'FEBRUARY_SHORT', 'MARCH_SHORT', 'APRIL_SHORT', 'MAY_SHORT',
+					'JUNE_SHORT', 'JULY_SHORT', 'AUGUST_SHORT', 'SEPTEMBER_SHORT', 'OCTOBER_SHORT', 'NOVEMBER_SHORT', 'DECEMBER_SHORT'),
 				'prevText' => 'Prev',
 				'nextText' => 'Next',
 				'weekHeader' => 'Wk',
@@ -75,7 +74,7 @@ class HTMLHelper extends AppHelper {
 			);
 
 			foreach ($translations as $key => $translation) {
-				$translations[$key] = is_array($translation) ? array_map(create_function('$text', 'return JText::_($text);'), $translation) : JText::_($translation);
+				$translations[$key] = is_array($translation) ? array_map(array('JText', '_'), $translation) : JText::_($translation);
 			}
 			$timepicker_translations = array_map(array('JText', '_'), $timepicker_translations);
 
@@ -97,7 +96,7 @@ class HTMLHelper extends AppHelper {
 		return '<input'.$rel.' style="width: 110px" type="text" name="'.$name.'" id="'.$id.'" value="'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'" '.$attribs.' />'
 			.'<img src="'.JURI::root(true).'/templates/system/images/calendar.png'.'" class="zoo-calendar" />';
 	}
-	
+
 	/*
     	Function: image
     	  Get image resource info.
@@ -108,7 +107,7 @@ class HTMLHelper extends AppHelper {
 	public function image($image, $width = null, $height = null) {
 
 		$resized_image = $this->app->zoo->resizeImage(JPATH_ROOT.DS.$image, $width, $height);
-		$inner_path    = trim(str_replace('\\', '/', preg_replace('/^'.preg_quote(JPATH_ROOT, '/').'/i', '', $resized_image)), '/');
+		$inner_path    = $this->app->path->relative($resized_image);
 		$path 		   = JPATH_ROOT.'/'.$inner_path;
 
 		if (is_file($path) && $size = getimagesize($path)) {
@@ -166,13 +165,11 @@ class HTMLHelper extends AppHelper {
 
         $options = array ();
         if (!$multiselect) {
-            $options[] = $this->app->html->_('select.option', '', '-' . JText::_('Select Country') . '-');
+			$options[] = $this->app->html->_('select.option', '', '-' . JText::_('Select Country') . '-');
         }
 
         foreach ($countries as $key => $country) {
-                $val   = $key;
-                $text  = $country;
-                $options[] = $this->app->html->_('select.option', $val, JText::_($text));
+			$options[] = $this->app->html->_('select.option', $key, JText::_($country));
         }
 
         $attribs = $multiselect ? 'size="'.max(min(count($options), 10), 3).'" multiple="multiple"' : '';
@@ -184,28 +181,19 @@ class HTMLHelper extends AppHelper {
 		Function: layoutList
 			Returns layout select list html string.
 	*/
-	public function layoutList($application, $type_id, $layout_type, $options, $name, $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false) {
+	public function layoutList($type, $layout_type, $options, $name, $attribs = null, $key = 'value', $text = 'text', $selected = NULL, $idtag = false, $translate = false) {
 
 		// set options
 		settype($options, 'array');
 		reset($options);
 
-        $layouts = $this->app->zoo->getLayouts($application, $type_id, $layout_type);
+        $layouts = $this->app->type->layouts($type, $layout_type);
 
         foreach ($layouts as $layout => $metadata) {
             $options[] = $this->_('select.option', $layout, $metadata->get('name'));
         }
 
         return $this->_('select.genericlist', $options, $name, $attribs, $key, $text, $selected, $idtag, $translate);
-
-
-		// create options
-		foreach ($application->getTemplates() as $template) {
-			$metadata = $template->getMetadata();
-			$options[] = $this->_('select.option', $template->name, $metadata['name']);
-		}
-
-		return $this->_('select.genericlist', $options, $name, $attribs, $key, $text, $selected, $idtag, $translate);
 
 	}
 
@@ -242,7 +230,7 @@ class HTMLHelper extends AppHelper {
 		$modules = $this->app->module->load();
 
 		if (count($modules)) {
-			
+
 			foreach ($modules as $module) {
 				$options[] = $this->app->html->_('select.option', $module->id, $module->title.' ('.$module->position.')');
 			}
@@ -251,6 +239,34 @@ class HTMLHelper extends AppHelper {
 		}
 
 		return JText::_("There are no modules to choose from.");
+	}
+
+ 	/*
+    	Function: pluginList
+    		Returns plugin select list html string.
+ 	*/
+	public function pluginList($options, $name, $attribs = null, $key = 'value', $text = 'text', $selected = null, $idtag = false, $translate = false, $folder = false, $enabled = true) {
+
+		// set options
+		settype($options, 'array');
+		reset($options);
+
+		$plugins = JPluginHelper::getPlugin($folder);
+
+		if (count($plugins)) {
+
+			foreach ($plugins as $plugin) {
+				if ($enabled && JPluginHelper::isEnabled($plugin->type, $plugin->name)) {
+					$plugin_name = 'plg_' . $plugin->type . '_' . $plugin->name;
+					JFactory::getLanguage()->load($plugin_name. '.sys', JPATH_ADMINISTRATOR);
+					$options[] = $this->app->html->_('select.option', $plugin->name, $plugin_name);
+				}
+			}
+
+			return $this->_('select.genericlist', $options, $name, $attribs, $key, $text, $selected, $idtag, $translate);
+		}
+
+		return JText::_("There are no plugins to choose from.");
 	}
 
  	/*
@@ -400,12 +416,12 @@ class HTMLHelper extends AppHelper {
 		if ($this->app->joomla->isVersion('1.5')) {
 			return $this->app->html->_('select.genericlist', $data, $name, $attribs, $optKey, $optText, $selected);
 		} else {
-			$attributes['list.attr'] = $attribs;
-			$attributes['id'] = $idtag;
+			$attributes['list.attr']	  = $attribs;
+			$attributes['id']			  = $idtag;
 			$attributes['list.translate'] = $translate;
-			$attributes['option.key'] = $optKey;
-			$attributes['option.text'] = $optText;
-			$attributes['list.select'] = $selected;
+			$attributes['option.key']	  = $optKey;
+			$attributes['option.text']	  = $optText;
+			$attributes['list.select']	  = $selected;
 			$attributes['option.text.toHtml'] = false;
 
 			return $this->app->html->_('select.genericlist', $data, $name, $attributes);
@@ -437,41 +453,6 @@ class HTMLHelper extends AppHelper {
 	}
 
 	/*
-    	Function: selectfile
-    		Returns file select html string.
- 	*/
-	function selectfile($resource, $filter, $name, $value = null, $attribs = null) {
-
-		// get files
-		$options = array($this->app->html->_('select.option',  '', '- '.JText::_('Select File').' -'));
-		$files   = $this->app->path->files($resource, true, $filter);
-
-		natsort($files);
-
-		foreach ($files as $file) {
-			$options[] = $this->app->html->_('select.option', $file, $file);
-		}
-
-		return $this->app->html->_('select.genericlist', $options, $name, $attribs, 'value', 'text', $value);
-	}
-
-	/*
-    	Function: label
-    		Returns label html string.
- 	*/
-	function label($name, $for = null, $attribs = null) {
-
-		if (is_array($attribs)) {
-			$attribs = JArrayHelper::toString($attribs);
-		 }
-
-		$for = ($for != '') ? 'for="'.$for.'"' : '';
-
-		return "\n\t<label $for $attribs />$name</label>\n";
-
-	}
-
-	/*
     	Function: textarea
     		Returns form textarea html string.
  	*/
@@ -497,14 +478,6 @@ class HTMLHelper extends AppHelper {
 	function text($name, $value = null, $attribs = null) {
 		$value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 		return $this->app->html->_('control.input', 'text', $name, $value, $attribs);
-	}
-
- 	/*
-    	Function: hidden
-    		Returns form hidden input html string.
- 	*/
-	function hidden($name, $value = null, $attribs = null) {
-		return $this->app->html->_('control.input', 'hidden', $name, $value, $attribs);
 	}
 
  	/*

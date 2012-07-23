@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      frontpage.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -59,7 +57,7 @@ class FrontpageController extends AppController {
 		try {
 
 			// bind post
-			$this->bind($this->application, $post, array('params'));
+			self::bind($this->application, $post, array('params'));
 
 			// set params
 			$this->application->params = $this->application

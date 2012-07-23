@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      _submission.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -15,8 +13,8 @@ $this->app->document->addScript('libraries:jquery/jquery-ui.custom.min.js');
 $this->app->document->addStylesheet('libraries:jquery/jquery-ui.custom.css');
 $this->app->document->addScript('libraries:jquery/plugins/timepicker/timepicker.js');
 $this->app->document->addStylesheet('libraries:jquery/plugins/timepicker/timepicker.css');
-$this->app->document->addStylesheet('media:zoo/assets/css/submission.css');
-$this->app->document->addScript('media:zoo/assets/js/submission.js');
+$this->app->document->addStylesheet('assets:css/submission.css');
+$this->app->document->addScript('assets:js/submission.js');
 $this->app->document->addScript('assets:js/placeholder.js');
 $this->app->document->addScript('assets:js/item.js');
 
@@ -26,8 +24,8 @@ if ($this->submission->showTooltip()) {
 
 ?>
 
-<?php if ($this->form->isBound() && !$this->form->isValid()): ?>
-	<?php $msg = count($this->form->getErrors()) > 1 ? JText::_('Oops. There were errors in your submission.') : JText::_('Oops. There was an error in your submission.'); ?>
+<?php if ($this->errors): ?>
+	<?php $msg = count($this->errors) > 1 ? JText::_('Oops. There were errors in your submission.') : JText::_('Oops. There was an error in your submission.'); ?>
 	<?php $msg .= ' '.JText::_('Please take a look at all highlighted fields, correct your data and try again.'); ?>
 	<p class="message"><?php echo $msg; ?></p>
 <?php endif; ?>
@@ -36,20 +34,20 @@ if ($this->submission->showTooltip()) {
 
 	<?php
 
-		echo $fields;
+		echo $this->renderer->render($this->layout_path, array('item' => $this->item, 'submission' => $this->submission));
 
-		if ($this->submission->isInTrustedMode()) {
-			echo $this->partial('administration');
+		// Captcha support
+		if($this->captcha) {
+			echo $this->captcha->display('captcha', 'captcha', 'captcha');
 		}
-
 	?>
 
 	<p class="info"><?php echo JText::_('REQUIRED_INFO'); ?></p>
 
 	<div class="submit">
-		<button type="submit" id="submit-button" class="button-green"><?php echo JText::_('Submit Item'); ?></button>
-		<?php if (!empty($this->cancel_url)) : ?>
-			<a href="<?php echo JRoute::_($this->cancel_url); ?>" id="cancel-button"><?php echo JText::_('Cancel'); ?></a>
+		<button type="submit" id="submit-button" class="button-green"><?php echo $this->item->id ? JText::_('Save') : JText::_('Submit Item'); ?></button>
+		<?php if ($this->cancelUrl) : ?>
+			<a href="<?php echo JRoute::_($this->cancelUrl); ?>" id="cancel-button"><?php echo JText::_('Cancel'); ?></a>
 		<?php endif; ?>
 	</div>
 
@@ -64,6 +62,6 @@ if ($this->submission->showTooltip()) {
 <script type="text/javascript">
 	jQuery(function($) {
 		$('#item-submission').EditItem();
-		$('#yoo-zoo').Submission({ uri: '<?php echo JURI::root(); ?>' });
+		$('#item-submission').Submission({ uri: '<?php echo JURI::root(); ?>' });
 	});
 </script>

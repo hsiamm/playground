@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1332 2011-11-25 12:47:48Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1579 2012-05-09 14:19:31Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -24,6 +24,7 @@ class K2ViewLatest extends JView {
 		$limitstart = JRequest::getInt('limitstart');
 		$model = &$this->getModel('itemlist');
 		$itemModel = &$this->getModel('item');
+		$theme = $params->get('theme');
 
 		if($params->get('source')){
 			$categoryIDs = $params->get('categoryIDs');
@@ -67,7 +68,14 @@ class K2ViewLatest extends JView {
 						$dispatcher = &JDispatcher::getInstance();
 						JPluginHelper::importPlugin('content');
 						$category->text = $category->description;
-						$dispatcher->trigger('onPrepareContent', array ( & $category, &$params, $limitstart));
+						
+                        if(K2_JVERSION=='16')
+                        {
+                            $dispatcher->trigger('onContentPrepare', array ('com_k2.category', &$category, &$params, $limitstart));
+                        }
+                        else {
+                            $dispatcher->trigger('onPrepareContent', array ( & $category, &$params, $limitstart));
+                        }
 						$category->description = $category->text;
 
 						//Category K2 plugins
@@ -225,10 +233,10 @@ class K2ViewLatest extends JView {
 		$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2');
 		
 		// Look for specific K2 theme files
-		if ($params->get('theme')) {
-			$this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$params->get('theme'));
-			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.$params->get('theme'));
-			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.$params->get('theme'));
+		if ($theme) {
+			$this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$theme);
+			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.$theme);
+			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.$theme);
 		}
 
 		//Assign params

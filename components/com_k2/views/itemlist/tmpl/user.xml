@@ -15,6 +15,7 @@
 				<option value="">K2_DEFAULT</option>
 				<option value="date">K2_OLDEST_FIRST</option>
 				<option value="rdate">K2_MOST_RECENT_FIRST</option>
+				<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
 				<option value="alpha">K2_TITLE_ALPHABETICAL</option>
 				<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
 				<option value="order">K2_ORDERING</option>
@@ -51,6 +52,7 @@
 					<option value="">K2_DEFAULT</option>
 					<option value="date">K2_OLDEST_FIRST</option>
 					<option value="rdate">K2_MOST_RECENT_FIRST</option>
+					<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
 					<option value="alpha">K2_TITLE_ALPHABETICAL</option>
 					<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
 					<option value="order">K2_ORDERING</option>

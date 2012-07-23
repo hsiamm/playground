@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      default.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -16,7 +14,7 @@ $this->app->document->addScript('assets:js/tag.js');
 
 ?>
 
-<form id="tags-default" action="index.php" method="post" name="adminForm" accept-charset="utf-8">
+<form id="tags-default" action="<?php echo $this->app->link(array('controller' => $this->controller)); ?>" method="post" name="adminForm" accept-charset="utf-8">
 
 <?php echo $this->partial('menu'); ?>
 
@@ -26,14 +24,14 @@ $this->app->document->addScript('assets:js/tag.js');
 
 	<ul class="filter">
 		<li class="filter-left">
-			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" />
+			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="rounded" />
 			<button onclick="this.form.submit();"><?php echo JText::_('Search'); ?></button>
 			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
 		</li>
 	</ul>
 
 	<?php endif;
-	
+
 	if(count($this->tags) > 0) : ?>
 
 	<table class="list stripe">
@@ -59,7 +57,8 @@ $this->app->document->addScript('assets:js/tag.js');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->tags as $tag) : ?>
-			<tr>				
+			<?php $link_items = $this->app->link(array('controller' => 'item','filter_category_id' => '-1', 'filter_type' => '', 'filter_author_id' => '', 'search' => $tag->name)); ?>
+			<tr>
 				<td class="checkbox">
 					<input type="checkbox" name="cid[]" value="<?php echo $tag->name; ?>" />
 				</td>
@@ -70,8 +69,8 @@ $this->app->document->addScript('assets:js/tag.js');
 					</span>
 				</td>
 				<td class="items">
-					<?php echo $tag->items; ?>
-				</td>				
+					<a href="<?php echo $link_items; ?>"><?php echo $tag->items; ?></a>
+				</td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -83,29 +82,29 @@ $this->app->document->addScript('assets:js/tag.js');
 			$message = null;
 			echo $this->partial('message', compact('title', 'message'));
 
-		else : 
-	
+		else :
+
 			$title   = JText::_('NO_TAGS_YET').'!';
 			$message = JText::_('TAG_MANAGER_DESCRIPTION');
 			echo $this->partial('message', compact('title', 'message'));
-		
+
 		endif;
 	?>
 
 </div>
 
-<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 <script type="text/javascript">
 	jQuery(function($) {
 		$('#tags-default').BrowseTags({ msgSave: '<?php echo JText::_('Save'); ?>', msgCancel: '<?php echo JText::_('Cancel'); ?>' });
-	});	
+	});
 </script>
 
 </form>

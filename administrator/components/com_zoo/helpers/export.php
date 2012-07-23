@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      export.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 class ExportHelper extends AppHelper {
@@ -66,59 +64,145 @@ class ExportHelper extends AppHelper {
 		return $exporters;
 	}
 
+	/*
+		Function: toCSV
+			Exports items of a type to a csv file
+
+		Parameters:
+			$type - Type object
+
+		Returns:
+			String - file path, false if no items are found
+	*/
+	public function toCSV($type) {
+
+		$item_table = $this->app->table->item;
+		$type->getApplication()->getCategoryTree();
+		$data = array();
+
+		$i = 1;
+		$maxima = array();
+		foreach ($item_table->getByType($type->id, $type->getApplication()->id) as $item) {
+
+			// item properties
+			$data[$i]['Name'] = $item->name;
+			$data[$i]['Author Alias'] = $item->getAuthor();
+			$data[$i]['Created Date'] = $item->created;
+
+			// categories
+			$data[$i]['Category'] = array();
+			foreach($item->getRelatedCategories() as $category) {
+				$name = $category->name .'|||'.$category->alias;
+				while (($category = $category->getParent()) && $category->id) {
+					$name = $category->name .'|||'.$category->alias . "///$name";
+				}
+				$data[$i]['Category'][] = $name;
+			}
+
+			// tags
+			$data[$i]['Tag'] = $item->getTags();
+
+			// elements
+			foreach ($type->getElements() as $identifier => $element) {
+				if (!isset($item->elements[$identifier])) {
+					continue;
+				}
+
+				$name = $element->config->get('name') ? $element->config->get('name') : $element->getElementType();
+				switch ($element->getElementType()) {
+					case 'text':
+					case 'textarea':
+					case 'link':
+					case 'email':
+					case 'date':
+						$data[$i][$name] = array();
+						foreach ($item->elements[$identifier] as $self) {
+							$data[$i][$name][] = @$self['value'];
+						}
+						break;
+					case 'country':
+						$data[$i][$name] = @$item->elements[$identifier]['country'];
+						break;
+					case 'gallery':
+						$data[$i][$name] = @$item->elements[$identifier]['value'];
+						break;
+					case 'image':
+					case 'download':
+						$data[$i][$name] = @$item->elements[$identifier]['file'];
+						break;
+					case 'googlemaps':
+						$data[$i][$name] = @$item->elements[$identifier]['location'];
+						break;
+				}
+			}
+
+			foreach ($data[$i] as $key => $value) {
+				if (is_array($value)) {
+					$maxima[$key] = max(1, @$maxima[$key], count($value));
+				}
+			}
+
+			$item_table->unsetObject($item->id);
+
+			$i++;
+		}
+
+		if (empty($data)) {
+			return false;
+		}
+
+		// use maxima to pad arrays
+		foreach ($maxima as $key => $num) {
+			foreach (array_keys($data) as $i) {
+				$data[$i][$key] = array_pad($data[$i][$key], $num, '');
+			}
+		}
+
+		// set header
+		array_unshift($data, array());
+		foreach ($data[1] as $key => $value) {
+			$num = is_array($value) ? count($value) : 1;
+			$data[0] = array_merge($data[0], array_fill(0, max(1, $num), $key));
+		}
+
+		$file = rtrim($this->app->system->application->getCfg('tmp_path'), '\/') . "/$type->id.csv";
+		if (($handle = fopen($file, "w")) !== false) {
+			foreach ($data as $row) {
+				fputcsv($handle, $this->app->data->create($row)->flattenRecursive());
+			}
+			fclose($handle);
+		} else {
+			throw new AppExporterException(sprintf('Unable to write to file %s.', $file));
+		}
+
+		return $file;
+	}
+
 }
 
 abstract class AppExporter {
 
 	public $app;
 
-	protected $_categories;
-	protected $_item_groups;
+	protected $_data;
 	protected $_name;
-	
+
 	public $category_attributes = array('parent', 'published', 'description', 'ordering');
-	public $item_attributes = array('searchable', 'state', 'created', 
-										'modified', 'hits', 'author', 
-										'access', 'priority', 'metakey', 
-										'metadesc', 'metadata', 'publish_up', 
-										'publish_down');
-	public $element_attributes = array('text' => array('value'),
-										'textarea' => array('value'),
-										'download' => array('file', 'download_limit', 'hits', 'size'),
-										'rating' => array('value', 'votes'),
-										'date' => array('value'),
-										'email' => array('text', 'value', 'subject', 'body'),
-										'link' => array('text', 'value', 'target', 'rel'),
-										'gallery' => array('value', 'title'),
-										'image' => array('file'),
-										'video' => array('file', 'url', 'width', 'height', 'autoplay'),
-										'joomlamodule' => array('value'),
-										'socialbookmarks' => array('value'),
-										'addthis' => array('value'),
-										'disqus' => array('value'),										
-										'flickr' => array('value', 'flickrid'),
-										'googlemaps' => array('location', 'popup'),
-										'intensedebate' => array('value'),
-										'checkbox' => array('option'),
-										'radio' => array('option'),
-										'select' => array('option'),
-										'country' => array('country'),
-										'relatedcategories' => array('category'),
-										'relateditems' => array('item')
-	);	
+	public $item_attributes = array('searchable', 'state', 'created', 'modified', 'hits', 'author', 'access', 'priority', 'publish_up', 'publish_down');
+	public $comment_attributes = array('parent_id', 'user_id', 'user_type', 'author', 'email', 'url', 'ip', 'created', 'content', 'state', 'username');
 
 	public function __construct() {
-		$this->_categories = array();
-		$this->_item_groups = array();
+		$this->app = App::getInstance('zoo');
+		$this->_data = $this->app->data->create(array('categories' => array(), 'items' => array()));
 	}
-	
+
 	/*
 		Function: getName
 			Get a AppExporter name
 
 		Returns:
 			String - name
-	*/		
+	*/
 	public function getName() {
 		return $this->_name;
 	}
@@ -129,7 +213,7 @@ abstract class AppExporter {
 
 		Returns:
 			String - type
-	*/		
+	*/
 	public function getType() {
 		return strtolower(str_replace('AppExporter', '', get_class($this)));
 	}
@@ -138,192 +222,61 @@ abstract class AppExporter {
 		Function: isEnabled
 			Is exporter enabled.
 			May be overloaded by the child class.
-			
+
 		Returns:
 			Boolean
-	*/		
+	*/
 	public function isEnabled() {
 		return true;
 	}
-	
+
 	/*
 		Function: export
 			Do the export.
 			Must be overloaded by the child class.
-			
+
 		Returns:
 			String - the export xml
-	*/		
+	*/
 	public function export() {
-
-		$export_xml = $this->app->xml->create('export');
-		
-		$categories_xml = $this->app->xml->create('categories');
-		foreach ($this->_categories as $category) {
-			$categories_xml->appendChild($category);
-		}
-		$export_xml->appendChild($categories_xml);
-
-		foreach ($this->_item_groups as $group_title => $group) {
-			$item_groups_xml = $this->app->xml->create('items')->addAttribute('name', $group_title);
-			foreach ($group as $item) {
-				$item_groups_xml->appendChild($item);		
-			}
-			$export_xml->appendChild($item_groups_xml);
-		}
-
-		return $export_xml->asXML(true, true);		
-		
+		return (string) $this->_data;
 	}
 
-	protected function _addCategory(AppXMLElement $category) {
-		$id = (string)$category->attributes()->id;
-		$name = (string) $category->name;
-		if (!empty($name)) {
-			if (empty($id)) {
-				$id = JFilterOutput::stringURLSafe($name);	
-			}
-			while ($this->_keyExists($this->_categories, $id)) {
-				$id .= '-2';
-			}
-			$category->addAttribute('id', $id);
-			$this->_categories[$id] = $category;
-		}		
+	protected function _addCategory($name, $id = '', $data = array()) {
+
+		if (empty($id)) {
+			$id = JFilterOutput::stringURLSafe($name);
+		}
+
+		while (isset($this->_data['categories'][$id])) {
+			$id .= '-2';
+		}
+
+		$data['name'] = $name;
+
+		$this->_data['categories'][$id] = $data;
+
 		return $this;
 	}
-	
-	protected function _buildCategory($id, $name, $attributes = array()) {
-		
-		$category_xml = $this->app->xml->create('category')->addAttribute('id', $id);
-		$category_xml->addChild('name', $name, null, true);
 
-		foreach ($attributes as $attribute => $data) {
-			if (in_array($attribute, $this->category_attributes)) {
-				$category_xml->addChild($attribute, $data, null, true);
-			}
+	protected function _addItem($name, $id = '', $group = 'default', $data = array()) {
+
+		if (empty($id)) {
+			$id = JFilterOutput::stringURLSafe($name);
 		}
 
-		return $category_xml;
-	}
-	
-	protected function _attachCategoryImage(AppXMLElement $category, $path, $name = null, $width = null, $height = null) {
-		if (!$category->content) {
-			$category->addChild('content');
-		}		
-
-		$image_xml = $category->content[0]->addChild('image')->addAttribute('name', $name);
-		$image_xml->addChild('path', $path, null, true);
-		if ($width) {
-			$image_xml->addChild('width', $width, null, true);
+		while (isset($this->_data['items'][$id])) {
+			$id .= '-2';
 		}
-		if ($height) {
-			$image_xml->addChild('height', $height, null, true);
-		}
-	}
 
-	protected function _attachCategoryParam(AppXMLElement $category, $type, $value, $name = null) {
-		if (!$category->content) {
-			$category->addChild('content');
-		}		
+		$data['group'] = $group;
+		$data['name'] = $name;
 
-		$category->content[0]->addChild($type, $value, null, true)->addAttribute('name', $name);
-	}	
-	
-	protected function _addItem($group, AppXMLElement $item) {
-		$id = (string)$item->attributes()->id;
-		$name = (string) $item->name;
-		if (!empty($name)) {
-			if (empty($id)) {
-				$id = JFilterOutput::stringURLSafe($name);	
-			}
-			while ($this->_keyExists($this->_item_groups, $id)) {
-				$id .= '-2';
-			}
-			$item->addAttribute('id', $id);
-			$this->_item_groups[$group][$id] = $item;
-		}
+		$this->_data['items'][$id] = $data;
+
 		return $this;
 	}
-	
-	protected function _buildItem($id, $name, $attributes = array()) {
-		
-		$item_xml = $this->app->xml->create('item')->addAttribute('id', $id);
-		$item_xml->addChild('name', $name, null, true);
 
-		foreach ($attributes as $attribute => $data) {
-			if (in_array($attribute, $this->item_attributes)) {
-				$item_xml->addChild($attribute, $data, null, true);
-			}
-		}
-
-		return $item_xml;									
-	
-	}
-	
-	protected function _addItemCategory(AppXMLElement $item, $category) {
-		if (!$item->categories) {
-			$item->addChild('categories');
-		}		
-
-		$item->categories[0]->addChild('category', $category, null, true);
-	}
-	
-	protected function _addItemTag(AppXMLElement $item, $tag) {
-		if (!$item->tags) {
-			$item->addChild('tags');
-		}		
-		
-		$item->tags[0]->addChild('tag', $tag, null, true);
-	}	
-	
-	protected function _addItemData(AppXMLElement $item, AppXMLElement $element) {
-		if (!$item->data) {
-			$item->addChild('data');
-		}
-		$item->data[0]->appendChild($element);
-	}
-	
-	protected function _addItemMetadata(AppXMLElement $item, $metadata = array()) {
-		if (!$item->metadata) {
-			$item->addChild('metadata');
-		}
-		
-		foreach ($metadata as $key => $data) {
-			$item->metadata[0]->addChild($key, $data, null, true);
-		}
-	}
-			
-	protected function _buildElement($name, $alias, $element_name, array $values = array()) {
-		$elem_xml = $this->app->xml->create($name)
-					->addAttribute('identifier', $alias)
-					->addAttribute('name', $element_name);
-		foreach ($values as $key => $value) {
-			if (is_array($value)) {
-				foreach ($value as $single_value) {
-					$elem_xml->addChild($key, $single_value, null, true);
-				}
-			} else {
-				$elem_xml->addChild($key, $value, null, true);
-			}
-		}		
-
-		return $elem_xml;
-	}
-	
-	private function _keyExists($haystack, $needle) {
-		foreach ($haystack as $key => $value) {
-			if (is_array($value)) {
-				if ($this->_keyExists($value, $needle)) {
-					return true;
-				}
-			}
-			if ($key === $needle) {
-				return true;
-			}
-		}
-		return false;
-	}	
-	
 }
 
 /*

@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      comment.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: CommentController
@@ -49,53 +44,67 @@ class CommentController extends AppController {
 	}
 
 	public function save() {
-		
+
 		// check for request forgeries
 		$this->app->request->checkToken() or jexit('Invalid Token');
 
 		// set currently active author
-		$this->author = $this->app->comment->activeAuthor();	
-		
+		$this->author = $this->app->comment->activeAuthor();
+
 		// init vars
 		$redirect = $this->app->request->getString('redirect');
 		$login 	  = $this->app->request->getCmd(CommentHelper::COOKIE_PREFIX.'login', '', 'cookie');
 
 		if ($this->author->getUserType() == $login) {
-			
+
 			if ($this->params->get('enable_comments', false)) {
-			
+
 				// init vars
 				$content   = $this->app->request->getVar('content', null, '', 'string', JREQUEST_ALLOWRAW);
 				$item_id   = $this->app->request->getInt('item_id', 0);
 				$parent_id = $this->app->request->getInt('parent_id', 0);
-		
+
 				// filter content
 				$content = $this->app->comment->filterContentInput($content);
-		
+
 				// set content in session
 				$this->app->session->set('com_zoo.comment.content', $content);
-		
+
 				// set author name, email and url, if author is guest
 				if ($this->author->isGuest()) {
 
 					$this->author->name  = $this->app->request->getString('author');
 					$this->author->email = $this->app->request->getString('email');
 					$this->author->url   = $this->app->request->getString('url');
-					
+
 					// save cookies
-					$this->app->comment->saveCookies($this->author->name, $this->author->email, $this->author->url);					
-					
-				}				
-	
+					$this->app->comment->saveCookies($this->author->name, $this->author->email, $this->author->url);
+
+				}
+
 				try {
-		
+
+					// Check captcha (Only on 2.5)
+					$captcha = false;
+					$version = new JVersion();
+					if($version->isCompatible('2.5') && $plugin = $this->params->get('captcha', false)){
+						$captcha = JCaptcha::getInstance($plugin);
+		            	if (!$captcha->checkAnswer(@$post['captcha'])) {
+		            		$error = $captcha->getError();
+							if (!($error instanceof Exception)){
+								$error = new JException($error);
+							}
+		                	throw new CommentControllerException(JText::_('ZOO_CHECK_CAPTCHA') . ' - ' . $error );
+		            	}
+					}
+
 					// get comment table
 					$table = $this->app->table->comment;
-		
+
 					// get parent
 					$parent    = $table->get($parent_id);
 					$parent_id = ($parent && $parent->item_id == $item_id) ? $parent->id : 0;
-					
+
 					// create comment
 					$comment = $this->app->object->create('Comment');
 					$comment->parent_id = $parent_id;
@@ -113,7 +122,7 @@ class CommentController extends AppController {
 						$comment->state = Comment::STATE_APPROVED;
 					} else if ($approved == 2 && $table->getApprovedCommentCount($this->author)) {
 						$comment->state = Comment::STATE_APPROVED;
-					}			
+					}
 
 					// bind Author
 					$comment->bindAuthor($this->author);
@@ -123,14 +132,11 @@ class CommentController extends AppController {
 						$this->_validate($comment);
 					}
 
-					// save comment		
+					// save comment
 					$table->save($comment);
-		
+
 					// remove content from session, if comment was saved
 					$this->app->session->set('com_zoo.comment.content', '');
-
-					// subscribe author to item					
-					$this->app->table->item->save($comment->getItem()->subscribe($this->author->email, $this->author->name));
 
 				} catch (CommentControllerException $e) {
 
@@ -138,31 +144,31 @@ class CommentController extends AppController {
 					$this->app->error->raiseWarning(0, (string) $e);
 
 				} catch (AppException $e) {
-		
+
 					// raise warning on exception
 					$this->app->error->raiseWarning(0, JText::_('ERROR_SAVING_COMMENT'));
-		
+
 					// add exception details, for super administrators only
 					if ($this->user->superadmin) {
 						$this->app->error->raiseWarning(0, (string) $e);
 					}
-		
+
 				}
-		
+
 				// add anchor to redirect, if comment was saved
 				if ($comment->id) {
 					$redirect .= '#comment-'.$comment->id;
 				}
-			
+
 			} else {
 				// raise warning on comments not enabled
 				$this->app->error->raiseWarning(0, JText::_('Comments are not enabled.'));
 			}
 		} else {
-						
+
 			// raise warning on exception
 			$this->app->error->raiseWarning(0, JText::_('ERROR_SAVING_COMMENT'));
-			
+
 			// add exception details, for super administrators only
 			if ($this->user->superadmin) {
 				$this->app->error->raiseWarning(0, JText::_('User types didn\'t match.'));
@@ -194,7 +200,7 @@ class CommentController extends AppController {
 
 			$this->app->table->item->save($item->unsubscribe($email));
 
-			$redirect = $this->app->route->item($item);
+			$redirect = $this->app->route->item($item, false);
 			$msg = JText::_('SUCCESSFULLY_UNSUBSCRIBED');
 
 		} catch (CommentControllerException $e) {
@@ -217,7 +223,7 @@ class CommentController extends AppController {
 		$this->setRedirect(JRoute::_($redirect), $msg);
 
 	}
-	
+
 	protected function _validate($comment) {
 
 		// get params
@@ -231,11 +237,6 @@ class CommentController extends AppController {
 			throw new CommentControllerException('Related item does not exists.');
 		}
 
-		// check if content is empty
-		if (empty($comment->content)) {
-			throw new CommentControllerException('Please enter a comment.');
-		}
-		
 		// only registered users can comment
 		if ($registered && $this->author->isGuest()) {
 			throw new CommentControllerException('LOGIN_TO_LEAVE_OMMENT');
@@ -252,14 +253,19 @@ class CommentController extends AppController {
 		} catch (AppValidatorException $e) {
 			throw new CommentControllerException('Please enter a valid email address.');
 		}
-		
+
 		// validate url format
-		try {		
+		try {
 			$this->app->validator->create('url')->addOption('required', false)->clean($comment->url);
 		} catch (AppValidatorException $e) {
 			throw new CommentControllerException('Please enter a valid website link.');
 		}
-	
+
+		// check if content is empty
+		if (empty($comment->content)) {
+			throw new CommentControllerException('Please enter a comment.');
+		}
+
 		// check quick multiple posts
 		if ($last = $this->app->table->comment->getLastComment($comment->ip, $this->author)) {
 			if ($this->app->date->create($comment->created)->toUnix() < $this->app->date->create($last->created)->toUnix() + $time_between_user_posts) {
@@ -274,7 +280,7 @@ class CommentController extends AppController {
 
 		// check comment for spam (akismet)
 		if ($this->params->get('akismet_enable', 0) && $comment->state != Comment::STATE_SPAM) {
-			try {		
+			try {
 
 				$this->app->comment->akismet($comment, $this->params->get('akismet_api_key'));
 
@@ -288,18 +294,18 @@ class CommentController extends AppController {
 
 		// check comment for spam (mollom)
 		if ($this->params->get('mollom_enable', 0) && $comment->state != Comment::STATE_SPAM) {
-			try {		
+			try {
 
 				$this->app->comment->mollom($comment, $this->params->get('mollom_public_key'), $this->params->get('mollom_private_key'));
 
 			} catch (Exception $e) {
-				
+
 				// re-throw exception, for super administrators only
 				if ($this->user->superadmin) throw new AppException($e->getMessage());
-				
+
 			}
 		}
-		
+
 	}
 
 	public function facebookConnect() {
@@ -307,22 +313,22 @@ class CommentController extends AppController {
 		// init vars
 		$item_id = $this->app->request->getInt('item_id', 0);
 		$item    = $this->app->table->item->get($item_id);
-		
+
 		// get facebook client
 		$connection = $this->app->facebook->client();
-		
+
 		if ($connection && empty($connection->access_token)) {
-			
+
 			$redirect = JURI::root().'index.php?option='.$this->option.'&controller='.$this->controller.'&task=facebookauthenticate&item_id='.$item_id;
 			$redirect = $connection->getAuthenticateURL($redirect);
 
 		} else {
 
 			// already connected
-			$redirect = JRoute::_($this->app->route->item($item));
-			
+			$redirect = $this->app->route->item($item);
+
 		}
-		
+
 		$this->setRedirect($redirect);
 
 	}
@@ -346,8 +352,7 @@ class CommentController extends AppController {
 			$_SESSION['facebook_access_token'] = $token;
 		}
 
-		$redirect = JRoute::_($this->app->route->item($item));
-		$this->setRedirect($redirect);
+		$this->setRedirect($this->app->route->item($item));
 	}
 
 	public function facebookLogout() {
@@ -368,7 +373,7 @@ class CommentController extends AppController {
 
 			$redirect = JURI::root() .'index.php?option='.$this->option.'&app_id='.$this->application->id.'&controller='.$this->controller.'&task=twitterauthenticate&referer='.urlencode($referer);
 
-			// get temporary credentials		
+			// get temporary credentials
 			$request_token = $connection->getRequestToken($redirect);
 
 			// save temporary credentials to session
@@ -391,20 +396,20 @@ class CommentController extends AppController {
 			// already connected
 			$redirect = $referer;
 		}
-		
-		$this->setRedirect($redirect);		    
+
+		$this->setRedirect($redirect);
 
 	}
-	
+
 	public function twitterAuthenticate() {
-		
+
 		// get twitter client
 		$connection = $this->app->twitter->client();
-		
+
 		if ($connection) {
 			// retrieve access token
 			$token_credentials = $connection->getAccessToken($_REQUEST['oauth_verifier']);
-			
+
 			// replace request token with access token in session.
 			if ($token_credentials) {
 				$_SESSION['twitter_oauth_token'] = $token_credentials['oauth_token'];
@@ -412,17 +417,18 @@ class CommentController extends AppController {
 			} else {
 				// show notification if something went wrong.
 				$this->app->error->raiseWarning(0, JText::_('ERROR_CONNECT_TWITTER'));
+
 			}
 		}
-		
-		$this->setRedirect($this->app->request->getString('referer'));		
+
+		$this->setRedirect($this->app->request->getString('referer'));
 	}
-	
+
 	public function twitterLogout() {
 		$this->app->twitter->logout();
-		$this->setRedirect($this->app->request->getString('HTTP_REFERER', '', 'server'));		
-	}	
-	
+		$this->setRedirect($this->app->request->getString('HTTP_REFERER', '', 'server'));
+	}
+
 }
 
 /*

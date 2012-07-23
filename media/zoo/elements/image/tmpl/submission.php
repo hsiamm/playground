@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      submission.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -21,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 			<input type="text" id="filename<?php echo $this->identifier; ?>" readonly="readonly" />
 			<div class="button-container">
 				<button class="button-grey search" type="button"><?php echo JText::_('Search'); ?></button>
-				<input type="file" name="elements_<?php echo $this->identifier; ?>" onchange="javascript: document.getElementById('filename<?php echo $this->identifier; ?>').value = this.value" />
+				<input type="file" name="elements_<?php echo $this->identifier; ?>" onchange="javascript: document.getElementById('filename<?php echo $this->identifier; ?>').value = this.value.replace(/^.*[\/\\]/g, '');" />
 			</div>
 		</div>
 
@@ -31,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php else : ?>
 
-			<input type="hidden" class="image" name="elements[<?php echo $this->identifier; ?>][image]" value="<?php echo $image ? 1 : ''; ?>">
+			<input type="hidden" class="image" name="<?php echo $this->getControlName('image'); ?>" value="<?php echo $image ? 1 : ''; ?>">
 
 		<?php endif; ?>
 
@@ -56,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="title options">
 
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$this->identifier.'][title]', $title, 'maxlength="255" title="'.JText::_('Title').'" placeholder="'.JText::_('Title').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('title'), $this->get('title'), 'maxlength="255" title="'.JText::_('Title').'" placeholder="'.JText::_('Title').'"'); ?>
 			</div>
 
 		</div>
@@ -64,16 +62,16 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="link options">
 
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$this->identifier.'][link]', $link, 'size="60" maxlength="255" title="'.JText::_('Link').'" placeholder="'.JText::_('Link').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('link'), $this->get('link'), 'size="60" maxlength="255" title="'.JText::_('Link').'" placeholder="'.JText::_('Link').'"'); ?>
 			</div>
 
 			<div class="row">
 				<strong><?php echo JText::_('New window'); ?></strong>
-				<?php echo $this->app->html->_('select.booleanlist', 'elements['.$this->identifier.'][target]', $target, $target); ?>
+				<?php echo $this->app->html->_('select.booleanlist', $this->getControlName('target'), $this->get('target'), $this->get('target')); ?>
 			</div>
 
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$this->identifier.'][rel]', $rel, 'size="60" maxlength="255" title="'.JText::_('Rel').'" placeholder="'.JText::_('Rel').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('rel'), $this->get('rel'), 'size="60" maxlength="255" title="'.JText::_('Rel').'" placeholder="'.JText::_('Rel').'"'); ?>
 			</div>
 		</div>
 
@@ -84,6 +82,6 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	jQuery(function($) {
-		$('#yoo-zoo .<?php echo $this->identifier; ?>').ImageSubmission({ uri: '<?php echo JURI::root(); ?>' });
+		$('#item-submission .<?php echo $this->identifier; ?>').ImageSubmission({ uri: '<?php echo JURI::root(); ?>' });
 	});
 </script>

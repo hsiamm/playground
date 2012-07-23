@@ -1,15 +1,13 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      default.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 
 // disable category sorting if there are more than a thousand categories
 if (!$enable_category_sorting = count($this->categories) <= 1000) {
@@ -33,7 +31,7 @@ if ($enable_category_sorting) {
 	<?php if (count($this->categories) > 1) : ?>
 
 		<div id="categories-list">
-		
+
 			<table>
 				<thead>
 					<tr>
@@ -55,24 +53,24 @@ if ($enable_category_sorting) {
 					</tr>
 				</thead>
 			</table>
-		
+
 			<ul id="categories">
 				<?php
-					$renderer = $this->app->object->create('CategoryRenderer');
+					$renderer = $this->app->object->create('CategoryRenderer', array($this->app, $this->application));
 					foreach ($this->categories[0]->getChildren() as $category) {
 						echo $renderer->render($category);
 					}
 				?>
 			</ul>
-		
+
 		</div>
-	
-	<?php else: 
-	
+
+	<?php else:
+
 			$title   = JText::_('NO_CATEGORIES_YET').'!';
 			$message = JText::_('CATEGORY_MANAGER_DESCRIPTION');
 			echo $this->partial('message', compact('title', 'message'));
-		
+
 	endif; ?>
 
 </div>
@@ -81,6 +79,7 @@ if ($enable_category_sorting) {
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>
@@ -101,23 +100,23 @@ if ($enable_category_sorting) {
 class CategoryRenderer {
 
 	protected $_i = 0;
-	protected $_texts;
+	protected $_texts = array();
+	protected $_link;
+	protected $_link_item;
 
 	public $app;
 
-	public function  __construct() {
-		$this->_texts = array();
+	public function  __construct($app, $application) {
 		$this->_texts['edit_category']	= JText::_('Edit Category');
 		$this->_texts['published']		= JText::_('Published');
 		$this->_texts['unpublished']	= JText::_('Unpublished');
 		$this->_texts['publish_item']	= JText::_('Publish item');
 		$this->_texts['unpublish_item'] = JText::_('Unpublish Item');
+		$this->link       = $app->link(array('controller' => 'category', 'changeapp' => $application->id, 'task' => 'edit'));
+		$this->link_items = $app->link(array('controller' => 'item', 'changeapp' => $application->id, 'filter_type' => '', 'filter_author_id' => '', 'search' => ''));
 	}
 
 	public function render($category) {
-
-		$link       = $this->app->link(array('controller' => 'category','task' => 'edit', 'cid[]' => $category->id));
-		$link_items = $this->app->link(array('controller' => 'item','filter_category_id' => $category->id, 'filter_type' => '', 'filter_author_id' => '', 'search' => ''));
 
 		$img 	= $category->published ? 'tick.png' : 'publish_x.png';
 		$task 	= $category->published ? 'unpublish' : 'publish';
@@ -139,11 +138,11 @@ class CategoryRenderer {
 							<td class="icon"></td>
 							<td class="name">
 								<span class="editlinktip hasTip" title="<?php echo $this->_texts['edit_category'] . '::' . $category->name; ?>">
-									<a href="<?php echo $link  ?>"><?php echo $category->name; ?></a>
+									<a href="<?php echo $this->link . '&cid[]=' . $category->id  ?>"><?php echo $category->name; ?></a>
 								</span>
 							</td>
 							<td class="items">
-								<a href="<?php echo $link_items; ?>"><?php echo $category->itemCount(); ?></a>
+								<a href="<?php echo $this->link_items . '&filter_category_id=' . $category->id; ?>"><?php echo $category->itemCount(); ?></a>
 							</td>
 							<td class="published">
 								<a href="#" rel="task-<?php echo $task; ?>" title="<?php echo $action; ?>">

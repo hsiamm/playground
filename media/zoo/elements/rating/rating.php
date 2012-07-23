@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      rating.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -24,7 +22,21 @@ class ElementRating extends Element {
 
 		// set callbacks
 		$this->registerCallback('vote');
-		$this->registerCallback('reset');
+
+		if ($this->app->system->application->isAdmin()) {
+			$this->registerCallback('reset');
+		}
+	}
+
+	/*
+		Function: getSearchData
+			Get elements search data.
+
+		Returns:
+			String - Search data
+	*/
+	public function getSearchData() {
+		return $this->getRating();
 	}
 
 	/*
@@ -53,21 +65,19 @@ class ElementRating extends Element {
 	*/
 	public function render($params = array()) {
 
-		static $instance;
+		// init vars
+		$params		= $this->app->data->create($params);
+		$stars      = $this->config->get('stars');
+		$allow_vote = $this->config->get('allow_vote');
+
+		$disabled     = $params->get('rating_disabled', false);
+		$show_message = $params->get('show_message', false);
 
 		// init vars
-		$stars      = $this->_config->get('stars');
-		$allow_vote = $this->_config->get('allow_vote');
-
-		$disabled     = isset($params['rating_disabled']) ? $params['rating_disabled'] : false;
-		$show_message = isset($params['show_message']) ? $params['show_message'] : false;
-
-		// init vars
-		$instance = empty($instance) ? 1 : $instance + 1;
-		$link     = $this->app->link(array('task' => 'callelement', 'format' => 'raw', 'item_id' => $this->_item->id, 'element' => $this->identifier), false);
+		$link = $this->app->link(array('task' => 'callelement', 'format' => 'raw', 'item_id' => $this->_item->id, 'element' => $this->identifier), false);
 
 		$rating = $this->getRating();
-		$votes = (int) $this->_data->get('votes', 0);
+		$votes = (int) $this->get('votes', 0);
 
 		// render layout
 		if ($layout = $this->getLayout()) {
@@ -105,20 +115,19 @@ class ElementRating extends Element {
 	*/
 	public function loadAssets() {
 		$this->app->document->addScript('elements:rating/assets/js/rating.js');
-
 		return $this;
 	}
 
 	public function reset() {
 
 		$query = 'DELETE'
-				    .' FROM ' . ZOO_TABLE_RATING
-			   	    .' WHERE item_id = '.(int) $this->getItem()->id;
+				.' FROM ' . ZOO_TABLE_RATING
+				.' WHERE item_id = '.(int) $this->getItem()->id;
 
 		$this->app->database->query($query);
 
-		$this->_data->set('votes', 0);
-		$this->_data->set('value', 0);
+		$this->set('votes', 0);
+		$this->set('value', 0);
 
 		//save item
 		$this->app->table->item->save($this->getItem());
@@ -134,7 +143,7 @@ class ElementRating extends Element {
 			String - Rating number
 	*/
 	public function getRating() {
-		return number_format((double) $this->_data->get('value', 0), 1);
+		return number_format((double) $this->get('value', 0), 1);
 	}
 
 	/*
@@ -147,8 +156,8 @@ class ElementRating extends Element {
 	public function vote($vote = null) {
 
 		// init vars
-		$max_stars  = $this->_config->get('stars');
-		$allow_vote = $this->_config->get('allow_vote');
+		$max_stars  = $this->config->get('stars');
+		$allow_vote = $this->config->get('allow_vote', $this->app->joomla->getDefaultAccess());
 
 		$db   = $this->app->database;
 		$user = $this->app->user->get();
@@ -166,7 +175,7 @@ class ElementRating extends Element {
 			));
 		}
 
-		if (in_array($vote, $stars) && isset($_SERVER['REMOTE_ADDR']) && ($ip = $_SERVER['REMOTE_ADDR'])) {
+		if (in_array($vote, $stars) && ($ip = $this->app->useragent->ip())) {
 
 			// check if ip already exists
 			$query = 'SELECT *'
@@ -205,11 +214,11 @@ class ElementRating extends Element {
 				    .' GROUP BY item_id';
 
 			if ($res = $db->queryAssoc($query)) {
-				$this->_data->set('votes', $res['votes']);
-				$this->_data->set('value', $res['rating']);
+				$this->set('votes', $res['votes']);
+				$this->set('value', $res['rating']);
 			} else {
-				$this->_data->set('votes', 0);
-				$this->_data->set('value', 0);
+				$this->set('votes', 0);
+				$this->set('value', 0);
 			}
 		}
 
@@ -218,34 +227,38 @@ class ElementRating extends Element {
 
 		return json_encode(array(
 			'value' => intval($this->getRating() / $max_stars * 100),
-			'message' => sprintf(JText::_('%s rating from %s votes'), $this->getRating(), $this->_data->get('votes'))
+			'message' => sprintf(JText::_('%s rating from %s votes'), $this->getRating(), $this->get('votes'))
 		));
 	}
 
-}
+	/*
+		Function: bindData
+			Set data through data array.
 
-class ElementRatingData extends ElementData{
+		Parameters:
+			$data - array
 
-	public function encodeData() {
+		Returns:
+			Void
+	*/
+	public function bindData($data = array()) {
+		parent::bindData($data);
 
-		if ($this->_element->getItem()) {
+		// calculate rating/votes
+		$query = 'SELECT AVG(value) AS rating, COUNT(id) AS votes'
+				.' FROM ' . ZOO_TABLE_RATING
+				.' WHERE element_id = '.$this->app->database->Quote($this->identifier)
+				.' AND item_id = '.$this->_item->id
+				.' GROUP BY item_id';
 
-			// calculate rating/votes
-			$query = 'SELECT AVG(value) AS rating, COUNT(id) AS votes'
-				    .' FROM ' . ZOO_TABLE_RATING
-				   	.' WHERE element_id = '.$this->app->database->Quote($this->_element->identifier)
-				    .' AND item_id = '.$this->_element->getItem()->id
-				    .' GROUP BY item_id';
-
-			if ($res = $this->app->database->queryAssoc($query)) {
-				$this->set('votes', $res['votes']);
-				$this->set('value', $res['rating']);
-			} else {
-				$this->set('votes', 0);
-				$this->set('value', 0);
-			}
+		if ($this->_item->id && $res = $this->app->database->queryAssoc($query)) {
+			$this->set('votes', $res['votes']);
+			$this->set('value', $res['rating']);
+		} else {
+			$this->set('votes', 0);
+			$this->set('value', 0);
 		}
-		return parent::encodeData();
+
 	}
 
 }

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      submission.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -43,10 +41,10 @@ class SubmissionController extends AppController {
 
 		// set toolbar items
 		$this->joomla->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Items')));
+		$this->app->toolbar->addNewX();
+		$this->app->toolbar->editListX();
 		$this->app->toolbar->custom('docopy', 'copy.png', 'copy_f2.png', 'Copy');
 		$this->app->toolbar->deleteList();
-		$this->app->toolbar->editListX();
-		$this->app->toolbar->addNewX();
 		$this->app->zoo->toolbarHelp();
 
 		$this->app->html->_('behavior.tooltip');
@@ -55,8 +53,6 @@ class SubmissionController extends AppController {
 		$filter_order	    = $this->joomla->getUserStateFromRequest($state_prefix.'filter_order', 'filter_order', 'name', 'cmd');
 		$filter_order_Dir   = $this->joomla->getUserStateFromRequest($state_prefix.'filter_order_Dir', 'filter_order_Dir', 'desc', 'word');
 
-		$this->groups = $this->app->zoo->getGroups();
-        
         // get data from the table
 		$where = array();
 
@@ -78,7 +74,7 @@ class SubmissionController extends AppController {
 		$this->getView()->display();
 	}
 
-	public function edit($tpl = null) {
+	public function edit() {
 
 		// disable menu
 		$this->app->request->setVar('hidemainmenu', 1);
@@ -99,7 +95,7 @@ class SubmissionController extends AppController {
 		// set toolbar items
 		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Submission').': '.$this->submission->name.' <small><small>[ '.($edit ? JText::_('Edit') : JText::_('New')).' ]</small></small>'));
 		$this->app->toolbar->save();
-		$this->app->toolbar->custom('saveandnew', 'saveandnew', 'saveandnew', 'Save  New', false);
+		$this->app->toolbar->custom('saveandnew', 'saveandnew', 'saveandnew', 'Save And New', false);
 		$this->app->toolbar->apply();
 		$this->app->toolbar->cancel('cancel', $edit ? 'Close' : 'Cancel');
 		$this->app->zoo->toolbarHelp();
@@ -113,19 +109,32 @@ class SubmissionController extends AppController {
         // tooltip select
 		$this->lists['select_tooltip'] = $this->app->html->_('select.booleanlist', 'params[show_tooltip]', null, $this->submission->showTooltip());
 
+		// item edit select
+		$this->lists['select_item_edit'] = $this->app->html->_('select.booleanlist', 'params[item_edit]', null, $this->submission->getParams()->get('item_edit', false));
+
+		// Only on 2.5
+		$this->lists['select_item_captcha'] = false;
+		$version = new JVersion();
+
+		if($version->isCompatible('2.5')) {
+			// item captcha select
+			$options = array($this->app->html->_('select.option', '', '- '.JText::_('Select Plugin').' -'));
+			$this->lists['select_item_captcha'] = $this->app->html->_('zoo.pluginlist', $options, 'params[captcha]', '', 'value', 'text', $this->submission->getParams()->get('captcha', null), null, true, 'captcha');
+		}
+
         // type select
         $this->types = array();
         foreach ($this->application->getTypes() as $type) {
 
             // list types with submission layouts only
-            if (count($this->app->zoo->getLayouts($this->application, $type->id, 'submission')) > 0) {
+            if (count($this->app->type->layouts($type, 'submission')) > 0) {
 
                 $form = $this->submission->getForm($type->id);
 
                 $this->types[$type->id]['name'] = $type->name;
 
                 $options = array($this->app->html->_('select.option', '', '- '.JText::_('not submittable').' -'));
-                $this->types[$type->id]['select_layouts'] = $this->app->html->_('zoo.layoutList', $this->application, $type->id, 'submission', $options, 'params[form]['.$type->id.'][layout]', '', 'value', 'text', $form->get('layout'));
+                $this->types[$type->id]['select_layouts'] = $this->app->html->_('zoo.layoutlist', $type, 'submission', $options, 'params[form]['.$type->id.'][layout]', '', 'value', 'text', $form->get('layout'));
 
                 $options = array($this->app->html->_('select.option', '', '- '.JText::_('uncategorized').' -'));
                 $this->types[$type->id]['select_categories'] = $this->app->html->_('zoo.categorylist', $this->application, $options, 'params[form]['.$type->id.'][category]', 'size="1"', 'value', 'text', $form->get('category'));
@@ -157,23 +166,38 @@ class SubmissionController extends AppController {
 			}
 
 			// bind submission data
-			$this->bind($submission, $post, array('params'));
-            
+			self::bind($submission, $post, array('params'));
+
             // generate unique slug
-            $submission->alias = $this->app->submission->getUniqueAlias($submission->id, $this->app->string->sluggify($submission->alias));
+            $submission->alias = $this->app->alias->submission->getUniqueAlias($submission->id, $this->app->string->sluggify($submission->alias));
 
 			// set params
 			$submission->getParams()
-				->clear()
                 ->set('form.', @$post['params']['form'])
                 ->set('trusted_mode', @$post['params']['trusted_mode'])
 				->set('show_tooltip', @$post['params']['show_tooltip'])
+				->set('item_edit', @$post['params']['item_edit'])
+				->set('max_submissions', @$post['params']['max_submissions'])
+				->set('captcha', @$post['params']['captcha'])
 				->set('email_notification', @$post['params']['email_notification'])
 				->set('config.', @$post['params']['config'])
 				->set('content.', @$post['params']['content']);
 
 			// save submission
 			$this->table->save($submission);
+
+			// Make sure there is at most one item edit submission
+			if(@$post['params']['item_edit'] == true) {
+				foreach ($this->application->getSubmissions() as $sub) {
+					if ($sub->id != $submission->id) {
+
+						// Disable item edit param
+						$sub->getParams()->set('item_edit', 0);
+						$this->table->save($sub);
+
+					}
+				}
+			}
 
 			// set redirect message
 			$msg = JText::_('Submission Saved');
@@ -255,10 +279,7 @@ class SubmissionController extends AppController {
 				// copy submission
 				$submission->id         = 0;                         // set id to 0, to force new category
 				$submission->name      .= ' ('.JText::_('Copy').')'; // set copied name
-				$submission->alias      = $this->app->submission->getUniqueAlias($id, $submission->alias.'-copy'); // set copied alias
-
-				// track parent for ordering update
-				$parents[] = $submission->parent;
+				$submission->alias      = $this->app->alias->submission->getUniqueAlias($id, $submission->alias.'-copy'); // set copied alias
 
 				// save copied category data
 				$this->table->save($submission);
@@ -317,56 +338,20 @@ class SubmissionController extends AppController {
 		$this->setRedirect($this->baseurl);
 	}
 
-	public function accessPublic() {
-		$this->_editAccess(0);
-		$this->_editTrustedMode(0);
-	}
-
-	public function accessRegistered() {
-		$this->_editAccess(1);
-	}
-
-	public function accessSpecial() {
-		$this->_editAccess(2);
-	}
-
-	protected function _editAccess($access) {
-
-		// check for request forgeries
-		$this->app->request->checkToken() or jexit('Invalid Token');
-
-		// init vars
-		$cid = $this->app->request->get('cid', 'array', array());
-
-		if (count($cid) < 1) {
-			$this->app->error->raiseError(500, JText::_('Select a submission to edit access'));
-		}
-
-		try {
-
-			// update item access
-			foreach ($cid as $id) {
-				$submission = $this->table->get($id);
-				$submission->access = $access;
-				$this->table->save($submission);
-			}
-
-		} catch (AppException $e) {
-
-			// raise notice on exception
-			$this->app->error->raiseNotice(0, JText::_('Error Editing Submission Access').' ('.$e.')');
-
-		}
-
-		$this->setRedirect($this->baseurl);
-	}
-
 	public function enableTrustedMode() {
 		$this->_editTrustedMode(1);
 	}
 
 	public function disableTrustedMode() {
 		$this->_editTrustedMode(0);
+	}
+
+	public function enableItemEdit() {
+		$this->_editItemEdit(1);
+	}
+
+	public function disableItemEdit() {
+		$this->_editItemEdit(0);
 	}
 
 	protected function _editTrustedMode($enabled) {
@@ -387,8 +372,63 @@ class SubmissionController extends AppController {
 			foreach ($cid as $id) {
 				$submission = $this->table->get($id);
 
+				// trusted mode can only be enabled for nonpublic access
+				if ($enabled == true) {
+					$group = $this->app->zoo->getGroup($submission->access);
+					if ($this->app->joomla->isVersion('1.5') ? $group->id == 0 : !JAccess::checkGroup($group->id, 'core.login.site')) {
+						throw new AppException('Trusted mode can\'t be enabled for public access');
+					}
+				}
+
 				$submission->getParams()
 					->set('trusted_mode', $enabled);
+
+				$this->table->save($submission);
+			}
+
+		} catch (AppException $e) {
+
+			// raise notice on exception
+			$this->app->error->raiseNotice(0, JText::_('Error enabling/disabling Submission Trusted Mode').' ('.$e.')');
+
+		}
+
+		$this->setRedirect($this->baseurl);
+	}
+
+	protected function _editItemEdit($enabled) {
+
+		// check for request forgeries
+		$this->app->request->checkToken() or jexit('Invalid Token');
+
+		// init vars
+		$cid = $this->app->request->get('cid', 'array', array());
+
+		if (count($cid) < 1) {
+			$this->app->error->raiseError(500, JText::_('Select a submission to enable/disable Item Edit Submission'));
+		}
+
+		try {
+
+			// update item state
+			foreach ($cid as $id) {
+				$submission = $this->table->get($id);
+
+				$submission->getParams()
+					->set('item_edit', $enabled);
+
+				// Make sure there is at most one item edit submission
+				if($enabled){
+					foreach ($this->application->getSubmissions() as $sub) {
+						if ($sub->id != $submission->id) {
+
+							// Disable item edit param
+							$sub->getParams()->set('item_edit', 0);
+							$this->table->save($sub);
+
+						}
+					}
+				}
 
 				$this->table->save($submission);
 			}

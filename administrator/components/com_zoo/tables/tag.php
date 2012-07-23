@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      tag.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -48,7 +46,7 @@ class TagTable extends AppTable {
 			." AND (b.publish_down = ".$null." OR b.publish_down >= ".$now.")": "")
 			." GROUP BY a.name"
 			.($orderby ? " ORDER BY ".$orderby : "")
-			.(($limit ? " LIMIT ".(int)$offset.",".(int)$limit : ""));
+			.($limit ? " LIMIT ".(int)$offset.",".(int)$limit : "");
 
 		return $db->queryObjectList($query);
 	}
@@ -100,11 +98,11 @@ class TagTable extends AppTable {
 
 		// get database
 		$db = $this->database;
-		
+
 		// delete old item tags
 		$query = "DELETE FROM ".$this->name
 				." WHERE item_id = ".(int) $item_id;
-		$db->query($query);			
+		$db->query($query);
 
 		// insert new item tags
 		$tags = (array) $tags;
@@ -114,19 +112,19 @@ class TagTable extends AppTable {
 			$tags = array_intersect_key($tags, array_unique(array_map('strtolower',$tags)));
 
 			foreach ($tags as $tag) {
-				$tag = str_replace('.', '_', $tag);
+				$tag = str_replace(array('.', '/'), '_', $tag);
 				$values[] = sprintf("(%s, %s)", (int) $item_id, $db->Quote($tag));
 			}
 
 			$query = "INSERT INTO ".$this->name
 					." VALUES ".implode(", ", $values);
-			$db->query($query);	
+			$db->query($query);
 		}
 
 		// trigger deleted event
 		$this->app->event->dispatcher->notify($this->app->event->create($tags, 'tag:saved', array('item' => $this->app->table->item->get($item_id))));
 
-	}	
+	}
 
 	/*
 		Function: update
@@ -153,7 +151,7 @@ class TagTable extends AppTable {
             // remove all item tags which have the new and the old tag
             $this->delete($application_id, array($new, $old));
 
-			foreach ($ids as $id) {				
+			foreach ($ids as $id) {
 				$values[] = sprintf("(%s, %s)", (int) $id, $db->Quote($new));
 			}
 
@@ -198,7 +196,7 @@ class TagTable extends AppTable {
 		return $result;
 
 	}
-	
+
 }
 
 /*

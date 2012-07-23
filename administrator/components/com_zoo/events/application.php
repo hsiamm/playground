@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      application.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -35,7 +33,27 @@ class ApplicationEvent {
 	public static function deleted($event) {
 
 		$application = $event->getSubject();
-		
+
+	}
+
+	public static function installed($event) {
+
+		$application = $event->getSubject();
+		$update = $event['update'];
+
+	}
+
+	public static function addmenuitems($event) {
+
+		$application = $event->getSubject();
+
+		// Tab object
+		$tab = $event['tab'];
+
+		// add child
+
+		// return the tab object
+		$event['tab'] = $tab;
 	}
 
 }

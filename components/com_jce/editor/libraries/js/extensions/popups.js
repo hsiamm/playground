@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.1.3
+ * JCE Editor                 2.2.0
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    19 May 2012
+ * @date                    20 June 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -27,8 +27,8 @@ $.extend(popup.params,p);}},getParams:function(n){return this.popups[n].params||
 return this._call('setAttributes',[n,args]);},getAttributes:function(n){var ed=tinyMCEPopup.editor,k,v,at,data;if(n.nodeName!='A'){n=ed.dom.getParent(n,'a');}
 if(this.isPopup(n)){data=this._call('getAttributes',n);}
 return data;},isEnabled:function(){return this.popup;},createPopup:function(n,args){var self=this,ed=tinyMCEPopup.editor,o,el;args=args||{};if(this.isEnabled()){if(n&&(n.nodeName=='A'||ed.dom.getParent(n,'A'))){if(n.nodeName!='A'){n=ed.dom.getParent(n,'A');}
-this.removePopups(n);this.setAttributes(n,args);}else{var se=ed.selection,marker;if(se.isCollapsed()){ed.execCommand('mceInsertContent',false,'<a href="javascript:mctmp(0);">'+$('#popup_text').val()+'</a>',{skip_undo:1});}else{ed.execCommand('mceInsertLink',false,'javascript:mctmp(0);',{skip_undo:1});}
-tinymce.each(ed.dom.select('a[href=javascript\\:mctmp\\(0\\)\\;]'),function(link){self.setAttributes(link,args);});}}else{var s=false;$.each(this.popups,function(k,v){if(self.isPopup(n,v)){s=true;}});if(s){ed.dom.remove(n,true);}}},removePopups:function(n){var self=this;$.each(this.popups,function(k,v){self._call('remove',n,v);});},onSelectFile:function(args){this._call('onSelectFile',args);},_call:function(fn,args,popup){if(!popup){popup=this.popup;}
+this.removePopups(n);this.setAttributes(n,args);}else{var se=ed.selection,marker;if(se.isCollapsed()){ed.execCommand('mceInsertContent',false,'<a href="#mce_temp_url#">'+$('#popup_text').val()+'</a>',{skip_undo:1});}else{ed.execCommand('mceInsertLink',false,'#mce_temp_url#',{skip_undo:1});}
+tinymce.each(ed.dom.select('a[href="#mce_temp_url#"]'),function(link){self.setAttributes(link,args);});}}else{var s=false;$.each(this.popups,function(k,v){if(self.isPopup(n,v)){s=true;}});if(s){ed.dom.remove(n,true);}}},removePopups:function(n){var self=this;$.each(this.popups,function(k,v){self._call('remove',n,v);});},onSelectFile:function(args){this._call('onSelectFile',args);},_call:function(fn,args,popup){if(!popup){popup=this.popup;}
 if(typeof popup=='string'){popup=this.popups[popup]||{};}
 fn=popup[fn];if(fn){if(typeof args=='object'&&args instanceof Array){return fn.apply(popup,args);}else{return fn.call(popup,args);}}
 return false;}});

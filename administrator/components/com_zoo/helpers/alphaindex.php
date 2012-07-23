@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      alphaindex.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -19,10 +17,10 @@ class AlphaindexHelper extends AppHelper {
 			Get a menu instance
 
 		Returns:
-			AppParameter
+			AppAlphaindex
 	*/
 	public function create($path) {
-		return $this->app->object->create('AppAlphaindex', array($this->app, $path));
+		return $this->app->object->create('AppAlphaindex', array($path));
 	}
 
 }
@@ -52,8 +50,8 @@ class AppAlphaindex {
 	   Returns:
 	      YAlphaindex
  	*/
-	public function __construct($app, $path) {
-		if ($xml = $app->xml->loadFile($path)) {
+	public function __construct($path) {
+		if ($xml = simplexml_load_file($path)) {
 
 			// add other character
 			if ($xml->attributes()->other) {

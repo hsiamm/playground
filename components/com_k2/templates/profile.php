@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: profile.php 1206 2011-10-17 21:09:08Z joomlaworks $
+ * @version		$Id: profile.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -148,6 +148,38 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo $this->params->render('params'); ?>
 				</td>
 			</tr>
+			<?php endif; ?>
+			<!-- Joomla! 1.6+ JForm implementation -->
+			<?php if(K2_JVERSION == '16'): ?>
+			<?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
+				<?php if($fieldset->name != 'core'): ?>
+				<?php $fields = $this->form->getFieldset($fieldset->name);?>
+				<?php if (count($fields)):?>
+					<?php if (isset($fieldset->label)):// If the fieldset has a label set, display it as the legend.?>
+					<tr>
+						<th colspan="2" class="k2ProfileHeading">
+							<?php echo JText::_($fieldset->label);?>
+						</th>
+					</tr>
+					<?php endif;?>
+					<?php foreach($fields as $field):// Iterate through the fields in the set and display them.?>
+						<?php if ($field->hidden):// If the field is hidden, just display the input.?>
+							<tr><td colspan="2"><?php echo $field->input;?></td></tr>
+						<?php else:?>
+							<tr>
+								<td class="key">
+									<?php echo $field->label; ?>
+									<?php if (!$field->required && $field->type != 'Spacer'): ?>
+										<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL');?></span>
+									<?php endif; ?>
+								</td>
+								<td><?php echo $field->input;?></td>
+							</tr>
+						<?php endif;?>
+					<?php endforeach;?>
+				<?php endif;?>
+				<?php endif; ?>
+			<?php endforeach;?>
 			<?php endif; ?>
 		</table>
 		<div class="k2AccountPageUpdate">

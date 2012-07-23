@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      category.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -14,8 +12,8 @@
 */
 class CategoryController extends AppController {
 
-	public $application;	
-	
+	public $application;
+
 	public function __construct($default = array()) {
 		parent::__construct($default);
 
@@ -38,23 +36,23 @@ class CategoryController extends AppController {
 
 		// set toolbar items
 		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Categories')));
+		$this->app->toolbar->addNewX();
+		$this->app->toolbar->editListX();
 		$this->app->toolbar->publishList();
 		$this->app->toolbar->unpublishList();
-		$this->app->toolbar->custom('docopy', 'copy.png', 'copy_f2.png', 'Copy', false);		
+		$this->app->toolbar->custom('docopy', 'copy.png', 'copy_f2.png', 'Copy', false);
 		$this->app->toolbar->deleteList();
-		$this->app->toolbar->editListX();
-		$this->app->toolbar->addNewX();
 		$this->app->zoo->toolbarHelp();
 
 		$this->app->html->_('behavior.tooltip');
 
 		// get data
 		$this->categories = $this->application->getCategoryTree(false, null, true);
-		
+
 		// display view
 		$this->getView()->display();
 	}
-	
+
 	public function edit() {
 
 		// disable menu
@@ -79,7 +77,7 @@ class CategoryController extends AppController {
 		$text = $edit ? JText::_('Edit') : JText::_('New');
 		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Category').': '.$this->category->name.' <small><small>[ '.$text.' ]</small></small>'));
 		$this->app->toolbar->save();
-		$this->app->toolbar->custom('saveandnew', 'saveandnew', 'saveandnew', 'Save  New', false);
+		$this->app->toolbar->custom('saveandnew', 'saveandnew', 'saveandnew', 'Save And New', false);
 		$this->app->toolbar->apply();
 		$this->app->toolbar->cancel('cancel', $edit ? 'Close' : 'Cancel');
 		$this->app->zoo->toolbarHelp();
@@ -110,7 +108,7 @@ class CategoryController extends AppController {
 
 		// check for request forgeries
 		$this->app->request->checkToken() or jexit('Invalid Token');
-			
+
 		// init vars
 		$post = $this->app->request->get('post:', 'array');
 		$cid  = $this->app->request->get('cid.0', 'int');
@@ -125,23 +123,25 @@ class CategoryController extends AppController {
 
 			// get category and bind post data
 			$category = ($cid) ? $this->table->get($cid) : $this->app->object->create('Category');
-			$this->bind($category, $post, array('params'));
-			$category->alias = $this->app->category->getUniqueAlias($category->id, $this->app->string->sluggify($category->alias));
+			self::bind($category, $post, array('params'));
+			$category->alias = $this->app->alias->category->getUniqueAlias($category->id, $this->app->string->sluggify($category->alias));
 			$category->getParams()
 				->remove('content.')
 				->remove('config.')
 				->remove('template.')
+				->remove('metadata.')
 				->set('content.', @$post['params']['content'])
 				->set('config.', @$post['params']['config'])
-				->set('template.', @$post['params']['template']);
+				->set('template.', @$post['params']['template'])
+				->set('metadata.', @$post['params']['metadata']);
 
 			// save category and update category ordering
 			$this->table->save($category);
 			$this->table->updateorder($this->application->id, $category->parent);
-			
+
 			// set redirect message
-			$msg = JText::_('Category Saved');			
-			
+			$msg = JText::_('Category Saved');
+
 		} catch (AppException $e) {
 
 			// raise notice on exception
@@ -150,7 +150,7 @@ class CategoryController extends AppController {
 			$msg = null;
 
 		}
-		
+
 		$link = $this->baseurl;
 		switch ($this->getTask()) {
 			case 'apply' :
@@ -177,29 +177,29 @@ class CategoryController extends AppController {
 		}
 
 		try {
-			
+
 			// delete categories
 			$parents = array();
-			
+
 			foreach ($cid as $id) {
 				$category  = $this->table->get($id);
 				$parents[] = $category->parent;
 				$this->table->delete($category);
 			}
-	
+
 			// update category ordering
 			$this->table->updateorder($this->application->id, $parents);
-		
-			// set redirect message		
+
+			// set redirect message
 			$msg = JText::_('Category Deleted');
-		
+
 		} catch (AppException $e) {
-			
+
 			// raise notice on exception
 			$this->app->error->raiseNotice(0, JText::_('Error Deleting Category').' ('.$e.')');
 			$msg = null;
 
-		}		
+		}
 
 		$this->setRedirect($this->baseurl, $msg);
 	}
@@ -215,42 +215,42 @@ class CategoryController extends AppController {
 		if (count($cid) < 1) {
 			$this->app->error->raiseError(500, JText::_('Select a category to copy'));
 		}
-		
+
 		try {
 
 			// copy categories
 			$parents = array();
 			foreach ($cid as $id) {
-				
+
 				// get category
 				$category = $this->table->get($id);
-				
+
 				// copy category
 				$category->id         = 0;                         // set id to 0, to force new category
 				$category->name      .= ' ('.JText::_('Copy').')'; // set copied name
-				$category->alias      = $this->app->category->getUniqueAlias($id, $category->alias.'-copy'); // set copied alias			
+				$category->alias      = $this->app->alias->category->getUniqueAlias($id, $category->alias.'-copy'); // set copied alias
 				$category->published  = 0;                         // unpublish category
-	
+
 				// track parent for ordering update
 				$parents[] = $category->parent;
-	
+
 				// save copied category data
 				$this->table->save($category);
 			}
-	
+
 			// update category ordering
 			$this->table->updateorder($this->application->id, $parents);
 
-			// set redirect message	
+			// set redirect message
 			$msg = JText::_('Category Copied');
-		
+
 		} catch (AppException $e) {
-			
-			// raise notice on exception			
+
+			// raise notice on exception
 			$this->app->error->raiseNotice(0, JText::_('Error Copying Category').' ('.$e.')');
 			$msg = null;
 
-		}			
+		}
 
 		$this->setRedirect($this->baseurl, $msg);
 	}
@@ -259,7 +259,7 @@ class CategoryController extends AppController {
 
 		// check for request forgeries
 		$this->app->request->checkToken() or jexit('Invalid Token');
-		
+
 		// group categories by parent
 		$category_ordering = array();
 		foreach ($this->app->request->get('category', 'array', array()) as $id => $parent) {
@@ -318,7 +318,7 @@ class CategoryController extends AppController {
 
 		// init vars
 		$cid    = $this->app->request->get('cid', 'array', array());
-		
+
 		if (count($cid) < 1) {
 			$this->app->error->raiseError(500, $msg);
 		}
@@ -336,7 +336,7 @@ class CategoryController extends AppController {
 			$this->app->error->raiseNotice(0, JText::_('Error editing Category Published State').' ('.$e.')');
 			$msg = null;
 
-		}	
+		}
 
 		$this->setRedirect($this->baseurl);
 	}

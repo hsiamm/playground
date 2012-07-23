@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: comments.php 1354 2011-11-25 17:10:28Z joomlaworks $
+ * @version		$Id: comments.php 1549 2012-04-18 18:57:05Z joomlaworks $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 // no direct access
@@ -34,7 +34,7 @@ class K2ControllerComments extends JController {
 		$language->load('com_k2', JPATH_ADMINISTRATOR);
 		
 		// CSS
-		$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.css');
+		$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.css?v=2.5.7');
 		
 		// JS
 		$jQueryHandling = $params->get('jQueryHandling','1.7remote');
@@ -49,7 +49,7 @@ class K2ControllerComments extends JController {
 		} else {
 			$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-ui-1.8.16.custom.min.js');
 		}
-		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.js?v=252');
+		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.js?v=2.5.7');
 		
 		$this->addViewPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views');
 		$this->addModelPath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
@@ -102,7 +102,7 @@ class K2ControllerComments extends JController {
 		$model->deleteUnpublished();
 	}
 
-	function save() {
+	function saveComment() {
 		JRequest::checkToken() or jexit('Invalid Token');
 		$user = &JFactory::getUser();
 		if ($user->guest) {
@@ -142,5 +142,35 @@ class K2ControllerComments extends JController {
 		$mainframe = &JFactory::getApplication();
 		$mainframe->close();
 	}
-
+	
+	function reportSpammer() {
+		$mainframe = JFactory::getApplication();
+		$user = JFactory::getUser();
+		$format = JRequest::getVar('format');
+		$errors = array();
+		if(K2_JVERSION == '16') {
+			if(!$user->authorise('core.admin', 'com_k2')) {
+				$format == 'raw'? die(JText::_('K2_ALERTNOTAUTH')): JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
+			}
+		}
+		else {
+			if($user->gid < 25) {
+				$format == 'raw'? die(JText::_('K2_ALERTNOTAUTH')): JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
+			}
+		}
+		JModel::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'models');
+		$model = JModel::getInstance('User', 'K2Model');
+		$model->setState('id', JRequest::getInt('id'));
+		$model->reportSpammer();
+		if($format == 'raw') {
+			$response = '';
+			$messages = $mainframe->getMessageQueue();
+			foreach($messages as $message) {
+				$response .= $message['message']."\n";
+			}
+			die($response);
+			
+		}
+		$this->setRedirect('index.php?option=com_k2&view=comments&tmpl=component');
+	}
 }

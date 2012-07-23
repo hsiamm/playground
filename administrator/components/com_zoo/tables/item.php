@@ -1,15 +1,13 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      item.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
-	Class: TableApplication
+	Class: ItemTable
 		The table class for items.
 */
 class ItemTable extends AppTable {
@@ -26,6 +24,11 @@ class ItemTable extends AppTable {
 		if (is_string($object->params) || is_null($object->params)) {
 			// decorate data as object
 			$object->params = $this->app->parameter->create($object->params);
+		}
+
+		if (is_string($object->elements) || is_null($object->elements)) {
+			// decorate data as object
+			$object->elements = $this->app->data->create($object->elements);
 		}
 
 		// add to cache
@@ -50,10 +53,14 @@ class ItemTable extends AppTable {
 	*/
 	public function save($object) {
 
+		if (!$object->getApplication()) {
+			throw new ItemTableException('Invalid application id');
+		}
+
 		if (!is_string($object->type) || empty($object->type)) {
 			throw new ItemTableException('Invalid type id');
 		}
-		
+
 		if ($object->name == '') {
 			throw new ItemTableException('Invalid name');
 		}
@@ -62,7 +69,7 @@ class ItemTable extends AppTable {
 			throw new ItemTableException('Invalid slug');
 		}
 
-		if ($this->app->item->checkAliasExists($object->alias, $object->id)) {
+		if ($this->app->alias->item->checkAliasExists($object->alias, $object->id)) {
 			throw new ItemTableException('Alias already exists, please choose a unique alias');
 		}
 
@@ -72,38 +79,30 @@ class ItemTable extends AppTable {
 		if (empty($object->id)) {
 			parent::save($object);
 		}
-		
+
 		// init vars
 		$db           = $this->database;
 		$search_data  = array();
-		$element_data = array();
 
 		foreach ($object->getElements() as $id => $element) {
-
-			// get element data
-			$element_data[] = $element->toXML();
-			
 			// get search data
 			if ($data = $element->getSearchData()) {
 				$search_data[] = "(".$object->id.", ".$db->quote($id).", ".$db->quote($data).")";
 			}
 		}
-		
-		// set element data
-		$object->elements = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<elements>\n".implode("\n", $element_data)."\n</elements>";
 
 		// delete old search data
 		$query = "DELETE FROM ".ZOO_TABLE_SEARCH
 				." WHERE item_id = ".(int) $object->id;
-		$db->query($query);	
+		$db->query($query);
 
 		// insert new search data
 		if (count($search_data)) {
 			$query = "INSERT INTO ".ZOO_TABLE_SEARCH
 					." VALUES ".implode(", ", $search_data);
-			$db->query($query);	
+			$db->query($query);
 		}
-		
+
 		// save tags
 		$this->app->table->tag->save($object->id, $object->getTags());
 
@@ -135,17 +134,22 @@ class ItemTable extends AppTable {
 		// delete related comments
 		$query = "DELETE FROM ".ZOO_TABLE_COMMENT
 			    ." WHERE item_id = ".(int) $object->id;
-		$db->query($query);		
+		$db->query($query);
 
 		// delete related search data rows
 		$query = "DELETE FROM ".ZOO_TABLE_SEARCH
 				." WHERE item_id = ". (int) $object->id;
 		$db->query($query);
-		
+
 		// delete related rating data rows
 		$query = "DELETE FROM ".ZOO_TABLE_RATING
 				." WHERE item_id = ". (int) $object->id;
-		$db->query($query);		
+		$db->query($query);
+
+		// delete related tag data rows
+		$query = "DELETE FROM ".ZOO_TABLE_TAG
+				." WHERE item_id = ". (int) $object->id;
+		$db->query($query);
 
 		$result = parent::delete($object);
 
@@ -166,42 +170,19 @@ class ItemTable extends AppTable {
 
 		// get database
 		$db  = $this->database;
-		$key = $this->key;		
+		$key = $this->key;
 
 		// increment hits
 		if ($object->$key) {
 			$query = "UPDATE ".$this->name
 				." SET hits = (hits + 1)"
 				." WHERE $key = ".(int) $object->$key;
-			$db->query($query);	
+			$db->query($query);
 			$object->hits++;
 			return true;
 		}
 
 		return false;
-	}
-
-	/*
-		Function: getByType
-			Method to get types related items.
-
-		Parameters:
-			$type_id - Type
-
-		Returns:
-			Array - Items
-	*/
-	public function getByType($type_id, $application_id = false){
-		
-		// get database
-		$db = $this->database;		
-		
- 		$query = "SELECT a.*"
-		        ." FROM ".$this->name." AS a"
-		        ." WHERE a.type = ".$db->Quote($type_id)
-		        .($application_id !== false ? " AND a.application_id = ".(int) $application_id : "");
-
-		return $this->_queryObjectList($query);		
 	}
 
 	/*
@@ -218,10 +199,10 @@ class ItemTable extends AppTable {
  		$query = "SELECT count(a.id) AS item_count"
 		        ." FROM ".$this->name." AS a"
 		        ." WHERE a.application_id = ".(int) $application_id;
-		
+
 		return (int) $this->_queryResult($query);
 	}
-	
+
 	/*
 		Function: getTypeItemCount
 			Method to get types related item count.
@@ -235,31 +216,21 @@ class ItemTable extends AppTable {
 	public function getTypeItemCount($type){
 
 		// get database
-		$db = $this->database;			
-		
+		$db = $this->database;
+
 		$group = $type->getApplication()->getGroup();
  		$query = "SELECT count(a.id) AS item_count"
 		        ." FROM ".$this->name." AS a"
 		        ." JOIN ".ZOO_TABLE_APPLICATION." AS b ON a.application_id = b.id"
 		        ." WHERE a.type = ".$db->Quote($type->id)
        			." AND b.application_group = ".$db->Quote($group);
-		
+
 		return (int) $this->_queryResult($query);
 
 	}
-	
+
 	/*
-		Function: findAll
-			Method to retrieve all items.
-
-		Parameters:
-			$application_id - Application id
-			$published - Get published items only
-			$user - check access level of this user, else current user is used
-			$options - additional options
-
-		Returns:
-			Array - Array of items
+		@deprecated version 2.5 beta
 	*/
 	public function findAll($application_id = false, $published = false, $user = null, $options = array()) {
 
@@ -270,16 +241,16 @@ class ItemTable extends AppTable {
 		$date = $this->app->date->create();
 		$now  = $db->Quote($date->toMySQL());
 		$null = $db->Quote($db->getNullDate());
-		
+
 		// set query options
-		$conditions = 
+		$conditions =
 		     ($application_id !== false ? "application_id = ".(int) $application_id : "")
-			." AND ".$this->app->user->getDBAccessString()
-			.($published == true ? " AND state = 1"		
+			." AND ".$this->app->user->getDBAccessString($user)
+			.($published == true ? " AND state = 1"
 			." AND (publish_up = ".$null." OR publish_up <= ".$now.")"
 			." AND (publish_down = ".$null." OR publish_down >= ".$now.")": "");
-		
-		return $this->find('all', array_merge(compact('conditions'), $options));
+
+		return $this->all(array_merge(compact('conditions'), $options));
 	}
 
 	/*
@@ -299,6 +270,7 @@ class ItemTable extends AppTable {
 		// get database
 		$db = $this->database;
 
+		// get dates
 		$date = $this->app->date->create();
 		$now  = $db->Quote($date->toMySQL());
 		$null = $db->Quote($db->getNullDate());
@@ -309,17 +281,21 @@ class ItemTable extends AppTable {
 				$char[$key] = "'".$db->getEscaped($val)."'";
 			}
 		}
-		
+
+		// get item ordering
+		list($join, $order) = $this->_getItemOrder($orderby);
+
 		$query = "SELECT a.*"
 			." FROM ".ZOO_TABLE_CATEGORY_ITEM." AS ci"
 			." JOIN ".$this->name." AS a ON a.id = ci.item_id"
+			.($join ? $join : "")
 			." WHERE a.application_id = ".(int) $application_id
-			." AND ".$this->app->user->getDBAccessString()
-			.($published == true ? " AND a.state = 1"		
+			." AND ".$this->app->user->getDBAccessString($user)
+			.($published == true ? " AND a.state = 1"
 			." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
 			." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
 			." AND BINARY LOWER(LEFT(a.name, 1)) ".(is_array($char) ? ($not_in ? "NOT" : null)." IN (".implode(",", $char).")" : " = '".$db->getEscaped($char)."'")
-			." ORDER BY a.priority DESC ".($orderby != "" ? ", ".$orderby : "")
+			." ORDER BY a.priority DESC".($order ? ", $order" : "")
 			.(($limit ? " LIMIT ".(int)$offset.",".(int)$limit : ""));
 
 		return $this->_queryObjectList($query);
@@ -337,7 +313,7 @@ class ItemTable extends AppTable {
 			Array - Array of items
 	*/
 	public function getByTag($application_id, $tag, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0){
-		
+
 		// get database
 		$db = $this->database;
 
@@ -346,24 +322,67 @@ class ItemTable extends AppTable {
 		$now  = $db->Quote($date->toMySQL());
 		$null = $db->Quote($db->getNullDate());
 
+		// get item ordering
+		list($join, $order) = $this->_getItemOrder($orderby);
+
 		$query = "SELECT a.*"
 				." FROM ".$this->name." AS a "
 				." LEFT JOIN ".ZOO_TABLE_TAG." AS b ON a.id = b.item_id"
+				.($join ? $join : "")
 				." WHERE a.application_id = ".(int) $application_id
 				." AND b.name = '".$db->getEscaped($tag)."'"
-				." AND ".$this->app->user->getDBAccessString()
-				.($published == true ? " AND a.state = 1"		
+				." AND ".$this->app->user->getDBAccessString($user)
+				.($published == true ? " AND a.state = 1"
 				." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
 				." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
 				." GROUP BY a.id"
-				." ORDER BY a.priority DESC ".($orderby != "" ? ", ".$orderby : "")
+				." ORDER BY a.priority DESC".($order ? ", $order" : "")
 				.(($limit ? " LIMIT ".(int)$offset.",".(int)$limit : ""));
 
 		return $this->_queryObjectList($query);
 	}
-	
+
 	/*
-		Function: getFromCategory
+		Function: getByType
+			Method to get types related items.
+
+		Parameters:
+			$type_id - Type
+
+		Returns:
+			Array - Items
+	*/
+	public function getByType($type_id, $application_id = false, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0){
+
+		// get database
+		$db = $this->database;
+
+		// get dates
+		$date = $this->app->date->create();
+		$now  = $db->Quote($date->toMySQL());
+		$null = $db->Quote($db->getNullDate());
+
+		// get item ordering
+		list($join, $order) = $this->_getItemOrder($orderby);
+
+		$query = "SELECT a.*"
+			." FROM ".$this->name." AS a"
+			.($join ? $join : "")
+			." WHERE a.type = ".$db->Quote($type_id)
+			.($application_id !== false ? " AND a.application_id = ".(int) $application_id : "")
+			." AND ".$this->app->user->getDBAccessString($user)
+			.($published == true ? " AND a.state = 1"
+			." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
+			." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
+			." GROUP BY a.id"
+			." ORDER BY a.priority DESC".($order ? ", $order" : "")
+			.(($limit ? " LIMIT ".(int)$offset.",".(int)$limit : ""));
+
+		return $this->_queryObjectList($query);
+	}
+
+	/*
+		Function: getByCategory
 			Method to retrieve all items of a category.
 
 		Parameters:
@@ -372,7 +391,7 @@ class ItemTable extends AppTable {
 		Returns:
 			Array - Array of items
 	*/
-	public function getFromCategory($application_id, $category_id, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0){
+	public function getByCategory($application_id, $category_id, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false) {
 
 		// get database
 		$db = $this->database;
@@ -382,24 +401,125 @@ class ItemTable extends AppTable {
 		$now  = $db->Quote($date->toMySQL());
 		$null = $db->Quote($db->getNullDate());
 
+		// get item ordering
+		list($join, $order) = $this->_getItemOrder($orderby);
+
 		$query = "SELECT a.*"
 			." FROM ".$this->name." AS a"
 			." LEFT JOIN ".ZOO_TABLE_CATEGORY_ITEM." AS b ON a.id = b.item_id"
+			.($join ? $join : "")
 			." WHERE a.application_id = ".(int) $application_id
 			." AND b.category_id ".(is_array($category_id) ? " IN (".implode(",", $category_id).")" : " = ".(int) $category_id)
-			." AND ".$this->app->user->getDBAccessString()
-			.($published == true ? " AND a.state = 1"		
+			." AND ".$this->app->user->getDBAccessString($user)
+			.($published == true ? " AND a.state = 1"
 			." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
 			." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
 			." GROUP BY a.id"
-			." ORDER BY a.priority DESC ".($orderby != "" ? ", ".$orderby : "")
+			." ORDER BY ". (!$ignore_order_priority ? "a.priority DESC, " : "") . $order
 			.(($limit ? " LIMIT ".(int)$offset.",".(int)$limit : ""));
 
 		return $this->_queryObjectList($query);
 	}
 
+	public function getByUser($application_id, $user_id, $type = null, $search = null, $order = null, $offset = null, $limit = null, $published = false) {
+
+		$options = $this->_getByUserOptions($application_id, $user_id, $type, $search, $published);
+
+		// Order
+		$orders = array(
+			'date'   => 'a.created ASC',
+			'rdate'  => 'a.created DESC',
+			'alpha'  => 'a.name ASC',
+			'ralpha' => 'a.name DESC',
+			'hits'   => 'a.hits DESC',
+			'rhits'  => 'a.hits ASC');
+
+		$options['order'] = ($order && isset($orders[$order])) ? $orders[$order] : $orders['rdate'];
+
+		$options = $limit ? array_merge($options, array('offset' => $offset, 'limit' => $limit)) : $options;
+
+		return $this->all($options);
+	}
+
+	public function getItemCountByUser($application_id, $user_id, $type = null, $search = null, $published = false) {
+		return $this->count($this->_getByUserOptions($application_id, $user_id, $type, $search, $published));
+	}
+
+	protected function _getByUserOptions($application_id, $user_id, $type = null, $search = null, $published = false) {
+
+		// select
+		$select = 'a.*';
+
+		// get from
+		$from = $this->name.' AS a';
+
+        // get data from the table
+        $where = array();
+
+        // application filter
+        $where[] = 'application_id = ' . (int) $application_id;
+
+        // author filter
+        $where[] = 'created_by = ' . (int)$user_id;
+
+        // user rights
+        $where[] = $this->app->user->getDBAccessString($this->app->user->get((int)$user_id));
+
+		// published
+		if ($published) {
+
+			$db = $this->database;
+
+			// get dates
+			$date = $this->app->date->create();
+			$now  = $db->Quote($date->toMySQL());
+			$null = $db->Quote($db->getNullDate());
+
+			// Add filters for publishing
+			$where[] = 'a.state = 1';
+			$where[] = "(a.publish_up = ".$null." OR a.publish_up <= ".$now.")";
+			$where[] = "(a.publish_down = ".$null." OR a.publish_down >= ".$now.")";
+		}
+
+        // Type
+        if ($type) {
+        	if (is_array($type)) {
+            	$where[] = 'type IN ("' . implode('", "', array_keys($type)) . '")';
+        	} else {
+            	$where[] = 'type = "' . (string) $type . '"';
+        	}
+		}
+
+		// Search
+		if ($search) {
+			$from   .= ' LEFT JOIN '.ZOO_TABLE_TAG.' AS t ON a.id = t.item_id';
+			$where[] = 'LOWER(a.name) LIKE '.$this->app->database->Quote('%'.$this->app->database->getEscaped($search, true).'%', false)
+				. ' OR LOWER(t.name) LIKE '.$this->app->database->Quote('%'.$this->app->database->getEscaped($search, true).'%', false);
+		}
+
+		// conditions
+		$conditions = array(implode(' AND ', $where));
+
+		return compact('select', 'from', 'conditions');
+
+	}
+
 	/*
-		@deprecated 2.4	Use the categories own itemCount() method instead
+		@deprecated ZOO version 2.5 beta, use getByCategory instead
+	*/
+	public function getFromCategory($application_id, $category_id, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0) {
+		return $this->getByCategory($application_id, $category_id, $published, $user, $orderby, $offset, $limit);
+	}
+
+	/*
+		Function: getItemCountFromCategory
+			Method to retrieve items count of a category.
+
+		Parameters:
+			$category_id - Category id(s)
+
+		Returns:
+			Array - Array of items
 	*/
 	public function getItemCountFromCategory($application_id, $category_id, $published = false, $user = null){
 
@@ -416,7 +536,7 @@ class ItemTable extends AppTable {
 			." LEFT JOIN ".ZOO_TABLE_CATEGORY_ITEM." AS b ON a.id = b.item_id"
 			." WHERE a.application_id = ".(int) $application_id
 			." AND b.category_id ".(is_array($category_id) ? " IN (".implode(",", $category_id).")" : " = ".(int) $category_id)
-			." AND ".$this->app->user->getDBAccessString()
+			." AND ".$this->app->user->getDBAccessString($user)
 			.($published == true ? " AND a.state = 1"
 			." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
 			." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
@@ -440,7 +560,7 @@ class ItemTable extends AppTable {
 			Array - Array of items
 	*/
 	public function search($search_string, $app_id = 0) {
-		
+
 		// get database
 		$db = $this->database;
 		$db_search = $db->Quote('%'.$db->getEscaped( $search_string, true ).'%', false);
@@ -469,10 +589,10 @@ class ItemTable extends AppTable {
 			Array - Array of items
 	*/
 	public function searchElements($elements_array, $app_id = 0) {
-		
+
 		// get database
 		$db = $this->database;
-				
+
 		$i = 0;
 		$join = array();
 		$where = array();
@@ -481,7 +601,7 @@ class ItemTable extends AppTable {
 			$db_name = $db->Quote($db->getEscaped( $name, true ), false);
 			$db_search = $db->Quote('%'.$db->getEscaped( $search_string, true ).'%', false);
 			$join[] = " LEFT JOIN ".ZOO_TABLE_SEARCH." AS " . $as . " ON a.id = " . $as . ".item_id";
-			$where[] = $as.".element_id = ".$db_name." AND LOWER(".$as.".value) LIKE LOWER(".$db_search.")";			
+			$where[] = $as.".element_id = ".$db_name." AND LOWER(".$as.".value) LIKE LOWER(".$db_search.")";
 			$i++;
 		}
 
@@ -506,7 +626,7 @@ class ItemTable extends AppTable {
 
 		Returns:
 			Array - Array of items
-	*/	
+	*/
 	public function getUsers($app_id) {
 		$query = 'SELECT DISTINCT u.id, u.name'
 			    .' FROM '.$this->name.' AS i'
@@ -528,6 +648,64 @@ class ItemTable extends AppTable {
 	*/
 	public function isInitialized($key) {
 		return isset($this->_objects[$key]);
+	}
+
+	protected function _getItemOrder($order) {
+
+		// if string, try to convert ordering
+		if (is_string($order)) {
+			$order = $this->app->itemorder->convert($order);
+		}
+
+		$result = array(null, null);
+		$order = (array) $order;
+
+		// remove empty and duplicate values
+		$order = array_unique(array_filter($order));
+
+		// if random return immediately
+		if (in_array('_random', $order)) {
+			$result[1] = 'RAND()';
+			return $result;
+		}
+
+		// get order dir
+		if (($index = array_search('_reversed', $order)) !== false) {
+			$reversed = 'DESC';
+			unset($order[$index]);
+		} else {
+			$reversed = 'ASC';
+		}
+
+		// set default ordering attribute
+		if (empty($order)) {
+			$order[] = '_itemname';
+		}
+
+		// if there is a none core element present, ordering will only take place for those elements
+		if (count($order) > 1) {
+			$order = array_filter($order, create_function('$a', 'return strpos($a, "_item") === false;'));
+		}
+
+		// order by core attribute
+		foreach ($order as $element) {
+			if (strpos($element, '_item') === 0) {
+				$var = str_replace('_item', '', $element);
+				$result[1] = $reversed == 'ASC' ? "a.$var+0<>0 DESC, a.$var+0, a.$var" : "a.$var+0<>0, a.$var+0 DESC, a.$var DESC";
+			}
+		}
+
+		// else order by elements
+		if (!isset($result[1])) {
+			$result[0] = " LEFT JOIN ".ZOO_TABLE_SEARCH." AS s ON a.id = s.item_id AND s.element_id IN ('".implode("', '", $order)."')";
+			$result[1] = $reversed == 'ASC' ? "ISNULL(s.value), s.value+0<>0 DESC, s.value+0, s.value" : "s.value+0<>0, s.value+0 DESC, s.value DESC";
+		}
+
+		// trigger init event
+		$this->app->event->dispatcher->notify($this->app->event->create($order, 'item:orderquery', array('result' => &$result)));
+
+		return $result;
+
 	}
 
 }

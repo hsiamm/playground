@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: categories.php 1189 2011-10-17 14:31:02Z lefteris.kavadas $
+ * @version		$Id: categories.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -32,6 +32,7 @@ class K2ModelCategories extends JModel
 		$filter_trash = $mainframe->getUserStateFromRequest($option.$view.'filter_trash', 'filter_trash', 0, 'int');
 		$filter_state = $mainframe->getUserStateFromRequest($option.$view.'filter_state', 'filter_state', -1, 'int');
 		$language = $mainframe->getUserStateFromRequest($option.$view.'language', 'language', '', 'string');
+		$filter_category = $mainframe->getUserStateFromRequest($option.$view.'filter_category', 'filter_category', 0, 'int');
 
 		$query = "SELECT c.*, g.name AS groupname, exfg.name as extra_fields_group FROM #__k2_categories as c LEFT JOIN #__groups AS g ON g.id = c.access LEFT JOIN #__k2_extra_fields_groups AS exfg ON exfg.id = c.extraFieldsGroup WHERE c.id>0";
 
@@ -48,6 +49,13 @@ class K2ModelCategories extends JModel
 		}
 		if ($language) {
 			$query .= " AND c.language = ".$db->Quote($language);
+		}
+		
+		if($filter_category) {
+			JModel::addIncludePath(JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models');
+			$ItemlistModel = JModel::getInstance('Itemlist', 'K2Model');
+			$tree = $ItemlistModel->getCategoryTree($filter_category);
+			$query .= " AND c.id IN (".implode(',', $tree).")";
 		}
 
 		$query .= " ORDER BY {$filter_order} {$filter_order_Dir}";
@@ -75,7 +83,14 @@ class K2ModelCategories extends JModel
 
 		}
 		else {
-			$categories = $this->indentRows($rows);
+			if($filter_category) {
+				$db->setQuery('SELECT parent FROM #__k2_categories WHERE id = '.$filter_category);
+				$root = $db->loadResult();
+			}
+			else {
+				$root = 0;
+			}
+			$categories = $this->indentRows($rows, $root);
 		}
 		if (isset($categories)){
 			$total = count($categories);
@@ -112,6 +127,7 @@ class K2ModelCategories extends JModel
 		$filter_trash = $mainframe->getUserStateFromRequest($option.$view.'filter_trash', 'filter_trash', 0, 'int');
 		$filter_state = $mainframe->getUserStateFromRequest($option.$view.'filter_state', 'filter_state', 1, 'int');
 		$language = $mainframe->getUserStateFromRequest($option.$view.'language', 'language', '', 'string');
+		$filter_category = $mainframe->getUserStateFromRequest($option.$view.'filter_category', 'filter_category', 0, 'int');
 		
 		$query = "SELECT COUNT(*) FROM #__k2_categories WHERE id>0";
 
@@ -130,6 +146,13 @@ class K2ModelCategories extends JModel
 		if ($language) {
 			$query .= " AND language = ".$db->Quote($language);
 		}
+		
+		if($filter_category) {
+			JModel::addIncludePath(JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models');
+			$ItemlistModel = JModel::getInstance('Itemlist', 'K2Model');
+			$tree = $ItemlistModel->getCategoryTree($filter_category);
+			$query .= " AND id IN (".implode(',', $tree).")";
+		}
 
 		$db->setQuery($query);
 		$total = $db->loadResult();
@@ -137,7 +160,7 @@ class K2ModelCategories extends JModel
 
 	}
 
-	function indentRows( & $rows) {
+	function indentRows( & $rows, $root = 0) {
 		$children = array ();
 		if(count($rows)){
 			foreach ($rows as $v) {
@@ -147,8 +170,7 @@ class K2ModelCategories extends JModel
 				$children[$pt] = $list;
 			}
 		}
-				
-		$categories = JHTML::_('menu.treerecurse', 0, '', array (), $children);
+		$categories = JHTML::_('menu.treerecurse', $root, '', array (), $children);
 		return $categories;
 	}
 
@@ -161,6 +183,9 @@ class K2ModelCategories extends JModel
 			$row->load($id);
 			$row->publish($id, 1);
 		}
+		JPluginHelper::importPlugin('finder');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onFinderChangeState', array('com_k2.category', $cid, 1));
 		$cache = & JFactory::getCache('com_k2');
 		$cache->clean();
 		$mainframe->redirect('index.php?option=com_k2&view=categories');
@@ -175,6 +200,9 @@ class K2ModelCategories extends JModel
 			$row->load($id);
 			$row->publish($id, 0);
 		}
+		JPluginHelper::importPlugin('finder');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onFinderChangeState', array('com_k2.category', $cid, 0));
 		$cache = & JFactory::getCache('com_k2');
 		$cache->clean();
 		$mainframe->redirect('index.php?option=com_k2&view=categories');
@@ -339,11 +367,13 @@ class K2ModelCategories extends JModel
 		$cid = JRequest::getVar('cid');
 		$row = & JTable::getInstance('K2Category', 'Table');
 		$warning = false;
+		$restored = array();
 		foreach ($cid as $id) {
 			$row->load($id);
 			if ((int)$row->parent==0){
 				$row->trash = 0;
 				$row->store();
+				$restored[] = $id;
 			}
 			else {
 				$query = "SELECT COUNT(*) FROM #__k2_categories WHERE id={$row->parent} AND trash = 0";
@@ -352,6 +382,7 @@ class K2ModelCategories extends JModel
 				if ($result){
 					$row->trash = 0;
 					$row->store();
+					$restored[] = $id;
 				}
 				else {
 					$warning=true;
@@ -360,6 +391,12 @@ class K2ModelCategories extends JModel
 			}
 
 
+		}
+		// Restore also the items of the categories
+		if(count($restored)) {
+			JArrayHelper::toInteger($restored);
+			$db->setQuery('UPDATE #__k2_items SET trash = 0 WHERE catid IN ('.implode(',', $restored).') AND trash = 1');
+			$db->query();
 		}
 		$cache = & JFactory::getCache('com_k2');
 		$cache->clean();
@@ -377,7 +414,8 @@ class K2ModelCategories extends JModel
 		$cid = JRequest::getVar('cid');
 		JArrayHelper::toInteger($cid);
 		$row = & JTable::getInstance('K2Category', 'Table');
-
+		JPluginHelper::importPlugin('finder');
+		$dispatcher = JDispatcher::getInstance();
 		$warningItems = false;
 		$warningChildren = false;
 		$cid = array_reverse($cid);
@@ -406,6 +444,7 @@ class K2ModelCategories extends JModel
 					JFile::delete(JPATH_ROOT.DS.'media'.DS.'k2'.DS.'categories'.DS.$row->image);
 				}
 				$row->delete($cid[$i]);
+				$dispatcher->trigger('onFinderAfterDelete', array('com_k2.category', $row));
 
 			}
 		}

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      category.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,88 +11,6 @@
    The Helper Class for category
 */
 class CategoryHelper extends AppHelper {
-
-	/*
-		Function: translateIDToAlias
-			Translate category id to alias.
-
-		Parameters:
-			$id - Category id
-
-		Returns:
-			Mixed - Null or Category alias string
-	*/
-	public function translateIDToAlias($id){
-		if ($category = $this->app->table->category->get($id)) {
-			return $category->alias;
-		}
-		
-		return null;
-	}
-
-	/*
-		Function: translateAliasToID
-			Translate category alias to id.
-		
-		Return:
-			Int - The category id or 0 if not found
-	*/
-	public function translateAliasToID($alias) {
-
-		// init vars
-		$db = $this->app->database;
-
-		// search alias
-		$query = 'SELECT id'
-			    .' FROM '.ZOO_TABLE_CATEGORY
-			    .' WHERE alias = '.$db->Quote($alias)
-				.' LIMIT 1';
-
-		return $db->queryResult($query);
-	}
-
-	/*
-		Function: getAlias
-			Get unique category alias.
-
-		Parameters:
-			$id - Category id
-			$alias - Category alias
-
-		Returns:
-			Mixed - Null or Category alias string
-	*/	
-	public function getUniqueAlias($id, $alias = '') {
-
-		if (empty($alias) && $id) {
-			$alias = JFilterOutput::stringURLSafe($this->app->table->category->get($id)->name);
-		}
-				
-		if (!empty($alias)) {
-			$i = 2;
-			$new_alias = $alias;
-			while ($this->checkAliasExists($new_alias, $id)) {
-				$new_alias = $alias . '-' . $i++;
-			}
-			return $new_alias;
-		}
-		
-		return $alias;
-	}	
-	
-	/*
- 		Function: checkAliasExists
- 			Method to check if a alias already exists.
-	*/
-	public function checkAliasExists($alias, $id = 0) {
-
-		$xid = intval($this->translateAliasToID($alias));
-		if ($xid && $xid != intval($id)) {
-			return true;
-		}
-		
-		return false;
-	}
 
 	/*
 		Function: getItemsRelatedCategoryIds
@@ -145,7 +61,7 @@ class CategoryHelper extends AppHelper {
 		$query_string = '(%s,' . (int) $item_id.')';
 		$category_strings = array();
 		foreach ($categories as $category) {
-			if ($category !== '' && $category !== null) {
+			if (is_numeric($category)) {
 				$category_strings[] = sprintf($query_string, $category);
 			}
 		}
@@ -159,7 +75,7 @@ class CategoryHelper extends AppHelper {
 			// execute database query
 			$db->query($query);
 		}
-		
+
 		return true;
 	}
 

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      cache.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -22,18 +20,18 @@ class CacheHelper extends AppHelper {
 			$type - Renderer type
 
 		Returns:
-			AppRenderer
+			AppCache
 	*/
 	public function create($file, $hash = true, $lifetime = null) {
-
-		return $this->app->object->create('AppCache', array($file, $hash, $lifetime));
-
+		$cache = $this->app->object->create('AppCache', array($file, $hash, $lifetime));
+		$this->app->zoo->putIndexFile(dirname($file));
+		return $cache;
 	}
 
 }
 
 class AppCache {
-	
+
 	protected $_file  = 'config.txt';
 	protected $_items = array();
 	protected $_dirty = false;
@@ -47,12 +45,12 @@ class AppCache {
 			$buffer = '';
 			JFile::write($file, $buffer);
 		}
-		
+
 		// set file and parse it
 		$this->_file = $file;
 		$this->_hash = $hash;
 		$this->_parse();
-		
+
 		// clear out of date values
 		if ($lifetime) {
 			$lifetime = (int) $lifetime;
@@ -65,7 +63,7 @@ class AppCache {
 			foreach($remove as $key) {
 				unset($this->_items[$key]);
 			}
-			
+
 		}
 	}
 
@@ -104,7 +102,7 @@ class AppCache {
 		}
 		return $this;
 	}
-	
+
 	public function clear() {
 		$this->_items = array();
 		$this->_dirty = true;

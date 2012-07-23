@@ -1,12 +1,12 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      controller.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
+
+jimport('joomla.application.component.controller');
 
 /*
 	Class: AppController
@@ -23,7 +23,7 @@ class AppController extends JController {
  	/*
 		Function: __construct
 			Class constructor
-			
+
 		Parameters:
 			$app - App instance
 			$config - Array
@@ -58,29 +58,29 @@ class AppController extends JController {
 		}
 
 		// create view
-		if (empty($this->_views[$name])) {
-			$this->_views[$name] = new AppView(array_merge(array('name' => $name), $config));
+		if (empty(self::$_views[$name])) {
+			self::$_views[$name] = new AppView(array_merge(array('name' => $name, 'template_path' => JPATH_COMPONENT. '/views/' . $name . '/tmpl'), $config));
 		}
 
 		// automatically pass all public class variables on to view
 		foreach (get_object_vars($this) as $var => $value) {
 			if (substr($var, 0, 1) != '_') {
-				$this->_views[$name]->$var = $value;
+				self::$_views[$name]->set($var, $value);
 			}
 		}
-		
-		return $this->_views[$name];
+
+		return self::$_views[$name];
 	}
 
 	/*
     	Function: bind
     	  Binds a named array/hash to a object.
-		
+
 		Parameters:
 	      object - Object.
 	      data   - An associative array or object.
 	      ignore - An array or space separated list of fields not to bind.
-	
+
 	   Returns:
 	      Void
  	*/
@@ -93,18 +93,18 @@ class AppController extends JController {
 		if (is_object($data)) {
 			$data = get_object_vars($data);
 		}
-		
+
 		if (!is_array($ignore)) {
 			$ignore = explode(' ', $ignore);
 		}
-		
+
 		foreach (get_object_vars($object) as $k => $v) {
-			
+
 			// ignore protected attributes
 			if ('_' == substr($k, 0, 1)) {
 				continue;
 			}
-			
+
 			// internal attributes of an object are ignored
 			if (isset($data[$k]) && !in_array($k, $ignore)) {
 				$object->$k = $data[$k];
@@ -122,7 +122,7 @@ class AppController extends JController {
 
 		Returns:
 			Mixed
-	*/	
+	*/
 	public function l($string, $js_safe = false) {
 		return $this->app->language->l($string, $js_safe);
 	}

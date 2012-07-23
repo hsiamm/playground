@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      _menu.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -15,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 $menu = $this->app->menu->get('nav')
 	->addFilter(array('ZooMenuFilter', 'activeFilter'))
 	->addFilter(array('ZooMenuFilter', 'nameFilter'))
+	->addFilter(array('ZooMenuFilter', 'versionFilter'))
 	->applyFilter();
 
 echo '<div id="nav"><div class="bar"></div>'.$menu->render(array('AppMenuDecorator', 'index')).'</div>';
@@ -76,12 +75,22 @@ class ZooMenuFilter {
 		}
 
 		// replace the old class attribute
-		$item->setAttribute('class', implode(' ', $classes));		
+		$item->setAttribute('class', implode(' ', $classes));
 	}
-	
-	public static function nameFilter(AppMenuItem $item) {		
+
+	public static function nameFilter(AppMenuItem $item) {
 		if ($item->getId() != 'new' && $item->getId() != 'manager') {
 			$item->setName(htmlspecialchars($item->getName(), ENT_QUOTES, 'UTF-8'));
+		}
+	}
+
+	public static function versionFilter(AppMenuItem $item) {
+		$app = App::getInstance('zoo');
+
+		if ($item->getId() == 'manager') {
+			if (($xml = simplexml_load_file($app->path->path('component.admin:zoo.xml'))) && ((string) $xml->name == 'ZOO') || (string) $xml->name == 'com_zoo') {
+				$item->setAttribute('data-zooversion', current($xml->xpath('//version')));
+			}
 		}
 	}
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: category.php 1273 2011-10-27 16:12:32Z lefteris.kavadas $
+ * @version		$Id: category.php 1527 2012-03-12 12:45:31Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php
 			// Define a CSS class for the last container on each row
-			if( (($key+1)%($this->params->get('subCatColumns'))==0) || count($this->subCategories)<$this->params->get('subCatColumns') )
+			if( (($key+1)%($this->params->get('subCatColumns'))==0))
 				$lastContainer= ' subCategoryContainerLast';
 			else
 				$lastContainer='';

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      zoo.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -16,6 +14,12 @@ class ZooHelper extends AppHelper {
 
 	/* application */
 	protected $_application;
+
+	/* version */
+	protected $_version;
+
+	/* user groups / view levels */
+	protected $_groups;
 
 	/*
 		Function: getApplication
@@ -73,14 +77,14 @@ class ZooHelper extends AppHelper {
 			} else if ($id = $this->app->request->getInt('app_id')) {
 				$this->_application = $table->get($id);
 			} else if ($id = $params->get('application')) {
-				$this->_application = $table->get($id);
+				$this->_application = $table->get((int) $id);
 			} else {
 				// try to get application from default menu item
-				$menu    = JSite::getMenu(true);
+				$menu    = $this->app->object->create('JSite')->getMenu();
 				$default = $menu->getDefault();
 				if (isset($default->component) && $default->component == 'com_zoo') {
 					if ($app_id = $menu->getParams($default->id)->get('application')) {
-						$this->_application = $table->get($app_id);
+						$this->_application = $table->get((int) $app_id);
 					}
 				}
 			}
@@ -89,23 +93,6 @@ class ZooHelper extends AppHelper {
 		}
 
 		return null;
-	}
-
-	public function getApplicationGroups() {
-
-		// get applications
-		$apps = array();
-
-		if ($folders = $this->app->path->dirs('applications:')) {
-			foreach ($folders as $folder) {
-				if ($this->app->path->path("applications:$folder/application.xml")) {
-					$apps[$folder] = $this->app->object->create('Application');
-					$apps[$folder]->setGroup($folder);
-				}
-			}
-		}
-
-		return $apps;
 	}
 
 	/*
@@ -119,7 +106,7 @@ class ZooHelper extends AppHelper {
 	      Void
 	*/
 	public function toolbarHelp($ref = 'http://docs.yootheme.com/home/category/zoo-20') {
-		JToolBar::getInstance('toolbar')->appendButton('ZooHelp', $ref);
+		JToolBar::getInstance('toolbar')->appendButton('Link', 'help', 'Help', $ref);
 	}
 
 	/*
@@ -161,7 +148,7 @@ class ZooHelper extends AppHelper {
                     JFile::copy($file, $thumbfile);
                 }
             }
-
+			$this->putIndexFile(dirname($thumbfile));
 		}
 
 		if (is_file($thumbfile)) {
@@ -177,16 +164,18 @@ class ZooHelper extends AppHelper {
 
 	   Parameters:
             $text - Text
+			$params - Array params
 
 		Returns:
 			String - Text
 	*/
-	public function triggerContentPlugins($text) {
+	public function triggerContentPlugins($text, $params = array(), $context = 'com_zoo') {
 
 		// import joomla content plugins
 		JPluginHelper::importPlugin('content');
 
-		$params        = new JRegistry('');
+		$registry      = new JRegistry('');
+		$registry->loadArray($params);
 		$dispatcher    = JDispatcher::getInstance();
 		$article       = JTable::getInstance('content');
 		$article->text = $text;
@@ -202,9 +191,9 @@ class ZooHelper extends AppHelper {
 		}
 
 		if ($this->app->joomla->isVersion('1.5')) {
-			$dispatcher->trigger('onPrepareContent', array(&$article, &$params, 0));
+			$dispatcher->trigger('onPrepareContent', array(&$article, &$registry, 0));
 		} else {
-			$dispatcher->trigger('onContentPrepare', array('com_zoo.element.textarea', &$article, &$params, 0));
+			$dispatcher->trigger('onContentPrepare', array($context, &$article, &$registry, 0));
 		}
 
 		return $article->text;
@@ -218,48 +207,30 @@ class ZooHelper extends AppHelper {
 			Array - groups
 	*/
 	public function getGroups() {
-		if ($this->app->joomla->isVersion('1.5')) {
-			return $this->app->database->queryObjectList("SELECT id, name FROM #__groups", "id");
-		} else {
-			return $this->app->database->queryObjectList("SELECT id, title AS name FROM #__viewlevels", "id");
+		if (!isset($this->_groups)) {
+			if ($this->app->joomla->isVersion('1.5')) {
+				$this->_groups = $this->app->database->queryObjectList("SELECT id, name FROM #__groups", "id");
+			} else {
+				$this->_groups = $this->app->database->queryObjectList("SELECT id, title AS name FROM #__viewlevels", "id");
+			}
 		}
+		return $this->_groups;
 	}
 
     /*
-		Function: getLayouts
-			Returns layouts for a type of an app.
+		Function: getGroup
+			Return user group object.
+
+	   Parameters:
+            $id - Id
 
 		Returns:
-			Array - layouts
+			Object - group
 	*/
-    public function getLayouts($application, $type_id, $layout_type = '') {
-
-        $result = array();
-
-        // get template
-        if ($template = $application->getTemplate()) {
-
-			// get renderer
-			$renderer = $this->app->renderer->create('item')->addPath($template->getPath());
-
-			$path   = 'item';
-			$prefix = 'item.';
-			if ($renderer->pathExists($path.DIRECTORY_SEPARATOR.$type_id)) {
-				$path   .= DIRECTORY_SEPARATOR.$type_id;
-				$prefix .= $type_id.'.';
-			}
-
-			foreach ($renderer->getLayouts($path) as $layout) {
-				$metadata = $renderer->getLayoutMetaData($prefix.$layout);
-				if (empty($layout_type) || ($metadata->get('type') == $layout_type)) {
-					$result[$layout] = $metadata;
-				}
-			}
-		}
-
-        return $result;
-
-    }
+	public function getGroup($id) {
+		$groups = $this->getGroups();
+		return isset($groups[$id]) ? $groups[$id] : (object) array('id' => '', 'name' => '');
+	}
 
     /*
 		Function: getVersion
@@ -269,13 +240,50 @@ class ZooHelper extends AppHelper {
 			String - version
 	*/
 	public function version() {
-		foreach ($this->app->path->files('component.admin:', false, '/\.xml$/') as $file) {
-			if (($xml = $this->app->xml->loadFile($this->app->path->path('component.admin:'.$file))) && (string) $xml->name == 'ZOO') {
-				return (string) $xml->version;
-			}
-		}
-		return '';
 
+		if (empty($this->_version)) {
+			// make sure versions table is present
+			$this->app->database->query('CREATE TABLE IF NOT EXISTS '.ZOO_TABLE_VERSION.' (version varchar(255) NOT NULL) ENGINE=MyISAM;');
+
+			$this->_version = $this->app->database->queryResult('SELECT version FROM '.ZOO_TABLE_VERSION);
+		}
+
+		return $this->_version;
 	}
+
+    /*
+		Function: buildPageTitle
+			Build page title from Joomla configuration.
+
+		Returns:
+			String - title
+	*/
+	public function buildPageTitle($title) {
+		$dir = $this->app->system->application->getCfg('sitename_pagetitles', 0);
+		if ($dir == 1) {
+			return JText::sprintf('JPAGETITLE', $this->app->system->application->getCfg('sitename'), $title);
+		} else if ($dir == 2) {
+			return JText::sprintf('JPAGETITLE', $title, $this->app->system->application->getCfg('sitename'));
+		}
+		return $title;
+	}
+
+	public function putIndexFile($dir) {
+		$dir = rtrim($dir, "\\/");
+		if (!JFile::exists($dir.'/index.html')) {
+			$buffer = '<!DOCTYPE html><title></title>';
+			JFile::write($dir.'/index.html', $buffer);
+		}
+	}
+
+	// @deprecated with zoo 2.5.11 use application helper instead
+	public function getApplicationGroups() {
+		return $this->app->application->groups();
+	}
+
+	// @deprecated with zoo 2.5.11 use type helper instead
+    public function getLayouts($application, $type_id, $layout_type = '') {
+		return $this->app->type->layouts($application->getType($type_id), $layout_type);
+    }
 
 }

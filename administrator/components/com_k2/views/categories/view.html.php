@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1112 2011-10-11 14:34:53Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -33,6 +33,11 @@ class K2ViewCategories extends JView
 		$search = $mainframe->getUserStateFromRequest($option.$view.'search', 'search', '', 'string');
 		$search = JString::strtolower($search);
 		$model = & $this->getModel();
+		$total = $model->getTotal();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}
 
 		$categories = $model->getData();
 		require_once(JPATH_COMPONENT.DS.'models'.DS.'category.php');
@@ -43,12 +48,12 @@ class K2ViewCategories extends JView
 		if ($params->get('showItemsCounterAdmin')){
 			for ($i=0; $i<sizeof($categories); $i++){
 				$categories[$i]->numOfItems=$categoryModel->countCategoryItems($categories[$i]->id);
+				$categories[$i]->numOfTrashedItems=$categoryModel->countCategoryItems($categories[$i]->id, 1);
 			}
 		}
 
 		$this->assignRef('rows', $categories);
-		$total = $model->getTotal();
-
+		
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
 		$this->assignRef('page', $pageNav);
@@ -66,6 +71,12 @@ class K2ViewCategories extends JView
 		$filter_state_options[] = JHTML::_('select.option', 1, JText::_('K2_PUBLISHED'));
 		$filter_state_options[] = JHTML::_('select.option', 0, JText::_('K2_UNPUBLISHED'));
 		$lists['state'] = JHTML::_('select.genericlist', $filter_state_options, 'filter_state', '', 'value', 'text', $filter_state);
+
+		$categoriesModel= JModel::getInstance('Categories', 'K2Model');
+		$categories_option[]=JHTML::_('select.option', 0, JText::_('K2_SELECT_CATEGORY'));
+		$categoriesFilter = $categoriesModel->categoriesTree(NULL, true, false);
+		$categories_options=@array_merge($categories_option, $categoriesFilter);
+		$lists['categories'] = JHTML::_('select.genericlist', $categories_options, 'filter_category', '', 'value', 'text', $filter_category);
 
 		if(version_compare( JVERSION, '1.6.0', 'ge' )) {
 			$languages = JHTML::_('contentlanguage.existing', true, true);
@@ -125,7 +136,7 @@ class K2ViewCategories extends JView
 		require_once(JPATH_COMPONENT.DS.'models'.DS.'categories.php');
 		$categoriesModel= new K2ModelCategories;
 		$categories_option[]=JHTML::_('select.option', 0, JText::_('K2_NONE_ONSELECTLISTS'));
-		$categories = $categoriesModel->categoriesTree(NULL, true);
+		$categories = $categoriesModel->categoriesTree(NULL, true, false);
 		$categories_options=@array_merge($categories_option, $categories);
 		foreach($categories_options as $option){
 			if(in_array($option->value, $cid))

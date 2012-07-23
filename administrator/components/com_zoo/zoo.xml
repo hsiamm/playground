@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.6.0" method="upgrade">
+<extension type="component" version="2.5" method="upgrade">
 	<name>com_zoo</name>
 	<author>YOOtheme</author>
-	<creationDate>June 2011</creationDate>
-	<copyright>Copyright (C) 2007 - 2011 YOOtheme GmbH</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only</license>
+	<creationDate>March 2012</creationDate>
+	<updateUrl>http://www.yootheme.com/updates</updateUrl>
+	<copyright>Copyright (C) YOOtheme GmbH</copyright>
+	<license>http://www.gnu.org/licenses/gpl.html GNU/GPL</license>
 	<assetsLicense>YOOtheme Proprietary Use License (http://www.yootheme.com/license)</assetsLicense>
 	<authorEmail>info@yootheme.com</authorEmail>
 	<authorUrl>http://www.yootheme.com</authorUrl>
-	<version>2.4.10</version>
-	<description>ZOO component for Joomla 1.6 developed by YOOtheme (http://www.yootheme.com)</description>
+	<version>2.5.20</version>
+	<description>ZOO component for Joomla 2.5 developed by YOOtheme (http://www.yootheme.com)</description>
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB.com_zoo.ini</language>
 	</languages>
@@ -24,6 +25,7 @@
 		</sql>
 	</uninstall>
 	<files folder="site">
+		<filename>index.html</filename>
 		<filename>router.php</filename>
 		<filename>zoo.php</filename>
         <folder>assets</folder>
@@ -34,6 +36,7 @@
 		<folder>views</folder>
 	</files>
 	<media destination="zoo" folder="media">
+		<filename>index.html</filename>
 		<folder>assets</folder>
 		<folder>elements</folder>
 		<folder>libraries</folder>
@@ -45,6 +48,7 @@
 			<language tag="en-GB">en-GB.com_zoo.sys.ini</language>
 		</languages>
 		<files folder="admin">
+			<filename>index.html</filename>
 			<filename>changelog.php</filename>
 			<filename>config.php</filename>
 			<filename>zoo.php</filename>
@@ -67,10 +71,11 @@
 		<module name="mod_zoocomment" folder="additional/zoocomment">ZOO Comment Module</module>
 		<module name="mod_zootag" folder="additional/zootag">ZOO Tag Module</module>
 		<module name="mod_zoocategory" folder="additional/zoocategory">ZOO Category Module</module>
-		<module name="mod_zooquickicon" folder="additional/zooquickicon">ZOO Quick Icons</module>
-		<plugin name="zoosearch" folder="additional/zoosearch">ZOO Search Plugin</plugin>
-		<plugin name="zooshortcut" folder="additional/zooshortcut">ZOO Shortcut Plugin</plugin>
-		<plugin name="zooevent" folder="additional/zooevent">ZOO Event Plugin</plugin>
+		<module name="mod_zooquickicon" folder="additional/zooquickicon" client="administrator">ZOO Quick Icons</module>
+		<plugin name="zoosearch" folder="additional/zoosearch" group="search">ZOO Search Plugin</plugin>
+		<plugin name="zoosmartsearch" folder="additional/zoosmartsearch" group="finder">ZOO Smart Search Plugin</plugin>
+		<plugin name="zooshortcode" folder="additional/zooshortcode" group="content">ZOO Shortcode Plugin</plugin>
+		<plugin name="zooevent" folder="additional/zooevent" group="system">ZOO Event Plugin</plugin>
 	</additional>
 	<scriptfile>file.script.php</scriptfile>
 </extension>

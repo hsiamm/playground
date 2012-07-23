@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: k2user.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version		$Id: k2user.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -22,6 +22,9 @@ class TableK2User extends JTable
 	var $url = null;
 	var $group = null;
 	var $plugins = null;
+	var $ip = null;
+	var $hostname = null;
+	var $notes = null;
 
 	function __construct( & $db) {
 	

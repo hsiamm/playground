@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      date.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -23,6 +21,17 @@ class ElementDate extends ElementRepeatable implements iRepeatSubmittable {
 	const EDIT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S';
 
 	/*
+		Function: _getSearchData
+			Get repeatable elements search data.
+
+		Returns:
+			String - Search data
+	*/
+	protected function _getSearchData() {
+		return $this->get('value');
+	}
+
+	/*
 		Function: render
 			Renders the repeatable element.
 
@@ -32,8 +41,9 @@ class ElementDate extends ElementRepeatable implements iRepeatSubmittable {
 		Returns:
 			String - html
 	*/
-	protected function _render($params = array()) {	
-		return $this->app->html->_('date', $this->_data->get('value', ''), $this->app->date->format((($params['date_format'] == 'custom') ? $params['custom_format'] : $params['date_format'])), $this->app->date->getOffset());
+	protected function _render($params = array()) {
+		$params = $this->app->data->create($params);
+		return $this->app->html->_('date', $this->get('value', ''), $this->app->date->format($params->get('date_format') == 'custom' ? $params->get('custom_format') : $params->get('date_format')));
 	}
 
 	/*
@@ -42,12 +52,19 @@ class ElementDate extends ElementRepeatable implements iRepeatSubmittable {
 
 	   Returns:
 	       String - html
-	*/		
-	protected function _edit(){
-		$value = $this->_data->get('value', '');
-		$value = !empty($value) ? $this->app->html->_('date', $value, $this->app->date->format(self::EDIT_DATE_FORMAT), $this->app->date->getOffset()) : '';
+	*/
+	protected function _edit() {
+		$name = $this->getControlName('value');
+		if ($value = $this->get('value', '')) {
 
-		return $this->app->html->_('zoo.calendar', $value, 'elements[' . $this->identifier . ']['.$this->index().'][value]', 'elements[' . $this->identifier . ']['.$this->index().']value', array('class' => 'calendar-element'), true);
+			try {
+
+				$value = $this->app->html->_('date', $value, $this->app->date->format(self::EDIT_DATE_FORMAT), $this->app->date->getOffset());
+
+			} catch (Exception $e) {}
+
+		}
+		return $this->app->html->_('zoo.calendar', $value, $name, $name, array('class' => 'calendar-element'), true);
 	}
 
 	/*
@@ -55,13 +72,13 @@ class ElementDate extends ElementRepeatable implements iRepeatSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
 	*/
 	public function _renderSubmission($params = array()) {
-		return $this->app->html->_('zoo.calendar', $this->_data->get('value', ''), 'elements[' . $this->identifier . ']['.$this->index().'][value]', 'elements[' . $this->identifier . ']['.$this->index().']value', array('class' => 'calendar-element'), true);
+		return $this->_edit();
 	}
 
 	/*
@@ -76,29 +93,38 @@ class ElementDate extends ElementRepeatable implements iRepeatSubmittable {
 			Array - cleaned value
 	*/
 	public function _validateSubmission($value, $params) {
-        $value = $this->app->validator->create('date', array('required' => $params->get('required')), array('required' => 'Please choose a date.'))
-				->addOption('date_format', self::EDIT_DATE_FORMAT)
-				->clean($value->get('value'));
 
-		return compact('value');
+		$value = $value->get('value');
+		if (!empty($value) && ($time = strtotime($value))) {
+			$value = strftime(self::EDIT_DATE_FORMAT, $time);
+		}
+
+        return array('value' => $this->app->validator->create('date', array('required' => $params->get('required')), array('required' => 'Please choose a date.'))
+				->addOption('date_format', self::EDIT_DATE_FORMAT)
+				->clean($value));
 	}
 
-}
+	/*
+		Function: bindData
+			Set data through data array.
 
-class ElementDateData extends ElementData{
+		Parameters:
+			$data - array
 
-	public function encodeData() {
-		$xml = $this->app->xml->create($this->_element->getElementType())->addAttribute('identifier', $this->_element->identifier);
-		$value = $this->_data->get('value', '');
-		if (!empty($value)) {
-			$tzoffset = $this->app->date->getOffset();
-			$date     = $this->app->date->create($value, $tzoffset);
-			$value	  = $date->toMySQL();
+		Returns:
+			Void
+	*/
+	public function bindData($data = array()) {
+		parent::bindData($data);
+		foreach ($this as $self) {
+			$value = $this->get('value', '');
+			if (!empty($value) && ($value = strtotime($value)) && ($value = strftime(self::EDIT_DATE_FORMAT, $value))) {
+				$tzoffset = $this->app->system->config->getValue('config.offset');
+				$date     = $this->app->date->create($value, $tzoffset);
+				$value	  = $date->toMySQL();
+				$this->set('value', $value);
+			}
 		}
-		
-		$xml->addChild('value', $value, null, true);
-		
-		return $xml;
 	}
 
 }

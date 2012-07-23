@@ -10,6 +10,7 @@
 		<param name="publish_down" type="zoocalendar" default="" label="Finish Publishing" description="DETAILFINISH" />
 	</params>
 	<params group="metadata">
+		<param name="title" type="text" size="20" default="" label="Title" description="Title" />
 		<param name="description" type="textarea" rows="5" cols="30" default="" label="Description" description="METADESC" />
 		<param name="keywords" type="textarea" rows="5" cols="30" default="" label="Keywords" description="METAKEYS" />
 		<param name="robots" type="text" size="20" default="" label="Robots" description="METAROBOTS" />

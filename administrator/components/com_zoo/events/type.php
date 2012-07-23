@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      type.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -25,8 +23,8 @@ class TypeEvent {
 		if (!empty($type->id) && $type->id != $type->identifier) {
 
 			// update templates
-			foreach ($app->path->dirs($application->getResource().'/templates/') as $template) {
-				$app->type->sanatizePositionsConfig($app->path->path($application->getResource().'/templates/'.$template), $type);
+			foreach ($app->path->dirs($application->getResource().'templates/') as $template) {
+				$app->type->sanatizePositionsConfig($app->path->path($application->getResource().'templates/'.$template), $type);
 			}
 
 			// update modules
@@ -75,8 +73,8 @@ class TypeEvent {
 		$old_id = $event['old_id'];
 
 		// copy template positions
-		foreach ($app->path->dirs($application->getResource().'/templates/') as $template) {
-			$app->type->copyPositionsConfig($old_id, $app->path->path($application->getResource().'/templates/'.$template), $type);
+		foreach ($app->path->dirs($application->getResource().'templates/') as $template) {
+			$app->type->copyPositionsConfig($old_id, $app->path->path($application->getResource().'templates/'.$template), $type);
 		}
 
 		// copy module positions
@@ -105,8 +103,8 @@ class TypeEvent {
 		$application = $type->getApplication();
 
 		// update templates
-		foreach ($app->path->dirs($application->getResource().'/templates/') as $template) {
-			$app->type->sanatizePositionsConfig($app->path->path($application->getResource().'/templates/'.$template), $type, true);
+		foreach ($app->path->dirs($application->getResource().'templates/') as $template) {
+			$app->type->sanatizePositionsConfig($app->path->path($application->getResource().'templates/'.$template), $type, true);
 		}
 
 		// update modules
@@ -136,6 +134,13 @@ class TypeEvent {
 				$table->save($submission);
 			}
 		}
+
+	}
+
+	public static function editDisplay($event) {
+
+		$type = $event->getSubject();
+		$html = $event['html'];
 
 	}
 

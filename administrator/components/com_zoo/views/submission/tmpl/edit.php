@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 	defined('_JEXEC') or die('Restricted access');
@@ -58,6 +56,16 @@
 					<strong class="hasTip" title="<?php echo JText::_('EMAIL_NOTIFICATION_DESCRIPTION'); ?>"><?php echo JText::_('Email Notification'); ?></strong>
 					<input type="text" name="params[email_notification]" value="<?php echo $this->submission->getParams()->get('email_notification', ''); ?>" />
 				</div>
+				<div class="element element-item-edit">
+					<strong class="hasTip" title="<?php echo JText::_('If enabled, this submission will be used for direct item editing. There can be at most one item edit submission per app. The access level of this submission will determine who will be able to edit an item. You\'ll also have to assign an Item Edit Element to the layout you want the Edit Item button to show on.'); ?>"><?php echo JText::_('Item Edit'); ?></strong>
+					<?php echo $this->lists['select_item_edit']; ?>
+				</div>
+				<?php if($this->lists['select_item_captcha']): ?>
+				<div class="element element-item-captcha">
+					<strong class="hasTip" title="<?php echo JText::_('If enabled, a captcha will be shown on the submission page.'); ?>"><?php echo JText::_('Use Captcha'); ?></strong>
+					<?php echo $this->lists['select_item_captcha']; ?>
+				</div>
+				<?php endif; ?>
 			</fieldset>
 		   <fieldset class="creation-form">
 			   <legend><?php echo JText::_('Security'); ?></legend>
@@ -65,10 +73,14 @@
 					<strong><?php echo JText::_('Access level'); ?></strong>
 					<?php echo $this->lists['select_access']; ?>
 				</div>
+				<div class="element element-max-submissions">
+					<strong class="hasTip" title="<?php echo JText::_('Max Submissions per User'); ?>"><?php echo JText::_('Submissions Limit'); ?></strong>
+					<input type="text" name="params[max_submissions]" value="<?php echo $this->submission->getParams()->get('max_submissions', '0'); ?>" />
+				</div>
 				<div class="element element-trusted-mode">
 					<strong><?php echo JText::_('Trusted Mode'); ?></strong>
-					<input type="checkbox" name="params[trusted_mode]" class="trusted" <?php echo $this->submission->isInTrustedMode() ? 'checked="checked"' : ''; ?> />
-					<span><?php echo JText::_('TRUSTED_MODE_DESCRIPTION'); ?></span>
+					<input id="trusted-mode" type="checkbox" name="params[trusted_mode]" class="trusted" <?php echo $this->submission->isInTrustedMode() ? 'checked="checked"' : ''; ?> />
+					<label for="trusted-mode"><?php echo JText::_('TRUSTED_MODE_DESCRIPTION'); ?></label>
 				</div>
 		   </fieldset>
 		   <fieldset>
@@ -126,7 +138,7 @@
 					<div class="content">
 						<?php echo $form->render('params[config]', 'submission-config'); ?>
 					</div>
-				<?php endif; ?>		
+				<?php endif; ?>
 			</div>
 
 		</div>
@@ -136,13 +148,24 @@
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="cid[]" value="<?php echo $this->submission->id; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>
 
 <script type="text/javascript">
 	jQuery(function($) {
-		$('#submission-edit').EditSubmission();
+
+		<?php
+			$groups = array();
+			foreach ($this->app->zoo->getGroups() as $group) {
+				if ($this->app->joomla->isVersion('1.5') ? $group->id == 0 : !JAccess::checkGroup($group->id, 'core.login.site')) {
+					$groups[] = $group->id;
+				}
+			}
+		?>
+
+		$('#submission-edit').EditSubmission({ groups: <?php echo json_encode($groups); ?> });
 		$('#name-edit').AliasEdit({ edit: <?php echo (int) $this->submission->id; ?> });
 		$('#name-edit').find('input[name="name"]').focus();
 	});

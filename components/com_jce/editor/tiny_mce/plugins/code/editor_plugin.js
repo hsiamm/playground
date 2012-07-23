@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.1.3
+ * JCE Editor                 2.2.0
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    19 May 2012
+ * @date                    20 June 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -27,12 +27,10 @@ if(ed.settings.content_css!==false)
 ed.dom.loadCSS(url+"/css/content.css");});ed.onBeforeSetContent.add(function(ed,o){if(/<(\?|script|style)/.test(o.content)){if(!ed.getParam('code_script')){o.content=o.content.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi,'');}
 if(!ed.getParam('code_style')){o.content=o.content.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi,'');}
 if(!ed.getParam('code_php')){o.content=o.content.replace(/<\?(php)?([\s\S]*?)\?>/gi,'');}
-o.content=o.content.replace(/\="([^"]+?)"/g,function(a,b){if(/<\?(php)?/.test(b)){b=ed.dom.encode(b);}
-return'="'+b+'"';});if(/<textarea/.test(o.content)){o.content=o.content.replace(/<textarea([^>]*)>([\s\S]*?)<\/textarea>/gi,function(a,b,c){if(/<\?(php)?/.test(c)){c=ed.dom.encode(c);}
-return'<textarea'+b+'>'+c+'</textarea>';});}
+o.content=o.content.replace(/\="([^"]+?)"/g,function(a,b){b=b.replace(/<\?(php)?(.+?)\?>/gi,function(x,y,z){return'{php:start}'+ed.dom.encode(z)+'{php:end}';});return'="'+b+'"';});if(/<textarea/.test(o.content)){o.content=o.content.replace(/<textarea([^>]*)>([\s\S]*?)<\/textarea>/gi,function(a,b,c){c=c.replace(/<\?(php)?(.+?)\?>/gi,function(x,y,z){return'{php:start}'+ed.dom.encode(z)+'{php:end}';});return'<textarea'+b+'>'+c+'</textarea>';});}
 o.content=o.content.replace(/<([^>]+)<\?(php)?(.+?)\?>([^>]*?)>/gi,function(a,b,c,d,e){if(b.charAt(b.length)!==' '){b+=' ';}
 return'<'+b+'data-mce-php="'+d+'" '+e+'>';});o.content=o.content.replace(/<\?(php)?([\s\S]+?)\?>/gi,'<span class="mcePhp" data-mce-type="php"><!--$2-->\u00a0</span>');o.content=o.content.replace(/<script([^>]+)><\/script>/gi,'<script$1>\u00a0</script>');o.content=o.content.replace(/<script([^>]*)>/gi,function(a,b){var re=/\stype="([^"]+)"/;if(re.test(b)){b=b.replace(re,' data-mce-type="$1"');}else{b+=' data-mce-type="text/javascript"';}
-return'<script'+b+'>';});}});ed.onPostProcess.add(function(ed,o){if(o.get){if(/(mcePhp|data-mce-php|&lt;\?(php)?)/.test(o.content)){o.content=o.content.replace(/"(.*?)&lt;\?(php)?([^"]+)\?&gt;(.*?)"/g,function(a,b,c,d,e){return'"'+b+'<?php'+ed.dom.decode(d)+'?>'+e+'"';});o.content=o.content.replace(/<textarea([^>]*)>([\s\S]*?)<\/textarea>/gi,function(a,b,c){if(/&lt;\?php/.test(c)){c=ed.dom.decode(c);}
+return'<script'+b+'>';});}});ed.onPostProcess.add(function(ed,o){if(o.get){if(/(mcePhp|data-mce-php|\{php:start\})/.test(o.content)){o.content=o.content.replace(/\{php:start\}([^\{]+)\{php:end\}/g,function(a,b){return'<?php'+ed.dom.decode(b)+'?>';});o.content=o.content.replace(/<textarea([^>]*)>([\s\S]*?)<\/textarea>/gi,function(a,b,c){if(/&lt;\?php/.test(c)){c=ed.dom.decode(c);}
 return'<textarea'+b+'>'+c+'</textarea>';});o.content=o.content.replace(/data-mce-php="([^"]+?)"/g,function(a,b){return'<?php'+ed.dom.decode(b)+'?>';});o.content=o.content.replace(/<span([^>]+)class="mcePhp"([^>]+)><!--([\s\S]*?)-->(&nbsp;|\u00a0)<\/span>/g,function(a,b,c,d){return'<?php'+ed.dom.decode(d)+'?>';});}}});},_buildScript:function(n){var self=this,ed=this.editor,v,node,text;if(!n.parent)
 return;if(n.firstChild){v=n.firstChild.value;}
 p=JSON.parse(n.attr('data-mce-json'))||{};p.type=n.attr('data-mce-type')||p.type||'text/javascript';node=new Node('script',1);if(v){v=tinymce.trim(v);if(v){text=new Node('#text',3);text.raw=true;if(ed.getParam('code_cdata',true)){v='// <![CDATA[\n'+self._clean(tinymce.trim(v))+'\n// ]]>';}
@@ -48,4 +46,4 @@ return;each(n.attributes,function(at){if(at.name.indexOf('data-mce-')!==-1||at.n
 return;p[at.name]=at.value;});var span=new Node('span',1);span.attr('class','mceItem'+this._ucfirst(n.name));span.attr('data-mce-json',JSON.serialize(p));span.attr('data-mce-type',n.attr('data-mce-type')||p.type);v=n.firstChild?n.firstChild.value:'';if(v.length){var text=new Node('#comment',8);text.value=this._clean(v);span.append(text);}
 span.append(new tinymce.html.Node('#text',3)).value='\u00a0';n.replace(span);},_serializeNoScript:function(n){var self=this,ed=this.editor,dom=ed.dom,v,k,p={};if(!n.parent)
 return;each(n.attributes,function(at){if(at.name=='type')
-return;p[at.name]=at.value;});var div=new Node('div',1);div.attr('data-mce-json',JSON.serialize(p));div.attr('data-mce-type',n.name);n.wrap(div);n.unwrap();},_ucfirst:function(s){return s.charAt(0).toUpperCase()+s.substring(1);},_clean:function(s){s=s.replace(/(\/\/\s+<!\[CDATA\[)/gi,'\n');s=s.replace(/(<!--\[CDATA\[|\]\]-->)/gi,'\n');s=s.replace(/^[\r\n]*|[\r\n]*$/g,'');s=s.replace(/^\s*(\/\/\s*<!--|\/\/\s*<!\[CDATA\[|<!--|<!\[CDATA\[)[\r\n]*/gi,'');s=s.replace(/\s*(\/\/\s*\]\]>|\/\/\s*-->|\]\]>|-->|\]\]-->)\s*$/g,'');return s;},getInfo:function(){return{longname:'Code',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.1.3'};}});tinymce.PluginManager.add('code',tinymce.plugins.CodePlugin);})();
+return;p[at.name]=at.value;});var div=new Node('div',1);div.attr('data-mce-json',JSON.serialize(p));div.attr('data-mce-type',n.name);n.wrap(div);n.unwrap();},_ucfirst:function(s){return s.charAt(0).toUpperCase()+s.substring(1);},_clean:function(s){s=s.replace(/(\/\/\s+<!\[CDATA\[)/gi,'\n');s=s.replace(/(<!--\[CDATA\[|\]\]-->)/gi,'\n');s=s.replace(/^[\r\n]*|[\r\n]*$/g,'');s=s.replace(/^\s*(\/\/\s*<!--|\/\/\s*<!\[CDATA\[|<!--|<!\[CDATA\[)[\r\n]*/gi,'');s=s.replace(/\s*(\/\/\s*\]\]>|\/\/\s*-->|\]\]>|-->|\]\]-->)\s*$/g,'');return s;},getInfo:function(){return{longname:'Code',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.0'};}});tinymce.PluginManager.add('code',tinymce.plugins.CodePlugin);})();

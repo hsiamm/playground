@@ -1,4 +1,11 @@
-<?php
+<?php 
+/*------------------------------------------------------------------------
+# author    your name or company
+# copyright Copyright © 2011 example.com. All rights reserved.
+# @license  http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+# Website   http://www.example.com
+-------------------------------------------------------------------------*/
+
 /* initialize ob_gzhandler to send and compress data */
 ob_start ("ob_gzhandler");
 /* initialize compress function for whitespace removal */
@@ -34,7 +41,9 @@ function compress($buffer) {
 	return $buffer;
 }
 
-require ('template.css');
-require ('../../system/css/system.css');
-require ('../../system/css/general.css');
+require('reset.css');
+require('template.css');
+require('../../../media/system/css/system.css');
+require('../../system/css/system.css');
+require('../../system/css/general.css');
 ?>

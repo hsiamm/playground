@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1251 2011-10-19 17:50:13Z joomlaworks $
+ * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -50,6 +50,10 @@ defined('_JEXEC') or die('Restricted access');
       <td class="key"><?php	echo JText::_('K2_URL'); ?></td>
       <td><input type="text" size="50" value="<?php echo $this->row->url; ?>" name="url" /></td>
     </tr>
+    <tr>
+      <td class="key"><?php	echo JText::_('K2_NOTES'); ?></td>
+      <td><textarea name="notes" cols="60" rows="5"><?php echo $this->row->notes; ?></textarea></td>
+    </tr>
   </table>
   
 	<?php if(count(array_filter($this->K2Plugins))): ?>
@@ -68,5 +72,7 @@ defined('_JEXEC') or die('Restricted access');
   <input type="hidden" name="view" value="user" />
   <input type="hidden" name="task" value="<?php echo JRequest::getVar('task'); ?>" />
   <input type="hidden" name="userID" value="<?php echo $this->row->userID; ?>" />
+  <input type="hidden" name="ip" value="<?php echo $this->row->ip; ?>" />
+  <input type="hidden" name="hostname" value="<?php echo $this->row->hostname; ?>" />
   <?php echo JHTML::_('form.token'); ?>
 </form>

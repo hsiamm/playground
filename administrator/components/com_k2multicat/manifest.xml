@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5.0" method="upgrade">
+    <name>k2multicat</name>
+     <author>usjoomlapros</author>
+    <creationDate>10 Nov, 2011</creationDate>
+    <license>GNU/GPL</license>
+    <version>2.5.1</version>
+    <description>K2 multicategory component</description>
+	<installfile>install.k2multicat.php</installfile>
+	<uninstallfile>uninstall.k2multicat.php</uninstallfile>
+	
+	<administration>
+		<menu task="default" img="js/ThemeOffice/component.png">K2 Multi category</menu> 
+		<files>
+		 	<folder>extras</folder>
+	        <folder>models</folder>         
+	        <folder>views</folder>
+	        <filename>index.html</filename>
+	        <filename>install.k2multicat.php</filename>
+	        <filename>k2multicat.php</filename>
+	        <filename>controller.php</filename>
+	        <filename>uninstall.k2multicat.php</filename>
+	     </files> 
+		 
+	</administration>
+</install>

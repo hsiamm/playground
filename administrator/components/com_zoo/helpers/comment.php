@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      comment.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: CommentHelper
@@ -30,13 +25,6 @@ class CommentHelper extends AppHelper {
 	protected $_author;
 
 	/*
-		@deprecated 2.4	Use items own getCommentsCount instead
-	*/
-	public function countComments($item) {
-		return $item->getCommentCount(Comment::STATE_APPROVED);
-	}
-
-	/*
 		Function: renderComments
 			Render comments and respond form html.
 
@@ -46,7 +34,7 @@ class CommentHelper extends AppHelper {
 	public function renderComments($view, $item) {
 
 		if ($item->getApplication()->isCommentsEnabled()) {
-		
+
 			// get application params
 			$params = $this->app->parameter->create($item->getApplication()->getParams()->get('global.comments.'));
 
@@ -54,23 +42,30 @@ class CommentHelper extends AppHelper {
 				$this->app->error->raiseWarning(500, JText::_('To use Twitter, CURL needs to be enabled in your php settings.'));
 				$params->set('twitter_enable', false);
 			}
-			
+
 			// get active author
 			$active_author = $this->activeAuthor();
 
 			// get comment content from session
 			$content = $this->app->system->session->get('com_zoo.comment.content');
 			$params->set('content', $content);
-			
+
 			// get comments and build tree
 			$comments = $item->getCommentTree(Comment::STATE_APPROVED);
+			
+			$captcha = false;
+			// Only on 2.5
+			$version = new JVersion();
+			if($version->isCompatible('2.5') && $plugin = $params->get('captcha', false)){
+				$captcha = JCaptcha::getInstance($plugin);
+			}
 
 			if ($item->isCommentsEnabled() || count($comments)-1) {
 				// create comments html
-				return $view->partial('comments', compact('item', 'active_author', 'comments', 'params'));
+				return $view->partial('comments', compact('item', 'active_author', 'comments', 'params', 'captcha'));
 			}
 		}
-		
+
 		return null;
 
 	}
@@ -83,15 +78,15 @@ class CommentHelper extends AppHelper {
 			CommentAuthor
 	*/
 	public function activeAuthor() {
-		
+
 		if (!isset($this->_author)) {
 
 			// get login (joomla users always win)
 			$login = $this->app->request->getString(self::COOKIE_PREFIX.'login', '', 'cookie');
-						
+
 			// get active user
 			$user = $this->app->user->get();
-			
+
 			if ($user->id) {
 
 				// create author object from user
@@ -106,24 +101,24 @@ class CommentHelper extends AppHelper {
 				// create author object from facebook user id
 				$this->_author = $this->app->commentauthor->create('facebook', array($content->name, null, null, $content->id));
 
-			} else if ($login == 'twitter' 
+			} else if ($login == 'twitter'
 						&& ($connection = $this->app->twitter->client())
 						&& ($content = $connection->get('account/verify_credentials'))
 						&& isset($content->screen_name)
 						&& isset($content->id)) {
-							
+
 				// create author object from twitter user id
 				$this->_author = $this->app->commentauthor->create('twitter', array($content->screen_name, null, null, $content->id));
-				
+
 			} else {
 
 				$this->app->twitter->logout();
 				$this->app->facebook->logout();
-				
+
 				// create author object from cookies
 				$cookie = $this->readCookies();
 				$this->_author = $this->app->commentauthor->create('', array($cookie['author'], $cookie['email'], $cookie['url']));
-				
+
 			}
 		}
 
@@ -142,15 +137,16 @@ class CommentHelper extends AppHelper {
 	public function readCookies() {
 
 		// get cookies
+		$data = array();
 		foreach (array('hash', 'author', 'email', 'url') as $key) {
 			$data[$key] = $this->app->request->getString(self::COOKIE_PREFIX.$key, '', 'cookie');
 		}
-		
+
 		// verify hash
 		if ($this->getCookieHash($data['author'], $data['email'], $data['url']) == $data['hash']) {
 			return $data;
 		}
-		
+
 		return array('hash' => null, 'author' => null, 'email' => null, 'url' => null);
 	}
 
@@ -165,9 +161,9 @@ class CommentHelper extends AppHelper {
 			Void
 	*/
 	public function saveCookies($author, $email, $url) {
-	
+
 		$hash = $this->getCookieHash($author, $email, $url);
-	
+
 		// set cookies
 		foreach (compact('hash', 'author', 'email', 'url') as $key => $value) {
 			setcookie(self::COOKIE_PREFIX.$key, $value, time() + self::COOKIE_LIFETIME);
@@ -188,10 +184,10 @@ class CommentHelper extends AppHelper {
 			String
 	*/
 	public function getCookieHash($author, $email, $url) {
-		
+
 		// get secret from config
 		$secret = $this->app->system->config->getValue('config.secret');
-		
+
 		return md5($author.$email.$url.$secret);
 	}
 
@@ -207,9 +203,9 @@ class CommentHelper extends AppHelper {
 			Boolean
 	*/
 	public function matchWords($comment, $words) {
-		
+
 		$vars = array('author', 'email', 'url', 'ip', 'content');
-		
+
 		if ($words = explode("\n", $words)) {
 			foreach ($words as $word) {
 				if ($word = trim($word)) {
@@ -291,12 +287,12 @@ class CommentHelper extends AppHelper {
 		Parameters:
 			$comment - Comment
 			$api_key - Akismet (Wordpress) API Key
-		
+
 		Returns:
 			Void
 	*/
 	public function akismet($comment, $api_key = '') {
-		
+
 		// load akismet class
 		$this->app->loader->register('Akismet', 'libraries:akismet/akismet.php');
 
@@ -311,7 +307,7 @@ class CommentHelper extends AppHelper {
 		if ($akismet->isCommentSpam()) {
 			$comment->state = Comment::STATE_SPAM;
 		}
-		
+
 	}
 
 	/*
@@ -322,12 +318,12 @@ class CommentHelper extends AppHelper {
 			$comment - Comment
 			$public_key - Public Key
 			$private_key - Private Key
-		
+
 		Returns:
 			Void
 	*/
 	public function mollom($comment, $public_key = '', $private_key = '') {
-		
+
 		// check if curl functions are available
 		if (!function_exists('curl_init')) return;
 
@@ -338,7 +334,7 @@ class CommentHelper extends AppHelper {
 		Mollom::setPublicKey($public_key);
 		Mollom::setPrivateKey($private_key);
 		Mollom::setServerList(Mollom::getServerList());
-				
+
 		// check comment
 		$feedback = Mollom::checkContent(null, null, $comment->content, $comment->author, $comment->url, $comment->email);
 
@@ -369,9 +365,9 @@ class CommentHelper extends AppHelper {
 		// init vars
 		$item			  = $comment->getItem();
 		$website_name	  = $this->app->system->application->getCfg('sitename');
-		$comment_link	  = JURI::root().$this->app->route->comment($comment);
-		$item_link		  = JURI::root().$this->app->route->item($item);
-		$website_link	  = JURI::root().'index.php';
+		$comment_link	  = JRoute::_($this->app->route->comment($comment, false), true, -1);
+		$item_link		  = JRoute::_($this->app->route->item($item, false), true, -1);
+		$website_link	  = JRoute::_('index.php', true, -1);
 
 		// send email to $recipients
 		foreach ($recipients as $email => $name) {
@@ -407,7 +403,7 @@ class CommentHelper extends AppHelper {
 			$mail->Send();
 		}
 	}
-		
+
 }
 
 /*

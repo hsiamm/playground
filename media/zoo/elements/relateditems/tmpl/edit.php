@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -13,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div id="<?php echo $element; ?>" class="select-relateditems">
+<div id="<?php echo $this->identifier; ?>" class="select-relateditems">
 	<ul>
 
 	<?php foreach ($data as $item) : ?>
@@ -23,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 				<div class="item-name"><?php echo $item->name; ?></div>
 				<div class="item-sort" title="<?php echo JText::_('Sort Item'); ?>"></div>
 				<div class="item-delete" title="<?php echo JText::_('Delete Item'); ?>"></div>
-				<input type="hidden" name="elements[<?php echo $element; ?>][item][]" value="<?php echo $item->id; ?>"/>
+				<input type="hidden" name="<?php echo $this->getControlName('item', true); ?>" value="<?php echo $item->id; ?>"/>
 			</div>
 		</li>
 
@@ -34,6 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	jQuery(function($) {
-		$('#<?php echo $element; ?>').ElementRelatedItems({ variable: 'elements[<?php echo $element; ?>][item][]', msgDeleteItem: '<?php echo JText::_('Delete Item'); ?>', msgSortItem: '<?php echo JText::_('Sort Item'); ?>' });
+		$('#<?php echo $this->identifier; ?>').ElementRelatedItems({ variable: '<?php echo $this->getControlName('item', true); ?>', msgDeleteItem: '<?php echo JText::_('Delete Item'); ?>', msgSortItem: '<?php echo JText::_('Sort Item'); ?>' });
 	});
 </script>

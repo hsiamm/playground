@@ -1,10 +1,8 @@
 <?php
 /**
 * @package   ZOO Category
-* @file      changelog.php
-* @version   2.4.0
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
@@ -15,6 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 
 Changelog
 ------------
+
+2.5.0
++ added War6 Sidebar Style
+^ changes to renderer
+
+2.4.2
+^ changed paths
 
 2.4.1
 # fixed bug with storing params in J1.6

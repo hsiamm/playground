@@ -1,22 +1,18 @@
 <?php
 /**
- * @version		$Id: view.html.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_wrapper
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 /**
  * @package		Joomla.Site
  * @subpackage	com_wrapper
  */
-class WrapperViewWrapper extends JView
+class WrapperViewWrapper extends JViewLegacy
 {
 	public function display($tpl = null)
 	{
@@ -34,8 +30,11 @@ class WrapperViewWrapper extends JView
 		if (empty($title)) {
 			$title = $app->getCfg('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0)) {
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -44,12 +43,12 @@ class WrapperViewWrapper extends JView
 			$this->document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')) 
+		if ($params->get('menu-meta_keywords'))
 		{
 			$this->document->setMetadata('keywords', $params->get('menu-meta_keywords'));
 		}
 
-		if ($params->get('robots')) 
+		if ($params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $params->get('robots'));
 		}

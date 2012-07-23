@@ -1,14 +1,21 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      2.4.4.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 class Update244 implements iUpdate {
+
+    /*
+		Function: getNotifications
+			Get preupdate notifications.
+
+		Returns:
+			Array - messages
+	*/
+	public function getNotifications($app) {}
 
     /*
 		Function: run
@@ -30,7 +37,7 @@ class Update244 implements iUpdate {
 
 			if (empty($application->alias)) {
 
-				$application->alias = $app->application->getUniqueAlias($application->id, $app->string->sluggify($application->name));
+				$application->alias = $app->alias->application->getUniqueAlias($application->id, $app->string->sluggify($application->name));
 
 				try {
 

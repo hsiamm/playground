@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: k2.php 1354 2011-11-25 17:10:28Z joomlaworks $
+ * @version		$Id: k2.php 1549 2012-04-18 18:57:05Z joomlaworks $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -12,25 +12,31 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-class plgSystemK2 extends JPlugin {
+class plgSystemK2 extends JPlugin
+{
 
-	function plgSystemK2(&$subject, $config) {
+	function plgSystemK2(&$subject, $config)
+	{
 
 		parent::__construct($subject, $config);
 	}
 
-	function onAfterRoute() {
+	function onAfterRoute()
+	{
 
 		$mainframe = &JFactory::getApplication();
-		$basepath = ($mainframe->isSite())?JPATH_SITE:JPATH_ADMINISTRATOR;
+		$basepath = ($mainframe->isSite()) ? JPATH_SITE : JPATH_ADMINISTRATOR;
 		JPlugin::loadLanguage('com_k2', $basepath);
-		if(K2_JVERSION == '16'){
+		if (K2_JVERSION == '16')
+		{
 			JPlugin::loadLanguage('com_k2.j16', JPATH_ADMINISTRATOR, null, true);
 		}
-		if ($mainframe->isAdmin()) {
+		if ($mainframe->isAdmin())
+		{
 			return;
 		}
-		if((JRequest::getCmd('task')=='add' || JRequest::getCmd('task')=='edit')  && JRequest::getCmd('option') == 'com_k2') {
+		if ((JRequest::getCmd('task') == 'add' || JRequest::getCmd('task') == 'edit') && JRequest::getCmd('option') == 'com_k2')
+		{
 			return;
 		}
 		JHTML::_('behavior.mootools');
@@ -40,16 +46,20 @@ class plgSystemK2 extends JPlugin {
 		$document = &JFactory::getDocument();
 
 		// JS
-		$jQueryHandling = $params->get('jQueryHandling','1.7remote');
-		if($jQueryHandling && strpos($jQueryHandling,'remote')==true){
-			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/'.str_replace('remote','',$jQueryHandling).'/jquery.min.js');
-		} elseif($jQueryHandling && strpos($jQueryHandling,'remote')==false) {
+		$jQueryHandling = $params->get('jQueryHandling', '1.7remote');
+		if ($jQueryHandling && strpos($jQueryHandling, 'remote') == true)
+		{
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/'.str_replace('remote', '', $jQueryHandling).'/jquery.min.js');
+		}
+		elseif ($jQueryHandling && strpos($jQueryHandling, 'remote') == false)
+		{
 			$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-'.$jQueryHandling.'.min.js');
 		}
 		$document->addScript(JURI::root(true).'/components/com_k2/js/k2.js');
 		$document->addScriptDeclaration("var K2SitePath = '".JURI::root(true)."/';");
 
-		if(JRequest::getCmd('task')=='search' && $params->get('googleSearch')){
+		if (JRequest::getCmd('task') == 'search' && $params->get('googleSearch'))
+		{
 			$language = &JFactory::getLanguage();
 			$lang = $language->getTag();
 			$document->addScript('http://www.google.com/jsapi');
@@ -79,22 +89,24 @@ class plgSystemK2 extends JPlugin {
 		}
 
 		// Add related CSS to the <head>
-		if ($document->getType() == 'html' && $params->get('enable_css')) {
+		if ($document->getType() == 'html' && $params->get('enable_css'))
+		{
 
 			jimport('joomla.filesystem.file');
 
 			// k2.css
-			if(JFile::exists(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'css'.DS.'k2.css'))
-			$document->addStyleSheet(JURI::root(true).'/templates/'.$mainframe->getTemplate().'/css/k2.css');
+			if (JFile::exists(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'css'.DS.'k2.css'))
+				$document->addStyleSheet(JURI::root(true).'/templates/'.$mainframe->getTemplate().'/css/k2.css');
 			else
-			$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css');
+				$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css');
 
 			// k2.print.css
-			if(JRequest::getInt('print')==1){
-				if(JFile::exists(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'css'.DS.'k2.print.css'))
-				$document->addStyleSheet(JURI::root(true).'/templates/'.$mainframe->getTemplate().'/css/k2.print.css','text/css','print');
+			if (JRequest::getInt('print') == 1)
+			{
+				if (JFile::exists(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'css'.DS.'k2.print.css'))
+					$document->addStyleSheet(JURI::root(true).'/templates/'.$mainframe->getTemplate().'/css/k2.print.css', 'text/css', 'print');
 				else
-				$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css','text/css','print');
+					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css', 'text/css', 'print');
 			}
 
 		}
@@ -102,24 +114,37 @@ class plgSystemK2 extends JPlugin {
 	}
 
 	// Extend user forms with K2 fields
-	function onAfterDispatch() {
+	function onAfterDispatch()
+	{
 
 		$mainframe = &JFactory::getApplication();
 
-		if($mainframe->isAdmin()) return;
+		if ($mainframe->isAdmin())
+			return;
 
 		$params = &JComponentHelper::getParams('com_k2');
-		if(!$params->get('K2UserProfile'))
-		return;
+		if (!$params->get('K2UserProfile'))
+			return;
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view');
 		$task = JRequest::getCmd('task');
 		$layout = JRequest::getCmd('layout');
 		$user = &JFactory::getUser();
 
-		if (($option == 'com_user' && $view == 'register') || ($option == 'com_users' && $view == 'registration') ) {
-			
-			if($params->get('recaptchaOnRegistration') && $params->get('recaptcha_public_key')) {
+		if (K2_JVERSION == '16')
+		{
+			$active = JFactory::getApplication()->getMenu()->getActive();
+			if (isset($active->query['layout']))
+			{
+				$layout = $active->query['layout'];
+			}
+		}
+
+		if (($option == 'com_user' && $view == 'register') || ($option == 'com_users' && $view == 'registration'))
+		{
+
+			if ($params->get('recaptchaOnRegistration') && $params->get('recaptcha_public_key'))
+			{
 				$document = &JFactory::getDocument();
 				$document->addScript('http://api.recaptcha.net/js/recaptcha_ajax.js');
 				$js = '
@@ -135,16 +160,19 @@ class plgSystemK2 extends JPlugin {
 				$document->addScriptDeclaration($js);
 			}
 
-			if(!$user->guest){
-				$mainframe->redirect(JURI::root(),JText::_('K2_YOU_ARE_ALREADY_REGISTERED_AS_A_MEMBER'),'notice');
+			if (!$user->guest)
+			{
+				$mainframe->redirect(JURI::root(), JText::_('K2_YOU_ARE_ALREADY_REGISTERED_AS_A_MEMBER'), 'notice');
 				$mainframe->close();
 			}
-			if(K2_JVERSION == '16'){
+			if (K2_JVERSION == '16')
+			{
 				require_once (JPATH_SITE.DS.'components'.DS.'com_users'.DS.'controller.php');
 				$controller = new UsersController;
 
 			}
-			else {
+			else
+			{
 				require_once (JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
 				$controller = new UserController;
 			}
@@ -180,7 +208,8 @@ class plgSystemK2 extends JPlugin {
 			$view->assignRef('K2Plugins', $K2Plugins);
 
 			$view->assignRef('K2User', $K2User);
-			if(K2_JVERSION == '16'){
+			if (K2_JVERSION == '16')
+			{
 				$view->assignRef('user', $user);
 			}
 			$pathway = &$mainframe->getPathway();
@@ -194,34 +223,38 @@ class plgSystemK2 extends JPlugin {
 
 		}
 
-		if (($option == 'com_user' && $view == 'user' && ($task == 'edit' || $layout=='form')) || ($option == 'com_users' && $view=='profile' && $layout=='edit') ) {
+		if (($option == 'com_user' && $view == 'user' && ($task == 'edit' || $layout == 'form')) || ($option == 'com_users' && $view == 'profile' && ($layout == 'edit' || $task == 'profile.edit')))
+		{
 
-			if($user->guest){
+			if ($user->guest)
+			{
 				JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
 			}
 
-			if(K2_JVERSION == '16'){
+			if (K2_JVERSION == '16')
+			{
 				require_once (JPATH_SITE.DS.'components'.DS.'com_users'.DS.'controller.php');
 				$controller = new UsersController;
 			}
-			else {
+			else
+			{
 				require_once (JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
 				$controller = new UserController;
 			}
-			
+
 			/*
-			// TO DO - We open the profile editing page in a modal, so let's define some CSS
-			$document = &JFactory::getDocument();
-			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css');
-			$document->addStyleSheet(JURI::root(true).'/templates/system/css/general.css');
-			$document->addStyleSheet(JURI::root(true).'/templates/system/css/system.css');
-			if(K2_JVERSION == '16') {
-				$document->addStyleSheet(JURI::root(true).'/administrator/templates/bluestork/css/template.css');
-				$document->addStyleSheet(JURI::root(true).'/media/system/css/system.css');
-			} else {
-				$document->addStyleSheet(JURI::root(true).'/administrator/templates/khepri/css/general.css');
-			}
-			*/
+			 // TO DO - We open the profile editing page in a modal, so let's define some CSS
+			 $document = &JFactory::getDocument();
+			 $document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css?v=2.5.7');
+			 $document->addStyleSheet(JURI::root(true).'/templates/system/css/general.css');
+			 $document->addStyleSheet(JURI::root(true).'/templates/system/css/system.css');
+			 if(K2_JVERSION == '16') {
+			 $document->addStyleSheet(JURI::root(true).'/administrator/templates/bluestork/css/template.css');
+			 $document->addStyleSheet(JURI::root(true).'/media/system/css/system.css');
+			 } else {
+			 $document->addStyleSheet(JURI::root(true).'/administrator/templates/khepri/css/general.css');
+			 }
+			 */
 
 			$view = $controller->getView($view, 'html');
 			$view->addTemplatePath(JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'templates');
@@ -232,7 +265,8 @@ class plgSystemK2 extends JPlugin {
 			require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models'.DS.'itemlist.php');
 			$model = new K2ModelItemlist;
 			$K2User = $model->getUserProfile($user->id);
-			if (!is_object($K2User)) {
+			if (!is_object($K2User))
+			{
 				$K2User = new Jobject;
 				$K2User->description = '';
 				$K2User->gender = 'm';
@@ -258,11 +292,18 @@ class plgSystemK2 extends JPlugin {
 			$view->assignRef('K2User', $K2User);
 
 			ob_start();
-			if(K2_JVERSION == '16'){
+			if (K2_JVERSION == '16')
+			{
+				$active = JFactory::getApplication()->getMenu()->getActive();
+				if (isset($active->query['layout']) && $active->query['layout'] != 'profile')
+				{
+					$active->query['layout'] = 'profile';
+				}
 				$view->assignRef('user', $user);
 				$view->display();
 			}
-			else {
+			else
+			{
 				$view->_displayForm();
 			}
 
@@ -274,31 +315,75 @@ class plgSystemK2 extends JPlugin {
 
 	}
 
-	function onAfterInitialise() {
+	function onAfterInitialise()
+	{
 		$mainframe = &JFactory::getApplication();
-
+		jimport('joomla.filesystem.file');
 		// Determine Joomla! version
-		if(version_compare( JVERSION, '1.6.0', 'ge' )) {
-			define('K2_JVERSION','16');
+		if (version_compare(JVERSION, '1.6.0', 'ge'))
+		{
+			define('K2_JVERSION', '16');
 		}
-		else {
-			define('K2_JVERSION','15');
+		else
+		{
+			define('K2_JVERSION', '15');
 		}
 
+		// Community Builder integration
+		$componentParams = JComponentHelper::getParams('com_k2');
+		if ($componentParams->get('cbIntegration') && JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_comprofiler'.DS.'plugin.foundation.php'))
+		{
+			define('K2_CB', true);
+			global $_CB_framework;
+			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_comprofiler'.DS.'plugin.foundation.php');
+			cbimport('cb.html');
+			cbimport('language.front');
+		}
+		else
+		{
+			define('K2_CB', false);
+		}
+
+		// Define the default Itemid for users and tags. Defined here instead of the K2HelperRoute for performance reasons.
+		define('K2_USERS_ITEMID', $componentParams->get('defaultUsersItemid'));
+		define('K2_TAGS_ITEMID', $componentParams->get('defaultTagsItemid'));
+
+		// Define JoomFish compatibillity version.
+		if (JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomfish'.DS.'joomfish.php'))
+		{
+			if (K2_JVERSION == '15')
+			{
+				$db = JFactory::getDBO();
+				$config = JFactory::getConfig();
+				$prefix = $config->getValue('config.dbprefix');
+				if (array_key_exists($prefix.'_jf_languages_ext', $db->getTableList()))
+				{
+					define('K2_JF_ID', 'lang_id');
+
+				}
+				else
+				{
+					define('K2_JF_ID', 'id');
+				}
+			}
+			else
+			{
+				define('K2_JF_ID', 'lang_id');
+			}
+		}
 		/*
 		 if(JRequest::getCmd('option')=='com_k2' && JRequest::getCmd('task')=='save' && !$mainframe->isAdmin()){
-			$dispatcher = &JDispatcher::getInstance();
-			foreach($dispatcher->_observers as $observer){
-			if($observer->_name=='jfdatabase' || $observer->_name=='jfrouter' || $observer->_name=='missing_translation'){
-			$dispatcher->detach($observer);
-			}
-			}
-			}
-			*/
+		 $dispatcher = &JDispatcher::getInstance();
+		 foreach($dispatcher->_observers as $observer){
+		 if($observer->_name=='jfdatabase' || $observer->_name=='jfrouter' || $observer->_name=='missing_translation'){
+		 $dispatcher->detach($observer);
+		 }
+		 }
+		 }
+		 */
 
-		jimport('joomla.filesystem.file');
-
-		if (!$mainframe->isAdmin()) {
+		if (!$mainframe->isAdmin())
+		{
 			return;
 		}
 
@@ -306,10 +391,11 @@ class plgSystemK2 extends JPlugin {
 		$task = JRequest::getCmd('task');
 		$type = JRequest::getCmd('catid');
 
-		if ($option!='com_joomfish')
-		return;
+		if ($option != 'com_joomfish')
+			return;
 
-		if (!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php')) {
+		if (!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php'))
+		{
 			return;
 		}
 
@@ -319,15 +405,18 @@ class plgSystemK2 extends JPlugin {
 		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php');
 
 		// Joom!Fish
-		if ($option == 'com_joomfish' && ($task == 'translate.apply' || $task == 'translate.save') && $type == 'k2_items') {
+		if ($option == 'com_joomfish' && ($task == 'translate.apply' || $task == 'translate.save') && $type == 'k2_items')
+		{
 
 			$language_id = JRequest::getInt('select_language_id');
 			$reference_id = JRequest::getInt('reference_id');
 			$objects = array();
 			$variables = JRequest::get('post');
 
-			foreach ($variables as $key=>$value) {
-				if (( bool )JString::stristr($key, 'K2ExtraField_')) {
+			foreach ($variables as $key => $value)
+			{
+				if (( bool )JString::stristr($key, 'K2ExtraField_'))
+				{
 					$object = new JObject;
 					$object->set('id', JString::substr($key, 13));
 					$object->set('value', $value);
@@ -341,7 +430,8 @@ class plgSystemK2 extends JPlugin {
 
 			$extra_fields_search = '';
 
-			foreach ($objects as $object) {
+			foreach ($objects as $object)
+			{
 				$extra_fields_search .= $this->getSearchValue($object->id, $object->value);
 				$extra_fields_search .= ' ';
 			}
@@ -354,11 +444,14 @@ class plgSystemK2 extends JPlugin {
 			$db->setQuery($query);
 			$result = $db->loadResult();
 
-			if ($result > 0) {
+			if ($result > 0)
+			{
 				$query = "UPDATE #__jf_content SET value=".$db->Quote($extra_fields)." WHERE reference_field = 'extra_fields' AND language_id = {$language_id} AND reference_id = {$reference_id} AND reference_table='k2_items'";
 				$db->setQuery($query);
 				$db->query();
-			} else {
+			}
+			else
+			{
 				$modified = date("Y-m-d H:i:s");
 				$modified_by = $user->id;
 				$published = JRequest::getVar('published', 0);
@@ -371,11 +464,14 @@ class plgSystemK2 extends JPlugin {
 			$db->setQuery($query);
 			$result = $db->loadResult();
 
-			if ($result > 0) {
+			if ($result > 0)
+			{
 				$query = "UPDATE #__jf_content SET value=".$db->Quote($extra_fields_search)." WHERE reference_field = 'extra_fields_search' AND language_id = {$language_id} AND reference_id = {$reference_id} AND reference_table='k2_items'";
 				$db->setQuery($query);
 				$db->query();
-			} else {
+			}
+			else
+			{
 				$modified = date("Y-m-d H:i:s");
 				$modified_by = $user->id;
 				$published = JRequest::getVar('published', 0);
@@ -386,15 +482,18 @@ class plgSystemK2 extends JPlugin {
 
 		}
 
-		if ($option == 'com_joomfish' && ($task == 'translate.edit' || $task == 'translate.apply') && $type == 'k2_items') {
+		if ($option == 'com_joomfish' && ($task == 'translate.edit' || $task == 'translate.apply') && $type == 'k2_items')
+		{
 
-			if ($task == 'translate.edit') {
+			if ($task == 'translate.edit')
+			{
 				$cid = JRequest::getVar('cid');
 				$array = explode('|', $cid[0]);
 				$reference_id = $array[1];
 			}
 
-			if ($task == 'translate.apply') {
+			if ($task == 'translate.apply')
+			{
 				$reference_id = JRequest::getInt('reference_id');
 			}
 
@@ -413,19 +512,23 @@ class plgSystemK2 extends JPlugin {
 
 			$json = new Services_JSON;
 			$output = '';
-			if (count($extraFields)) {
+			if (count($extraFields))
+			{
 				$output .= '<h1>'.JText::_('K2_EXTRA_FIELDS').'</h1>';
 				$output .= '<h2>'.JText::_('K2_ORIGINAL').'</h2>';
-				foreach ($extraFields as $extrafield) {
+				foreach ($extraFields as $extrafield)
+				{
 					$extraField = $json->decode($extrafield->value);
 					$output .= trim($this->renderOriginal($extrafield, $reference_id));
 
 				}
 			}
 
-			if (count($extraFields)) {
+			if (count($extraFields))
+			{
 				$output .= '<h2>'.JText::_('K2_TRANSLATION').'</h2>';
-				foreach ($extraFields as $extrafield) {
+				foreach ($extraFields as $extrafield)
+				{
 					$extraField = $json->decode($extrafield->value);
 					$output .= trim($this->renderTranslated($extrafield, $reference_id));
 				}
@@ -453,7 +556,8 @@ class plgSystemK2 extends JPlugin {
 			');
 		}
 
-		if ($option == 'com_joomfish' && ($task == 'translate.apply' || $task == 'translate.save') && $type == 'k2_extra_fields') {
+		if ($option == 'com_joomfish' && ($task == 'translate.apply' || $task == 'translate.save') && $type == 'k2_extra_fields')
+		{
 
 			$language_id = JRequest::getInt('select_language_id');
 			$reference_id = JRequest::getInt('reference_id');
@@ -464,20 +568,29 @@ class plgSystemK2 extends JPlugin {
 			$names = JRequest::getVar('option_name');
 			$target = JRequest::getVar('option_target');
 
-			for ($i = 0; $i < sizeof($values); $i++) {
+			for ($i = 0; $i < sizeof($values); $i++)
+			{
 				$object = new JObject;
 				$object->set('name', $names[$i]);
 
-				if ($extraFieldType == 'select' || $extraFieldType == 'multipleSelect' || $extraFieldType == 'radio') {
+				if ($extraFieldType == 'select' || $extraFieldType == 'multipleSelect' || $extraFieldType == 'radio')
+				{
 					$object->set('value', $i + 1);
-				} elseif ($extraFieldType == 'link') {
-					if (substr($values[$i], 0, 7) == 'http://') {
+				}
+				elseif ($extraFieldType == 'link')
+				{
+					if (substr($values[$i], 0, 7) == 'http://')
+					{
 						$values[$i] = $values[$i];
-					} else {
+					}
+					else
+					{
 						$values[$i] = 'http://'.$values[$i];
 					}
 					$object->set('value', $values[$i]);
-				} else {
+				}
+				else
+				{
 					$object->set('value', $values[$i]);
 				}
 
@@ -497,11 +610,14 @@ class plgSystemK2 extends JPlugin {
 			$db->setQuery($query);
 			$result = $db->loadResult();
 
-			if ($result > 0) {
+			if ($result > 0)
+			{
 				$query = "UPDATE #__jf_content SET value=".$db->Quote($value)." WHERE reference_field = 'value' AND language_id = {$language_id} AND reference_id = {$reference_id} AND reference_table='k2_extra_fields'";
 				$db->setQuery($query);
 				$db->query();
-			} else {
+			}
+			else
+			{
 				$modified = date("Y-m-d H:i:s");
 				$modified_by = $user->id;
 				$published = JRequest::getVar('published', 0);
@@ -512,15 +628,18 @@ class plgSystemK2 extends JPlugin {
 
 		}
 
-		if ($option == 'com_joomfish' && ($task == 'translate.edit' || $task == 'translate.apply') && $type == 'k2_extra_fields') {
+		if ($option == 'com_joomfish' && ($task == 'translate.edit' || $task == 'translate.apply') && $type == 'k2_extra_fields')
+		{
 
-			if ($task == 'translate.edit') {
+			if ($task == 'translate.edit')
+			{
 				$cid = JRequest::getVar('cid');
 				$array = explode('|', $cid[0]);
 				$reference_id = $array[1];
 			}
 
-			if ($task == 'translate.apply') {
+			if ($task == 'translate.apply')
+			{
 				$reference_id = JRequest::getInt('reference_id');
 			}
 
@@ -528,24 +647,29 @@ class plgSystemK2 extends JPlugin {
 			$extraField->load($reference_id);
 			$language_id = JRequest::getInt('select_language_id');
 
-			if ($extraField->type == 'multipleSelect' || $extraField->type == 'select' || $extraField->type == 'radio') {
+			if ($extraField->type == 'multipleSelect' || $extraField->type == 'select' || $extraField->type == 'radio')
+			{
 				$subheader = '<strong>'.JText::_('K2_OPTIONS').'</strong>';
-			} else {
+			}
+			else
+			{
 				$subheader = '<strong>'.JText::_('K2_DEFAULT_VALUE').'</strong>';
 			}
 
 			$json = new Services_JSON;
 			$objects = $json->decode($extraField->value);
 			$output = '<input type="hidden" value="'.$extraField->type.'" name="extraFieldType" />';
-			if (count($objects)) {
+			if (count($objects))
+			{
 				$output .= '<h1>'.JText::_('K2_EXTRA_FIELDS').'</h1>';
 				$output .= '<h2>'.JText::_('K2_ORIGINAL').'</h2>';
 				$output .= $subheader.'<br />';
 
-				foreach ($objects as $object) {
+				foreach ($objects as $object)
+				{
 					$output .= '<p>'.$object->name.'</p>';
 					if ($extraField->type == 'textfield' || $extraField->type == 'textarea')
-					$output .= '<p>'.$object->value.'</p>';
+						$output .= '<p>'.$object->value.'</p>';
 				}
 			}
 
@@ -556,17 +680,19 @@ class plgSystemK2 extends JPlugin {
 
 			$translatedObjects = $json->decode($result);
 
-			if (count($objects)) {
+			if (count($objects))
+			{
 				$output .= '<h2>'.JText::_('K2_TRANSLATION').'</h2>';
 				$output .= $subheader.'<br />';
-				foreach ($objects as $key=>$value) {
+				foreach ($objects as $key => $value)
+				{
 					if (isset($translatedObjects[$key]))
-					$value = $translatedObjects[$key];
+						$value = $translatedObjects[$key];
 
 					if ($extraField->type == 'textarea')
-					$output .= '<p><textarea name="option_name[]" cols="30" rows="15"> '.$value->name.'</textarea></p>';
+						$output .= '<p><textarea name="option_name[]" cols="30" rows="15"> '.$value->name.'</textarea></p>';
 					else
-					$output .= '<p><input type="text" name="option_name[]" value="'.$value->name.'" /></p>';
+						$output .= '<p><input type="text" name="option_name[]" value="'.$value->name.'" /></p>';
 					$output .= '<p><input type="hidden" name="option_value[]" value="'.$value->value.'" /></p>';
 					$output .= '<p><input type="hidden" name="option_target[]" value="'.$value->target.'" /></p>';
 				}
@@ -588,7 +714,8 @@ class plgSystemK2 extends JPlugin {
 		return;
 	}
 
-	function getSearchValue($id, $currentValue) {
+	function getSearchValue($id, $currentValue)
+	{
 
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
 		$row = &JTable::getInstance('K2ExtraField', 'Table');
@@ -599,24 +726,32 @@ class plgSystemK2 extends JPlugin {
 		$jsonObject = $json->decode($row->value);
 
 		$value = '';
-		if ($row->type == 'textfield' || $row->type == 'textarea') {
+		if ($row->type == 'textfield' || $row->type == 'textarea')
+		{
 			$value = $currentValue;
-		} else if ($row->type == 'multipleSelect' || $row->type == 'link') {
-			foreach ($jsonObject as $option) {
+		}
+		else if ($row->type == 'multipleSelect' || $row->type == 'link')
+		{
+			foreach ($jsonObject as $option)
+			{
 				if (@in_array($option->value, $currentValue))
-				$value .= $option->name.' ';
+					$value .= $option->name.' ';
 			}
-		} else {
-			foreach ($jsonObject as $option) {
+		}
+		else
+		{
+			foreach ($jsonObject as $option)
+			{
 				if ($option->value == $currentValue)
-				$value .= $option->name;
+					$value .= $option->name;
 			}
 		}
 		return $value;
 
 	}
 
-	function renderOriginal($extraField, $itemID) {
+	function renderOriginal($extraField, $itemID)
+	{
 
 		$mainframe = &JFactory::getApplication();
 		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
@@ -627,22 +762,29 @@ class plgSystemK2 extends JPlugin {
 
 		$defaultValues = $json->decode($extraField->value);
 
-		foreach ($defaultValues as $value) {
+		foreach ($defaultValues as $value)
+		{
 			if ($extraField->type == 'textfield' || $extraField->type == 'textarea')
-			$active = $value->value;
-			else if ($extraField->type == 'link') {
+				$active = $value->value;
+			else if ($extraField->type == 'link')
+			{
 				$active[0] = $value->name;
 				$active[1] = $value->value;
 				$active[2] = $value->target;
-			} else
-			$active = '';
+			}
+			else
+				$active = '';
 		}
 
-		if (isset($item)) {
+		if (isset($item))
+		{
 			$currentValues = $json->decode($item->extra_fields);
-			if (count($currentValues)) {
-				foreach ($currentValues as $value) {
-					if ($value->id == $extraField->id) {
+			if (count($currentValues))
+			{
+				foreach ($currentValues as $value)
+				{
+					if ($value->id == $extraField->id)
+					{
 						$active = $value->value;
 					}
 
@@ -653,29 +795,30 @@ class plgSystemK2 extends JPlugin {
 
 		$output = '';
 
-		switch ($extraField->type) {
+		switch ($extraField->type)
+		{
 
-			case 'textfield':
+			case 'textfield' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br /><input type="text" disabled="disabled" name="OriginalK2ExtraField_'.$extraField->id.'" value="'.$active.'"/></div><br /><br />';
 				break;
 
-			case 'textarea':
+			case 'textarea' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br /><textarea disabled="disabled" name="OriginalK2ExtraField_'.$extraField->id.'" rows="10" cols="40">'.$active.'</textarea></div><br /><br />';
 				break;
 
-			case 'link':
+			case 'link' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br />';
 				$output .= '&nbsp;<input disabled="disabled"	type="text" name="OriginalK2ExtraField_'.$extraField->id.'[]" value="'.$active[0].'"/><br />';
 				$output .= '<br /><br /></div>';
 				break;
-
 		}
 
 		return $output;
 
 	}
 
-	function renderTranslated($extraField, $itemID) {
+	function renderTranslated($extraField, $itemID)
+	{
 
 		$mainframe = &JFactory::getApplication();
 		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php');
@@ -687,22 +830,29 @@ class plgSystemK2 extends JPlugin {
 
 		$defaultValues = $json->decode($extraField->value);
 
-		foreach ($defaultValues as $value) {
+		foreach ($defaultValues as $value)
+		{
 			if ($extraField->type == 'textfield' || $extraField->type == 'textarea')
-			$active = $value->value;
-			else if ($extraField->type == 'link') {
+				$active = $value->value;
+			else if ($extraField->type == 'link')
+			{
 				$active[0] = $value->name;
 				$active[1] = $value->value;
 				$active[2] = $value->target;
-			} else
-			$active = '';
+			}
+			else
+				$active = '';
 		}
 
-		if (isset($item)) {
+		if (isset($item))
+		{
 			$currentValues = $json->decode($item->extra_fields);
-			if (count($currentValues)) {
-				foreach ($currentValues as $value) {
-					if ($value->id == $extraField->id) {
+			if (count($currentValues))
+			{
+				foreach ($currentValues as $value)
+				{
+					if ($value->id == $extraField->id)
+					{
 						$active = $value->value;
 					}
 
@@ -717,9 +867,12 @@ class plgSystemK2 extends JPlugin {
 		$db->setQuery($query);
 		$result = $db->loadResult();
 		$currentValues = $json->decode($result);
-		if (count($currentValues)) {
-			foreach ($currentValues as $value) {
-				if ($value->id == $extraField->id) {
+		if (count($currentValues))
+		{
+			foreach ($currentValues as $value)
+			{
+				if ($value->id == $extraField->id)
+				{
 					$active = $value->value;
 				}
 
@@ -728,29 +881,30 @@ class plgSystemK2 extends JPlugin {
 
 		$output = '';
 
-		switch ($extraField->type) {
+		switch ($extraField->type)
+		{
 
-			case 'textfield':
+			case 'textfield' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br /><input type="text" name="K2ExtraField_'.$extraField->id.'" value="'.$active.'"/></div><br /><br />';
 				break;
 
-			case 'textarea':
+			case 'textarea' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br /><textarea name="K2ExtraField_'.$extraField->id.'" rows="10" cols="40">'.$active.'</textarea></div><br /><br />';
 				break;
 
-			case 'select':
+			case 'select' :
 				$output = '<div style="display:none">'.JHTML::_('select.genericlist', $defaultValues, 'K2ExtraField_'.$extraField->id, '', 'value', 'name', $active).'</div>';
 				break;
 
-			case 'multipleSelect':
+			case 'multipleSelect' :
 				$output = '<div style="display:none">'.JHTML::_('select.genericlist', $defaultValues, 'K2ExtraField_'.$extraField->id.'[]', 'multiple="multiple"', 'value', 'name', $active).'</div>';
 				break;
 
-			case 'radio':
+			case 'radio' :
 				$output = '<div style="display:none">'.JHTML::_('select.radiolist', $defaultValues, 'K2ExtraField_'.$extraField->id, '', 'value', 'name', $active).'</div>';
 				break;
 
-			case 'link':
+			case 'link' :
 				$output = '<div><strong>'.$extraField->name.'</strong><br />';
 				$output .= '<input type="text" name="K2ExtraField_'.$extraField->id.'[]" value="'.$active[0].'"/><br />';
 				$output .= '<input type="hidden" name="K2ExtraField_'.$extraField->id.'[]" value="'.$active[1].'"/><br />';

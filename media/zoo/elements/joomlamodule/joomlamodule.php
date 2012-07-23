@@ -1,18 +1,16 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      joomlamodule.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
    Class: ElementJoomlamodule
        The Joomla module wapper element class
 */
-class ElementJoomlamodule extends Element {
+class ElementJoomlamodule extends Element implements iSubmittable {
 
 	/*
 		Function: render
@@ -28,8 +26,8 @@ class ElementJoomlamodule extends Element {
 
 		// get modules
 		$modules = $this->app->module->load();
-		$value   = $this->_data->get('value');
-		
+		$value   = $this->get('value', $this->config->get('default'));
+
 		if ($value && isset($modules[$value])) {
 			if ($modules[$value]->published) {
 
@@ -49,7 +47,7 @@ class ElementJoomlamodule extends Element {
 				return $rendered;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -63,17 +61,39 @@ class ElementJoomlamodule extends Element {
 	public function edit() {
 
 		// init vars
-		$default = $this->_config->get('default');
-
-		// set default, if item is new
-		if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-			$this->_data->set('value', $default);
-		}
-
 		$options = array($this->app->html->_('select.option', '', '- '.JText::_('Select Module').' -'));
 
-		return $this->app->html->_('zoo.modulelist', $options, 'elements[' . $this->identifier . '][value]', null, 'value', 'text', $this->_data->get('value'));
+		return $this->app->html->_('zoo.modulelist', $options, $this->getControlName('value'), null, 'value', 'text', $this->get('value', $this->config->get('default')));
 
+	}
+
+	/*
+		Function: renderSubmission
+			Renders the element in submission.
+
+	   Parameters:
+            $params - AppData submission parameters
+
+		Returns:
+			String - html
+	*/
+	public function renderSubmission($params = array()) {
+        return $this->edit();
+	}
+
+	/*
+		Function: validateSubmission
+			Validates the submitted element
+
+	   Parameters:
+            $value  - AppData value
+            $params - AppData submission parameters
+
+		Returns:
+			Array - cleaned value
+	*/
+	public function validateSubmission($value, $params) {
+		return array('value' => $value->get('value'));
 	}
 
 }

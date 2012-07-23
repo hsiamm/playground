@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      pagination.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -128,14 +126,14 @@ class AppPagination {
 
             if ($this->_current > 1) {
 				$link  = $url;
-                $html .= '<a class="start" href="'.JRoute::_($link).'">FIRST</a>&nbsp;';
+                $html .= '<a class="start" href="'.JRoute::_($link).'">&lt;&lt;</a>&nbsp;';
 				$link  = $this->_current - 1 == 1 ? $url : $this->link($url, $this->_name.'='.($this->_current - 1));
 				$html .= '<a class="previous" href="'.JRoute::_($link).'">&lt;</a>&nbsp;';
             }
 
             for ($i = $range_start; $i <= $range_end; $i++) {
                 if ($i == $this->_current) {
-	                $html .= '<span class="black">'.$i.'</span>';
+	                $html .= '[<span>'.$i.'</span>]';
                 } else {
 					$link  = $i == 1 ? $url : $this->link($url, $this->_name.'='.$i);
 	                $html .= '<a href="'.JRoute::_($link).'">'.$i.'</a>';
@@ -147,7 +145,7 @@ class AppPagination {
 				$link  = $this->link($url, $this->_name.'='.($this->_current + 1));
                 $html .= '<a class="next" href="'.JRoute::_($link).'">&gt;&nbsp;</a>&nbsp;';
 				$link  = $this->link($url, $this->_name.'='.($this->_pages));
-                $html .= '<a class="end" href="'.JRoute::_($link).'">LAST&nbsp;</a>&nbsp;';
+                $html .= '<a class="end" href="'.JRoute::_($link).'">&gt;&gt;&nbsp;</a>&nbsp;';
             }
 
 		}

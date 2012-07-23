@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1340 2011-11-25 16:19:55Z lefteris.kavadas $
+ * @version		$Id: default.php 1540 2012-04-06 16:04:55Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -46,12 +46,13 @@ $document->addScriptDeclaration("
         <th><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
         <th><?php echo JHTML::_('grid.sort', 'K2_NAME', 'name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
         <th><?php echo JHTML::_('grid.sort', 'K2_PUBLISHED', 'published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+        <th><?php echo JText::_('K2_ITEMS'); ?></th>
         <th><?php echo JHTML::_('grid.sort', 'K2_ID', 'id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <td colspan="5"><?php echo $this->page->getListFooter(); ?></td>
+        <td colspan="6"><?php echo $this->page->getListFooter(); ?></td>
       </tr>
     </tfoot>
     <tbody>
@@ -61,6 +62,7 @@ $document->addScriptDeclaration("
         <td class="k2Center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
         <td><a href="<?php echo JRoute::_('index.php?option=com_k2&view=tag&cid='.$row->id); ?>"><?php echo $row->name; ?></a></td>
         <td class="k2Center"><?php echo JHTML::_('grid.published', $row, $key ); ?></td>
+        <td class="k2Center"><?php echo $row->numOfItems; ?></td>
         <td class="k2Center"><?php echo $row->id; ?></td>
       </tr>
       <?php endforeach; ?>

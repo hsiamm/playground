@@ -1,23 +1,21 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$id = 'elements['.$element.']['.$index.']';
-
 ?>
 
-<div id="<?php echo $id; ?>">
+<div>
 
-	<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][value]', $link, 'size="60" maxlength="255" title="'.JText::_('Link').'"'); ?>
+    <?php echo $this->app->html->_('control.text', $this->getControlName('value'), $this->get('value'), 'size="60" title="'.JText::_('Link').'"'); ?>
+
+    <?php if ($trusted_mode) : ?>
 
 	<div class="more-options">
 		<div class="trigger">
@@ -28,22 +26,40 @@ $id = 'elements['.$element.']['.$index.']';
 		</div>
 
 		<div class="advanced options">
+
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][text]', $text, 'size="60" maxlength="255" title="'.JText::_('Text').'" placeholder="'.JText::_('Text').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('text'), $this->get('text'), 'size="60" title="'.JText::_('Text').'" placeholder="'.JText::_('Text').'"'); ?>
 			</div>
 
 			<div class="row">
 				<strong><?php echo JText::_('New window'); ?></strong>
-				<?php echo $this->app->html->_('select.booleanlist', 'elements['.$element.']['.$index.'][target]', $target, $target); ?>
+				<?php echo $this->app->html->_('select.booleanlist', $this->getControlName('target'), '', $this->get('target')) ?>
 			</div>
 
-			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][custom_title]', $title, 'size="60" maxlength="255" title="'.JText::_('Title').'" placeholder="'.JText::_('Title').'"'); ?>
+			<div class="row short">
+				<?php echo $this->app->html->_('control.text', $this->getControlName('custom_title'), $this->get('custom_title'), 'size="60" title="'.JText::_('Title').'" placeholder="'.JText::_('Title').'"'); ?>
 			</div>
 
-			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][rel]', $rel, 'size="60" maxlength="255" title="'.JText::_('Rel').'" placeholder="'.JText::_('Rel').'"'); ?>
+			<div class="row short">
+				<?php echo $this->app->html->_('control.text', $this->getControlName('rel'), $this->get('rel'), 'size="60" title="'.JText::_('Rel').'" placeholder="'.JText::_('Rel').'"'); ?>
 			</div>
+
 		</div>
 	</div>
+
+    <?php endif; ?>
+
 </div>
+
+<?php if ($this->config->get('add_protocol', 1)) : ?>
+<script type="text/javascript">
+	jQuery(function($) {
+		$('input[name="<?php echo $this->getControlName('value'); ?>"]').blur(function(){
+			var link = $(this).val();
+			if((link.length > 0) && (link.indexOf(':') == -1)){
+				$(this).val('http://' + link);
+			}
+		});
+	});
+</script>
+<?php endif; ?>

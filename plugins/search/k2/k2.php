@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: k2.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version		$Id: k2.php 1552 2012-04-19 12:10:57Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -13,23 +13,28 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
 
-class plgSearchK2 extends JPlugin {
+class plgSearchK2 extends JPlugin
+{
 
-	function onContentSearchAreas(){
+	function onContentSearchAreas()
+	{
 		return $this->onSearchAreas();
 	}
 
-	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null){
-		return $this->onSearch($text, $phrase = '', $ordering = '', $areas = null);
+	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
+	{
+		return $this->onSearch($text, $phrase, $ordering, $areas);
 	}
 
-	function onSearchAreas() {
+	function onSearchAreas()
+	{
 		JPlugin::loadLanguage('plg_search_k2', JPATH_ADMINISTRATOR);
-		static $areas = array('k2'=>'K2_ITEMS');
+		static $areas = array('k2' => 'K2_ITEMS');
 		return $areas;
 	}
 
-	function onSearch($text, $phrase = '', $ordering = '', $areas = null) {
+	function onSearch($text, $phrase = '', $ordering = '', $areas = null)
+	{
 		JPlugin::loadLanguage('plg_search_k2', JPATH_ADMINISTRATOR);
 		jimport('joomla.html.parameter');
 		$mainframe = &JFactory::getApplication();
@@ -38,10 +43,12 @@ class plgSearchK2 extends JPlugin {
 		$now = $jnow->toMySQL();
 		$nullDate = $db->getNullDate();
 		$user = &JFactory::getUser();
-		if(K2_JVERSION=='16'){
+		if (K2_JVERSION == '16')
+		{
 			$accessCheck = " IN(".implode(',', $user->authorisedLevels()).") ";
 		}
-		else {
+		else
+		{
 			$aid = $user->get('aid');
 			$accessCheck = " <= {$aid} ";
 		}
@@ -52,8 +59,10 @@ class plgSearchK2 extends JPlugin {
 		require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'helpers'.DS.'route.php');
 
 		$searchText = $text;
-		if (is_array($areas)) {
-			if (!array_intersect($areas, array_keys($this->onSearchAreas()))) {
+		if (is_array($areas))
+		{
+			if (!array_intersect($areas, array_keys($this->onSearchAreas())))
+			{
 				return array();
 			}
 		}
@@ -64,19 +73,23 @@ class plgSearchK2 extends JPlugin {
 		$limit = $pluginParams->def('search_limit', 50);
 
 		$text = JString::trim($text);
-		if ($text == '') {
+		if ($text == '')
+		{
 			return array();
 		}
 
 		$rows = array();
 
-		if ($limit> 0){
+		if ($limit > 0)
+		{
 
-			if($pluginParams->get('search_tags')){
+			if ($pluginParams->get('search_tags'))
+			{
 				$tagQuery = JString::str_ireplace('*', '', $text);
 				$words = explode(' ', $tagQuery);
-				for($i=0; $i<count($words); $i++){
-					$words[$i].= '*';
+				for ($i = 0; $i < count($words); $i++)
+				{
+					$words[$i] .= '*';
 				}
 				$tagQuery = implode(' ', $words);
 				$tagQuery = $db->Quote($db->getEscaped($tagQuery, true), false);
@@ -85,31 +98,33 @@ class plgSearchK2 extends JPlugin {
 				$db->setQuery($query);
 				$tagIDs = $db->loadResultArray();
 
-				if(count($tagIDs)){
+				if (count($tagIDs))
+				{
 					JArrayHelper::toInteger($tagIDs);
-					$query = "SELECT itemID FROM #__k2_tags_xref WHERE tagID IN (".implode(',',$tagIDs).")";
+					$query = "SELECT itemID FROM #__k2_tags_xref WHERE tagID IN (".implode(',', $tagIDs).")";
 					$db->setQuery($query);
 					$itemIDs = $db->loadResultArray();
 				}
 			}
 
-
-			if($phrase=='exact'){
-				$text = JString::trim($text,'"');
+			if ($phrase == 'exact')
+			{
+				$text = JString::trim($text, '"');
 				$text = $db->Quote('"'.$db->getEscaped($text, true).'"', false);
 			}
-			else {
+			else
+			{
 				$text = JString::str_ireplace('*', '', $text);
 				$words = explode(' ', $text);
-				for($i=0; $i<count($words); $i++){
-					if($phrase=='all')
-					$words[$i]= '+'.$words[$i];
-					$words[$i].= '*';
+				for ($i = 0; $i < count($words); $i++)
+				{
+					if ($phrase == 'all')
+						$words[$i] = '+'.$words[$i];
+					$words[$i] .= '*';
 				}
 				$text = implode(' ', $words);
 				$text = $db->Quote($db->getEscaped($text, true), false);
 			}
-
 
 			$query = "
 		SELECT i.title AS title,
@@ -128,11 +143,12 @@ class plgSearchK2 extends JPlugin {
     	FROM #__k2_items AS i
     	INNER JOIN #__k2_categories AS c ON c.id=i.catid AND c.access {$accessCheck}
 		WHERE (";
-			if($pluginParams->get('search_tags') && count($itemIDs)){
+			if ($pluginParams->get('search_tags') && count($itemIDs))
+			{
 				JArrayHelper::toInteger($itemIDs);
-				$query.=" i.id IN (".implode(',',$itemIDs).") OR ";
+				$query .= " i.id IN (".implode(',', $itemIDs).") OR ";
 			}
-			$query.="MATCH(i.title, i.introtext, i.`fulltext`,i.extra_fields_search,i.image_caption,i.image_credits,i.video_caption,i.video_credits,i.metadesc,i.metakey) AGAINST ({$text} IN BOOLEAN MODE)
+			$query .= "MATCH(i.title, i.introtext, i.`fulltext`,i.extra_fields_search,i.image_caption,i.image_credits,i.video_caption,i.video_credits,i.metadesc,i.metakey) AGAINST ({$text} IN BOOLEAN MODE)
 		)
 		AND i.trash = 0
 	    AND i.published = 1
@@ -141,37 +157,45 @@ class plgSearchK2 extends JPlugin {
 	    AND c.access {$accessCheck}
 	    AND c.trash = 0
 	    AND ( i.publish_up = ".$db->Quote($nullDate)." OR i.publish_up <= ".$db->Quote($now)." )
-        AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." )
-	    GROUP BY i.id ";
+        AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." )";
+			if (K2_JVERSION == '16' && $mainframe->isSite() && $mainframe->getLanguageFilter())
+			{
+				$languageTag = JFactory::getLanguage()->getTag();
+				$query .= " AND c.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').") AND i.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').") ";
+			}
+			$query .= " GROUP BY i.id ";
 
-			switch ($ordering) {
-				case 'oldest':
-					$query.= 'ORDER BY i.created ASC';
+			switch ($ordering)
+			{
+				case 'oldest' :
+					$query .= 'ORDER BY i.created ASC';
 					break;
 
-				case 'popular':
-					$query.= 'ORDER BY i.hits DESC';
+				case 'popular' :
+					$query .= 'ORDER BY i.hits DESC';
 					break;
 
-				case 'alpha':
-					$query.= 'ORDER BY i.title ASC';
+				case 'alpha' :
+					$query .= 'ORDER BY i.title ASC';
 					break;
 
-				case 'category':
-					$query.= 'ORDER BY c.name ASC, i.title ASC';
+				case 'category' :
+					$query .= 'ORDER BY c.name ASC, i.title ASC';
 					break;
 
-				case 'newest':
-				default:
-					$query.= 'ORDER BY i.created DESC';
+				case 'newest' :
+				default :
+					$query .= 'ORDER BY i.created DESC';
 					break;
 			}
 
 			$db->setQuery($query, 0, $limit);
 			$list = $db->loadObjectList();
 			$limit -= count($list);
-			if (isset($list)) {
-				foreach ($list as $key=>$item) {
+			if (isset($list))
+			{
+				foreach ($list as $key => $item)
+				{
 					$list[$key]->href = JRoute::_(K2HelperRoute::getItemRoute($item->slug, $item->catslug));
 
 				}
@@ -180,17 +204,21 @@ class plgSearchK2 extends JPlugin {
 		}
 
 		$results = array();
-		if (count($rows)) {
-			foreach ($rows as $row) {
+		if (count($rows))
+		{
+			foreach ($rows as $row)
+			{
 				$new_row = array();
-				foreach ($row as $key=>$item) {
+				foreach ($row as $key => $item)
+				{
 					$item->browsernav = '';
 					$item->tag = $searchText;
-					if (searchHelper::checkNoHTML($item, $searchText, array('text', 'title', 'metakey', 'metadesc', 'section', 'image_caption', 'image_credits', 'video_caption', 'video_credits', 'extra_fields_search', 'tag'))) {
+					if (searchHelper::checkNoHTML($item, $searchText, array('text', 'title', 'metakey', 'metadesc', 'section', 'image_caption', 'image_credits', 'video_caption', 'video_credits', 'extra_fields_search', 'tag')))
+					{
 						$new_row[] = $item;
 					}
 				}
-				$results = array_merge($results, (array) $new_row);
+				$results = array_merge($results, (array)$new_row);
 			}
 		}
 
@@ -198,4 +226,3 @@ class plgSearchK2 extends JPlugin {
 	}
 
 }
-

@@ -1,10 +1,8 @@
 <?php
 /**
 * @package   ZOO Comment
-* @file      changelog.php
-* @version   2.4.3
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
@@ -15,6 +13,21 @@ defined('_JEXEC') or die('Restricted access');
 
 Changelog
 ------------
+
+2.5.3
+# minor css fix for list style
+
+2.5.2
+^ cleanup in bubbles style
+
+2.5.1
+# fixed problems with showing comments from unpublished items
+
+2.5.0
+^ initial 2.5 release
+
+2.4.4
+^ changed paths
 
 2.4.3
 + added rel="nofollow" to comment author url

@@ -1,36 +1,35 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<form id="items-element" action="index.php" method="post" name="adminForm" accept-charset="utf-8">
+<form id="items-element" action="<?php echo $this->app->link(array('controller' => $this->controller)); ?>" method="post" name="adminForm" accept-charset="utf-8">
 
-<table>
-	<tr>
-		<td align="left" width="100%">
+	<ul class="filter">
+		<li class="filter-left">
 			<?php echo JText::_('Filter'); ?>:
-			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
-		</td>
-		<td nowrap="nowrap">
-			<?php echo $this->lists['select_category']; ?>
-		</td>	
+			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="rounded" />
+			<button onclick="this.form.submit();"><?php echo JText::_('Search'); ?></button>
+			<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+		</li>
+		<li class="filter-right">
+			<?php echo $this->lists['select_category'];?>
+		</li>
 		<?php if (count($this->type_filter) > 1) : ?>
-		<td nowrap="nowrap">
-			<?php echo $this->lists['select_type']; ?>
-		</td>
+		<li class="filter-right">
+			<?php echo $this->lists['select_type'];?>
+		</li>
 		<?php endif; ?>
-		<td nowrap="nowrap">
-			<?php echo $this->lists['select_author']; ?>
-		</td>
-	</tr>
-</table>
+		<li class="filter-right">
+			<?php echo $this->lists['select_author'];?>
+		</li>
+	</ul>
 
-<div id="tablecell">
-	<table class="adminlist">
+	<table id="actionlist" class="list stripe">
 		<thead>
 			<tr>
+				<?php if (!$this->pagination instanceof AppPagination) : ?>
 				<th width="5">
 					<?php echo JText::_('NUM'); ?>
 				</th>
+				<?php endif; ?>
 				<th width="20">
 					&nbsp;
 				</th>
@@ -59,31 +58,48 @@
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="11">
-					<?php echo $this->pagination->getListFooter(); ?>
+				<td colspan="9">
+					<?php
+					if ($this->pagination instanceof AppPagination) {
+						$pagination_link = $this->app->link(array(
+							'option' => $this->option,
+							'controller' => $this->controller,
+							'task' => 'element',
+							'tmpl' => 'component',
+							'filter_order' => $this->lists['order'],
+							'filter_order_Dir' => $this->lists['order_Dir'],
+							'object' => $this->app->request->getVar('object'),
+							'func' => $this->app->request->getVar('func', 'jSelectArticle'),
+							'app_id' => $this->application->id,
+							'item_filter' => $this->filter_item	,
+							'type_filter' => $this->type_filter
+						));
+						echo $this->pagination->render($pagination_link);
+					} else {
+						echo $this->pagination->getListFooter();
+					}
+					?>
 				</td>
 			</tr>
-		</tfoot>	
+		</tfoot>
 		<tbody>
 		<?php
 		$k = 0;
-		$nullDate = $this->app->database->getNullDate();
 		for ($i = 0, $n = count($this->items); $i < $n; $i++) {
 			$row    = &$this->items[$i];
-			
+
 			// author
 			$author = $row->created_by_alias;
 			if (!$author && isset($this->users[$row->created_by])) {
 				$author = $this->users[$row->created_by]->name;
 			}
-			
-			// access
-			$access = isset($this->groups[$row->access]) ? $this->groups[$row->access]->name : '';
 		?>
 			<tr class="<?php echo "row$k"; ?>">
+				<?php if (!$this->pagination instanceof AppPagination) : ?>
 				<td>
 					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
+				<?php endif; ?>
 				<td align="center">
 					<img src="<?php echo $this->app->path->url('assets:images/page_white.png'); ?>" alt="page_white.png" border="0" />
 				</td>
@@ -96,7 +112,7 @@
 					<?php echo $this->application->getType($row->type)->name; ?>
 				</td>
 			<td align="center">
-				<?php echo $access;?>
+				<?php echo JText::_($this->app->zoo->getGroup($row->access)->name); ?>
 			</td>
 			<td>
 				<?php echo $author; ?>
@@ -117,21 +133,18 @@
 			?>
 		</tbody>
 	</table>
-</div>
 
-<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-<input type="hidden" name="task" value="element" />
-<input type="hidden" name="tmpl" value="component" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-<input type="hidden" name="object" value="<?php echo $this->app->request->getVar('object'); ?>" />
-<input type="hidden" name="func" value="<?php echo $this->app->request->getVar('func', 'jSelectArticle'); ?>" />
-<input type="hidden" name="app_id" value="<?php echo $this->application->id; ?>" />
-<?php foreach($this->type_filter as $type_filter) : ?>
-	<input type="hidden" name="type_filter[]" value="<?php echo $type_filter; ?>" />
-<?php endforeach; ?>
-<input type="hidden" name="item_filter" value="<?php echo $this->filter_item; ?>" />
-<?php echo $this->app->html->_('form.token'); ?>
+	<input type="hidden" name="task" value="element" />
+	<input type="hidden" name="tmpl" value="component" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+	<input type="hidden" name="object" value="<?php echo $this->app->request->getVar('object'); ?>" />
+	<input type="hidden" name="func" value="<?php echo $this->app->request->getVar('func', 'jSelectArticle'); ?>" />
+	<input type="hidden" name="app_id" value="<?php echo $this->application->id; ?>" />
+	<?php foreach($this->type_filter as $type_filter) : ?>
+		<input type="hidden" name="type_filter[]" value="<?php echo $type_filter; ?>" />
+	<?php endforeach; ?>
+	<input type="hidden" name="item_filter" value="<?php echo $this->filter_item; ?>" />
+	<?php echo $this->app->html->_('form.token'); ?>
 
 </form>

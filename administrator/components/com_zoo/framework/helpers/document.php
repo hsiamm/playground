@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      document.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -14,18 +12,23 @@
 */
 class DocumentHelper extends AppHelper {
 
+	private $file_mod_date;
+
 	/*
 		Function: addStylesheet
 			Add stylesheet to the document.
 
 		Parameters:
 			$path - Path to css file
+			$version - version to attach, if null date will be used
 
 		Returns:
 			Void
 	*/
-	public function addStylesheet($path) {
-		$this->app->system->document->addStylesheet($this->app->path->url($path));
+	public function addStylesheet($path, $version = null) {
+		if ($file = $this->app->path->url($path)) {
+			$this->app->system->document->addStylesheet($file.$this->getVersion($version));
+		}
 	}
 
 	/*
@@ -34,12 +37,24 @@ class DocumentHelper extends AppHelper {
 
 		Parameters:
 			$path - Path to js file
+			$version - version to attach, if null date will be used
 
 		Returns:
 			Void
 	*/
-	public function addScript($path) {
-		$this->app->system->document->addScript($this->app->path->url($path));
+	public function addScript($path, $version = null) {
+
+		$version = $this->getVersion($version);
+
+		// load jQuery, if not loaded before
+		if (!$this->app->system->application->get('jquery')) {
+			$this->app->system->application->set('jquery', true);
+			$this->app->system->document->addScript($this->app->path->url('libraries:jquery/jquery.js').$version);
+		}
+
+		if ($file = $this->app->path->url($path)) {
+			$this->app->system->document->addScript($file.$version);
+		}
 	}
 
 	/*
@@ -52,9 +67,22 @@ class DocumentHelper extends AppHelper {
 
 		Returns:
 			Mixed
-	*/	
+	*/
     public function __call($method, $args) {
 		return $this->_call(array($this->app->system->document, $method), $args);
     }
-	
+
+	private function getVersion($version = null) {
+
+		if ($version === null) {
+			if (empty($this->file_mod_date)) {
+				$this->file_mod_date = date("Ymd", filemtime(__FILE__));
+			}
+
+			return '?ver='.$this->file_mod_date;
+		}
+
+		return empty($version) ? '' : '?ver='.$version;
+	}
+
 }

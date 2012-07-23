@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      intensedebate.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,6 +11,22 @@
        The Intensedebate element class (http://www.intensedebate.com)
 */
 class ElementIntensedebate extends Element implements iSubmittable {
+
+	/*
+		Function: hasValue
+			Checks if the element's value is set.
+
+	   Parameters:
+			$params - render parameter
+
+		Returns:
+			Boolean - true, on success
+	*/
+	public function hasValue($params = array()) {
+		$value   = $this->get('value', $this->config->get('default'));
+		$account = $this->config->get('account');
+		return !empty($value) && !empty($account);
+	}
 
 	/*
 		Function: render
@@ -26,19 +40,11 @@ class ElementIntensedebate extends Element implements iSubmittable {
 	*/
 	public function render($params = array()) {
 
-		// init vars
-		$account = $this->_config->get('account');		
-		
 		// render html
-		if ($account && $this->_data->get('value')) {
-			$html[] = "<script type='text/javascript'>";
-			$html[] = "var idcomments_acct = '".$account."';";
-			$html[] = "var idcomments_post_id = 'zoo-".$this->_item->id."';";
-			$html[] = "var idcomments_post_url;";
-			$html[] = "</script>";
-			$html[] = '<span id="IDCommentsPostTitle" style="display:none"></span>';
-			$html[] = "<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>";
-			return implode("\n", $html);
+		if (($account = $this->config->get('account')) && $this->get('value', $this->config->get('default'))) {
+			if ($layout = $this->getLayout()) {
+				return $this->renderLayout($layout, compact('account'));
+			}
 		}
 
 		return null;
@@ -52,16 +58,7 @@ class ElementIntensedebate extends Element implements iSubmittable {
 	       String - html
 	*/
 	public function edit() {
-
-		// init vars
-		$default = $this->_config->get('default');
-		
-		// set default, if item is new
-		if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-			$this->_data->set('value', 1);
-		}
-
-		return $this->app->html->_('select.booleanlist', 'elements[' . $this->identifier . '][value]', '', $this->_data->get('value'));
+		return $this->app->html->_('select.booleanlist', $this->getControlName('value'), '', $this->get('value', $this->config->get('default')));
 	}
 
 	/*
@@ -69,7 +66,7 @@ class ElementIntensedebate extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html

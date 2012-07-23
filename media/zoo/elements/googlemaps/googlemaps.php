@@ -1,22 +1,17 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      googlemaps.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: ElementGooglemaps
 		The google maps element class
 */
 class ElementGooglemaps extends Element implements iSubmittable {
-	
+
 	/*
 		Function: hasValue
 			Checks if the element's value is set.
@@ -28,10 +23,10 @@ class ElementGooglemaps extends Element implements iSubmittable {
 			Boolean - true, on success
 	*/
 	public function hasValue($params = array()) {
-		$value = $this->_data->get('location');
+		$value = $this->get('location');
 		return !empty($value);
 	}
-	
+
 	/*
 		Function: render
 			Renders the element.
@@ -45,11 +40,12 @@ class ElementGooglemaps extends Element implements iSubmittable {
 	public function render($params = array()) {
 
 		// init vars
-		$location          = $this->_data->get('location');
-		$locale            = $this->_config->get('locale');
+		$params			   = $this->app->data->create($params);
+		$location          = $this->get('location');
+		$locale            = $this->config->get('locale');
+		$key			   = $this->config->get('key');
 
 		// init display params
-		$params            = $this->app->data->create($params);
 		$layout   		   = $params->get('layout');
 		$width             = $params->get('width');
 		$width_unit        = $params->get('width_unit');
@@ -88,24 +84,29 @@ class ElementGooglemaps extends Element implements iSubmittable {
 				$marker_text = $item->name;
 			}
 		}
-		
+
 		// get geocode cache
-		$cache = $this->app->cache->create($this->app->path->path('cache:') . '/geocode_cache.txt');
+		$cache = $this->app->cache->create($this->app->path->path('cache:') . '/geocode_cache');
 		if (!$cache->check()) {
-			return "<div class=\"alert\"><strong>Cache not writeable please update the file permissions! (geocode_cache.txt)</strong></div>\n";
+			return "<div class=\"alert\"><strong>Cache not writeable please update the file permissions! (geocode_cache)</strong></div>\n";
 		}
-		
+
 		// get map center coordinates
-		$center = $this->app->googlemaps->locate($location, $cache);
-		if (!$center) { 
-			return "<div class=\"alert\"><strong>Unable to get map center coordinates, please verify your location! (".$location.")</strong></div>\n";
+		try {
+
+			$center = $this->app->googlemaps->locate($location, $cache, $key);
+
+		} catch (GooglemapsHelperException $e) {
+
+			return "<div class=\"alert\"><strong>({$e})</strong></div>\n";
+
 		}
 
 		// save location to geocode cache
 		if ($cache) $cache->save();
-		
+
 		// css parameters
-		$maps_id           = 'googlemaps-'.$this->_item->id;
+		$maps_id           = 'googlemaps-'.uniqid();
 		$css_module_width  = 'width: '.$width.$width_unit.';';
 		$css_module_height = 'height: '.$height.'px;';
 		$from_address      = JText::_('From address:');
@@ -113,19 +114,19 @@ class ElementGooglemaps extends Element implements iSubmittable {
 		$empty             = JText::_('Please fill in your address.');
 		$not_found         = JText::_('SORRY, ADDRESS NOT FOUND');
 		$address_not_found = ', ' . JText::_('NOT FOUND');
-		
+
 		// js parameters
 		$javascript  = "$('#$maps_id').Googlemaps({ lat:" . $center['lat'] . ", lng:" . $center['lng'] . ", popup: " . $marker_popup . ", text: '" . $this->app->googlemaps->stripText($marker_text) . "', zoom: " . $zoom_level . ", mapCtrl: " . $map_controls . ", zoomWhl: " . $scroll_wheel_zoom . ", mapType: " . $map_type . ", typeCtrl: " . $type_controls . ", directions: " . $directions . ", locale: '" . $locale . "', mainIcon:'" . $main_icon . "', msgFromAddress: '" . $from_address . "', msgGetDirections: '" . $get_directions . "', msgEmpty: '" . $empty . "', msgNotFound: '" . $not_found . "', msgAddressNotFound: '" . $address_not_found . "' });";
 		$javascript = "jQuery(function($) { $javascript });";
 
 		// render layout
 		if ($layout = $this->getLayout()) {
-			return $this->renderLayout($layout, array('maps_id' => $maps_id, 'javascript' => $javascript, 'css_module_width' => $css_module_width, 'css_module_height' => $css_module_height, 'information' => $information, 'locale' => $locale));
+			return $this->renderLayout($layout, compact('maps_id', 'javascript', 'css_module_width', 'css_module_height', 'information', 'locale', 'key'));
 		}
-		
+
 		return null;
 	}
-	
+
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -135,12 +136,7 @@ class ElementGooglemaps extends Element implements iSubmittable {
 	*/
 	public function edit() {
         if ($layout = $this->getLayout('edit.php')) {
-            return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'location' => $this->_data->get('location'),
-                )
-            );
+            return $this->renderLayout($layout);
         }
 
         return null;
@@ -151,7 +147,7 @@ class ElementGooglemaps extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html

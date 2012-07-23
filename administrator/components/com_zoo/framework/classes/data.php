@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      data.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -65,7 +63,7 @@ class AppData extends ArrayObject {
 		Parameters:
 			$name - String
 			$value - Mixed
-			
+
 		Returns:
 			Void
 	*/
@@ -73,14 +71,14 @@ class AppData extends ArrayObject {
 		$this->offsetSet($name, $value);
 		return $this;
 	}
-	
+
 	/*
 		Function: remove
 			Remove a value
 
 		Parameters:
 			$name - String
-			
+
 		Returns:
 			Void
 	*/
@@ -124,7 +122,7 @@ class AppData extends ArrayObject {
 		Parameters:
 			$name - String
 			$value - Mixed
-			
+
 		Returns:
 			Void
 	*/
@@ -138,7 +136,7 @@ class AppData extends ArrayObject {
 
 		Parameters:
 			$name - String
-			
+
 		Returns:
 			Void
 	*/
@@ -149,7 +147,7 @@ class AppData extends ArrayObject {
  	/*
 		Function: __toString
 			Get string (via magic method)
-			
+
 		Returns:
 			String
 	*/
@@ -160,7 +158,7 @@ class AppData extends ArrayObject {
 	/*
 		Function: _read
 			Read array
-	*/	
+	*/
 	protected function _read($array = array()) {
 		return $array;
 	}
@@ -201,34 +199,19 @@ class AppData extends ArrayObject {
 
 		foreach ($parts as $part) {
 
-			// handle ArrayObject
-			if ($data instanceof ArrayObject) {
-
-				if (!$data->offsetExists($part)) {
-					return $default;
-				}
-
-				$data =& $data->offsetGet($part);
+			// handle ArrayObject and Array
+			if (($data instanceof ArrayObject || is_array($data)) && isset($data[$part])) {
+				$data =& $data[$part];
 				continue;
 			}
 
 			// handle object
-			if (is_object($data)) {
-
-				if (!isset($data->$part)) {
-					return $default;
-				}
-
+			if (is_object($data) && isset($data->$part)) {
 				$data =& $data->$part;
 				continue;
 			}
 
-			// handle array
-			if (!isset($data[$part])) {
-				return $default;
-			}
-
-			$data =& $data[$part];
+			return $default;
 		}
 
 		// return existing value
@@ -269,12 +252,9 @@ class AppData extends ArrayObject {
 	*/
 	public function flattenRecursive() {
 		$flat = array();
-		foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($this), RecursiveIteratorIterator::SELF_FIRST) as $key => $value) {
-			if (!is_array($value)) {
-				$flat[] = $value;
-			}
+		foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($this)) as $value) {
+			$flat[] = $value;
 		}
-
 		return $flat;
 	}
 

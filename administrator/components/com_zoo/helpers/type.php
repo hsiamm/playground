@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      type.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -33,8 +31,8 @@ class TypeHelper extends AppHelper {
 			$resource = $type->getApplication()->getResource() .'types/';
 
 			$i = 2;
-			while ($this->app->path->path($resource.$tmp_identifier.'.xml')) {
-				$tmp_identifier = $type->identifier . '-' . $i;
+			while ($this->app->path->path($resource.$tmp_identifier.'.config')) {
+				$tmp_identifier = $type->identifier . '-' . $i++;
 			}
 			$type->identifier = $tmp_identifier;
 		}
@@ -64,7 +62,11 @@ class TypeHelper extends AppHelper {
 		// rename folder if special type
 		if ($renderer->pathExists('item'.DIRECTORY_SEPARATOR.$type->id)) {
 			$folder = $path.DIRECTORY_SEPARATOR.$renderer->getFolder().DIRECTORY_SEPARATOR.'item'.DIRECTORY_SEPARATOR;
-			JFolder::move($folder.$type->id, $folder.$type->identifier);
+			if ($delete) {
+				JFolder::delete($folder.$type->id);
+			} else {
+				JFolder::move($folder.$type->id, $folder.$type->identifier);
+			}
 		}
 
 		// get positions and config
@@ -97,6 +99,9 @@ class TypeHelper extends AppHelper {
 
 		// get group
 		$group = $type->getApplication()->getGroup();
+		$original = $type->getApplication()->getType($id);
+
+		$element_mapping = array_combine(array_keys($type->elements), array_keys($original->elements));
 
 		// rename folder if special type
 		if ($renderer->pathExists('item'.DIRECTORY_SEPARATOR.$id)) {
@@ -107,9 +112,61 @@ class TypeHelper extends AppHelper {
 		// get positions and config
 		$config = $renderer->getConfig('item');
 		$params = $config->get($group.'.'.$id.'.');
+
+		// match new element ids to prev ids
+		if ($element_mapping) {
+			foreach ($params as $layout => $positions) {
+				foreach ($positions as $position => $elements) {
+					foreach ($elements as $i => $element_config) {
+						foreach ($type->elements as $elem_id => $element) {
+							if (isset($element_mapping[$elem_id]) && $element_config['element'] == $element_mapping[$elem_id]) {
+								$params[$layout][$position][$i]['element'] = $elem_id;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		$config->set($group.'.'.$type->id.'.', $params);
 		$renderer->saveConfig($config, $path.'/renderer/item/positions.config');
 
 	}
+
+    /*
+		Function: layouts
+			Returns layouts for a type of an app.
+
+		Returns:
+			Array - layouts
+	*/
+    public function layouts($type, $layout_type = '') {
+
+        $result = array();
+
+        // get template
+        if ($template = $type->getApplication()->getTemplate()) {
+
+			// get renderer
+			$renderer = $this->app->renderer->create('item')->addPath($template->getPath());
+
+			$path   = 'item';
+			$prefix = 'item.';
+			if ($renderer->pathExists($path.DIRECTORY_SEPARATOR.$type->id)) {
+				$path   .= DIRECTORY_SEPARATOR.$type->id;
+				$prefix .= $type->id.'.';
+			}
+
+			foreach ($renderer->getLayouts($path) as $layout) {
+				$metadata = $renderer->getLayoutMetaData($prefix.$layout);
+				if (empty($layout_type) || ($metadata->get('type') == $layout_type)) {
+					$result[$layout] = $metadata;
+				}
+			}
+		}
+
+        return $result;
+
+    }
 
 }

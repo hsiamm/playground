@@ -1,31 +1,25 @@
 <?php
 /**
- * @version		$Id: helper.php 21144 2011-04-12 23:18:56Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	mod_articles_category
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// no direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.model');
 
 $com_path = JPATH_SITE.'/components/com_content/';
 require_once $com_path.'router.php';
 require_once $com_path.'helpers/route.php';
 
-jimport('joomla.application.component.model');
-
-JModel::addIncludePath($com_path.DS.'models', 'ContentModel');
+JModelLegacy::addIncludePath($com_path . '/models', 'ContentModel');
 
 abstract class modArticlesCategoryHelper
 {
 	public static function getList(&$params)
 	{
 		// Get an instance of the generic articles model
-		$articles = JModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set application parameters in model
 		$app = JFactory::getApplication();
@@ -65,7 +59,7 @@ abstract class modArticlesCategoryHelper
 
 								if (!$catid) {
 									// Get an instance of the generic article model
-									$article = JModel::getInstance('Article', 'ContentModel', array('ignore_request' => true));
+									$article = JModelLegacy::getInstance('Article', 'ContentModel', array('ignore_request' => true));
 
 									$article->setState('params', $appParams);
 									$article->setState('filter.published', 1);
@@ -108,7 +102,7 @@ abstract class modArticlesCategoryHelper
 		if ($catids) {
 			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0) {
 				// Get an instance of the generic categories model
-				$categories = JModel::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
+				$categories = JModelLegacy::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
 				$categories->setState('params', $appParams);
 				$levels = $params->get('levels', 1) ? $params->get('levels', 1) : 9999;
 				$categories->setState('filter.get_children', $levels);
@@ -169,7 +163,7 @@ abstract class modArticlesCategoryHelper
 		}
 
 		// Filter by language
-		$articles->setState('filter.language',$app->getLanguageFilter());
+		$articles->setState('filter.language', $app->getLanguageFilter());
 
 		$items = $articles->getItems();
 
@@ -211,7 +205,7 @@ abstract class modArticlesCategoryHelper
 				$menuitems	= $menu->getItems('link', 'index.php?option=com_users&view=login');
 			if(isset($menuitems[0])) {
 					$Itemid = $menuitems[0]->id;
-				} else if (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
+				} elseif (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
 					$Itemid = JRequest::getInt('Itemid');
 				}
 
@@ -237,7 +231,7 @@ abstract class modArticlesCategoryHelper
 			$item->displayHits = $show_hits ? $item->hits : '';
 			$item->displayAuthorName = $show_author ? $item->author : '';
 			if ($show_introtext) {
-				$item->introtext = JHtml::_('content.prepare', $item->introtext);
+				$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_category.content');
 				$item->introtext = self::_cleanIntrotext($item->introtext);
 			}
 			$item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
@@ -322,7 +316,7 @@ abstract class modArticlesCategoryHelper
 
 					$output .= $tag;
 				}
-				else if ($tag[JString::strlen($tag) - 2] == '/') {
+				elseif ($tag[JString::strlen($tag) - 2] == '/') {
 					// Self-closing tag.
 					$output .= $tag;
 				}

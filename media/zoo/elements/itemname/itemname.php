@@ -1,18 +1,16 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      itemname.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
 	Class: ElementItemName
 		The item name element class
 */
-class ElementItemName extends Element {
+class ElementItemName extends Element implements iSubmittable {
 
 	/*
 		Function: hasValue
@@ -27,7 +25,7 @@ class ElementItemName extends Element {
 	public function hasValue($params = array()) {
 		return true;
 	}
-	
+
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -38,7 +36,7 @@ class ElementItemName extends Element {
 	public function edit() {
 		return null;
 	}
-		
+
 	/*
 		Function: render
 			Renders the element.
@@ -51,15 +49,63 @@ class ElementItemName extends Element {
 	*/
 	public function render($params = array()) {
 		if (!empty($this->_item)) {
+
 			$params = $this->app->data->create($params);
+
 			if ($params->get('link_to_item', false) && $this->_item->getState()) {
-				$url = $this->app->route->item($this->_item);
-				
-				return '<a title="'.$this->_item->name.'" href="' . JRoute::_($url) . '">' . $this->_item->name . '</a>';
+
+				return '<a title="'.$this->_item->name.'" href="' . $this->app->route->item($this->_item) . '">' . $this->_item->name . '</a>';
+
 			} else {
+
 				return $this->_item->name;
+
 			}
-		}		
+		}
 	}
-	
+
+	/*
+		Function: renderSubmission
+			Renders the element in submission.
+
+	   Parameters:
+			$value  - AppData value
+            $params - AppData submission parameters
+
+		Returns:
+			String - html
+	*/
+	public function renderSubmission($params = array()) {
+       return '<input type="text" name="'.$this->getControlName('value').'" size="60" value="'.$this->_item->name.'" />';
+	}
+
+	/*
+		Function: validateSubmission
+			Validates the submitted element
+
+	   Parameters:
+            $value  - AppData value
+            $params - AppData submission parameters
+
+		Returns:
+			Array - cleaned value
+	*/
+	public function validateSubmission($value, $params) {
+		return array('value' => $this->app->validator->create('string', array('required' => $params->get('required')))->clean($value->get('value')));
+	}
+
+	/*
+		Function: bindData
+			Set data through data array.
+
+		Parameters:
+			$data - array
+
+		Returns:
+			Void
+	*/
+	public function bindData($data = array()) {
+		$this->_item->name = @$data['value'];
+	}
+
 }

@@ -52,9 +52,9 @@ class WFModelEditor extends JModel {
 
             // Theme and skins
             $theme = array(
-                'toolbar_location' => array('top', 'bottom', 'string'),
-                'toolbar_align' => array('left', 'center', 'string'),
-                'statusbar_location' => array('bottom', 'top', 'string'),
+                'toolbar_location' => array('top', 'top', 'string'),
+                'toolbar_align' => array('left', 'left', 'string'),
+                'statusbar_location' => array('bottom', 'bottom', 'string'),
                 'path' => array(1, 1, 'boolean'),
                 'resizing' => array(1, 0, 'boolean'),
                 'resize_horizontal' => array(1, 1, 'boolean'),
@@ -85,7 +85,7 @@ class WFModelEditor extends JModel {
 
             // Editor Toggle
             $settings['toggle'] = $wf->getParam('editor.toggle', 1, 1);
-            $settings['toggle_label'] = htmlspecialchars($wf->getParam('editor.toggle_label', '[show/hide]', '[show/hide]'));
+            $settings['toggle_label'] = htmlspecialchars($wf->getParam('editor.toggle_label', '[Toggle Editor]', '[Toggle Editor]'));
             $settings['toggle_state'] = $wf->getParam('editor.toggle_state', 1, 1);
         }// end profile
         //Other - user specified
@@ -197,7 +197,7 @@ class WFModelEditor extends JModel {
 
         if ($profile) {
             if ($wf->getParam('editor.callback_file')) {
-                $document->addScript(JURI::root(true) . '/' . $callbackFile);
+                $document->addScript(JURI::root(true) . '/' . $wf->getParam('editor.callback_file'));
             }
         }
     }
@@ -299,7 +299,7 @@ class WFModelEditor extends JModel {
         if (is_object($profile)) {
             $plugins = explode(',', $profile->plugins);
 
-            $plugins = array_unique(array_merge(array('advlist', 'autolink', 'cleanup', 'code', 'format', 'lists', 'tabfocus', 'wordcount'), $plugins));
+            $plugins = array_unique(array_merge(array('advlist', 'autolink', 'cleanup', 'core', 'code', 'format', 'lists', 'tabfocus', 'wordcount'), $plugins));
 
             $compress = $wf->getParam('editor.compress_javascript', 0);
 

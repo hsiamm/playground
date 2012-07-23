@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      template.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -40,7 +38,7 @@ class AppTemplate {
 
     /*
 		Variable: _metaxml
-			Template meta data AppXMLElement.
+			Template meta data SimpleXMLElement.
     */
 	public $_metaxml;
 
@@ -90,36 +88,33 @@ class AppTemplate {
 
 		// get parameter xml file
 		if ($file = $this->app->path->path($this->resource.$this->metaxml_file)) {
-			
+
 			// set xml file
 			$xml = $file;
-			
+
 			// parse xml and add global
 			if ($global) {
-				$xml = $this->app->xml->loadFile($file);
+				$xml = simplexml_load_file($file);
 				foreach ($xml->params as $param) {
 					foreach ($param->children() as $element) {
 						$type = (string) $element->attributes()->type;
-						
+
 						if (in_array($type, array('list', 'radio', 'text'))) {
 							$element->attributes()->type = $type.'global';
 						}
 					}
-				}				
+				}
 
-				$xml = $xml->asXML(true);
+				$xml = $xml->asXML();
 			}
 
 			// get form
-			$form = $this->app->parameterform->create($xml);
-			$form->addElementPath($this->app->path->path('joomla:elements'));
-
-			return $form;
+			return $this->app->parameterform->create($xml);
 		}
-		
+
 		return null;
 	}
-	
+
 	/*
 		Function: getMetaData
 			Get template xml meta data.
@@ -127,7 +122,7 @@ class AppTemplate {
 		Returns:
 			Array - Meta information
 	*/
-	public function getMetaData() {
+	public function getMetaData($key = null) {
 
 		$data = array();
 		$xml  = $this->getMetaXML();
@@ -135,7 +130,7 @@ class AppTemplate {
 		if (!$xml) {
 			return false;
 		}
-		
+
 		if ($xml->getName() != 'template') {
 			return false;
 		}
@@ -155,20 +150,22 @@ class AppTemplate {
 			}
 		}
 
-		return $data;
+		$data = $this->app->data->create($data);
+
+		return $key == null ? $data : $data->get($key);
 	}
-	
+
 	/*
 		Function: getMetaXML
 			Get template xml meta file.
 
 		Returns:
-			Object - AppXMLElement
+			Object - SimpleXMLElement
 	*/
 	public function getMetaXML() {
 
 		if (empty($this->_metaxml)) {
-			$this->_metaxml = $this->app->xml->loadFile($this->app->path->path($this->resource . $this->metaxml_file));
+			$this->_metaxml = simplexml_load_file($this->app->path->path($this->resource . $this->metaxml_file));
 		}
 
 		return $this->_metaxml;

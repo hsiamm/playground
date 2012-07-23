@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      com_zoo.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -65,7 +63,7 @@ $task = !empty($task) ? $task : (isset($query['view']) ? $query['view'] : null);
 $controller = isset($query['controller']) ? $query['controller'] : null;
 
 // ignore ajax requests
-if (in_array($task, array('remove', 'callelement', 'element')) || in_array($controller, array('comment'))) {
+if (in_array($task, array('remove', 'callelement', 'element')) || in_array($controller, array('comment', 'item'))) {
 	$dosef = false;
 }
 
@@ -73,7 +71,7 @@ switch ($task) {
 
 	case 'alphaindex':
 		$title[] = $task;
-		$title[] = $zoo->application->translateIDToAlias((int) $query['app_id']);
+		$title[] = $zoo->alias->application->translateIDToAlias((int) $query['app_id']);
 		$title[] = $query['alpha_char'];
 
 		shRemoveFromGETVarsList('app_id');
@@ -90,11 +88,11 @@ switch ($task) {
 
 		// retrieve item id from menu item
 		if (!isset($query['category_id'])) {
-			$query['category_id'] = JSite::getMenu()->getParams($Itemid)->get('category');
+			$query['category_id'] = $zoo->object->create('JSite')->getMenu()->getParams($Itemid)->get('category');
 		}
 
 		$title[] = $task;
-		$title[] = $zoo->category->translateIDToAlias((int) $query['category_id']);
+		$title[] = $zoo->alias->category->translateIDToAlias((int) $query['category_id']);
 
 		// pagination
 		if (isset($query['page'])) {
@@ -108,8 +106,8 @@ switch ($task) {
 	case 'feed':
 		$title[] = $task;
 		$title[] = $query['type'];
-		$title[] = $zoo->application->translateIDToAlias((int) $query['app_id']);
-		$title[] = $zoo->category->translateIDToAlias((int) $query['category_id']);
+		$title[] = $zoo->alias->application->translateIDToAlias((int) $query['app_id']);
+		$title[] = $zoo->alias->category->translateIDToAlias((int) $query['category_id']);
 
 		shRemoveFromGETVarsList('type');
 		shRemoveFromGETVarsList('app_id');
@@ -120,11 +118,11 @@ switch ($task) {
 
 		// retrieve app id from menu item
 		if (!isset($query['app_id'])) {
-			$query['app_id'] = JSite::getMenu()->getParams($Itemid)->get('application');
+			$query['app_id'] = $zoo->object->create('JSite')->getMenu()->getParams($Itemid)->get('application');
 		}
 
 		$title[] = $task;
-		$title[] = $zoo->application->translateIDToAlias($query['app_id']);
+		$title[] = $zoo->alias->application->translateIDToAlias($query['app_id']);
 
 		// pagination
 		if (isset($query['page'])) {
@@ -138,11 +136,11 @@ switch ($task) {
 
 		// retrieve item id from menu item
 		if (!isset($query['item_id'])) {
-			$query['item_id'] = JSite::getMenu()->getParams($Itemid)->get('item_id');
+			$query['item_id'] = $zoo->object->create('JSite')->getMenu()->getParams($Itemid)->get('item_id');
 		}
 
 		$title[] = $task;
-		$title[] = $zoo->item->translateIDToAlias((int) $query['item_id']);
+		$title[] = $zoo->alias->item->translateIDToAlias((int) $query['item_id']);
 
 		shRemoveFromGETVarsList('item_id');
 		break;
@@ -150,7 +148,7 @@ switch ($task) {
 	case 'submission':
 
 		// get menu
-		$menu_params = JSite::getMenu()->getParams($Itemid);
+		$menu_params = $zoo->object->create('JSite')->getMenu()->getParams($Itemid);
 
 		// retrieve item id from menu item
 		if (!isset($query['submission_id'])) {
@@ -164,10 +162,10 @@ switch ($task) {
 
 			$title[] = $task;
 			$title[] = $query['layout'];
-			$title[] = $zoo->submission->translateIDToAlias((int) $query['submission_id']);
+			$title[] = $zoo->alias->submission->translateIDToAlias((int) $query['submission_id']);
 			$title[] = $query['type_id'];
 			$title[] = $query['submission_hash'];
-			$title[] =  $zoo->item->translateIDToAlias((int) @$query['item_id']);
+			$title[] =  $zoo->alias->item->translateIDToAlias((int) @$query['item_id']);
 
 			$title = array_filter($title);
 
@@ -181,7 +179,7 @@ switch ($task) {
 
 			$title[] = $task;
             $title[] = $query['layout'];
-			$title[] = $zoo->submission->translateIDToAlias((int) $query['submission_id']);
+			$title[] = $zoo->alias->submission->translateIDToAlias((int) $query['submission_id']);
 
 			shRemoveFromGETVarsList('layout');
 			shRemoveFromGETVarsList('submission_id');
@@ -192,7 +190,7 @@ switch ($task) {
 
 	case 'tag':
 		$title[] = $task;
-		$title[] = $zoo->application->translateIDToAlias((int) $query['app_id']);
+		$title[] = $zoo->alias->application->translateIDToAlias((int) $query['app_id']);
 		$title[] = $query['tag'];
 
 		shRemoveFromGETVarsList('app_id');
@@ -206,6 +204,8 @@ switch ($task) {
 		break;
 
 	default:
+		// trigger sh404sef event
+		$zoo->event->dispatcher->notify($zoo->event->create(null, 'application:sh404sef', array('title' => &$title, 'query' => &$query, 'dosef' => &$dosef)));
 
 }
 

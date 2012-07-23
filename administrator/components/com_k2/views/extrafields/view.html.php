@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1112 2011-10-11 14:34:53Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1531 2012-03-26 09:54:29Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -33,11 +33,15 @@ class K2ViewExtraFields extends JView
 		$filter_group = $mainframe->getUserStateFromRequest($option.$view.'filter_group', 'filter_group', '', 'string');
 
 		$model = & $this->getModel();
-
+		$total = $model->getTotal();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}
 		$extraFields = $model->getData();
 
 		$this->assignRef('rows', $extraFields);
-		$total = $model->getTotal();
+		
 
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
@@ -52,7 +56,7 @@ class K2ViewExtraFields extends JView
 		$filter_state_options[] = JHTML::_('select.option', 0, JText::_('K2_UNPUBLISHED'));
 		$lists['state'] = JHTML::_('select.genericlist', $filter_state_options, 'filter_state', '', 'value', 'text', $filter_state);
 
-		$extraFieldGroups = $model->getGroups();
+		$extraFieldGroups = $model->getGroups(true);
 		$groups[] = JHTML::_('select.option', '0', JText::_('K2_SELECT_GROUP'));
 
 		foreach ($extraFieldGroups as $extraFieldGroup) {

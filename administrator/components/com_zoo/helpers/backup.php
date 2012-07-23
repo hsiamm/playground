@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      backup.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -64,7 +62,7 @@ class BackupHelper extends AppHelper {
 		$tables = (array) $tables;
 		$result = array();
 		if (!empty($tables)) {
-						
+
 			foreach($tables as $table) {
 
 				$table = $db->replacePrefix($table);
@@ -81,8 +79,9 @@ class BackupHelper extends AppHelper {
 					$rows = array_map($callback, $rows);
 				}
 
-				$result[] = 'DROP TABLE '.$table.';';
+				$result[] = 'DROP TABLE IF EXISTS '.$table.';';
 				$create = $db->queryAssoc('SHOW CREATE TABLE '.$table);
+				$create = preg_replace("#(TYPE)=(MyISAM)#i", "ENGINE=MyISAM", $create);
 				$create = $create['Create Table'];
 				$result[] = "$create;\n";
 
@@ -92,14 +91,12 @@ class BackupHelper extends AppHelper {
 				$result[] = '--';
 
 				$insert = 'INSERT INTO '.$table.' VALUES(';
-				foreach ($rows as $index => $row) {
-				
+				foreach ($rows as $row) {
 					$result[] = $insert.'"'.implode('","', array_map(array($db, 'getEscaped'), $row))."\");";
-					
 				}
 
 			}
-			
+
 			return implode("\n", $result);
 
 		}
@@ -160,7 +157,7 @@ class BackupHelper extends AppHelper {
 	*/
 	public function generateHeader() {
 
-		$header[] = '-- ZOO SQL Dump';
+		$header   = array('-- ZOO SQL Dump');
 		$header[] = '-- version ' . $this->app->zoo->version();
 		$header[] = '-- http://www.yootheme.com';
 		$header[] = '--';
@@ -174,16 +171,6 @@ class BackupHelper extends AppHelper {
 
 		return implode("\n", $header);
 
-	}
-
-	public function convertElementsToJSON($row) {
-
-		if (isset($row['elements']) && isset($row['application_id'])) {
-			$row['elements'] = $this->app->element->convertXMLToJSON($row['elements'], $this->app->zoo->getApplication($row['application_id']));
-		}
-
-		return $row;
-		
 	}
 
 }

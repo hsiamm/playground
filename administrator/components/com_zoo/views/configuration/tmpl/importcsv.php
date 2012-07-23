@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      importcsv.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -23,7 +21,7 @@ $this->app->document->addScript('assets:js/import.js');
 <div class="box-bottom">
 
 	<div class="col col-left width-60">
-		
+
 		<h2><?php echo JText::_('CSV Import'); ?>:</h2>
 		<fieldset class="items">
 			<legend><?php echo (int) $this->info['item_count']; ?> x <?php echo JText::_('Items'); ?></legend>
@@ -49,12 +47,13 @@ $this->app->document->addScript('assets:js/import.js');
 								$options[] = $this->app->html->_('select.option', '_category', JText::_('Category'));
 								$options[] = $this->app->html->_('select.option', '_created_by_alias', JText::_('Author Alias'));
 								$options[] = $this->app->html->_('select.option', '_created', JText::_('Created Date'));
+								$options[] = $this->app->html->_('select.option', '_tag', JText::_('Tag'));
 								$options[] = $this->app->html->_('select.option',  '</OPTGROUP>' );
 
 								$options[] = $this->app->html->_('select.option',  '<OPTGROUP>', JText::_('Elements') );
-								foreach ($element_types as $element_type => $elements) {
+								foreach ($element_types as $elements) {
 									foreach ($elements as $element) {
-										$options[] = $this->app->html->_('select.option', $element->identifier, $element->getConfig()->get('name') . ' (' . ucfirst($element->getElementType()) . ')');
+										$options[] = $this->app->html->_('select.option', $element->identifier, $element->config->get('name') . ' (' . ucfirst($element->getElementType()) . ')');
 									}
 								}
 								$options[] = $this->app->html->_('select.option',  '</OPTGROUP>' );
@@ -68,9 +67,9 @@ $this->app->document->addScript('assets:js/import.js');
 
 			</div>
 		</fieldset>
-		
+
 		<button class="button-grey" id="submit-button" type="button"><?php echo JText::_('Import'); ?></button>
-	
+
 	</div>
 
 	<h2><?php echo JText::_('Information'); ?>:</h2>
@@ -90,6 +89,7 @@ $this->app->document->addScript('assets:js/import.js');
 <input type="hidden" name="field-separator" value="<?php echo htmlentities($this->field_separator); ?>" />
 <input type="hidden" name="field-enclosure" value="<?php echo htmlentities($this->field_enclosure); ?>" />
 <input type="hidden" name="file" value="<?php echo $this->file; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 <script type="text/javascript">

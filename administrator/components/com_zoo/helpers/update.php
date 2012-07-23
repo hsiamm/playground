@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      update.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -22,20 +20,74 @@ class UpdateHelper extends AppHelper {
 			bool - true if ZOO needs to be updated
 	*/
 	public function required() {
+		$updates = $this->getRequiredUpdates();
+		return !empty($updates);
+	}
 
-		// get and sort update files
-		$files = $this->getUpdateFiles();
+    /*
+		Function: getRequiredUpdates
+			Return required update versions.
 
-		// check if there are update files
-		if (empty($files)) {
-			return false;
+		Returns:
+			Array - versions of required updates
+	*/
+	public function getRequiredUpdates() {
+
+		// get current version
+		$current_version = $this->app->zoo->version();
+
+		// find required updates
+		if ($files = $this->app->path->files('updates:', false, '/^\d+.*\.php$/')) {
+			$files = array_map(create_function('$file', 'return basename($file, ".php");'), array_filter($files, create_function('$file', 'return version_compare("'.$current_version.'", basename($file, ".php")) < 0;')));
+			usort($files, create_function('$a, $b', 'return version_compare($a, $b);'));
 		}
 
-		// get version from latest update file
-		$version = basename(array_pop($files), ".php");
+		return $files;
+	}
 
-		// compare latest update file version against current ZOO version
-		return version_compare($this->getCurrentVersion(), $version) < 0;
+    /*
+		Function: getNotifications
+			Get preupdate notifications.
+
+		Returns:
+			Array - messages
+	*/
+	public function getNotifications() {
+
+		// check if update is required
+		if (!$this->required()) {
+			return $this->_createResponse('No update required.', false, false);
+		}
+
+		// get current version
+		$current_version = $this->app->zoo->version();
+
+		$notifications = array();
+
+		// find and run the next update
+		foreach ($this->getRequiredUpdates() as $version) {
+			if ((version_compare($version, $current_version) > 0)) {
+				$class = 'Update'.str_replace('.', '', $version);
+				$this->app->loader->register($class, "updates:$version.php");
+
+				if (class_exists($class)) {
+
+					// make sure class implemnts iUpdate interface
+					$r = new ReflectionClass($class);
+					if ($r->isSubclassOf('iUpdate') && !$r->isAbstract()) {
+
+						// run the update
+						$notification = $r->newInstance()->getNotifications($this->app);
+						if (is_array($notification)) {
+							$notifications = array_merge($notifications, $notification);
+						}
+
+					}
+				}
+			}
+		}
+
+		return $notifications;
 
 	}
 
@@ -54,24 +106,26 @@ class UpdateHelper extends AppHelper {
 		}
 
 		// get current version
-		$current_version = $this->getCurrentVersion();
+		$current_version = $this->app->zoo->version();
 
 		// find and run the next update
-		foreach ($this->getUpdateFiles() as $file) {
-			$version = basename($file, '.php');
+		$updates = $this->getRequiredUpdates();
+		foreach ($updates as $version) {
 			if ((version_compare($version, $current_version) > 0)) {
 				$class = 'Update'.str_replace('.', '', $version);
-				if ($this->app->loader->register($class, 'updates:'.$file)) {
+				$this->app->loader->register($class, "updates:$version.php");
+
+				if (class_exists($class)) {
 
 					// make sure class implemnts iUpdate interface
 					$r = new ReflectionClass($class);
 					if ($r->isSubclassOf('iUpdate') && !$r->isAbstract()) {
-						
+
 						try {
 
 							// run the update
 							$r->newInstance()->run($this->app);
-							
+
 						} catch (Exception $e) {
 
 							return $this->_createResponse("Error during update! ($e)", true, false);
@@ -79,15 +133,21 @@ class UpdateHelper extends AppHelper {
 						}
 
 						// set current version
+						$version_string = $version;
+						if (!$required = count($updates) > 1) {
+							if (($xml = simplexml_load_file($this->app->path->path('component.admin:zoo.xml'))) && (string) $xml->name == 'ZOO') {
+								$version_string = (string) $xml->version;
+							}
+						}
 						$this->setVersion($version);
-						return $this->_createResponse('Successfully updated to version '.$version, false, $this->required());
+						return $this->_createResponse('Successfully updated to version '.$version_string, false, $required);
 					}
 				}
 			}
 		}
 
 		return $this->_createResponse('No update found.', false, false);
-		
+
 	}
 
     /*
@@ -154,20 +214,6 @@ class UpdateHelper extends AppHelper {
 	}
 
     /*
-		Function: getUpdateFiles
-			Returns all update files.
-
-		Returns:
-			Array - update files
-	*/
-	public function getUpdateFiles() {
-		// get and sort update files
-		$files = $this->app->path->files('updates:', false, '/^\d+.*\.php$/');
-		usort($files, create_function('$a, $b', 'return version_compare(basename($a, ".php"), basename($b, ".php"));'));
-		return $files;
-	}
-
-    /*
 		Function: setVersion
 			Writes the current version in versions table.
 
@@ -183,29 +229,71 @@ class UpdateHelper extends AppHelper {
 		$this->app->database->query('INSERT INTO '.ZOO_TABLE_VERSION.' SET version=' . $this->app->database->Quote($version));
 	}
 
-    /*
-		Function: getCurrentVersion
-			Gets the current update version from versions table.
-
-		Returns:
-			String - version
-	*/
-	public function getCurrentVersion() {
-
-		// make sure versions table is present
-		$this->app->database->query('CREATE TABLE IF NOT EXISTS '.ZOO_TABLE_VERSION.' (version varchar(255) NOT NULL) ENGINE=MyISAM;');
-
-		return $this->app->database->queryResult('SELECT version FROM '.ZOO_TABLE_VERSION);
-	}
-
 	protected function _createResponse($message, $error, $continue) {
 		$message = JText::_($message);
 		return compact ('message', 'error', 'continue');
 	}
 
+    /*
+		Function: available
+			Checks if there is a new update available.
+
+		Returns:
+			 Misc - String if update available, false otherwise
+	*/
+	public function available() {
+
+		// check for updates
+		if($xml = simplexml_load_file($this->app->path->path('component.admin:zoo.xml'))){
+
+			// update check
+			if ($url = current($xml->xpath('//updateUrl'))) {
+
+				// create check url
+				$url = sprintf('%s?application=%s&version=%s&format=raw', $url, $this->app->joomla->isVersion('1.5') ? 'zoo_j15' : 'zoo_j17', urlencode(current($xml->xpath('//version'))));
+
+				// only check once a day
+				$hash    = md5($url.date('Y-m-d'));
+				$zoo_data = file_exists($this->app->path->path("cache:zoo_update_cache"))
+							? unserialize(file_get_contents($this->app->path->path("cache:zoo_update_cache")))
+							: array("data"=>'{}',"check"=>'');
+
+
+				if ($zoo_data["check"] != $hash) {
+					if ($request = $this->app->http->get($url)) {
+						$zoo_data["check"] = $hash;
+						$zoo_data["data"] = $request['body'];
+					}
+				}
+
+				// decode response and set message
+				if (!$this->app->system->session->get('com_zoo.hideUpdateNotification') && ($data = json_decode($zoo_data["data"])) && $data->status == 'update-available') {
+					$close = '<span onclick="jQuery.ajax(\''.$this->app->link(array('controller' => 'manager', 'task' => 'hideUpdateNotification')).'\'); jQuery(this).closest(\'ul\').hide();" class="hide-update-notification"></span>';
+					$this->app->system->application->enqueueMessage($data->message.$close, 'notice');
+				}
+
+				@file_put_contents($this->app->path->path("cache:").'/zoo_update_cache', serialize($zoo_data));
+			}
+
+		}
+	}
+
+	public function hideUpdateNotification() {
+		$this->app->system->session->set('com_zoo.hideUpdateNotification', true);
+	}
+
 }
 
 interface iUpdate {
+
+    /*
+		Function: getNotifications
+			Get preupdate notifications.
+
+		Returns:
+			Array - messages
+	*/
+	public function getNotifications($app);
 
     /*
 		Function: run
@@ -215,7 +303,7 @@ interface iUpdate {
 			bool - true if updated successful
 	*/
 	public function run($app);
-	
+
 }
 
 /*

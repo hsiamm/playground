@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      block.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -15,12 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 $label = '';
 if (isset($params['showlabel']) && $params['showlabel']) {
 	$label .= '<h3>';
-	$label .= ($params['altlabel']) ? $params['altlabel'] : $element->getConfig()->get('name');
+	$label .= ($params['altlabel']) ? $params['altlabel'] : $element->config->get('name');
 	$label .= '</h3>';
 }
 
 // create class attribute
-$class = 'element element-'.$element->getElementType().' '.($params['first'] ? ' first' : '').($params['last'] ? ' last' : '');
+$class = 'element element-'.$element->getElementType().($params['first'] ? ' first' : '').($params['last'] ? ' last' : '');
 
 ?>
 <div class="<?php echo $class; ?>">

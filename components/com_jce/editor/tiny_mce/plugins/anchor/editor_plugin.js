@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.1.3
+ * JCE Editor                 2.2.0
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    19 May 2012
+ * @date                    20 June 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,16 +17,26 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-(function(){var each=tinymce.each,extend=tinymce.extend,JSON=tinymce.util.JSON;var Node=tinymce.html.Node;tinymce.create('tinymce.plugins.AnchorPlugin',{init:function(ed,url){this.editor=ed;this.url=url;var self=this;function isAnchor(n){return n&&((n.nodeName=='IMG'&&/mceItemAnchor/.test(n.className))||(n.nodeName=='A'&&!n.href&&(n.name||n.id)));}
-ed.addCommand('mceInsertAnchor',function(){var se=ed.selection,n=se.getNode();ed.windowManager.open({url:ed.getParam('site_url')+'index.php?option=com_jce&view=editor&layout=plugin&plugin=anchor',width:320+parseInt(ed.getLang('advanced.anchor_delta_width',0)),height:100+parseInt(ed.getLang('advanced.anchor_delta_height',0)),inline:true,popup_css:false},{plugin_url:this.url});});ed.addButton('anchor',{title:'advanced.anchor_desc',cmd:'mceInsertAnchor'});ed.onNodeChange.add(function(ed,cm,n,co){cm.setActive('anchor',isAnchor(n));});ed.onInit.add(function(){if(ed.theme&&ed.theme.onResolveName){ed.theme.onResolveName.add(function(theme,o){var n=o.node,v;if(o.name==='img'&&/mceItemAnchor/.test(n.className)){var data=JSON.parse(ed.dom.getAttrib(n,'data-mce-json'));v=data.name||data.id;}
+(function(){var DOM=tinymce.DOM,Event=tinymce.dom.Event,is=tinymce.is,each=tinymce.each;var Node=tinymce.html.Node;var VK=tinymce.VK,BACKSPACE=VK.BACKSPACE,DELETE=VK.DELETE;tinymce.create('tinymce.plugins.AnchorPlugin',{init:function(ed,url){this.editor=ed;this.url=url;var self=this;function isAnchor(n){return ed.dom.is(n,'a.mceItemAnchor, span.mceItemAnchor')||(n=ed.dom.getParent(n,'A')&&ed.dom.is(n,'a.mceItemAnchor'));}
+ed.settings.allow_html_in_named_anchor=true;ed.addCommand('mceInsertAnchor',function(ui,value){return self._insertAnchor(value);});ed.onNodeChange.add(function(ed,cm,n,co){cm.setActive('anchor',isAnchor(n));ed.dom.removeClass(ed.dom.select('span.mceItemAnchor.mceItemSelected'),'mceItemSelected');if(isAnchor(n)&&n.nodeName=='SPAN'){ed.dom.addClass(n,'mceItemSelected');}});ed.onKeyDown.add(function(ed,e){if(e.keyCode==BACKSPACE||e.keyCode==DELETE){self._removeAnchor(e);}});ed.onInit.add(function(){if(ed.theme&&ed.theme.onResolveName){ed.theme.onResolveName.add(function(theme,o){var n=o.node,v;if(o.name==='span'&&/mceItemAnchor/.test(n.className)){v=ed.dom.getAttrib(n,'data-mce-name')||n.id;}
 if(o.name==='a'&&!n.href&&(n.name||n.id)){v=n.name||n.id;}
 if(v){o.name='a#'+v;}});}
 if(!ed.settings.compress.css)
-ed.dom.loadCSS(url+"/css/content.css");});ed.onPreInit.add(function(){if(tinymce.isWebKit){ed.parser.addNodeFilter('a',function(nodes){for(var i=0,len=nodes.length;i<len;i++){var node=nodes[i];if(!node.attr('href')&&(node.attr('name')||node.attr('id'))){self._createAnchorImage(node);}}});ed.serializer.addNodeFilter('img',function(nodes,name,args){for(var i=0,len=nodes.length;i<len;i++){var node=nodes[i];if(/mceItemAnchor/.test(node.attr('class')||'')){self._restoreAnchor(node,args);}}});}});},_restoreAnchor:function(n){var self=this,ed=this.editor,p,v,node,text;if(!n.parent)
-return;p=JSON.parse(n.attr('data-mce-json'))||{};node=new Node('a',1);if(p.html){var value=new Node('#text',3);value.raw=true;value.value=p.html;node.append(value);delete p.html;}
-each(p,function(v,k){node.attr(k,v);});n.replace(node);},_getInnerHTML:function(node){return new tinymce.html.Serializer({inner:true,validate:false}).serialize(node);},_createAnchorImage:function(n){var self=this,ed=this.editor,dom=ed.dom,v,k,p={};if(!n.parent)
-return;each(n.attributes,function(at){if(at.name=='class'){return;}
-p[at.name]=at.value;});if(n.firstChild){p.html=this._getInnerHTML(n);}
-var classes=[];if(n.attr('class')){classes=n.attr('class').split(' ');}
+ed.dom.loadCSS(url+"/css/content.css");});ed.onPreInit.add(function(){ed.parser.addNodeFilter('a',function(nodes){for(var i=0,len=nodes.length;i<len;i++){var node=nodes[i];if(!node.firstChild&&!node.attr('href')&&(node.attr('name')||node.attr('id'))){self._createAnchorSpan(node);}}});ed.serializer.addNodeFilter('span',function(nodes,name,args){for(var i=0,len=nodes.length;i<len;i++){var node=nodes[i];if(/mceItemAnchor/.test(node.attr('class'))){self._restoreAnchor(node,args);}}});});function _cancelResize(){each(ed.dom.select('span.mceItemAnchor'),function(n){n.onresizestart=function(){return false;};n.onbeforeeditfocus=function(){return false;};});};ed.onSetContent.add(function(){if(tinymce.isIE){_cancelResize();}});ed.onGetContent.add(function(){if(tinymce.isIE){_cancelResize();}});},_removeAnchor:function(e){var ed=this.editor,s=ed.selection;if(ed.dom.is(s.getNode(),'span.mceItemAnchor')){ed.dom.remove(s.getNode());if(e){e.preventDefault();}}
+if(!s.isCollapsed()&&ed.dom.is(s.getNode(),'a.mceItemAnchor')){ed.formatter.remove('link');if(e){e.preventDefault();}}},_getAnchor:function(){var ed=this.editor,n=ed.selection.getNode(),v;if(n.nodeName=='SPAN'&&/mceItemAnchor/.test(n.className)){v=ed.dom.getAttrib(n,'data-mce-name')||ed.dom.getAttrib(n,'id');}else{n=ed.dom.getParent(n,'A');v=ed.dom.getAttrib(n,'name')||ed.dom.getAttrib(n,'id');}
+return v;},_insertAnchor:function(v){var ed=this.editor,attrib;if(!v){ed.windowManager.alert('anchor.invalid');return false;}
+if(!/^[a-z][a-z0-9\-\_:\.]*$/i.test(v)){ed.windowManager.alert('anchor.invalid');return false;}
+var aRule=ed.schema.getElementRule('a');if(!aRule||aRule.attributes.name){attrib='name';}else{attrib='id';}
+var n=ed.selection.getNode();var at={'class':'mceItemAnchor'};if(n.nodeName=='SPAN'&&/mceItemAnchor/.test(n.className)){if(attrib=='name'){attrib='data-mce-name';}
+at[attrib]=v;ed.dom.setAttribs(n,at);ed.undoManager.add();}else{if(n=ed.dom.getParent(n,'A')){at[attrib]=v;ed.dom.setAttribs(n,at);ed.undoManager.add();}else{if(ed.dom.select('a['+attrib+'="'+v+'"], img[data-mce-name="'+v+'"], img[id="'+v+'"]',ed.getBody()).length){ed.windowManager.alert('anchor.exists');return false;}
+if(ed.selection.isCollapsed()){if(attrib=='name'){attrib='data-mce-name';}
+at[attrib]=v;ed.execCommand('mceInsertContent',0,ed.dom.createHTML('span',at,'<!--anchor-->'));}else{at[attrib]=v;ed.execCommand('mceInsertLink',false,'#mce_temp_url#',{skip_undo:1});at.href=at['data-mce-href']=null;each(ed.dom.select('a[href="#mce_temp_url#"]'),function(link){ed.dom.setAttribs(link,at);});}
+ed.nodeChanged();}}
+return true;},_restoreAnchor:function(n){var self=this,ed=this.editor,at,v,node,text;if(!n.parent)
+return;at={name:n.attr('data-mce-name'),id:n.attr('id')};node=new Node('a',1);node.attr(at);n.replace(node);},_createAnchorSpan:function(n){var self=this,ed=this.editor,dom=ed.dom,at={};if(!n.parent)
+return;at={'data-mce-name':n.attr('name'),id:n.attr('id')};var classes=[];if(n.attr('class')){classes=n.attr('class').split(' ');}
 if(classes.indexOf('mceItemAnchor')==-1){classes.push('mceItemAnchor');}
-var img=new Node('img',1);img.attr({src:this.url+'/img/anchor.gif','class':classes.join(' '),'data-mce-json':JSON.serialize(p)});n.replace(img);},getInfo:function(){return{longname:'Anchor',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.1.3'};}});tinymce.PluginManager.add('anchor',tinymce.plugins.AnchorPlugin);})();
+var span=new Node('span',1);span.attr(tinymce.extend(at,{'class':classes.join(' ')}));var text=new Node('#comment',8);text.value='anchor';span.append(text);n.replace(span);},createControl:function(n,cm){var self=this,ed=this.editor;switch(n){case'anchor':var content=DOM.create('div');var fieldset=DOM.add(content,'fieldset',{},'<legend>'+ed.getLang('anchor.desc','Insert / Edit Anchor')+'</legend>');DOM.add(fieldset,'label',{'for':ed.id+'_anchor'},ed.getLang('anchor.name','Name'));var input=DOM.add(fieldset,'input',{type:'text',id:ed.id+'_anchor'});var c=new tinymce.ui.ButtonDialog(cm.prefix+'anchor',{title:ed.getLang('anchor.desc','Inserts an Anchor'),'class':'mce_anchor','content':content,'width':210,'buttons':[{title:ed.getLang('common.insert','Insert'),id:'insert',click:function(e){c.restoreSelection();return self._insertAnchor(input.value);},scope:self},{title:ed.getLang('anchor.remove','Remove'),id:'remove',click:function(e){c.restoreSelection();if(!DOM.hasClass(e.target,'disabled')){self._removeAnchor();}
+return true;},scope:self}]},ed);c.onShowDialog.add(function(){input.value='';var label=ed.getLang('common.insert','Insert');var v=self._getAnchor();if(v){input.value=v;label=ed.getLang('common.update','Update');}
+c.setActive(!!v);c.setButtonDisabled('remove',!v);c.setButtonLabel('insert',label);input.focus();});c.onHideDialog.add(function(){input.value='';});ed.onRemove.add(function(){c.destroy();});return cm.add(c);break;}
+return null;},getInfo:function(){return{longname:'Anchor',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.0'};}});tinymce.PluginManager.add('anchor',tinymce.plugins.AnchorPlugin);})();

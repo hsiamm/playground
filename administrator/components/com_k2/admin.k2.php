@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: admin.k2.php 1368 2011-11-28 15:04:11Z joomlaworks $
+ * @version		$Id: admin.k2.php 1549 2012-04-18 18:57:05Z joomlaworks $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -14,6 +14,7 @@ JHTML::_('behavior.tooltip');
 $user = & JFactory::getUser();
 $view = JRequest::getWord('view', 'items');
 $view = JString::strtolower($view);
+$task = JRequest::getCmd('task');
 $params = &JComponentHelper::getParams('com_k2');
 
 if(K2_JVERSION=='15'){
@@ -23,7 +24,7 @@ if(K2_JVERSION=='15'){
     			$view=='extrafieldsgroup' ||
     			$view=='extrafieldsgroups' ||
     			$view=='user' ||
-    			$view=='users' ||
+    			($view=='users' && $task != 'element') ||
     			$view=='usergroup' ||
     			$view=='usergroups'
     		)
@@ -71,7 +72,7 @@ if(version_compare(JVERSION,'1.6.0','ge')) {
 }
 
 // CSS
-$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.css');
+$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.css?v=2.5.7');
 
 // JS
 $backendJQueryHandling = $params->get('backendJQueryHandling','remote');
@@ -82,9 +83,10 @@ if($backendJQueryHandling=='remote'){
 	$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-1.7.1.min.js');
 	$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-ui-1.8.16.custom.min.js');
 }
-$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.js?v=252');
+$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.js?v=2.5.7');
 
-if( (JRequest::getWord('task')!='deleteAttachment' && JRequest::getWord('task')!='connector' && JRequest::getWord('task')!='tag' && JRequest::getWord('task')!='extrafields' && JRequest::getWord('task')!='download') && ($view!='comments' && JRequest::getWord('task')!='save')): ?>
+
+if( JRequest::getWord('task')!='deleteAttachment' && JRequest::getWord('task')!='connector' && JRequest::getWord('task')!='tag' && JRequest::getWord('task')!='extrafields' && JRequest::getWord('task')!='download' && JRequest::getWord('task')!='saveComment'): ?>
 <!--[if lt IE 7]>
 <div style="border:1px solid #F7941D;background:#FEEFDA;text-align:center;clear:both;height:75px;position:relative;margin-bottom:16px;">
   <div style="position:absolute;right:3px;top:3px;font-family:courier new;font-weight:bold;">
@@ -109,7 +111,6 @@ if( (JRequest::getWord('task')!='deleteAttachment' && JRequest::getWord('task')!
   </div>
 </div>
 <![endif]-->
-
 <div id="k2AdminContainer" class="K2AdminView<?php echo ucfirst($view); ?><?php if(K2_JVERSION=='16') echo ' isJ16orLater'; ?>">
 <?php endif;
 
@@ -122,9 +123,9 @@ $controller->registerTask('saveAndNew', 'save');
 $controller->execute(JRequest::getWord('task'));
 $controller->redirect();
 
-if( (JRequest::getWord('task')!='deleteAttachment' && JRequest::getWord('task')!='connector' && JRequest::getWord('task')!='tag' && JRequest::getWord('task')!='extrafields' && JRequest::getWord('task')!='download') && ($view!='comments' && JRequest::getWord('task')!='save')): ?>
+if( JRequest::getWord('task')!='deleteAttachment' && JRequest::getWord('task')!='connector' && JRequest::getWord('task')!='tag' && JRequest::getWord('task')!='extrafields' && JRequest::getWord('task')!='download' && JRequest::getWord('task')!='saveComment'): ?>
 </div>
 <div id="k2AdminFooter">
-	<a target="_blank" href="http://getk2.org/">K2 v2.5.3</a> | Copyright &copy; 2006-2011 <a target="_blank" href="http://www.joomlaworks.gr/">JoomlaWorks Ltd.</a>
+	<a target="_blank" href="http://getk2.org/">K2 v2.5.7</a> | Copyright &copy; 2006-<?php echo date('Y'); ?> <a target="_blank" href="http://www.joomlaworks.net/">JoomlaWorks Ltd.</a>
 </div>
 <?php endif;

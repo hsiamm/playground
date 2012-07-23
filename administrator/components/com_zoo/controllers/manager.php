@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      manager.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -48,15 +46,16 @@ class ManagerController extends AppController {
 	public function display() {
 
 		// set toolbar items
-		$this->app->toolbar->title(JText::_('App Manager'), ZOO_ICON);
+		$this->app->toolbar->title(JText::_('App Manager'), $this->app->get('icon'));
+		$this->app->toolbar->custom('cleandb', $this->app->joomla->isVersion('1.5') ? 'new' : 'refresh', $this->app->joomla->isVersion('1.5') ? 'New' : 'Refresh', 'Clean Database', false);
 		$type = $this->app->joomla->isVersion('1.5') ? 'config' : 'options';
 		JToolBar::getInstance('toolbar')->appendButton('Popup', $type, 'Check For Modifications', JRoute::_(JUri::root() . 'administrator/index.php?option='.$this->app->component->self->name.'&controller='.$this->controller.'&task=checkmodifications&tmpl=component', true, -1), 570, 550);
 		JToolBar::getInstance('toolbar')->appendButton('Popup', $type, 'Check Requirements', JRoute::_(JUri::root() . 'administrator/index.php?option='.$this->app->component->self->name.'&controller='.$this->controller.'&task=checkrequirements&tmpl=component', true, -1), 570, 550);
-		$this->app->toolbar->custom('dobackup', 'archive', 'Archive', 'SQL Dump', false);
+		$this->app->toolbar->custom('dobackup', 'archive', 'Archive', 'Backup Database', false);
 		$this->app->zoo->toolbarHelp();
 
 		// get applications
-		$this->applications = $this->app->zoo->getApplicationGroups();
+		$this->applications = $this->app->application->groups();
 
 		// display view
 		$this->getView()->display();
@@ -64,11 +63,8 @@ class ManagerController extends AppController {
 
 	public function info() {
 
-		// get application metadata
-		$metadata = $this->application->getMetaData();
-
 		// set toolbar items
-		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Information').': '.$metadata['name']));
+		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Information').': '.$this->application->getMetaData('name')));
 		$this->app->toolbar->custom('doexport', 'archive', 'Archive', 'Export', false);
 		$this->app->toolbar->custom('uninstallapplication', 'delete', 'Delete', 'Uninstall', false);
 		$this->app->toolbar->deleteList('APP_DELETE_WARNING', 'removeapplication');
@@ -95,12 +91,12 @@ class ManagerController extends AppController {
 			$update = $result == 2 ? 'updated' : 'installed';
 
 			// set redirect message
-			$msg = JText::_('Application group '.$update.' successfully.');
+			$msg = JText::sprintf('Application group (%s) successfully.', $update);
 
 		} catch (InstallHelperException $e) {
 
 			// raise notice on exception
-			$this->app->error->raiseNotice(0, JText::_('Error installing Application group').' ('.$e.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Error installing Application group (%s).', $e));
 			$msg = null;
 
 		}
@@ -123,7 +119,7 @@ class ManagerController extends AppController {
 		} catch (InstallHelperException $e) {
 
 			// raise notice on exception
-			$this->app->error->raiseNotice(0, JText::_('Error uninstalling application group').' ('.$e.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Error uninstalling application group (%s).', $e));
 			$msg = null;
 			$link = $this->baseurl.'&task=info';
 
@@ -159,7 +155,7 @@ class ManagerController extends AppController {
 		} catch (AppException $e) {
 
 			// raise notice on exception
-			$this->app->error->raiseNotice(0, JText::_('Error Deleting Application').' ('.$e.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Error Deleting Application (%s).', $e));
 			$msg = null;
 
 		}
@@ -169,11 +165,8 @@ class ManagerController extends AppController {
 
 	public function types() {
 
-		// get application metadata
-		$metadata = $this->application->getMetaData();
-
 		// set toolbar items
-		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Types').': ' . $metadata['name']));
+		$this->app->system->application->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Types').': ' . $this->application->getMetaData('name')));
 		$this->app->toolbar->custom('copytype', 'copy', '', 'Copy');
 		$this->app->toolbar->deleteList('', 'removetype');
 		$this->app->toolbar->editListX('edittype');
@@ -217,7 +210,15 @@ class ManagerController extends AppController {
 		$this->app->zoo->toolbarHelp();
 
 		// display view
+		ob_start();
 		$this->getView()->setLayout('edittype')->display();
+		$output = ob_get_contents();
+		ob_end_clean();
+
+		// trigger edit event
+		$this->app->event->dispatcher->notify($this->app->event->create($this->type, 'type:editdisplay', array('html' => &$output)));
+
+		echo $output;
 	}
 
 	public function copyType() {
@@ -226,6 +227,7 @@ class ManagerController extends AppController {
 		$this->app->request->checkToken() or jexit('Invalid Token');
 
 		// init vars
+		$msg = '';
 		$cid = $this->app->request->get('cid', 'array', array());
 
 		if (count($cid) < 1) {
@@ -239,29 +241,35 @@ class ManagerController extends AppController {
 				// get type
 				$type = $this->application->getType($id);
 
-				$xml  = $type->getXML();
-
 				// copy type
-				$type->id          = null;                      // set id to null, to force new
-				$type->identifier .= '-copy';                   // set copied alias
-				$this->app->type->setUniqueIndentifier($type);	// set unique identifier
-				$type->name       .= sprintf(' (%s)', JText::_('Copy')); // set copied name
+				$copy			  = $this->app->object->create('Type', array(null, $this->application));
+				$copy->identifier = $type->identifier.'-copy';                   // set copied alias
+				$this->app->type->setUniqueIndentifier($copy);	// set unique identifier
+				$copy->name       = sprintf('%s (%s)', $type->name, JText::_('Copy')); // set copied name
+
+				// give elements a new unique id
+				$elements = array();
+				foreach ($type->elements as $identifier => $element) {
+					if (strpos($identifier, '_item') !== 0) {
+						$elements[$this->app->utility->generateUUID()] = $element;
+					} else {
+						$elements[$identifier] = $element;
+					}
+				}
+				$copy->elements = $elements;
 
 				// save copied type
-				$type->save();
-
-				// save xml
-				$type->setXML($xml)->save();
+				$copy->save();
 
 				// trigger copied event
-				$this->app->event->dispatcher->notify($this->app->event->create($type, 'type:copied', array('old_id' => $id)));
+				$this->app->event->dispatcher->notify($this->app->event->create($copy, 'type:copied', array('old_id' => $id)));
 
 				$msg = JText::_('Type Copied');
 
 			} catch (AppException $e) {
 
 				// raise notice on exception
-				$this->app->error->raiseNotice(0, JText::_('Error Copying Type').' ('.$e.')');
+				$this->app->error->raiseNotice(0, JText::sprintf('Error Copying Type (%s).', $e));
 				$msg = null;
 				break;
 
@@ -314,7 +322,7 @@ class ManagerController extends AppController {
 		} catch (AppException $e) {
 
 			// raise notice on exception
-			$this->app->error->raiseNotice(0, JText::_('Error Saving Type').' ('.$e.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Error Saving Type (%s).', $e));
 			$this->_task = 'apply';
 			$msg = null;
 
@@ -339,6 +347,7 @@ class ManagerController extends AppController {
 		$this->app->request->checkToken() or jexit('Invalid Token');
 
 		// init vars
+		$msg = '';
 		$cid = $this->app->request->get('cid', 'array', array());
 
 		if (count($cid) < 1) {
@@ -361,7 +370,7 @@ class ManagerController extends AppController {
 			} catch (AppException $e) {
 
 				// raise notice on exception
-				$this->app->error->raiseNotice(0, JText::_('Error Deleting Type').' ('.$e.')');
+				$this->app->error->raiseNotice(0, JText::sprintf('Error Deleting Type (%s).', $e));
 				$msg = null;
 				break;
 
@@ -392,8 +401,7 @@ class ManagerController extends AppController {
 		// sort elements by group
 		$this->elements = array();
 		foreach ($this->app->element->getAll($this->application) as $element) {
-			$metadata = $element->getMetaData();
-			$this->elements[$metadata['group']][$element->getElementType()] = $element;
+			$this->elements[$element->getGroup()][$element->getElementType()] = $element;
 		}
 		ksort($this->elements);
 		foreach($this->elements as $group => $elements) {
@@ -411,7 +419,7 @@ class ManagerController extends AppController {
 		$element = $this->app->request->getWord('element', 'text');
 
 		// load element
-		$this->element = $this->app->element->loadElement($element, $this->application);
+		$this->element = $this->app->element->create($element, $this->application);
 		$this->element->identifier = $this->app->utility->generateUUID();
 
 		// display view
@@ -429,14 +437,9 @@ class ManagerController extends AppController {
 
 		try {
 
-			// get type
+			// save types elements
 			$type = $this->application->getType($cid);
-
-			// save elements
-			$this->app->element->saveElements($post, $type);
-
-			// save type
-			$type->save();
+			$type->bindElements($post)->save();
 
 			// reset related item search data
 			$table = $this->app->table->item;
@@ -449,7 +452,7 @@ class ManagerController extends AppController {
 
 		} catch (AppException $e) {
 
-			$this->app->error->raiseNotice(0, JText::_('Error Saving Elements').' ('.$e.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Error Saving Elements (%s)', $e));
 			$this->_task = 'applyelements';
 			$msg = null;
 
@@ -479,6 +482,13 @@ class ManagerController extends AppController {
 		$this->path			 = $this->relative_path ? JPATH_ROOT . '/' . $this->relative_path : '';
 		$this->layout		 = $this->app->request->getString('layout');
 
+		$dispatcher = JDispatcher::getInstance();
+		if (strpos($this->relative_path, 'plugins') === 0) {
+			@list($_, $plugin_type, $plugin_name) = explode('/', $this->relative_path);
+			JPluginHelper::importPlugin($plugin_type, $plugin_name);
+		}
+		$dispatcher->trigger('registerZOOEvents');
+
 		// get type
 		$this->type = $this->application->getType($type);
 
@@ -502,12 +512,21 @@ class ManagerController extends AppController {
             }
             $this->positions = $renderer->getPositions($prefix.$this->layout);
 
-            // display view
-            $this->getView()->setLayout('assignelements')->display();
+			// display view
+			ob_start();
+			$this->getView()->setLayout('assignelements')->display();
+			$output = ob_get_contents();
+			ob_end_clean();
+
+			// trigger edit event
+			$this->app->event->dispatcher->notify($this->app->event->create($this->type, 'type:assignelements', array('html' => &$output)));
+
+			echo $output;
+
 
         } else {
 
-			$this->app->error->raiseNotice(0, JText::_('Unable find type. ').' ('.$type.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Unable to find type (%s).', $type));
 			$this->setRedirect($this->baseurl . '&task=types&group=' . $this->application->getGroup());
 
 		}
@@ -533,7 +552,7 @@ class ManagerController extends AppController {
 
 		// clean config
 		$config = $renderer->getConfig('item');
-		foreach ($config->toArray() as $key => $value) {
+		foreach ($config as $key => $value) {
 			$parts = explode('.', $key);
 			if ($parts[0] == $this->group && !$this->application->getType($parts[1])) {
 				$config->remove($key);
@@ -576,16 +595,14 @@ class ManagerController extends AppController {
 		$this->app->toolbar->cancel('types');
 		$this->app->zoo->toolbarHelp();
 
-		// for template, module, plugin
-		if ($this->template) {
-			$this->path = $this->application->getPath().'/templates/'.$this->template;
-		}
+		// for template
+		$this->path = $this->application->getPath().'/templates/'.$this->template;
 
 		// get renderer
-		$renderer = $this->app->renderer->create('item')->addPath($this->path);
+		$renderer = $this->app->renderer->create('submission')->addPath($this->path);
 
 		// get positions and config
-		$this->config    = $renderer->getConfig('item')->get($this->group.'.'.$type.'.'.$this->layout);
+		$this->config = $renderer->getConfig('item')->get($this->group.'.'.$type.'.'.$this->layout);
 
 		$prefix = 'item.';
 		if ($renderer->pathExists('item'.DIRECTORY_SEPARATOR.$type)) {
@@ -618,11 +635,11 @@ class ManagerController extends AppController {
 		}
 
 		// get renderer
-		$renderer = $this->app->renderer->create('item')->addPath($path);
+		$renderer = $this->app->renderer->create('submission')->addPath($path);
 
 		// clean config
 		$config = $renderer->getConfig('item');
-		foreach ($config->toArray() as $key => $value) {
+		foreach ($config as $key => $value) {
 			$parts = explode('.', $key);
 			if ($parts[0] == $this->group && !$this->application->getType($parts[1])) {
 				$config->remove($key);
@@ -660,11 +677,11 @@ class ManagerController extends AppController {
 		if (is_readable($filepath) && JFile::exists($filepath)) {
 			$this->app->filesystem->output($filepath);
 			if (!JFile::delete($filepath)) {
-				$this->app->error->raiseNotice(0, JText::_('Unable to delete file').' ('.$filepath.')');
+				$this->app->error->raiseNotice(0, JText::sprintf('Unable to delete file(%s).', $filepath));
 				$this->setRedirect($this->baseurl.'&task=info');
 			}
 		} else {
-			$this->app->error->raiseNotice(0, JText::_('Unable to create file').' ('.$filepath.')');
+			$this->app->error->raiseNotice(0, JText::sprintf('Unable to create file (%s).', $filepath));
 			$this->setRedirect($this->baseurl.'&task=info');
 		}
 
@@ -687,12 +704,12 @@ class ManagerController extends AppController {
 
 		try {
 
-			$this->results = $this->app->modifications->check();
+			$this->results = $this->app->modification->check();
 
 			// display view
 			$this->getView()->setLayout('modifications')->display();
 
-		} catch (AppModificationsException $e) {
+		} catch (AppModificationException $e) {
 
 			$this->app->error->raiseNotice(0, $e);
 
@@ -707,10 +724,10 @@ class ManagerController extends AppController {
 
 		try {
 
-			$this->app->modifications->clean();
+			$this->app->modification->clean();
 			$msg = JText::_('Unknown files removed.');
 
-		} catch (AppModificationsException $e) {
+		} catch (AppModificationException $e) {
 
 			$msg = JText::_('Error cleaning ZOO.');
 			$this->app->error->raiseNotice(0, $e);
@@ -728,9 +745,9 @@ class ManagerController extends AppController {
 
 		try {
 
-			$result = $this->app->modifications->verify();
+			$result = $this->app->modification->verify();
 
-		} catch (AppModificationsException $e) {}
+		} catch (AppModificationException $e) {}
 
 		echo json_encode(compact('result'));
 
@@ -765,7 +782,7 @@ class ManagerController extends AppController {
 
 		try {
 
-			$file = $this->app->validator->create('file')->clean($userfile);
+			$file = $this->app->validator->create('file', array('extension' => array('sql')))->clean($userfile);
 
 			$this->app->backup->restore($file['tmp_name']);
 			$msg = JText::_('Database backup successfully restored');
@@ -773,17 +790,108 @@ class ManagerController extends AppController {
 		} catch (AppValidatorException $e) {
 
 			$msg = '';
-			$this->app->error->raiseNotice(0, "Error uploading backup file. ($e)");
+			$this->app->error->raiseNotice(0, "Error uploading backup file. ($e) Please upload .sql files only.");
 
 		} catch (BackupException $e) {
 
 			$msg = '';
-			$this->app->error->raiseNotice(0, "Error restoring ZOO backup. ($e)");
+			$this->app->error->raiseNotice(0, JText::sprintf("Error restoring ZOO backup. (%s)", $e));
 
 		}
 
 		$this->setRedirect($this->baseurl, $msg);
 
+	}
+
+	public function cleanDB() {
+
+		// init vars
+		$row = 0;
+		$db = $this->app->database;
+
+		if (($apps = $this->app->path->dirs('applications:')) && !empty($apps)) {
+			$db->query(sprintf("DELETE FROM ".ZOO_TABLE_APPLICATION." WHERE application_group NOT IN ('%s')", implode("', '", $apps)));
+		}
+
+		$db->query("DELETE FROM ".ZOO_TABLE_ITEM." WHERE type = ''");
+		$row += $db->getAffectedRows();
+
+		$db->query("DELETE FROM ".ZOO_TABLE_ITEM." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_APPLICATION." WHERE id = application_id)");
+		$row += $db->getAffectedRows();
+		$db->query("DELETE FROM ".ZOO_TABLE_CATEGORY." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_APPLICATION." WHERE id = application_id)");
+		$row += $db->getAffectedRows();
+		$db->query("DELETE FROM ".ZOO_TABLE_SUBMISSION." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_APPLICATION." WHERE id = application_id)");
+		$row += $db->getAffectedRows();
+
+		$db->query("DELETE FROM ".ZOO_TABLE_TAG." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_ITEM." WHERE id = item_id)");
+		$row += $db->getAffectedRows();
+		$db->query("DELETE FROM ".ZOO_TABLE_COMMENT." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_ITEM." WHERE id = item_id)");
+		$row += $db->getAffectedRows();
+		$db->query("DELETE FROM ".ZOO_TABLE_RATING." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_ITEM." WHERE id = item_id)");
+		$row += $db->getAffectedRows();
+		$db->query("DELETE FROM ".ZOO_TABLE_SEARCH." WHERE NOT EXISTS (SELECT id FROM ".ZOO_TABLE_ITEM." WHERE id = item_id)");
+		$row += $db->getAffectedRows();
+
+		$db->query("DELETE FROM ".ZOO_TABLE_CATEGORY_ITEM." WHERE category_id != 0 AND (NOT EXISTS (SELECT id FROM ".ZOO_TABLE_ITEM." WHERE id = item_id) OR NOT EXISTS (SELECT id FROM ".ZOO_TABLE_CATEGORY." WHERE id = category_id))");
+		$row += $db->getAffectedRows();
+
+		do {
+
+			$result = $db->queryResultArray("SELECT id FROM ".ZOO_TABLE_CATEGORY." as a WHERE a.parent != 0 AND NOT EXISTS (SELECT * FROM ".ZOO_TABLE_CATEGORY." as b WHERE b.id = a.parent)");
+
+			$again = !empty($result);
+
+			if ($again) {
+				$db->query(sprintf("DELETE FROM ".ZOO_TABLE_CATEGORY." WHERE id IN (%s)", implode(", ", $result)));
+				$row += $db->getAffectedRows();
+			}
+
+		} while ($again);
+
+		do {
+
+			$result = $db->queryResultArray("SELECT id FROM ".ZOO_TABLE_COMMENT." as a WHERE a.parent_id != 0 AND NOT EXISTS (SELECT * FROM ".ZOO_TABLE_COMMENT." as b WHERE b.id = a.parent_id)");
+
+			$again = !empty($result);
+
+			if ($again) {
+				$db->query(sprintf("DELETE FROM ".ZOO_TABLE_COMMENT." WHERE id IN (%s)", implode(", ", $result)));
+				$row += $db->getAffectedRows();
+			}
+
+		} while ($again);
+
+		// get the item table
+		$table = $this->app->table->item;
+
+		try {
+
+			$items = $table->all();
+			foreach ($items as $item) {
+				try {
+
+					$table->save($item);
+
+				} catch (Exception $e) {
+					$this->app->error->raiseNotice(0, JText::sprintf("Error updating search data for item with id %s. (%s)", $item->id, $e));
+				}
+			}
+
+			$msg = JText::sprintf('Cleaned database (Removed %s entries) and items search data has been updated.', $row);
+
+		} catch (Exception $e) {
+
+			$msg = '';
+			$this->app->error->raiseNotice(0, JText::sprintf("Error cleaning database. (%s)", $e));
+
+		}
+
+		$this->setRedirect($this->baseurl, $msg);
+
+	}
+
+	public function hideUpdateNotification() {
+		$this->app->update->hideUpdateNotification();
 	}
 
 }

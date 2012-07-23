@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      module.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -46,13 +44,13 @@ class ModuleHelper extends AppHelper {
 			return false;
 		}
 
-		foreach ($modules as $i => $module) {
-			$file					= $modules[$i]->module;
-			$custom 				= $this->app->string->substr($file, 0, 4) == 'mod_' ? 0 : 1;
-			$modules[$i]->user  	= $custom;
-			$modules[$i]->name		= $custom ? $modules[$i]->title : $this->app->string->substr($file, 4);
-			$modules[$i]->style		= null;
-			$modules[$i]->position	= $this->app->string->strtolower($modules[$i]->position);
+		foreach ($modules as $module) {
+			$file				= $module->module;
+			$custom 			= $this->app->string->substr($file, 0, 4) == 'mod_' ? 0 : 1;
+			$module->user		= $custom;
+			$module->name		= $custom ? $module->title : $this->app->string->substr($file, 4);
+			$module->style		= null;
+			$module->position	= $this->app->string->strtolower($module->position);
 		}
 
 		return $modules;
@@ -85,6 +83,45 @@ class ModuleHelper extends AppHelper {
 
 		}
 
+	}
+
+	/*
+	   Function: getItems
+	       Get items from ZOO module params.
+	 *
+		Parameters:
+			$params - AppData Module Parameter
+	 *
+	   Returns:
+	       Array - items
+	*/
+	public function getItems($params) {
+
+		$items = array();
+		if ($application = $this->app->table->application->get($params->get('application', 0))) {
+
+			// set one or multiple categories
+			$category = (int) $params->get('category', 0);
+			if ($params->get('subcategories')) {
+				$categories = $application->getCategoryTree(true);
+				if (isset($categories[$category])) {
+					$category = array_merge(array($category), array_keys($categories[$category]->getChildren(true)));
+				}
+			}
+
+			// get items
+			if ($params->get('mode') == 'item') {
+				if (($item = $this->app->table->item->get($params->get('item_id'))) && $item->isPublished() && $item->canAccess()) {
+					$items[] = $item;
+				}
+			} else if ($params->get('mode') == 'types') {
+				$items = $this->app->table->item->getByType($params->get('type'), $application->id, true, null, $params->get('order', array('_itemname')), 0, $params->get('count', 4));
+			} else {
+				$items = $this->app->table->item->getByCategory($application->id, $category, true, null, $params->get('order', array('_itemname')), 0, $params->get('count', 4));
+			}
+
+		}
+		return $items;
 	}
 
 }

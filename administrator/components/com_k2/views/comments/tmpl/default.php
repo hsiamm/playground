@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1352 2011-11-25 17:07:15Z lefteris.kavadas $
+ * @version		$Id: default.php 1535 2012-03-30 11:13:02Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -109,6 +109,12 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo JHTML::_('grid.sort', 'K2_URL', 'c.commentURL', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
 						<th>
+							<?php echo JText::_('K2_LAST_RECORDED_IP'); ?>
+						</th>
+						<th>
+							<?php echo JText::_('K2_FLAG_AS_SPAMMER'); ?>
+						</th>
+						<th>
 							<?php echo JHTML::_('grid.sort', 'K2_ITEM', 'i.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
 						<th>
@@ -127,7 +133,7 @@ defined('_JEXEC') or die('Restricted access');
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="12">
+						<td colspan="15">
 							<div class="k2CommentsPagination"><?php echo $this->page->getListFooter(); ?></div>
 						</td>
 					</tr>
@@ -143,13 +149,13 @@ defined('_JEXEC') or die('Restricted access');
 						</td>
 						<td id="k2Comment<?php echo $row->id; ?>">
 							<div class="commentText"><?php echo $row->commentText; ?></div>
-							<div class="commentToolbar"> <span class="k2CommentsLog"></span> <a href="#" rel="<?php echo $row->id; ?>" class="editComment"><?php echo JText::_('K2_EDIT'); ?></a> <a href="#" rel="<?php echo $row->id; ?>" class="saveComment"><?php echo JText::_('K2_SAVE'); ?></a> <a href="#" rel="<?php echo $row->id; ?>" class="closeComment"><?php echo JText::_('K2_CANCEL'); ?></a>
+							<div class="commentToolbar"><span class="k2CommentsLog"></span> <a href="#" rel="<?php echo $row->id; ?>" class="editComment"><?php echo JText::_('K2_EDIT'); ?></a> <a href="#" rel="<?php echo $row->id; ?>" class="saveComment"><?php echo JText::_('K2_SAVE'); ?></a> <a href="#" rel="<?php echo $row->id; ?>" class="closeComment"><?php echo JText::_('K2_CANCEL'); ?></a>
 								<div class="clr"></div>
 							</div>
 							<input type="hidden" name="currentValue[]" value="<?php echo $row->commentText; ?>" />
 						</td>
 						<td class="k2Center">
-							<?php echo ($this->mainframe->isSite())? K2HelperHTML::stateToggler($row, $key) : JHTML::_('grid.published', $row, $key ); ?>
+							<?php echo ($this->mainframe->isSite()) ? K2HelperHTML::stateToggler($row, $key) : JHTML::_('grid.published', $row, $key ); ?>
 						</td>
 						<td>
 							<?php if($this->mainframe->isAdmin() && $row->userID): ?>
@@ -158,12 +164,24 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo $row->userName; ?>
 							<?php endif; ?>
 						</td>
-						<td>
+						<td class="k2ForceWrap">
 							<?php echo $row->commentEmail; ?>
 						</td>
-						<td>
-							<a target="_blank" href="<?php echo JFilterOutput::cleanText($row->commentURL); ?>"><?php echo $row->commentURL; ?></a>
+						<td class="k2ForceWrap">
+							<a target="_blank" href="<?php echo JFilterOutput::cleanText($row->commentURL); ?>"><?php echo str_replace(array('http://www.','https://www.','http://','https://'),array('','','',''),$row->commentURL); ?></a>
 						</td>
+						<td class="k2Center">
+							<?php if($row->commenterLastVisitIP): ?>
+							<a target="_blank" href="http://www.ipchecking.com/?ip=<?php echo $row->commenterLastVisitIP; ?>&check=Lookup">
+								<?php echo $row->commenterLastVisitIP; ?>
+							</a>
+							<?php endif; ?>
+						</td>
+		        <td class="k2Center">
+		        	<?php if($row->reportUserLink): ?>
+		        	<a class="k2ReportUserButton k2IsIcon" href="<?php echo $row->reportUserLink; ?>">&times;</a>
+		        	<?php endif; ?>
+		        </td>
 						<td>
 							<a class="modal" rel="{handler: 'iframe', size: {x: 1000, y: 600}}"	href="<?php echo JURI::root().K2HelperRoute::getItemRoute($row->itemID.':'.urlencode($row->itemAlias),$row->catid.':'.urlencode($row->catAlias)); ?>"><?php echo $row->title; ?></a>
 						</td>
@@ -171,7 +189,7 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo $row->catName; ?>
 						</td>
 						<td>
-							<?php $user = &JFactory::getUser($row->created_by); echo $user->name; ?>
+							<?php $user = &JFactory::getUser($row->created_by); echo $user->name; ?> 
 						</td>
 						<td class="k2Date">
 							<?php echo JHTML::_('date', $row->commentDate , $this->dateFormat); ?>

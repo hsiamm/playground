@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: user.php 1109 2011-10-10 17:42:58Z lefteris.kavadas $
+ * @version		$Id: user.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -124,5 +124,54 @@ class K2ModelUser extends JModel
         $rows = $db->loadObjectList();
         return $rows;
     }
+	
+	function reportSpammer() {
+		$mainframe = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_k2');
+		$id = (int) $this->getState('id');
+		if(!$id) {
+			return false;
+		}
+		$user = JFactory::getUser();
+		if($user->id == $id) {
+			$mainframe->enqueueMessage(JText::_('K2_YOU_CANNOT_REPORT_YOURSELF'), 'error');
+			return false;
+		}
+		$db = JFactory::getDBO();
+		
+		// Unpublish user comments
+		$db->setQuery("UPDATE #__k2_comments SET published = 0 WHERE userID = ".$id);
+		$db->query();
+		$mainframe->enqueueMessage(JText::_('K2_USER_COMMENTS_UNPUBLISHED'));
+		
+		// Unpublish user items
+		$db->setQuery("UPDATE #__k2_items SET published = 0 WHERE created_by = ".$id);
+		$db->query();
+		$mainframe->enqueueMessage(JText::_('K2_USER_ITEMS_UNPUBLISHED'));
+		
+		// Report the user to http://www.stopforumspam.com/
+		// We need the IP for this, so the user has to be a registered K2 user
+		$spammer = JFactory::getUser($id);
+		$db->setQuery ( "SELECT ip FROM #__k2_users WHERE userID=".$id, 0, 1 );
+		$ip = $db->loadResult();
+		if($ip && function_exists('fsockopen') && $params->get('stopForumSpamApiKey')){
+			$data = "username=".$spammer->username."&ip_addr=".$ip."&email=".$spammer->email."&api_key=".$params->get('stopForumSpamApiKey');
+			$fp = fsockopen("www.stopforumspam.com",80);
+			fputs($fp, "POST /add.php HTTP/1.1\n" );
+			fputs($fp, "Host: www.stopforumspam.com\n" );
+			fputs($fp, "Content-type: application/x-www-form-urlencoded\n" );
+			fputs($fp, "Content-length: ".strlen($data)."\n" );
+			fputs($fp, "Connection: close\n\n" );
+			fputs($fp, $data);
+			fclose($fp);
+			$mainframe->enqueueMessage(JText::_('K2_USER_DATA_SUBMITTED_TO_STOPFORUMSPAM'));
+		}
+
+		// Finally block the user
+		$db->setQuery ( "UPDATE #__users SET block = 1 WHERE id=".$id );
+		$db->query();
+		$mainframe->enqueueMessage(JText::_('K2_USER_BLOCKED'));
+		return true;
+	}
 
 }

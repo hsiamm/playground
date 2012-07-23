@@ -1,28 +1,27 @@
 <?php
 /**
 * @package   ZOO Tag
-* @file      helper.php
-* @version   2.4.1
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
-
+/*
+	Class: TagModuleHelper
+		The tag module helper class
+*/
 class TagModuleHelper extends AppHelper {
 
 	const MIN_FONT_WEIGHT = 1;
 	const MAX_FONT_WEIGHT = 10;
-	
+
 	public function buildTagCloud($application, $params) {
-		
+
 		// get tags
 		$tags = $this->app->table->tag->getAll($application->id, null, null, 'items DESC', null, $params->get('count', 10), true);
-		
+
 		if (count($tags)) {
-			
+
 			// init vars
 			$min_count 		 = $tags[count($tags)-1]->items;
 			$max_count 		 = $tags[0]->items;
@@ -30,23 +29,21 @@ class TagModuleHelper extends AppHelper {
 			$font_class_span = (self::MAX_FONT_WEIGHT - self::MIN_FONT_WEIGHT) / 100;
 			$menu_item 		 = $params->get('menu_item', 0);
 			$itemid    		 = $menu_item ? '&Itemid='.$menu_item : '';
-			
+
 			// attach font size, href
 			foreach ($tags as $tag) {
 				$tag->weight = $font_span ? round(self::MIN_FONT_WEIGHT + (($tag->items - $min_count) / $font_span) * $font_class_span) : 1;
 				$tag->href   = $menu_item ? sprintf('index.php?option=com_zoo&task=tag&tag=%s&app_id=%d%s', $tag->name, $application->id, $itemid) : $this->app->route->tag($application->id, $tag->name);
 			}
-			
+
 			$this->orderTags($tags, $params->get('order'));
-	
-			return $tags;
-		
+
 		}
-		
-		return array();
-		
+
+		return $tags;
+
 	}
-	
+
 	public function orderTags(&$tags, $order) {
 		switch ($order) {
 			case 'alpha':
@@ -59,7 +56,7 @@ class TagModuleHelper extends AppHelper {
 				krsort($tags);
 				$tags = array_merge($tags);
 				break;
-			case 'ocount':		
+			case 'ocount':
 				$this->_count_sort($tags);
 				break;
 			case 'icount':
@@ -68,20 +65,22 @@ class TagModuleHelper extends AppHelper {
 				break;
 			case 'random':
 				shuffle($tags);
-				break;				
+				break;
 		}
 	}
-	
+
 	protected function _count_sort(&$tags) {
 		$tags = array_merge($tags);
 		$sorted_tags = array();
+		$count = count($tags);
 		$prefix = 1;
-		for ($i = 0; $i < count($tags); $i++) {
-			$sorted_tags[(int)((count($tags) + ($prefix * $i)) / 2)] = $tags[$i];
+		$add = $count & 1 ? 1 : 0;
+		for ($i = 0; $i < $count; $i++) {
+			$sorted_tags[(int)(($count + $add + ($prefix * $i)) / 2)] = $tags[$i];
 			$prefix *= -1;
 		}
 		ksort($sorted_tags);
-		$tags = $sorted_tags;		
+		$tags = $sorted_tags;
 	}
-	
+
 }

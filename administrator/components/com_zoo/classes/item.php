@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      item.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -178,8 +176,14 @@ class Item {
 	*/
 	public function __construct() {
 
+		// get app instance
+		$app = App::getInstance('zoo');
+
 		// decorate data as object
-		$this->params = App::getInstance('zoo')->parameter->create($this->params);
+		$this->params = $app->parameter->create($this->params);
+
+		// decorate data as object
+		$this->elements = $app->data->create($this->elements);
 
 	}
 
@@ -306,12 +310,12 @@ class Item {
  	*/
 	public function getElement($identifier) {
 
-		if ($element = isset($this->_elements[$identifier]) ? $this->_elements[$identifier] : (isset($this->_core_elements[$identifier]) ? $this->_core_elements[$identifier] : null)) {
-			return $element;
+		if (isset($this->_elements[$identifier])) {
+			return $this->_elements[$identifier];
 		}
 
-		if ($element = $this->getType()->getElement($identifier, $this)) {
-			$element->setData($this->elements);
+		if ($element = $this->getType()->getElement($identifier)) {
+			$element->setItem($this);
 			$this->_elements[$identifier] = $element;
 			return $element;
 		}
@@ -330,7 +334,11 @@ class Item {
 
 		// get types core elements
 		if ($type = $this->getType()) {
-			return $type->getCoreElements($this);
+			$core_elements = $type->getCoreElements();
+			foreach ($core_elements as $element) {
+				$element->setItem($this);
+			}
+			return $core_elements;
 		}
 
 		return array();
@@ -346,11 +354,11 @@ class Item {
 	public function getElements() {
 
 		// get types elements
-		if ($type = $this->getType()) {			
-			foreach ($type->getElements($this) as $element) {
+		if ($type = $this->getType()) {
+			foreach ($type->getElements() as $element) {
 				if (!isset($this->_elements[$element->identifier])) {
+					$element->setItem($this);
 					$this->_elements[$element->identifier] = $element;
-					$element->setData($this->elements);
 				}
 			}
 			$this->_elements = $this->_elements ? $this->_elements : array();
@@ -438,7 +446,7 @@ class Item {
   			$for - Get params for a specific use, including overidden values.
 
 		Returns:
-			Object - AppParameter
+			ParameterData - params
 	*/
 	public function getParams($for = null) {
 		// get site params and inherit globals
@@ -447,7 +455,7 @@ class Item {
 			return $this->app->parameter->create()
 				->set('config.', $this->getApplication()->getParams()->get('global.config.'))
 				->set('template.', $this->getApplication()->getParams()->get('global.template.'))
-				->loadArray($this->params->getData());
+				->loadArray($this->params);
 		}
 
 		return $this->params;
@@ -509,13 +517,10 @@ class Item {
 		Function: getComments
 			Get items comments.
 
-		Parameters:
-  			$state - Specifiy the comments state
-
 		Returns:
 			Array - comments
 	*/
-	public function getComments($state = 1) {
+	public function getComments() {
 		return $this->app->table->comment->getCommentsForItem($this->id, $this->getApplication()->getParams()->get('global.comments.order', 'ASC'), $this->app->comment->activeAuthor());
 	}
 
@@ -523,14 +528,11 @@ class Item {
     	Function: getCommentTree
     	  Get comments as tree.
 
-		Parameters:
-	      $state - Specifiy the comments state to count
-
 	   Returns:
 	      Array - comments
  	*/
-	public function getCommentTree($state = 1) {
-		return $this->app->tree->build($this->getComments($state), 'Comment', $this->getApplication()->getParams()->get('global.comments.max_depth'), 'parent_id');
+	public function getCommentTree() {
+		return $this->app->tree->build($this->getComments(), 'Comment', $this->getApplication()->getParams()->get('global.comments.max_depth'), 'parent_id');
 	}
 
 	/*
@@ -557,8 +559,7 @@ class Item {
 	public function isPublished() {
 
 		// get dates
-		$date = $this->app->date->create();
-		$now  = $date->toMySQL();
+		$now  = $this->app->date->create()->toMySQL();
 		$null = $this->app->database->getNullDate();
 
 		return $this->state == 1
@@ -576,22 +577,6 @@ class Item {
 	public function isCommentsEnabled() {
 		return $this->getParams()->get('config.enable_comments', 1);
 	}
-
-	/*
-    	Function: unsetElementData
-    	  Unsets element data
-
-	   Returns:
-	      Void
- 	*/
-	public function unsetElementData() {
-        foreach ($this->_elements as $key => $element) {
-			$element->setItem(null);
-			$element->unsetData();
-			unset($this->_elements[$key]);
-		}
-		return $this;
-    }
 
 	/*
     	Function: subscribe

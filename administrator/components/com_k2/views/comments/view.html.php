@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1352 2011-11-25 17:07:15Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1549 2012-04-18 18:57:05Z joomlaworks $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -39,9 +39,48 @@ class K2ViewComments extends JView
 		JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 		$model = & JModel::getInstance('Comments', 'K2Model');
 		$params = &JComponentHelper::getParams('com_k2');
-		$comments = $model->getData();
-		$this->assignRef('rows', $comments);
 		$total = $model->getTotal();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}
+		$comments = $model->getData();
+		
+		$reportLink = $mainframe->isAdmin()? 'index.php?option=com_k2&view=user&task=report&id=': 'index.php?option=com_k2&view=comments&task=reportSpammer&id=';
+		foreach($comments as $comment) {
+			$comment->reportUserLink = false;
+			$comment->commenterLastVisitIP = NULL;
+			if($comment->userID) {
+				
+				$db = JFactory::getDBO();
+				$db->setQuery("SELECT ip FROM #__k2_users WHERE userID = ".$comment->userID);
+				$comment->commenterLastVisitIP = $db->loadResult();
+				
+				$commenter = JFactory::getUser($comment->userID);
+				if($commenter->name)
+				{
+					$comment->userName = $commenter->name;
+				}
+				if($mainframe->isSite()) {
+					if(K2_JVERSION == '16') {
+						if($user->authorise('core.admin', 'com_k2')) {
+							$comment->reportUserLink = JRoute::_($reportLink.$comment->userID);
+						}
+					}
+					else {
+						if($user->gid > 24) {
+							$comment->reportUserLink = JRoute::_($reportLink.$comment->userID);
+						}
+					} 
+				}
+				else {
+					$comment->reportUserLink = JRoute::_($reportLink.$comment->userID);
+				}
+			}
+		}
+		
+		$this->assignRef('rows', $comments);
+		
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
 		$this->assignRef('page', $pageNav);
@@ -58,7 +97,7 @@ class K2ViewComments extends JView
 
 		$categoriesModel = &JModel::getInstance('Categories', 'K2Model');
 		$categories_option[]=JHTML::_('select.option', 0, JText::_('K2_SELECT_CATEGORY'));
-		$categories = $categoriesModel->categoriesTree();
+		$categories = $categoriesModel->categoriesTree(null, true, false);
 		$categories_options=@array_merge($categories_option, $categories);
 		$lists['categories'] = JHTML::_('select.genericlist', $categories_options, 'filter_category', '', 'value', 'text', $filter_category);
 
@@ -91,21 +130,21 @@ class K2ViewComments extends JView
 			K2HelperHTML::subMenu();
 			
 			if(K2_JVERSION == '16'){
-				$userEditLink = JURI::base().'index.php?option=com_users&view=user&task=user.edit&id=';
+				$userEditLink = JURI::base().'index.php?option=com_k2&view=user&cid=';
 			}
 			else {
-				$userEditLink = JURI::base().'index.php?option=com_users&view=user&task=edit&cid[]=';
+				$userEditLink = JURI::base().'index.php?option=com_k2&view=user&cid=';
 			}
 			$this->assignRef('userEditLink', $userEditLink);
 			
 		}
 
 		$document = &JFactory::getDocument();
-		$document->addScriptDeclaration('var K2Language = ["'.JText::_('K2_YOU_CANNOT_EDIT_TWO_COMMENTS_AT_THE_SAME_TIME', true).'", "'.JText::_('K2_THIS_WILL_PERMANENTLY_DELETE_ALL_UNPUBLISHED_COMMENTS_ARE_YOU_SURE', true).'"];');
+		$document->addScriptDeclaration('var K2Language = ["'.JText::_('K2_YOU_CANNOT_EDIT_TWO_COMMENTS_AT_THE_SAME_TIME', true).'", "'.JText::_('K2_THIS_WILL_PERMANENTLY_DELETE_ALL_UNPUBLISHED_COMMENTS_ARE_YOU_SURE', true).'", "'.JText::_('K2_REPORT_USER_WARNING', true).'"];');
 		
 		if($mainframe->isSite()){
 			// CSS
-			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css');
+			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css?v=2.5.7');
 			$document->addStyleSheet(JURI::root(true).'/templates/system/css/general.css');
 			$document->addStyleSheet(JURI::root(true).'/templates/system/css/system.css');
 			if(K2_JVERSION == '16') {

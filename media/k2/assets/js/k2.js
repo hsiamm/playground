@@ -1,8 +1,8 @@
 /**
- * @version 	$Id: k2.js 1367 2011-11-28 14:56:02Z lefteris.kavadas $
+ * @version 	$Id: k2.js 1529 2012-03-19 12:20:05Z lefteris.kavadas $
  * @package 	K2
- * @author 		JoomlaWorks http://www.joomlaworks.gr
- * @copyright 	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author 		JoomlaWorks http://www.joomlaworks.net
+ * @copyright 	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license 	GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -13,8 +13,8 @@ $K2(document).ready(function(){
 	// Common functions
 	$K2('#jToggler').click(function(){
 		if($K2(this).attr('checked')){
-			$K2('input[name=boxchecked]').val('1')
 			$K2('input[id^=cb]').attr('checked', true);
+			$K2('input[name=boxchecked]').val($K2('input[id^=cb]:checked').length);
 		}
 		else {
 			$K2('input[id^=cb]').attr('checked', false);
@@ -41,6 +41,19 @@ $K2(document).ready(function(){
 	else {
 		var view = $K2('#k2FrontendContainer input[name=view]').val();
 	}
+	
+	$K2('.k2ReportUserButton').click(function(event) {
+		event.preventDefault();
+		if(view == 'comments') {
+			var alert = K2Language[2];
+		}
+		else {
+			var alert = K2Language[0];
+		}
+		if (confirm(alert)) {
+			window.location.href = $K2(this).attr('href');
+		}
+	});
 	
 	switch(view){
 
@@ -81,7 +94,7 @@ $K2(document).ready(function(){
 				var commentID = $K2(this).attr('rel');
 				var target = $K2('#k2Comment'+commentID+' .commentText');
 				var value = $K2('#k2Comment'+commentID+' .commentText textarea').val();
-				$K2('#task').val('save');
+				$K2('#task').val('saveComment');
 				$K2('#commentID').val(commentID);
 				$K2('#commentText').val(value);
 				var log =  $K2('#k2Comment'+commentID+' .k2CommentsLog');
@@ -439,7 +452,7 @@ if (typeof(Joomla) === 'undefined') {
 	var Joomla = {};
 	Joomla.submitbutton = function(pressbutton){
 		submitform(pressbutton);
-	}
+	};
 	function submitbutton(pressbutton) {
 		Joomla.submitbutton(pressbutton);
 	}
@@ -559,7 +572,7 @@ function renderExtraFields(fieldType,fieldValues,isNewField){
 		var input = $K2('<input/>',{name:'csv_file',type:'file'}).appendTo(target);
 		var inputValue = $K2('<input/>',{name:'option_value[]',type:'hidden'}).appendTo(target);
 		if(!isNewField && currentType==fieldType){
-			inputValue.val(JSON.stringify(fieldValues[0].value));
+			inputValue.val($K2.parseJSON(fieldValues[0].value));
 			var table = $K2('<table/>', {'class':'csvTable'}).appendTo(target);
 			fieldValues[0].value.each(function(row, index) {
 				var tr = $K2('<tr/>').appendTo(table);
@@ -600,30 +613,6 @@ function renderExtraFields(fieldType,fieldValues,isNewField){
 	}
 
 }
-
-// JSON.stringify for browser that do not support it. Used by the extra fields functions
-JSON.stringify = JSON.stringify || function(obj) {
-	var t = typeof (obj);
-	if (t != "object" || obj === null) {
-		if (t == "string") {
-			obj = '"' + obj + '"';
-		}
-		return String(obj);
-	} else {
-		var n, v, json = [], arr = (obj && obj.constructor == Array);
-		for (n in obj) {
-			v = obj[n];
-			t = typeof (v);
-			if (t == "string") {
-				v = '"' + v + '"';
-			} else if (t == "object" && v !== null) {
-				v = JSON.stringify(v);
-			}
-			json.push((arr ? "" : '"' + n + '":') + String(v));
-		}
-		return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-	}
-};
 
 function initExtraFieldsEditor() {
 	$K2('.k2ExtraFieldEditor').each(function() {

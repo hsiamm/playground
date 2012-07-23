@@ -1,24 +1,19 @@
 <?php
 /**
 * @package   ZOO Tag
-* @file      template.php
-* @version   2.4.1
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
-
-// load config
-require_once(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php');
 
 class JElementTemplate extends JElement {
 
 	var	$_name = 'Template';
 
 	function fetchElement($name, $value, &$node, $control_name) {
+
+		// load config
+		require_once(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php');
 
 		$app = App::getInstance('zoo');
 
@@ -27,7 +22,7 @@ class JElementTemplate extends JElement {
 		$options = array();
 
 		if (is_dir($path)) {
-			foreach (JFolder::files($path, '^([-_A-Za-z]*)\.php$') as $tmpl) {
+			foreach (JFolder::files($path, '^([-_A-Za-z0-9]+)\.php$') as $tmpl) {
 				$tmpl = basename($tmpl, '.php');
 				$options[] = $app->html->_('select.option', $tmpl, ucwords($tmpl));
 			}

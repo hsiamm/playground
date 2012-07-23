@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      text.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -21,14 +19,29 @@ App::getInstance('zoo')->loader->register('ElementRepeatable', 'elements:repeata
 class ElementText extends ElementRepeatable implements iRepeatSubmittable {
 
 	/*
+		Function: _hasValue
+			Checks if the repeatables element's value is set.
+
+	   Parameters:
+			$params - render parameter
+
+		Returns:
+			Boolean - true, on success
+	*/
+	protected function _hasValue($params = array()) {
+		$value = $this->get('value', $this->config->get('default'));
+		return !empty($value) || $value === '0';
+	}
+
+	/*
 		Function: _getSearchData
 			Get repeatable elements search data.
-					
+
 		Returns:
 			String - Search data
-	*/	
+	*/
 	protected function _getSearchData() {
-		return $this->_data->get('value');
+		return $this->get('value', $this->config->get('default'));
 	}
 
 	/*
@@ -37,28 +50,18 @@ class ElementText extends ElementRepeatable implements iRepeatSubmittable {
 
 	   Returns:
 	       String - html
-	*/		
+	*/
 	protected function _edit() {
-
-		// init vars
-		$default = $this->_config->get('default');		
-		
-		// set default, if item is new
-		if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-			$this->_data->set('value', $default);
-		}
-
-		return $this->app->html->_('control.text', 'elements[' . $this->identifier . '][' . $this->index() . '][value]', $this->_data->get('value'), 'size="60" maxlength="255"');		
-		
+		return $this->app->html->_('control.text', $this->getControlName('value'), $this->get('value', $this->config->get('default')), 'size="60" maxlength="255"');
 	}
-	
-	
+
+
 	/*
 		Function: _renderSubmission
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -66,5 +69,5 @@ class ElementText extends ElementRepeatable implements iRepeatSubmittable {
 	public function _renderSubmission($params = array()) {
         return $this->_edit();
 	}
-	
+
 }

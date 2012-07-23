@@ -1,16 +1,13 @@
 <?php
 /**
- * @version		$Id: group.php 20196 2011-01-09 02:40:25Z ian $
  * @package		Joomla.Administrator
  * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License, see LICENSE.php
  */
 
 // No direct access.
 defined('_JEXEC') or die;
-
-jimport('joomla.form.formfield');
 
 /**
  * Form Field Place class.
@@ -40,17 +37,17 @@ class JFormFieldGroup extends JFormField
 		$options = array();
 
 		foreach ($this->element->children() as $option) {
-			$options[] = JHtml::_('select.option', (string)$option->attributes()->value, JText::_(trim($option->data())));
+			$options[] = JHtml::_('select.option', (string)$option->attributes()->value, JText::_(trim((string) $option)));
 		}
 
 		$dbo = JFactory::getDbo();
 		$query = $dbo->getQuery(true);
-		$query->select('DISTINCT `folder`');
+		$query->select('DISTINCT folder');
 		$query->from('#__extensions');
-		$query->where('`folder` != '.$dbo->quote(''));
-		$query->order('`folder`');
+		$query->where('folder != '.$dbo->quote(''));
+		$query->order('folder');
 		$dbo->setQuery((string)$query);
-		$folders = $dbo->loadResultArray();
+		$folders = $dbo->loadColumn();
 
 		foreach($folders as $folder) {
 			$options[] = JHtml::_('select.option', $folder, $folder);

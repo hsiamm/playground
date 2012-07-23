@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: uninstall.k2.php 1251 2011-10-19 17:50:13Z joomlaworks $
+ * @version		$Id: uninstall.k2.php 1523 2012-03-09 12:01:49Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -99,6 +99,10 @@ else {
 
 			$pname = $plugin->attributes('plugin');
 			$pgroup = $plugin->attributes('group');
+			if($pgroup == 'finder')
+			{
+				continue;
+			}
 			$db = & JFactory::getDBO();
 			$query = 'SELECT `id` FROM #__plugins WHERE element = '.$db->Quote($pname).' AND folder = '.$db->Quote($pgroup);
 			$db->setQuery($query);

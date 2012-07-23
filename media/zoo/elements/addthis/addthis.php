@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      addthis.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,7 +11,7 @@
        The Addthis element class (http://www.addthis.com)
 */
 class ElementAddthis extends Element implements iSubmittable {
-	
+
 	/*
 		Function: render
 			Override. Renders the element.
@@ -25,12 +23,9 @@ class ElementAddthis extends Element implements iSubmittable {
 			String - html
 	*/
 	public function render($params = array()) {
-		
-		// init vars
-		$account = $this->_config->get('account');
 
 		// render html
-		if ($account && $this->_data->get('value')) {
+		if (($account = $this->config->get('account')) && $this->get('value', $this->config->get('default'))) {
 			$html[] = "<a class=\"addthis_button\" href=\"http://www.addthis.com/bookmark.php?v=250&amp;username=$account\">";
 			$html[] = "<img src=\"http://s7.addthis.com/static/btn/v2/lg-share-en.gif\" width=\"125\" height=\"16\" alt=\"Bookmark and Share\" style=\"border:0\"/>";
 			$html[] = "</a>";
@@ -49,16 +44,7 @@ class ElementAddthis extends Element implements iSubmittable {
 	       String - html
 	*/
 	public function edit() {
-
-		// init vars
-		$default = $this->_config->get('default');
-		
-		// set default, if item is new
-		if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-			$this->_data->set('value', 1);
-		}
-
-		return $this->app->html->_('select.booleanlist', 'elements[' . $this->identifier . '][value]', '', $this->_data->get('value'));
+		return $this->app->html->_('select.booleanlist', $this->getControlName('value'), '', $this->get('value', $this->config->get('default')));
 	}
 
 	/*
@@ -66,7 +52,7 @@ class ElementAddthis extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -87,7 +73,7 @@ class ElementAddthis extends Element implements iSubmittable {
 			Array - cleaned value
 	*/
 	public function validateSubmission($value, $params) {
-		return array('value' => $value->get('value'));
+		return array('value' => (bool) $value->get('value'));
 	}
 
 }

@@ -1,7 +1,6 @@
 <?php
 /**
- * @version		$Id: modules.php 20740 2011-02-17 10:28:57Z infograf768 $
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -37,12 +36,10 @@ abstract class ModulesHelper
 		$user	= JFactory::getUser();
 		$result	= new JObject;
 
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
-		);
+		$actions = JAccess::getActions('com_modules');
 
 		foreach ($actions as $action) {
-			$result->set($action, $user->authorise($action, 'com_modules'));
+			$result->set($action->name, $user->authorise($action->name, 'com_modules'));
 		}
 
 		return $result;
@@ -86,11 +83,11 @@ abstract class ModulesHelper
 
 		$query->select('DISTINCT(position)');
 		$query->from('#__modules');
-		$query->where('`client_id` = '.(int) $clientId);
+		$query->where($db->quoteName('client_id').' = '.(int) $clientId);
 		$query->order('position');
 
 		$db->setQuery($query);
-		$positions = $db->loadResultArray();
+		$positions = $db->loadColumn();
 		$positions = (is_array($positions)) ? $positions : array();
 
 		if ($error = $db->getErrorMsg()) {
@@ -100,8 +97,17 @@ abstract class ModulesHelper
 
 		// Build the list
 		$options = array();
-		foreach ($positions as $position) {
-			$options[]	= JHtml::_('select.option', $position, $position);
+		foreach ($positions as $position)
+		{
+			if (!$position)
+			{
+				$options[]	= JHtml::_('select.option', 'none', ':: '.JText::_('JNONE').' ::');
+
+			}
+			else
+			{
+				$options[]	= JHtml::_('select.option', $position, $position);
+			}
 		}
 		return $options;
 	}
@@ -142,10 +148,13 @@ abstract class ModulesHelper
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
 
-		$query->select('DISTINCT(m.module) AS value, e.name AS text');
-		$query->from('#__modules AS m');
-		$query->join('LEFT', '#__extensions AS e ON e.element=m.module');
-		$query->where('m.`client_id` = '.(int)$clientId);
+		$query->select('element AS value, name AS text');
+		$query->from('#__extensions as e');
+		$query->where('e.client_id = '.(int)$clientId);
+		$query->where('type = '.$db->quote('module'));
+		$query->leftJoin('#__modules as m ON m.module=e.element AND m.client_id=e.client_id');
+		$query->where('m.module IS NOT NULL');
+		$query->group('element,name');
 
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.raw.php 1300 2011-10-31 11:46:44Z lefteris.kavadas $
+ * @version		$Id: view.raw.php 1579 2012-05-09 14:19:31Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -85,7 +85,15 @@ class K2ViewItemlist extends JView {
 				$dispatcher = &JDispatcher::getInstance();
 				JPluginHelper::importPlugin('content');
 				$category->text = $category->description;
-				$dispatcher->trigger('onPrepareContent', array ( & $category, &$params, $limitstart));
+				
+                if(K2_JVERSION=='16')
+                {
+                    $dispatcher->trigger('onContentPrepare', array ('com_k2.category', &$category, &$params, $limitstart));
+                }
+                else {
+                    $dispatcher->trigger('onPrepareContent', array ( & $category, &$params, $limitstart));
+                }
+
 				$category->description = $category->text;
 
 				//Category K2 plugins
@@ -252,8 +260,12 @@ class K2ViewItemlist extends JView {
 		//Set limit for model
 		JRequest::setVar('limit', $limit);
 
-		//Get items
-		$items = $model->getData($ordering);
+		if(!isset($ordering)) {
+			$items = $model->getData();
+		}
+		else {
+			$items = $model->getData($ordering);
+		}
 
 		//Pagination
 		jimport('joomla.html.pagination');
@@ -293,6 +305,7 @@ class K2ViewItemlist extends JView {
 			if ($cacheFlag) {
 				$hits = $items[$i]->hits;
 				$items[$i]->hits = 0;
+				JTable::getInstance('K2Category', 'Table');
 				$items[$i] = $cache->call(array('K2ModelItem', 'prepareItem'), $items[$i], $view, $task);
 				$items[$i]->hits = $hits;
 			} else {
@@ -382,6 +395,10 @@ class K2ViewItemlist extends JView {
 			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.$params->get('theme'));
 			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.$params->get('theme'));
 		}
+		
+		$db = &JFactory::getDBO();
+		$nullDate = $db->getNullDate();
+		$this->assignRef('nullDate', $nullDate);
 
 		parent::display($tpl);
 	}

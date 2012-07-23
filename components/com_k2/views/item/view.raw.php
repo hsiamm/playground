@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.raw.php 1221 2011-10-18 13:23:19Z lefteris.kavadas $
+ * @version		$Id: view.raw.php 1557 2012-04-23 12:26:00Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -40,7 +40,7 @@ class K2ViewItem extends JView {
 		$item = $model->getData();
 		
 		// Does the item exists?
-		if (!$item->id) {
+		if (!is_object($item) || !$item->id) {
 			JError::raiseError(404, JText::_('K2_ITEM_NOT_FOUND'));
 		}
 
@@ -129,9 +129,9 @@ class K2ViewItem extends JView {
 		}
 
 		// Author's latest items
-		if ($params->get('itemAuthorLatest') && $item->created_by_alias == '') {
+		if ($item->params->get('itemAuthorLatest') && $item->created_by_alias == '') {
 			$model = &$this->getModel('itemlist');
-			$authorLatestItems = $model->getAuthorLatest($item->id, $params->get('itemAuthorLatestLimit'), $item->created_by);
+			$authorLatestItems = $model->getAuthorLatest($item->id, $item->params->get('itemAuthorLatestLimit'), $item->created_by);
 			if (count($authorLatestItems)) {
 				for ($i = 0; $i < sizeof($authorLatestItems); $i++) {
 					$authorLatestItems[$i]->link = urldecode(JRoute::_(K2HelperRoute::getItemRoute($authorLatestItems[$i]->id.':'.urlencode($authorLatestItems[$i]->alias), $authorLatestItems[$i]->catid.':'.urlencode($authorLatestItems[$i]->categoryalias))));
@@ -141,9 +141,9 @@ class K2ViewItem extends JView {
 		}
 
 		// Related items
-		if ($params->get('itemRelated') && isset($item->tags) && count($item->tags)) {
+		if ($item->params->get('itemRelated') && isset($item->tags) && count($item->tags)) {
 			$model = &$this->getModel('itemlist');
-			$relatedItems = $model->getRelatedItems($item->id, $item->tags, $params);
+			$relatedItems = $model->getRelatedItems($item->id, $item->tags, $item->params);
 			if (count($relatedItems)) {
 				for ($i = 0; $i < sizeof($relatedItems); $i++) {
 					$relatedItems[$i]->link = urldecode(JRoute::_(K2HelperRoute::getItemRoute($relatedItems[$i]->id.':'.urlencode($relatedItems[$i]->alias), $relatedItems[$i]->catid.':'.urlencode($relatedItems[$i]->categoryalias))));
@@ -154,7 +154,7 @@ class K2ViewItem extends JView {
 		}
 
 		// Navigation (previous and next item)
-		if ($params->get('itemNavigation')) {
+		if ($item->params->get('itemNavigation')) {
 			$model = &$this->getModel('item');
 
 			$nextItem = $model->getNextItem($item->id, $item->catid, $item->ordering);
@@ -176,26 +176,21 @@ class K2ViewItem extends JView {
 		$item->absoluteURL = $uri->toString();
 
 		// Email link
-		$item->emailLink = JRoute::_('index.php?option=com_mailto&tmpl=component&link='.base64_encode($item->absoluteURL));
+		if(K2_JVERSION == '16') {
+			require_once(JPATH_SITE . '/components/com_mailto/helpers/mailto.php');
+			$template = $mainframe->getTemplate();
+			$item->emailLink = JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($item->absoluteURL));
+		}
+		else {
+			require_once(JPATH_SITE.DS.'components'.DS.'com_mailto'.DS.'helpers'.DS.'mailto.php');
+			$item->emailLink = JRoute::_('index.php?option=com_mailto&tmpl=component&link='.MailToHelper::addLink($item->absoluteURL));
+		}
 
-		// Twitter link (legacy code - to be removed)
-		if ($params->get('itemTwitterLink',1) && $params->get('twitterUsername')) {
-
-			switch($params->get('urlShortener',1)){
-				case 1:
-					$itemURLForTwitter = @file_get_contents('http://tinyurl.com/api-create.php?url='.$item->absoluteURL);
-					break;
-				case 2:
-					$itemURLForTwitter = @file_get_contents('http://is.gd/create.php?format=simple&url='.$item->absoluteURL);
-					break;
-				case 3:
-					$itemURLForTwitter = @file_get_contents('http://v.gd/create.php?format=simple&url='.$item->absoluteURL);
-					break;
-				default:
-					$itemURLForTwitter = $item->absoluteURL;
-			}
-
-			$item->twitterURL = 'http://twitter.com/intent/tweet?text='.urlencode($item->title.' '.$itemURLForTwitter.' via @'.$params->get('twitterUsername'));
+		// Twitter link (legacy code)
+		if($params->get('twitterUsername')) {
+			$item->twitterURL = 'http://twitter.com/intent/tweet?text='.urlencode($item->title).'&amp;url='.urlencode($item->absoluteURL).'&amp;via='.$params->get('twitterUsername');
+		} else {
+			$item->twitterURL = 'http://twitter.com/intent/tweet?text='.urlencode($item->title).'&amp;url='.urlencode($item->absoluteURL);
 		}
 
 		// Social link
@@ -225,7 +220,6 @@ class K2ViewItem extends JView {
 		$this->assignRef('user', $user);
 		$this->assignRef('params', $item->params);
 		$this->assignRef('pagination', $pagination);
-
 
 		parent::display($tpl);
 	}

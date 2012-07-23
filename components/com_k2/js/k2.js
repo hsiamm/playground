@@ -1,8 +1,8 @@
 /**
- * @version		$Id: k2.js 1304 2011-10-31 13:16:09Z joomlaworks $
+ * @version		$Id: k2.js 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -63,6 +63,23 @@ $K2(document).ready(function(){
 				}
 			}
 		});
+	});
+	
+	$K2('.k2ReportUserButton').click(function(event){
+		event.preventDefault();
+		if (confirm(K2Language[0])) {
+			var element = $K2(this);
+			$K2(element).parent().addClass('commentToolbarLoading');
+			$K2.ajax({
+				url: $K2(element).attr('href'),
+				type: 'GET',
+				success: function(response){
+					$K2(element).parent().removeClass('commentToolbarLoading');
+					alert(response);
+				}
+			});
+		}
+
 	});
 	
 	$K2('#k2ReportCommentForm').submit(function(event){

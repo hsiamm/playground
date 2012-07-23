@@ -1,9 +1,8 @@
 <?php
 /**
- * @version		$Id: user.php 20899 2011-03-07 20:56:09Z ian $
  * @package		Joomla.Site
  * @subpackage	com_users
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -27,7 +26,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function login()
 	{
-		JRequest::checkToken('post') or jexit(JText::_('JInvalid_Token'));
+		JSession::checkToken('post') or jexit(JText::_('JInvalid_Token'));
 
 		$app = JFactory::getApplication();
 
@@ -42,6 +41,9 @@ class UsersControllerUser extends UsersController
 			$data['return'] = 'index.php?option=com_users&view=profile';
 		}
 
+		// Set the return URL in the user state to allow modification by plugins
+		$app->setUserState('users.login.form.return', $data['return']);
+
 		// Get the log in options.
 		$options = array();
 		$options['remember'] = JRequest::getBool('remember', false);
@@ -53,13 +55,12 @@ class UsersControllerUser extends UsersController
 		$credentials['password'] = $data['password'];
 
 		// Perform the log in.
-		$error = $app->login($credentials, $options);
-
-		// Check if the log in succeeded.
-		if (!JError::isError($error)) {
+		if (true === $app->login($credentials, $options)) {
+			// Success
 			$app->setUserState('users.login.form.data', array());
-			$app->redirect(JRoute::_($data['return'], false));
+			$app->redirect(JRoute::_($app->getUserState('users.login.form.return'), false));
 		} else {
+			// Login failed !
 			$data['remember'] = (int)$options['remember'];
 			$app->setUserState('users.login.form.data', $data);
 			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
@@ -73,7 +74,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function logout()
 	{
-		JRequest::checkToken('default') or jexit(JText::_('JInvalid_Token'));
+		JSession::checkToken('request') or jexit(JText::_('JInvalid_Token'));
 
 		$app = JFactory::getApplication();
 
@@ -81,7 +82,7 @@ class UsersControllerUser extends UsersController
 		$error = $app->logout();
 
 		// Check if the log out succeeded.
-		if (!JError::isError($error)) {
+		if (!($error instanceof Exception)) {
 			// Get the return url from the request and validate that it is internal.
 			$return = JRequest::getVar('return', '', 'method', 'base64');
 			$return = base64_decode($return);
@@ -103,7 +104,7 @@ class UsersControllerUser extends UsersController
 	 */
 	public function register()
 	{
-		JRequest::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get the form data.
 		$data	= JRequest::getVar('user', array(), 'post', 'array');
@@ -120,7 +121,7 @@ class UsersControllerUser extends UsersController
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
-				if (JError::isError($errors[$i])) {
+				if ($errors[$i] instanceof Exception) {
 					$app->enqueueMessage($errors[$i]->getMessage(), 'notice');
 				} else {
 					$app->enqueueMessage($errors[$i], 'notice');
@@ -163,7 +164,7 @@ class UsersControllerUser extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JRequest::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('User', 'UsersModel');
@@ -173,7 +174,7 @@ class UsersControllerUser extends UsersController
 		$return	= $model->processRemindRequest($data);
 
 		// Check for a hard error.
-		if (JError::isError($return)) {
+		if ($return instanceof Exception) {
 			// Get the error message to display.
 			if ($app->getCfg('error_reporting')) {
 				$message = $return->getMessage();
@@ -222,6 +223,6 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
 	}
 }

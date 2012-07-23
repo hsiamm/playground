@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: utilities.php 1298 2011-10-31 11:25:02Z lefteris.kavadas $
+ * @version		$Id: utilities.php 1544 2012-04-17 10:00:44Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -19,6 +19,15 @@ class K2HelperUtilities {
 		jimport('joomla.application.component.model');
 		$mainframe = &JFactory::getApplication();
 		$params = &K2HelperUtilities::getParams('com_k2');
+		
+		if(K2_CB && $userID != 'alias') {
+			$cbUser = CBuser::getInstance( (int) $userID );
+			if(is_object($cbUser))
+			{
+				$avatar  = $cbUser->getField( 'avatar', null, 'csv', 'none', 'profile');
+				return $avatar;
+			}
+		}
 
 		/*
 		 // JomSocial Avatar integration
@@ -78,6 +87,7 @@ class K2HelperUtilities {
 
 		jimport('joomla.filesystem.file');
 		$mainframe = &JFactory::getApplication();
+		$categoryImage = NULL;
 		if (!empty($image)) {
 			$categoryImage = JURI::root(true).'/media/k2/categories/'.$image;
 		}

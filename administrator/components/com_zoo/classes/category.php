@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      category.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -37,7 +35,7 @@ class Category {
 			Category alias.
     */
 	public $alias;
-	
+
     /*
        Variable: description
          Category description.
@@ -79,7 +77,7 @@ class Category {
 			App instance.
     */
 	public $app;
-	
+
     /*
        Variable: _parent
          Related category parent object.
@@ -102,7 +100,7 @@ class Category {
        Variable: _item_count
          Related category item count.
     */
-	public $_item_count;
+	protected $_item_count;
 
 	/*
        Variable: _total_item_count
@@ -134,12 +132,12 @@ class Category {
 	*/
 	public function getApplication() {
 		return $this->app->table->application->get($this->application_id);
-	}	
-	
+	}
+
 	/*
 		Function: hasChildren
 			Does this category have children.
-	      
+
 		Returns:
 			Bool
 	*/
@@ -153,12 +151,12 @@ class Category {
 
 		Parameters:
 	      recursive - Recursivly retrieve childrens children.
-	      
+
 		Returns:
 			id - children
 	*/
 	public function getChildren($recursive = false) {
-		
+
 		if ($recursive) {
 			$children = array();
 
@@ -172,28 +170,28 @@ class Category {
 
 		return $this->_children;
 	}
-	
+
 	/*
     	Function: setChildren
     	  Set children.
 
 	   Returns:
 	      Category
- 	*/	
+ 	*/
 	public function setChildren($val) {
 		$this->_children = $val;
 		return $this;
 	}
 
 	/*
-    	Function: addChildren
-    	  Add children.
+    	Function: addChild
+    	  Add child.
 
 	   Returns:
 	      Category
- 	*/	
-	public function addChild($category) {
-		$this->_children[] = $category;
+ 	*/
+	public function addChild($child) {
+		$this->_children[$child->id] = $child;
 		return $this;
 	}
 
@@ -207,7 +205,7 @@ class Category {
 	public function removeChild($child) {
 		unset($this->_children[$child->id]);
 		return $this;
-	}	
+	}
 
 	/*
 		Function: getParent
@@ -219,14 +217,14 @@ class Category {
 	public function getParent() {
 		return $this->_parent;
 	}
-	
+
 	/*
     	Function: setParent
     	  Set parent.
 
 	   Returns:
 	      Category
- 	*/	
+ 	*/
 	public function setParent($val) {
 		$this->_parent = $val;
 		return $this;
@@ -243,7 +241,7 @@ class Category {
 		if ($this->_parent == null) {
 			return array();
 		}
-		
+
 		$pathway   = $this->_parent->getPathway();
 		$pathway[$this->id] = $this;
 
@@ -314,18 +312,18 @@ class Category {
 	/*
 		Function: getItems
 			Method to get category's items.
-	      
+
 		Returns:
 			Array
 	*/
 	public function getItems($published = false, $user = null, $orderby = '') {
 		if (empty($this->_items)) {
-			$this->_items = $this->app->table->item->getFromCategory($this->application_id, $this->id, $published, $user, $orderby);
+			$this->_items = $this->app->table->item->getByCategory($this->application_id, $this->id, $published, $user, $orderby);
 		}
-		
+
 		return $this->_items;
 	}
-	
+
 	/*
 		Function: itemCount
 			Method to count category's items.
@@ -336,7 +334,7 @@ class Category {
 	public function itemCount() {
 		if (!isset($this->_item_count)) {
 			$this->_item_count = count($this->item_ids);
-		} 
+		}
 		return $this->_item_count;
 	}
 
@@ -353,6 +351,16 @@ class Category {
 		}
 
 		return $this->_total_item_count;
+	}
+
+	/* @deprecated use countItems instead */
+	public function countItems() {
+		return $this->totalItemCount();
+	}
+
+	/* @deprecated use childrenHaveItems instead */
+	public function countChildrensItems() {
+		return $this->childrenHaveItems();
 	}
 
 	/*
@@ -398,17 +406,17 @@ class Category {
   			$for - Get params for a specific use, including overidden values.
 
 		Returns:
-			Object - AppParameter
+			ParameterData - params
 	*/
 	public function getParams($for = null) {
 
 		// get site params and inherit globals
-		if ($for == 'site') {			
+		if ($for == 'site') {
 
 			return $this->app->parameter->create()
 				->set('config.', $this->getApplication()->getParams()->get('global.config.'))
 				->set('template.', $this->getApplication()->getParams()->get('global.template.'))
-				->loadArray($this->params->getData());
+				->loadArray($this->params);
 		}
 
 		return $this->params;
@@ -420,16 +428,13 @@ class Category {
 
 		Parameters:
 	      $name - the param name of the image
-	
+
 	   Returns:
 	      Array - Image info
-	*/	
+	*/
 	public function getImage($name) {
-		$params = $this->getParams();
-		if ($image = $params->get($name)) {
-			
-			return $this->app->html->_('zoo.image', $image, $params->get($name . '_width'), $params->get($name . '_height'));
-			
+		if ($image = $this->params->get($name)) {
+			return $this->app->html->_('zoo.image', $image, $this->params->get($name . '_width'), $this->params->get($name . '_height'));
 		}
 		return null;
 	}
@@ -440,12 +445,12 @@ class Category {
 
 		Parameters:
 	      $text - the text
-	
+
 	   Returns:
 	      text - string
-	*/		
+	*/
 	public function getText($text) {
-		return $this->app->zoo->triggerContentPlugins($text);
+		return $this->app->zoo->triggerContentPlugins($text, array(), 'com_zoo.category.description');
 	}
 
 }

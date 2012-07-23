@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: JSON.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version		$Id: JSON.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author      Matt Knapp <mdknapp[at]gmail[dot]com>
  * @author      Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
  * @copyright   2005 Michal Migurski
- * @version     CVS: $Id: JSON.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version     CVS: $Id: JSON.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
  */

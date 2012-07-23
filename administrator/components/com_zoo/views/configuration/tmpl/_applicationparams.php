@@ -1,9 +1,12 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
+<?php $form = $this->application->getParamsForm()->setValues($this->params->get('global.config.')); ?>
+<?php if ($form->getParamsCount('application-config')) : ?>
 <h3 class="toggler"><?php echo JText::_('CONFIGURATION GLOBAL'); ?></h3>
 <div class="content">
-	<?php echo $this->application->getParamsForm()->setValues($this->params->get('global.config.'))->render('params[config]', 'application-config'); ?>
+	<?php echo $form->render('params[config]', 'application-config'); ?>
 </div>
+<?php endif; ?>
 
 <h3 class="toggler"><?php echo JText::_('TEMPLATE GLOBAL'); ?></h3>
 <div class="content">

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      menu.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,7 +11,7 @@
 		Simple menu class.
 */
 class AppMenu extends AppTree {
-	
+
 	protected $_name;
 
 	/*
@@ -25,10 +23,10 @@ class AppMenu extends AppTree {
 
 		Returns:
 			AppMenu
-	*/	
+	*/
 	public function __construct($name) {
 		parent::__construct();
-		
+
 		$this->_name = $name;
 	}
 
@@ -38,9 +36,9 @@ class AppMenu extends AppTree {
 
 		Returns:
 			String
-	*/	
+	*/
 	public function render() {
-						
+
 		// create html
 		$html = '<ul>';
 		foreach ($this->_root->getChildren() as $child) {
@@ -52,19 +50,53 @@ class AppMenu extends AppTree {
 		if (func_num_args()) {
 
 			// parse html
-			if ($xml = $this->app->xml->loadString($html)) {
-			
+			if ($xml = simplexml_load_string($html)) {
+
 				foreach (func_get_args() as $callback) {
 					if (is_callable($callback)) {
-						$xml->map($callback);
+						$this->_map($xml, $callback);
 					}
 				}
-				
-				$html = $xml->asXML(true);
+
+				$html = $xml->asXML();
 			}
 		}
-		
+
 		return $html;
+	}
+
+	/*
+		Function: _map
+			Traverses the tree calling the callback on every child.
+
+		Parameters:
+			$xml - SimpleXMLElement
+			$callback - Callback function
+			$args - Callback function arguments
+
+		Returns:
+			void
+	*/
+	protected function _map(SimpleXMLElement $xml, $callback, $args = array()) {
+
+		// init level
+		if (!isset($args['level'])) {
+			$args['level'] = 0;
+		}
+
+		// call function
+		call_user_func($callback, $xml, $args);
+
+		// raise level
+		$args['level']++;
+
+		// map to all children
+		$children = $xml->children();
+		if ($n = count($children)) {
+			for ($i = 0; $i < $n; $i++) {
+				$this->_map($children[$i], $callback, $args);
+			}
+		}
 	}
 
 }
@@ -76,10 +108,10 @@ class AppMenu extends AppTree {
 class AppMenuItem extends AppTreeItem {
 
 	protected $_id;
-	protected $_name;	
+	protected $_name;
 	protected $_link;
 	protected $_attributes;
-	
+
 	/*
 		Function: __construct
 			Constructor
@@ -92,7 +124,7 @@ class AppMenuItem extends AppTreeItem {
 
 		Returns:
 			AppMenuItem
-	*/	
+	*/
 	public function __construct($id = null, $name = '', $link = null, array $attributes = array()) {
 		$this->_id		   = $id;
 		$this->_name 	   = $name;
@@ -106,33 +138,33 @@ class AppMenuItem extends AppTreeItem {
 
 		Returns:
 			Mixed
-	*/	
+	*/
 	public function getName() {
 		return $this->_name;
-	}		
-	
+	}
+
 	/*
 		Function: setName
 			Set a menu item name
 
 		Returns:
 			AppMenuItem
-	*/	
+	*/
 	public function setName($name) {
 		$this->_name = $name;
 		return $this;
 	}
-	
+
 	/*
 		Function: getID
 			Retrieve menu item identifier
 
 		Returns:
 			Mixed
-	*/	
+	*/
 	public function getID() {
 		return $this->_id ? $this->_id : parent::getId();
-	}	
+	}
 
 	/*
 		Function: getAttribute
@@ -140,7 +172,7 @@ class AppMenuItem extends AppTreeItem {
 
 		Returns:
 			Mixed
-	*/	
+	*/
 	public function getAttribute($key) {
 
 		if (isset($this->_attributes[$key])) {
@@ -156,37 +188,37 @@ class AppMenuItem extends AppTreeItem {
 
 		Returns:
 			AppMenuItem
-	*/	
+	*/
 	public function setAttribute($key, $value) {
 		$this->_attributes[$key] = $value;
 		return $this;
 	}
-	
+
 	/*
 		Function: render
 			Retrieve menu item html output
 
 		Returns:
 			String
-	*/	
+	*/
 	public function render() {
 		$link   = $this->app->request->getVar('hidemainmenu') ? null : $this->_link;
-		$html[] = '<li '.JArrayHelper::toString($this->_attributes).'>';
+		$html   = array('<li '.JArrayHelper::toString($this->_attributes).'>');
 		$html[] = ($link ? '<a href="'.JRoute::_($link).'">' : '<span>').'<span>'.$this->getName().'</span>'.($link ? '</a>' : '</span>');
 
 		if (count($this->getChildren())) {
 			$html[] = '<ul>';
-			foreach ($this->getChildren() as $child) {		
-				$html[] = $child->render();		
+			foreach ($this->getChildren() as $child) {
+				$html[] = $child->render();
 			}
 			$html[] = '</ul>';
 		}
 
 		$html[] = '</li>';
-				
+
 		return implode("\n", $html);
 	}
-	
+
 }
 
 /*
@@ -205,11 +237,11 @@ class AppMenuDecorator {
 
 		Returns:
 			Void
-	*/	
-	public static function index(AppXMLElement $node, $args) {
-		
+	*/
+	public static function index(SimpleXMLElement $node, $args) {
+
 		if ($node->getName() == 'ul') {
-			
+
 			// set ul level
 			$level = ($args['level'] / 2) + 1;
 			$node->addAttribute('class', trim($node->attributes()->class.' level'.$level));
@@ -230,25 +262,27 @@ class AppMenuDecorator {
 			// level and item order
 			$css  = 'level'.$node->attributes()->level;
 			$css .= ' item'.$node->attributes()->order;
-	
+
 			// first, last and parent
 			if ($node->attributes()->first) $css .= ' first';
 			if ($node->attributes()->last)  $css .= ' last';
 			if (isset($node->ul))           $css .= ' parent';
 
 			// add li css classes
-			$node->addAttribute('class', trim($node->attributes()->class.' '.$css));
+			$node->attributes()->class = trim($node->attributes()->class.' '.$css);
 
 			// add a/span css classes
-			if ($firstChild = $node->firstChild()) {
+			$children = $node->children();
+			if ($firstChild = $children[0]) {
 				$firstChild->addAttribute('class', trim($firstChild->attributes()->class.' '.$css));
 			}
 		}
 
-		$node->removeAttribute('level')
-			->removeAttribute('order')
-			->removeAttribute('first')
-			->removeAttribute('last');
+		unset($node->attributes()->level);
+		unset($node->attributes()->order);
+		unset($node->attributes()->first);
+		unset($node->attributes()->last);
+
 	}
 
 }

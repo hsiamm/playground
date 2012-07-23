@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: categoriesmultiple.php 1351 2011-11-25 17:04:53Z joomlaworks $
+ * @version		$Id: categoriesmultiple.php 1503 2012-02-28 15:48:24Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -50,7 +50,7 @@ class JElementCategoriesmultiple extends JElement
 		}
 		
 		$db = &JFactory::getDBO();
-		$query = 'SELECT m.* FROM #__k2_categories m WHERE published=1 AND trash = 0 ORDER BY parent, ordering';
+		$query = 'SELECT m.* FROM #__k2_categories m WHERE trash = 0 ORDER BY parent, ordering';
 		$db->setQuery( $query );
 		$mitems = $db->loadObjectList();
 		$children = array();

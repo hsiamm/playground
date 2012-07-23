@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      itemlink.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -27,7 +25,7 @@ class ElementItemLink extends Element {
 	public function hasValue($params = array()) {
 		return true;
 	}
-	
+
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -38,7 +36,7 @@ class ElementItemLink extends Element {
 	public function edit() {
 		return null;
 	}
-		
+
 	/*
 		Function: render
 			Renders the element.
@@ -50,18 +48,9 @@ class ElementItemLink extends Element {
 			String - html
 	*/
 	public function render($params = array()) {
-		if (!empty($this->_item)) {
-            if ($this->_item->getState()) {
-                $url = $this->app->route->item($this->_item);
-
-                return '<a href="' . JRoute::_($url) . '">' . JText::_('READ_MORE') . '</a>';
-
-            } else {
-
-                return JText::_('READ_MORE');
-                
-            }
-		}
+		$params = $this->app->data->create($params);
+		$text = JText::_($params->get('link_text') ? $params->get('link_text') : 'READ_MORE');
+		return $this->_item->getState() ? '<a href="' . $this->app->route->item($this->_item) . '">' . $text . '</a>' : $text;
 	}
-	
+
 }

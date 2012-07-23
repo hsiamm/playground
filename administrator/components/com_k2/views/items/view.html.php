@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1112 2011-10-11 14:34:53Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -35,9 +35,43 @@ class K2ViewItems extends JView
 		$tag=$mainframe->getUserStateFromRequest( $option.$view.'tag','tag',0,'int' );
 		$language = $mainframe->getUserStateFromRequest($option.$view.'language', 'language', '', 'string');
 		$params = &JComponentHelper::getParams('com_k2');
+		
+		$db = &JFactory::getDBO();
+		$nullDate = $db->getNullDate();
+		$this->assignRef('nullDate', $nullDate);
 
 		$model = &$this->getModel();
+		$total=$model->getTotal();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}	
 		$items = $model->getData();
+		foreach($items as $key => $item) {
+			if(K2_JVERSION == '16') {
+				$item->status = JHtml::_('jgrid.published', $item->published, $key, '', ($filter_trash==0), 'cb', $item->publish_up, $item->publish_down);
+			}
+			else {
+				$now = JFactory::getDate();
+				$config	= JFactory::getConfig();
+				$publish_up = JFactory::getDate($item->publish_up);
+				$publish_down = JFactory::getDate($item->publish_down);
+				$publish_up->setOffset($config->getValue('config.offset'));
+				$publish_down->setOffset($config->getValue('config.offset'));
+				$img = 'tick.png';
+				if ( $now->toUnix() <= $publish_up->toUnix() && $item->published == 1 ) {
+					$img = 'publish_y.png';
+				} else if ( ( $now->toUnix() <= $publish_down->toUnix() || $item->publish_down == $nullDate ) && $item->published == 1 ) {
+					$img = 'tick.png';
+				} else if ( $now->toUnix() > $publish_down->toUnix() && $item->published == 1 ) {
+					$img = 'publish_r.png';
+				}
+				$item->status = JHTML::_('grid.published', $item, $key , $img);
+				if($filter_trash) {
+					$item->status = strip_tags($item->status, '<img>');
+				}
+			}
+		}
 		$this->assignRef('rows',$items);
 
 		$lists = array ();
@@ -56,7 +90,7 @@ class K2ViewItems extends JView
 		require_once(JPATH_COMPONENT.DS.'models'.DS.'categories.php');
 		$categoriesModel= new K2ModelCategories;
 		$categories_option[]=JHTML::_('select.option', 0, JText::_('K2_SELECT_CATEGORY'));
-		$categories = $categoriesModel->categoriesTree(NULL, false, false);
+		$categories = $categoriesModel->categoriesTree(NULL, true, false);
 		$categories_options=@array_merge($categories_option, $categories);
 		$lists['categories'] = JHTML::_('select.genericlist', $categories_options, 'filter_category', '', 'value', 'text', $filter_category);
 
@@ -101,11 +135,20 @@ class K2ViewItems extends JView
 
 		$this->assignRef('lists',$lists);
 
-		$total=$model->getTotal();
+		
 		jimport ( 'joomla.html.pagination' );
 
 		$pageNav = new JPagination ( $total, $limitstart, $limit );
 		$this->assignRef('page',$pageNav);
+		
+		$filters = array();
+		$columns = array();
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin ('k2');
+		$dispatcher->trigger('onK2BeforeAssignFilters', array(&$filters));
+		$this->assignRef('filters', $filters);
+		$dispatcher->trigger('onK2BeforeAssignColumns', array(&$columns));
+		$this->assignRef('columns', $columns);
 
 		JToolBarHelper::title( JText::_('K2_ITEMS'), 'k2.png' );
 		if ($filter_trash == 1) {
@@ -160,10 +203,6 @@ class K2ViewItems extends JView
 		}
 		$this->assignRef('dateFormat', $dateFormat);
 
-		$db = &JFactory::getDBO();
-		$nullDate = $db->getNullDate();
-		$this->assignRef('nullDate', $nullDate);
-
 		$ordering = ( ($this->lists['order'] == 'i.ordering' || $this->lists['order'] == 'category' || $this->filter_featured) && (!$this->filter_trash));
 		$this->assignRef('ordering', $ordering);
 
@@ -184,7 +223,7 @@ class K2ViewItems extends JView
 
 		require_once(JPATH_COMPONENT.DS.'models'.DS.'categories.php');
 		$categoriesModel= new K2ModelCategories;
-		$categories = $categoriesModel->categoriesTree();
+		$categories = $categoriesModel->categoriesTree(null, true, false);
 		$lists['categories'] = JHTML::_('select.genericlist', $categories, 'category', 'class="inputbox" size="8"', 'value', 'text');
 
 		$this->assignRef('rows',$rows);

@@ -1,16 +1,12 @@
 <?php
 /**
- * @version		$Id: view.html.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_search
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the search component
@@ -20,7 +16,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_search
  * @since 1.0
  */
-class SearchViewSearch extends JView
+class SearchViewSearch extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -40,7 +36,6 @@ class SearchViewSearch extends JView
 		$areas	= $this->get('areas');
 		$state		= $this->get('state');
 		$searchword = $state->get('keyword');
-
 		$params = $app->getParams();
 
 		$menus	= $app->getMenu();
@@ -50,7 +45,7 @@ class SearchViewSearch extends JView
 		// right from the menu item itself
 		if (is_object($menu)) {
 			$menu_params = new JRegistry;
-			$menu_params->loadJSON($menu->params);
+			$menu_params->loadString($menu->params);
 			if (!$menu_params->get('page_title')) {
 				$params->set('page_title',	JText::_('COM_SEARCH_SEARCH'));
 			}
@@ -60,8 +55,11 @@ class SearchViewSearch extends JView
 		}
 
 		$title = $params->get('page_title');
-		if ($app->getCfg('sitename_pagetitles', 0)) {
+		if ($app->getCfg('sitename_pagetitles', 0) == 1) {
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 
@@ -70,12 +68,12 @@ class SearchViewSearch extends JView
 			$this->document->setDescription($params->get('menu-meta_description'));
 		}
 
-		if ($params->get('menu-meta_keywords')) 
+		if ($params->get('menu-meta_keywords'))
 		{
 			$this->document->setMetadata('keywords', $params->get('menu-meta_keywords'));
 		}
 
-		if ($params->get('robots')) 
+		if ($params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $params->get('robots'));
 		}
@@ -125,7 +123,7 @@ class SearchViewSearch extends JView
 			$total		= $this->get('total');
 			$pagination	= $this->get('pagination');
 
-			require_once JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php';
+			require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 
 			for ($i=0, $count = count($results); $i < $count; $i++)
 			{
@@ -136,8 +134,9 @@ class SearchViewSearch extends JView
 					$needle = $searchword;
 				}
 				else {
-					$searchwords = preg_split("/\s+/u", $searchword);
-					$needle = $searchwords[0];
+					$searchworda = preg_replace('#\xE3\x80\x80#s', ' ', $searchword);
+					$searchwords = preg_split("/\s+/u", $searchworda);
+ 					$needle = $searchwords[0];
 				}
 
 				$row = SearchHelper::prepareSearchContent($row, $needle);
@@ -157,23 +156,23 @@ class SearchViewSearch extends JView
 
 				$result = &$results[$i];
 				if ($result->created) {
-					$created = JHtml::_('date',$result->created, JText::_('DATE_FORMAT_LC3'));
+					$created = JHtml::_('date', $result->created, JText::_('DATE_FORMAT_LC3'));
 				}
 				else {
 					$created = '';
 				}
 
-				$result->text		= JHtml::_('content.prepare', $result->text);
+				$result->text		= JHtml::_('content.prepare', $result->text, '', 'com_search.search');
 				$result->created	= $created;
 				$result->count		= $i + 1;
 			}
 		}
-		
+
 		// Check for layout override
 		$active = JFactory::getApplication()->getMenu()->getActive();
 		if (isset($active->query['layout'])) {
 			$this->setLayout($active->query['layout']);
-		}	
+		}
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
@@ -183,14 +182,15 @@ class SearchViewSearch extends JView
 		$this->assignRef('lists',		$lists);
 		$this->assignRef('params',		$params);
 
-		$this->assign('ordering',		$state->get('ordering'));
-		$this->assign('searchword',		$searchword);
-		$this->assign('searchphrase',	$state->get('match'));
-		$this->assign('searchareas',	$areas);
+		$this->ordering = $state->get('ordering');
+		$this->searchword = $searchword;
+		$this->origkeyword = $state->get('origkeyword');
+		$this->searchphrase = $state->get('match');
+		$this->searchareas = $areas;
 
-		$this->assign('total',			$total);
-		$this->assign('error',			$error);
-		$this->assign('action',			$uri);
+		$this->total = $total;
+		$this->error = $error;
+		$this->action = $uri;
 
 		parent::display($tpl);
 	}

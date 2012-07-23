@@ -1,4 +1,4 @@
-/* Copyright (C) 2007 - 2011 YOOtheme GmbH, YOOtheme Proprietary Use License (http://www.yootheme.com/license) */
+/* Copyright (C) YOOtheme GmbH, http://www.gnu.org/licenses/gpl.html GNU/GPL */
 
 /*
  * options
@@ -61,12 +61,18 @@ div.options label {
 	display: block;
 	color: #666666;
 	font-weight: bold;
+	float: none;
+	margin-bottom: 0px;
 }
 
 div.options div.panel {
 	margin-left: 5px;
 	display: none;
 }
+
+div.options input[type="text"] { margin-top: 0px; }
+
+div.options input { float: none }
 
 div.options div.panel.active { display: inline-block; }
 

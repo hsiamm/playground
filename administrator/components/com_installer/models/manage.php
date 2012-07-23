@@ -1,9 +1,8 @@
 <?php
 /**
- * @version		$Id: manage.php 20267 2011-01-11 03:44:44Z eddieajau $
  * @package		Joomla.Administrator
  * @subpackage	com_installer
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -35,7 +34,7 @@ class InstallerModelManage extends InstallerModel
 			$config['filter_fields'] = array(
 				'name',
 				'client_id',
-				'enabled',
+				'status',
 				'type',
 				'folder',
 				'extension_id',
@@ -65,14 +64,13 @@ class InstallerModelManage extends InstallerModel
 			$app->setUserState($this->context.'.data', array('filters'=>$filters));
 		}
 
-		$this->setState('message',$app->getUserState('com_installer.message'));
-		$this->setState('extension_message',$app->getUserState('com_installer.extension_message'));
-		$app->setUserState('com_installer.message','');
-		$app->setUserState('com_installer.extension_message','');
+		$this->setState('message', $app->getUserState('com_installer.message'));
+		$this->setState('extension_message', $app->getUserState('com_installer.extension_message'));
+		$app->setUserState('com_installer.message', '');
+		$app->setUserState('com_installer.extension_message', '');
 
 		$this->setState('filter.search', isset($filters['search']) ? $filters['search'] : '');
-		$this->setState('filter.hideprotected', isset($filters['hideprotected']) ? $filters['hideprotected'] : 0);
-		$this->setState('filter.enabled', isset($filters['enabled']) ? $filters['enabled'] : '');
+		$this->setState('filter.status', isset($filters['status']) ? $filters['status'] : '');
 		$this->setState('filter.type', isset($filters['type']) ? $filters['type'] : '');
 		$this->setState('filter.group', isset($filters['group']) ? $filters['group'] : '');
 		$this->setState('filter.client_id', isset($filters['client_id']) ? $filters['client_id'] : '');
@@ -85,7 +83,7 @@ class InstallerModelManage extends InstallerModel
 	 * @return	boolean True on success
 	 * @since	1.5
 	 */
-	function publish($eid = array(), $value = 1)
+	function publish(&$eid = array(), $value = 1)
 	{
 		// Initialise variables.
 		$user = JFactory::getUser();
@@ -105,11 +103,24 @@ class InstallerModelManage extends InstallerModel
 
 			// Get a table object for the extension type
 			$table = JTable::getInstance('Extension');
-
+			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_templates/tables');
 			// Enable the extension in the table and store it in the database
-			foreach($eid as $id) {
+			foreach($eid as $i=>$id) {
 				$table->load($id);
-				$table->enabled = $value;
+				if ($table->type == 'template') {
+					$style = JTable::getInstance('Style', 'TemplatesTable');
+					if ($style->load(array('template' => $table->element, 'client_id' => $table->client_id, 'home'=>1))) {
+						JError::raiseNotice(403, JText::_('COM_INSTALLER_ERROR_DISABLE_DEFAULT_TEMPLATE_NOT_PERMITTED'));
+						unset($eid[$i]);
+						continue;
+					}
+				}
+				if ($table->protected == 1) {
+					$result = false;
+					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				} else {
+					$table->enabled = $value;
+				}
 				if (!$table->store()) {
 					$this->setError($table->getError());
 					$result = false;
@@ -139,7 +150,6 @@ class InstallerModelManage extends InstallerModel
 		$db = JFactory::getDBO();
 
 		// Get an installer object for the extension type
-		jimport('joomla.installer.installer');
 		$installer = JInstaller::getInstance();
 		$row = JTable::getInstance('extension');
 		$result = 0;
@@ -179,7 +189,6 @@ class InstallerModelManage extends InstallerModel
 			$db = JFactory::getDBO();
 
 			// Get an installer object for the extension type
-			jimport('joomla.installer.installer');
 			$installer = JInstaller::getInstance();
 			$row = JTable::getInstance('extension');
 
@@ -238,20 +247,25 @@ class InstallerModelManage extends InstallerModel
 	 */
 	protected function getListQuery()
 	{
-		$enabled= $this->getState('filter.enabled');
+		$status = $this->getState('filter.status');
 		$type = $this->getState('filter.type');
 		$client = $this->getState('filter.client_id');
 		$group = $this->getState('filter.group');
-		$hideprotected = $this->getState('filter.hideprotected');
-		$query = new JDatabaseQuery;
+		$query = JFactory::getDBO()->getQuery(true);
 		$query->select('*');
+		$query->select('2*protected+(1-protected)*enabled as status');
 		$query->from('#__extensions');
 		$query->where('state=0');
-		if ($hideprotected) {
-			$query->where('protected!=1');
-		}
-		if ($enabled != '') {
-			$query->where('enabled=' . intval($enabled));
+		if ($status != '') {
+			if ($status == '2')
+			{
+				$query->where('protected = 1');
+			}
+			else
+			{
+				$query->where('protected = 0');
+				$query->where('enabled=' . intval($status));
+			}
 		}
 		if ($type) {
 			$query->where('type=' . $this->_db->Quote($type));
@@ -284,7 +298,6 @@ class InstallerModelManage extends InstallerModel
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		jimport('joomla.form.form');
 		$app = JFactory::getApplication();
 		JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
 		JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');

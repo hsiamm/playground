@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      relatedcategories.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,7 +11,7 @@
        The category element class
 */
 class ElementRelatedCategories extends Element implements iSubmittable {
-	
+
 	/*
 		Function: hasValue
 			Checks if the element's value is set.
@@ -23,13 +21,12 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 
 		Returns:
 			Boolean - true, on success
-	*/	
+	*/
 	public function hasValue($params = array()) {
-		$category_ids = $this->_data->get('category', array());
-		$categories = $this->app->table->category->getById($category_ids, true);
+		$categories = $this->app->table->category->getById($this->get('category', array()), true);
 		return !empty($categories);
-	}	
-	
+	}
+
 	/*
 		Function: render
 			Override. Renders the element.
@@ -41,17 +38,16 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 			String - html
 	*/
 	public function render($params = array()) {
-	
-		$category_ids = $this->_data->get('category', array());
-
+		
+		$params = $this->app->data->create($params);
 		$category_links = array();
-		$categories = $this->app->table->category->getById($category_ids, true);
+		$categories = $this->app->table->category->getById($this->get('category', array()), true);
 		foreach ($categories as $category) {
 			$category_links[] = '<a href="'.$this->app->route->category($category).'">'.$category->name.'</a>';
 		}
-		
-		return $this->app->element->applySeparators($params['separated_by'], $category_links);
-			
+
+		return $this->app->element->applySeparators($params->get('separated_by'), $category_links);
+
 	}
 
 	/*
@@ -61,10 +57,10 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 
 	   Returns:
 	       String - html
-	*/	
+	*/
 	public function edit(){
 		//init vars
-		$multiselect = $this->_config->get('multiselect', array());
+		$multiselect = $this->config->get('multiselect', array());
 
         $options = array();
         if (!$multiselect) {
@@ -73,7 +69,7 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 
 		$attribs = ($multiselect) ? 'size="5" multiple="multiple"' : '';
 
-		return $this->app->html->_('zoo.categorylist', $this->app->zoo->getApplication(), $options, 'elements[' . $this->identifier . '][category][]', $attribs, 'value', 'text', $this->_data->get('category', array()));
+		return $this->app->html->_('zoo.categorylist', $this->app->zoo->getApplication(), $options, $this->getControlName('category', true), $attribs, 'value', 'text', $this->get('category', array()));
 	}
 
 	/*
@@ -81,7 +77,7 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -104,8 +100,9 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 	public function validateSubmission($value, $params) {
         $options = array('required' => $params->get('required'));
 		$messages = array('required' => 'Please choose a related category.');
-        $validator = $this->app->validator->create('foreach', $this->app->validator->create('string', $options, $messages), $options, $messages);
-        $clean = $validator->clean($value->get('category'));
+        $clean = $this->app->validator
+				->create('foreach', $this->app->validator->create('string', $options, $messages), $options, $messages)
+				->clean($value->get('category'));
 
         $categories = array_keys($this->_item->getApplication()->getCategories());
         foreach ($clean as $category) {
@@ -117,29 +114,4 @@ class ElementRelatedCategories extends Element implements iSubmittable {
 		return array('category' => $clean);
 	}
 
-}
-
-class ElementRelatedCategoriesData extends ElementData{
-	
-	public function encodeData() {		
-		$xml = $this->app->xml->create($this->_element->getElementType())->addAttribute('identifier', $this->_element->identifier);
-		foreach($this->_data->get('category', array()) as $category) {
-			$xml->addChild('category')->setData($category);
-		}
-
-		return $xml;			
-	}
-
-	public function decodeXML(AppXMLElement $element_xml) {
-		$data = array();
-		if (isset($element_xml->category)) {
-			$categories = array();
-			foreach ($element_xml->category as $category) {
-				$categories[] = (string) $category;
-			}
-			$this->set('category', $categories);
-		}
-		return $data;
-	}	
-	
 }

@@ -1,3 +1,3 @@
-/* Copyright (C) 2007 - 2011 YOOtheme GmbH, YOOtheme Proprietary Use License (http://www.yootheme.com/license) */
+/* Copyright (C) YOOtheme GmbH, http://www.gnu.org/licenses/gpl.html GNU/GPL */
 
 jQuery(function(a){a("select.auto-submit").bind("change",function(){a('form[name="adminForm"]').submit()})});

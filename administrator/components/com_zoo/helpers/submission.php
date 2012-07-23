@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      submission.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: SubmissionHelper
@@ -28,7 +23,7 @@ class SubmissionHelper extends AppHelper {
 			String
 	*/
 	public function filterData($data) {
-        
+
 		if (is_array($data) || $data instanceof Traversable) {
 
 			$result = array();
@@ -38,7 +33,7 @@ class SubmissionHelper extends AppHelper {
 			return $result;
 
         } elseif (is_object($data)) {
-            
+
             $result = new stdClass();
             foreach (get_object_vars($data) as $key => $value) {
 				$result->$key = $this->filterData($value);
@@ -54,88 +49,6 @@ class SubmissionHelper extends AppHelper {
 			return $data;
 
 		}
-	}
-
-	/*
-		Function: translateIDToAlias
-			Translate submission id to alias.
-
-		Parameters:
-			$id - Submission id
-
-		Returns:
-			Mixed - Null or Submission alias string
-	*/
-	public function translateIDToAlias($id){
-
-		if ($submission = $this->app->table->submission->get($id)) {
-			return $submission->alias;
-		}
-
-		return null;
-	}
-
-	/*
-		Function: translateAliasToID
-			Translate submission alias to id.
-
-		Return:
-			Int - The submission id or 0 if not found
-	*/
-	public function translateAliasToID($alias) {
-
-		// init vars
-		$db = $this->app->database;
-
-		// search alias
-		$query = 'SELECT id'
-			    .' FROM '.ZOO_TABLE_SUBMISSION
-			    .' WHERE alias = '.$db->Quote($alias);
-		
-		return $db->queryResult($query);
-	}
-
-	/*
-		Function: getAlias
-			Get unique submission alias.
-
-		Parameters:
-			$id - Submission id
-			$alias - Submission alias
-
-		Returns:
-			Mixed - Null or Submission alias string
-	*/
-	public function getUniqueAlias($id, $alias = '') {
-
-		if (empty($alias) && $id) {
-			$alias = JFilterOutput::stringURLSafe($this->app->table->submission->get($id)->name);
-		}
-
-		if (!empty($alias)) {
-			$i = 2;
-			$new_alias = $alias;
-			while ($this->checkAliasExists($new_alias, $id)) {
-				$new_alias = $alias . '-' . $i++;
-			}
-			return $new_alias;
-		}
-
-		return $alias;
-	}
-
-	/*
- 		Function: checkAliasExists
- 			Method to check if a alias already exists.
-	*/
-	public function checkAliasExists($alias, $id = 0) {
-
-		$xid = intval($this->translateAliasToID($alias));
-		if ($xid && $xid != intval($id)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/*

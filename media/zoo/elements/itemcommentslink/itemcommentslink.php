@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      itemcommentslink.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -27,7 +25,7 @@ class ElementItemCommentsLink extends Element {
 	public function hasValue($params = array()) {
 		return $this->_item && $this->_item->getApplication()->isCommentsEnabled() && ($this->_item->isCommentsEnabled() || $this->_item->getCommentsCount(1));
 	}
-	
+
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -38,7 +36,7 @@ class ElementItemCommentsLink extends Element {
 	public function edit() {
 		return null;
 	}
-		
+
 	/*
 		Function: render
 			Renders the element.
@@ -52,21 +50,20 @@ class ElementItemCommentsLink extends Element {
 	public function render($params = array()) {
 
 		if (!empty($this->_item)) {
+			$params = $this->app->data->create($params);
 			$comment_count = $this->_item->getCommentsCount(1);
-	
+
 			if ($comment_count == 0) {
-				$text = isset($params['no_comments_text']) ? $params['no_comments_text'] : JText::_('No comments');
+				$text = $params->get('no_comments_text', JText::_('No comments'));
 			} else if ($comment_count == 1) {
-				$text = sprintf((isset($params['single_comment_text']) ? $params['single_comment_text'] : JText::_('%s comment')), 1);
+				$text = sprintf($params->get('single_comment_text', JText::_('%s comment')), 1);
 			} else {
-				$text = sprintf((isset($params['multiple_comments_text']) ? $params['multiple_comments_text'] : JText::_('%s comments')), $comment_count);
+				$text = sprintf($params->get('multiple_comments_text', JText::_('%s comments')), $comment_count);
 			}
 
             if ($this->_item->getState()) {
 
-                $url  = $this->app->route->item($this->_item).'#comments';
-
-                return '<a href="' . JRoute::_($url). '">' . $text . '</a>';
+                return '<a href="' . $this->app->route->item($this->_item).'#comments">' . $text . '</a>';
 
             } else {
 
@@ -77,5 +74,5 @@ class ElementItemCommentsLink extends Element {
 		}
 
 	}
-	
+
 }

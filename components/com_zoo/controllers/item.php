@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      item.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: ItemController
@@ -43,7 +38,7 @@ class ItemController extends AppController {
 		$this->user = $this->app->user->get();
 
 	}
-	
+
 	public function element() {
 
 		// include template css
@@ -70,14 +65,11 @@ class ItemController extends AppController {
 		$filter_author_id   = $this->joomla->getUserStateFromRequest($state_prefix.'filter_author_id', 'filter_author_id', 0, 'int');
 		$search	            = $this->joomla->getUserStateFromRequest($state_prefix.'search', 'search', '', 'string');
 		$search			    = $this->app->string->strtolower($search);
-		$page               = $this->joomla->getUserStateFromRequest($state_prefix.'page', 'page', 1, 'int');
+		$page				= $this->app->request->getInt('page', 1);
 		$limit				= ItemController::PAGINATION_LIMIT;
 
 		// is filtered ?
 		$this->is_filtered = $filter_category_id <> '-1' || !empty($filter_type) || !empty($filter_author_id) || !empty($search);
-
-		// in case limit has been changed, adjust limitstart accordingly
-		$limitstart = ($page - 1) * $limit;
 
 		$this->users  = $this->table->getUsers($this->application->id);
 		$this->groups = $this->app->zoo->getGroups();
@@ -95,14 +87,13 @@ class ItemController extends AppController {
 		$where[] = 'a.application_id = ' . (int) $this->application->id;
 
 		// category filter
-		if ($filter_category_id > -1) {
-			$select  = 'DISTINCT a.*';
-			$from   .= ' LEFT JOIN '.ZOO_TABLE_CATEGORY_ITEM.' AS ci ON a.id = ci.item_id';
-			$where[] = 'ci.category_id = ' . (int) $filter_category_id;
-		} else if ($filter_category_id === '') {
+		if ($filter_category_id === '') {
 			$from   .= ' LEFT JOIN '.ZOO_TABLE_CATEGORY_ITEM.' AS ci ON a.id = ci.item_id';
 			$where[] = 'ci.item_id IS NULL';
-        }
+        } else if ($filter_category_id > -1) {
+			$from   .= ' LEFT JOIN '.ZOO_TABLE_CATEGORY_ITEM.' AS ci ON a.id = ci.item_id';
+			$where[] = 'ci.category_id = ' . (int) $filter_category_id;
+		}
 
 		// type filter
 		if (!empty($this->type_filter)) {
@@ -122,7 +113,9 @@ class ItemController extends AppController {
 		}
 
 		if ($search) {
-			$where[] = 'LOWER(a.name) LIKE '.$this->db->Quote('%'.$this->db->getEscaped($search, true).'%', false);
+			$from   .= ' LEFT JOIN '.ZOO_TABLE_TAG.' AS t ON a.id = t.item_id';
+			$where[] = 'LOWER(a.name) LIKE '.$this->db->Quote('%'.$this->db->getEscaped($search, true).'%', false)
+				. ' OR LOWER(t.name) LIKE '.$this->db->Quote('%'.$this->db->getEscaped($search, true).'%', false);
 		}
 
 		// access filter
@@ -135,9 +128,12 @@ class ItemController extends AppController {
 			'select' => $select,
 			'from' =>  $from,
 			'conditions' => array(implode(' AND ', $where)),
-			'order' => $filter_order.' '.$filter_order_Dir);
+			'order' => $filter_order.' '.$filter_order_Dir,
+			'group' => 'a.id');
 
 		$count = $this->table->count($options);
+		// in case limit has been changed, adjust limitstart accordingly
+		$limitstart = ($page - 1) * $limit;
 
 		$this->items = $this->table->all($limit > 0 ? array_merge($options, array('offset' => $limitstart, 'limit' => $limit)) : $options);
 		$this->items = array_merge($this->items);
@@ -146,7 +142,7 @@ class ItemController extends AppController {
 
 		// category select
 		$options = array();
-        $options[] = $this->app->html->_('select.option', '0:0', '- ' . JText::_('Select Category') . ' -');
+        $options[] = $this->app->html->_('select.option', '-1', '- ' . JText::_('Select Category') . ' -');
         $options[] = $this->app->html->_('select.option', '', '- ' . JText::_('uncategorized') . ' -');
 		$options[] = $this->app->html->_('select.option', '0', '- '.JText::_('Frontpage'));
 		$this->lists['select_category'] = $this->app->html->_('zoo.categorylist', $this->application, $options, 'filter_category_id', 'class="inputbox auto-submit"', 'value', 'text', $filter_category_id);

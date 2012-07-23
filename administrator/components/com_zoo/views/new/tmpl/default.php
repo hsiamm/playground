@@ -14,8 +14,7 @@
 				<a href="<?php echo $this->app->link(array('controller' => $this->controller, 'task' => 'add', 'group' => $application->getGroup())); ?>">
 					<span>
 						<img src="<?php echo $application->getIcon(); ?>" alt="<?php echo $application->getGroup(); ?>" />
-						<?php $metadata = $application->getMetaData(); ?>
-						<?php echo $metadata['name']; ?>
+						<?php echo $application->getMetaData('name'); ?>
 					</span>
 				</a>
 			<?php endforeach; ?>

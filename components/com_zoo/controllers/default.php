@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      default.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
 	Class: DefaultController
@@ -55,7 +50,7 @@ class DefaultController extends AppController {
 			Void
 	*/
 	public function display() {
-				
+
 		// execute task
 		$taskmap = $this->app->joomla->isVersion('1.5') ? '_taskMap' : 'taskMap';
 		$this->{$taskmap}['display'] = null;
@@ -71,34 +66,31 @@ class DefaultController extends AppController {
 			Void
 	*/
 	public function callElement() {
-		
-		// get request vars		
+
+		// get request vars
 		$element = $this->app->request->getCmd('element', '');
 		$method  = $this->app->request->getCmd('method', '');
 		$args    = $this->app->request->getVar('args', array(), 'default', 'array');
 		$item_id = (int) $this->app->request->getInt('item_id', 0);
 
+		// get user
+		$user = $this->app->user->get();
+
 		// get item
 		$item = $this->app->table->item->get($item_id);
-		
+
 		// raise warning when item can not be accessed
-		if (empty($item->id) || !$item->canAccess($this->app->user->get())) {
+		if (empty($item->id) || !$item->canAccess($user)) {
 			$this->app->error->raiseError(500, JText::_('Unable to access item'));
 			return;
 		}
-		
+
 		// raise warning when item is not published
-		$nulldate     = $this->app->database->getNullDate();
-		$date         = $this->app->date->create()->toUnix();
-		$publish_up   = $this->app->date->create($item->publish_up);
-		$publish_down = $this->app->date->create($item->publish_down);
-		if ($item->state != 1 || !(
-		   ($item->publish_up == $nulldate || $publish_up->toUnix() <= $date) &&
-		   ($item->publish_down == $nulldate || $publish_down->toUnix() >= $date))) {
+		if (!$item->isPublished()) {
 			$this->app->error->raiseError(404, JText::_('Item not published'));
 			return;
 		}
-		
+
 		// get element and execute callback method
 		if ($element = $item->getElement($element)) {
 			$element->callback($method, $args);
@@ -108,33 +100,51 @@ class DefaultController extends AppController {
 	public function item() {
 
 		// get request vars
-		$item_id = (int) $this->app->request->getInt('item_id', $this->params->get('item_id', 0));	
+		$item_id = (int) $this->app->request->getInt('item_id', $this->params->get('item_id', 0));
 
 		// get item
 		$this->item = $this->app->table->item->get($item_id);
 
+		// get user
+		$user = $this->app->user->get();
+
 		// raise warning when item can not be accessed
-		if (empty($this->item->id) || !$this->item->canAccess($this->app->user->get())) {
+		if (empty($this->item->id)) {
 			$this->app->error->raiseError(500, JText::_('Unable to access item'));
+			return;
+		}
+
+		// redirect to login if the user is not logged in and he cannot see the item
+		if(!$user->id && !$this->item->canAccess($user)){
+
+			$return = urlencode(base64_encode($this->app->route->item($this->item, false)));
+			$link   = JRoute::_(sprintf('index.php?option=com_user%s&view=login&return=%s', ($this->app->joomla->isVersion('1.5') ? '' : 's'), $return), false);
+
+			$this->setRedirect($link, JText::_('Unable to access item'), 'error');
+			$this->redirect();
+			return;
+		}
+
+		// Show error message if logged in and cannot access item
+		if($user->id && !$this->item->canAccess($user)){
+			$this->app->error->raiseWarning(403, JText::_('Unable to access item'));
 			return;
 		}
 
 		// add canonical
 		if ($this->app->system->document instanceof JDocumentHTML) {
-			$this->app->system->document->addHeadLink(JRoute::_($this->app->route->item($this->item), true, -1), 'canonical');
-		}	
+			$this->app->system->document->addHeadLink(JRoute::_($this->app->route->item($this->item, false), true, -1), 'canonical');
+		}
 
 		// get category_id
-		$category_id = (int) $this->app->request->getInt('category_id', $this->item->getPrimaryCategoryId());	
+		$category_id = (int) $this->app->request->getInt('category_id', $this->item->getPrimaryCategoryId());
 
 		// raise warning when item is not published
-		$nulldate     = $this->app->database->getNullDate();
-		$date         = $this->app->date->create()->toUnix();
-		$publish_up   = $this->app->date->create($this->item->publish_up);
-		$publish_down = $this->app->date->create($this->item->publish_down);
+		$nulldate = $this->app->database->getNullDate();
+		$date     = $this->app->date->create()->toUnix();
 		if ($this->item->state != 1 || !(
-		   ($this->item->publish_up == $nulldate || $publish_up->toUnix() <= $date) &&
-		   ($this->item->publish_down == $nulldate || $publish_down->toUnix() >= $date))) {
+		   ($this->item->publish_up == $nulldate || $this->app->date->create($this->item->publish_up)->toUnix() <= $date) &&
+		   ($this->item->publish_down == $nulldate || $this->app->date->create($this->item->publish_down)->toUnix() >= $date))) {
 			$this->app->error->raiseError(404, JText::_('Item not published'));
 			return;
 		}
@@ -158,23 +168,23 @@ class DefaultController extends AppController {
 				}
 			}
 
-			$this->pathway->addItem($this->item->name, JRoute::_($this->app->route->item($this->item)));
+			$this->pathway->addItem($this->item->name, $this->app->route->item($this->item));
 		}
-		
+
 		// update hit count
 		$this->item->hit();
 
 		// get page title, if exists
-		$title = $this->item->name;
-		if ($menu = JSite::getMenu()->getActive()) {
+		$title = $this->item->getParams()->get('metadata.title');
+		$title = empty($title) ? $this->item->name : $title;
+		if (($menu = $this->app->object->create('JSite')->getMenu()->getActive()) && @$menu->query['view'] == 'item' && $this->app->parameter->create($menu->params)->get('item_id') == $itemid) {
 			if ($page_title = $this->app->parameter->create($menu->params)->get('page_title')) {
 				$title = $page_title;
 			}
 		}
 
 	 	// set metadata
-		$this->app->document->setTitle($title);
-		if ($this->joomla->getCfg('MetaTitle')) $this->app->document->setMetadata('title', $this->item->name);
+		$this->app->document->setTitle($this->app->zoo->buildPageTitle($title));
 		if ($this->joomla->getCfg('MetaAuthor')) $this->app->document->setMetadata('author', $this->item->getAuthor());
 		if ($description = $this->item->getParams()->get('metadata.description')) $this->app->document->setDescription($description);
 		foreach (array('keywords', 'author', 'robots') as $meta) {
@@ -190,11 +200,11 @@ class DefaultController extends AppController {
 
 		// set renderer
 		$this->renderer = $this->app->renderer->create('item')->addPath(array($this->app->path->path('component.site:'), $this->template->getPath()));
-		
+
 		// display view
 		$this->getView('item')->addTemplatePath($this->template->getPath())->setLayout('item')->display();
 	}
-	
+
     public function submission() {
 
         // perform the request task
@@ -220,39 +230,72 @@ class DefaultController extends AppController {
 
 		$this->category   = $this->categories[$category_id];
 		$params	          = $category_id ? $this->category->getParams('site') : $this->application->getParams('frontpage');
-		$this->item_order = $this->_getItemOrder($params->get('config.item_order'));
+		$this->item_order = $params->get('config.item_order');
 		$layout 		  = $category_id == 0 ? 'frontpage' : 'category';
 		$items_per_page   = $params->get('config.items_per_page', 15);
-		$offset			  = ($page - 1) * $items_per_page;
+		$offset			  = max(($page - 1) * $items_per_page, 0);
 
 		// get categories and items
-		$this->items      = $this->app->table->item->getFromCategory($this->application->id, $category_id, true, null, $this->item_order, $offset, $items_per_page);
+		$this->items      = $this->app->table->item->getByCategory($this->application->id, $category_id, true, null, $this->item_order, $offset, $items_per_page);
 		$item_count		  = $this->category->id == 0 ? $this->app->table->item->getItemCountFromCategory($this->application->id, $category_id, true) : $this->category->itemCount();
 
-		// set category and categories to display
-		$this->category = $this->categories[$category_id];
-		$this->selected_categories = $this->categories[$category_id]->getChildren();
+		// set categories to display
+		$this->selected_categories = $this->category->getChildren();
 
-		// get item pagination		
+		// get item pagination
 		$this->pagination = $this->app->pagination->create($item_count, $page, $items_per_page, 'page', 'app');
 		$this->pagination->setShowAll($items_per_page == 0);
-		if ($layout == 'category') {
-			$this->pagination_link = $this->app->route->category($this->category);
-		} else {
-			$this->pagination_link = $this->app->route->frontpage($this->application->id);
-		}
+		$this->pagination_link = $layout == 'category' ? $this->app->route->category($this->category, false) : $this->app->route->frontpage($this->application->id);
 
 		// create pathway
 		$addpath = false;
 		$catid   = $this->params->get('category');
 		foreach ($this->category->getPathway() as $cat) {
 			if (!$catid || $addpath) {
-				$link = $this->app->route->category($cat);
-				$this->pathway->addItem($cat->name, $link);
+				$this->pathway->addItem($cat->name, $this->app->route->category($cat));
 			}
 			if ($catid && $catid == $cat->id) {
 				$addpath = true;
 			}
+		}
+
+		// get metadata
+		$title		 = $params->get('metadata.title') ? $params->get('metadata.title') : ($category_id ? $this->category->name : '');
+		$description = $params->get('metadata.description');
+		$keywords    = $params->get('metadata.keywords');
+
+		if (($menu = $this->app->object->create('JSite')->getMenu()->getActive()) && in_array(@$menu->query['view'], array('category', 'frontpage')) && ($menu_params = $this->app->parameter->create($menu->params)) && $menu_params->get('category') == $category_id) {
+
+			if ($page_title = $menu_params->get('page_title') or $page_title = ($this->app->joomla->isVersion('1.5') ? $menu->name : $menu->title)) {
+				$title = $page_title;
+			}
+
+			if ($page_description = $menu_params->get('menu-meta_description')) {
+				$description = $page_description;
+			}
+
+			if ($page_keywords = $menu_params->get('menu-meta_keywords')) {
+				$keywords = $page_keywords;
+			}
+
+		}
+
+		// set page title
+		if ($title) {
+			$this->app->document->setTitle($this->app->zoo->buildPageTitle($title));
+		}
+
+		if ($description) {
+			$this->app->document->setDescription($description);
+		}
+
+		if ($keywords) {
+			$this->app->document->setMetadata('keywords', $keywords);
+		}
+
+		// set metadata
+		foreach (array('author', 'robots') as $meta) {
+			if ($value = $params->get("metadata.$meta")) $this->app->document->setMetadata($meta, $value);
 		}
 
 		// add feed links
@@ -279,7 +322,7 @@ class DefaultController extends AppController {
 
 		// set renderer
 		$this->renderer = $this->app->renderer->create('item')->addPath(array($this->app->path->path('component.site:'), $this->template->getPath()));
-		
+
 		// display view
 		$this->getView($layout)->addTemplatePath($this->template->getPath())->setLayout($layout)->display();
 	}
@@ -293,14 +336,14 @@ class DefaultController extends AppController {
 		// get params
 		$params 	      = $this->application->getParams('site');
 		$items_per_page   = $params->get('config.items_per_page', 15);
-		$this->item_order = $this->_getItemOrder($params->get('config.item_order'));
+		$this->item_order = $params->get('config.item_order');
 		$add_alpha_index  = $params->get('config.alpha_index', 0);
 
 		// get categories
 		$this->categories = $add_alpha_index == 1 || $add_alpha_index == 3 ? $this->application->getCategoryTree(true, $this->app->user->get(), true) : array();
 
 		// set alphaindex
-		$this->alpha_index = $this->_getAlphaindex();		
+		$this->alpha_index = $this->_getAlphaindex();
 		$this->alpha_char = empty($this->alpha_char) ? $this->alpha_index->getOther() : $this->alpha_index->getChar($this->alpha_char);
 
 		// get items
@@ -313,7 +356,7 @@ class DefaultController extends AppController {
 				$this->items = $table->getByCharacter($this->application->id, $this->alpha_char, false, true, null, $this->item_order);
 			}
 		}
-		
+
 		// get item pagination
 		$this->pagination = $this->app->pagination->create(count($this->items), $page, $items_per_page, 'page', 'app');
 		$this->pagination->setShowAll($items_per_page == 0);
@@ -346,7 +389,7 @@ class DefaultController extends AppController {
 		// display view
 		$this->getView('alphaindex')->addTemplatePath($this->template->getPath())->setLayout('alphaindex')->display();
 	}
-	
+
 	public function tag() {
 
 		// get request vars
@@ -356,7 +399,7 @@ class DefaultController extends AppController {
 		// get params
 		$params 	 	  = $this->application->getParams('site');
 		$items_per_page   = $params->get('config.items_per_page', 15);
-		$this->item_order = $this->_getItemOrder($params->get('config.item_order'));
+		$this->item_order = $params->get('config.item_order');
 
 		// get categories and items
 		$this->categories = $this->application->getCategoryTree(true);
@@ -377,9 +420,12 @@ class DefaultController extends AppController {
 			$this->alpha_index = $this->_getAlphaindex();
 		}
 
+	 	// set metadata
+		$this->app->document->setTitle($this->app->zoo->buildPageTitle($this->tag));
+
 		// create pathway
 		$this->pathway->addItem(JText::_('Tags').': '.$this->tag, JRoute::_($this->app->route->tag($this->application->id, $this->tag)));
-		
+
 		// get template and params
 		if (!$this->template = $this->application->getTemplate()) {
 			$this->app->error->raiseError(500, JText::_('No template selected'));
@@ -392,8 +438,8 @@ class DefaultController extends AppController {
 
 		// display view
 		$this->getView('tag')->addTemplatePath($this->template->getPath())->setLayout('tag')->display();
-	}	
-	
+	}
+
 	public function feed() {
 
 		// get request vars
@@ -412,7 +458,7 @@ class DefaultController extends AppController {
 		$params 	 	= $category_id ? $category->getParams('site') : $this->application->getParams('frontpage');
 		$show_feed_link = $params->get('config.show_feed_link', 0);
 		$feed_title     = $params->get('config.feed_title', '');
-				
+
 		// raise error when feed is link is disabled
 		if (empty($show_feed_link)) {
 			$this->app->error->raiseError(500, JText::_('Unable to access feed'));
@@ -420,16 +466,18 @@ class DefaultController extends AppController {
 		}
 
 		// get feed items from category
-		$categories = $category->getChildren(true);
+		if ($category_id) {
+			$categories = $category->getChildren(true);
+		}
 		$categories[$category->id] = $category;
 
 		$feed_limit = $this->joomla->getCfg('feed_limit');
 
-		$feed_items = $this->app->table->item->getFromCategory($this->application->id, array_keys($categories), true, null, 'created DESC', 0, $feed_limit);
+		$feed_items = $this->app->table->item->getByCategory($this->application->id, array_keys($categories), true, null, array('_itemcreated', '_reversed'), 0, $feed_limit, true);
 
 		// set title
 		if ($feed_title) {
-			$this->app->document->setTitle(html_entity_decode($this->getView()->escape($feed_title)));
+			$this->app->document->setTitle($this->app->zoo->buildPageTitle(html_entity_decode($this->getView()->escape($feed_title))));
 		}
 
 		// set feed link
@@ -443,7 +491,7 @@ class DefaultController extends AppController {
 			// create feed item
 			$item         	   = new JFeedItem();
 			$item->title  	   = html_entity_decode($this->getView()->escape($feed_item->name));
-			$item->link   	   = JRoute::_($this->app->route->item($feed_item));
+			$item->link   	   = $this->app->route->item($feed_item);
 			$item->date 	   = $feed_item->created;
 			$item->author	   = $feed_item->getAuthor();
 			$item->description = $this->_relToAbs($renderer->render('item.feed', array('item' => $feed_item)));
@@ -451,17 +499,17 @@ class DefaultController extends AppController {
 			// add to feed document
 			$this->app->document->addItem($item);
 		}
-		
+
 	}
-	
+
 	protected function _getAlphaindex() {
-		
+
 		// set alphaindex
 		$alpha_index = $this->app->alphaindex->create($this->application->getPath().'/config/alphaindex.xml');
 
 		// add categories
 		$add_alpha_index = $this->application->getParams('site')->get('config.alpha_index', 0);
-		
+
 		if ($add_alpha_index == 1 || $add_alpha_index == 3) {
 			$alpha_index->addObjects(array_filter($this->categories, create_function('$category', 'return $category->id != 0 && $category->totalItemCount();')), 'name');
 		}
@@ -484,24 +532,11 @@ class DefaultController extends AppController {
 					.' AND (publish_up = '.$null.' OR publish_up <= '.$now.')'
 					.' AND (publish_down = '.$null.' OR publish_down >= '.$now.')';
 
-			$alpha_index->addObjects($db->queryObjectList($query), 'letter');			
+			$alpha_index->addObjects($db->queryObjectList($query), 'letter');
 		}
 		return $alpha_index;
 	}
-	
-	protected function _getItemOrder($order) {
 
-		$orderings = array(
-			'date'   => 'a.created ASC',
-			'rdate'  => 'a.created DESC',
-			'alpha'  => 'a.name ASC',
-			'ralpha' => 'a.name DESC',
-			'hits'   => 'a.hits DESC',
-			'rhits'  => 'a.hits ASC');
-	
-		return isset($orderings[$order]) ? $orderings[$order] : '';
-	}
-	
 	protected function _relToAbs($text)	{
 
 		// convert relative to absolute url
@@ -510,7 +545,12 @@ class DefaultController extends AppController {
 		$base = JURI::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 		$text = preg_replace("/(href|src)=\"(?!http|ftp|https|mailto)([^\"]*)\"/", "$1=\"$base\$2\"", $text);
 		return $text;
-	}	
+	}
+
+	// @deprecated as of 2.5.7
+	protected function _buildPageTitle($title) {
+		return $this->app->zoo->buildPageTitle($title);
+	}
 
 }
 

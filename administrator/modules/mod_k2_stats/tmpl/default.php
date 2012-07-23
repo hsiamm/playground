@@ -1,9 +1,9 @@
 <?php
 /**
-* @version		$Id: default.php 1341 2011-11-25 16:30:00Z lefteris.kavadas $
+* @version		$Id: default.php 1507 2012-03-01 20:39:22Z joomlaworks $
 * @package		K2
-* @author		JoomlaWorks http://www.joomlaworks.gr
-* @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+* @author		JoomlaWorks http://www.joomlaworks.net
+* @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
 * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 */
 

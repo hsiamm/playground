@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      category.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -65,11 +63,11 @@ class CategoryTable extends AppTable {
 		if ($object->alias == '' || $object->alias != $this->app->string->sluggify($object->alias)) {
 			throw new CategoryTableException('Invalid slug');
 		}
-		
-		if ($this->app->category->checkAliasExists($object->alias, $object->id)) {
+
+		if ($this->app->alias->category->checkAliasExists($object->alias, $object->id)) {
 			throw new CategoryTableException('Slug already exists, please choose a unique slug');
-		}		
-		
+		}
+
 		if (!is_numeric($object->parent)) {
 			throw new CategoryTableException('Invalid parent id');
 		}
@@ -95,7 +93,7 @@ class CategoryTable extends AppTable {
 
 		// get database
 		$db = $this->database;
-		
+
 		// update childrens parent category
 		$query = "UPDATE ".$this->name
 		    	." SET parent=".$object->parent
@@ -125,24 +123,20 @@ class CategoryTable extends AppTable {
 	*/
 	public function getById($ids, $published = false){
 
+		$ids = array_filter((array) $ids);
 		if (empty($ids)) {
 			return array();
 		}
-
-		if (!is_array($ids)) {
-			$ids = array($ids);
-		}
-
-		$ids = array_filter($ids, create_function('$id', 'return !empty($id);'));
-
-		$objects = array_intersect_key($this->_objects, array_flip($ids));
-
-		$ids = array_flip(array_diff_key(array_flip($ids), $objects));
+		$ids = array_combine($ids, $ids);
+		$objects = array_intersect_key($this->_objects, $ids);
+		$ids = array_diff_key($ids, $objects);
 
 		if (!empty($ids)) {
 			$where = "id IN (".implode(",", $ids).")" . ($published == true ? " AND published = 1" : "");
-			$objects = array_diff_key($this->all(array('conditions' => $where, 'order' => 'ordering')), $objects);
+			$objects += $this->all(array('conditions' => $where));
 		}
+
+		usort($objects, create_function('$a, $b', 'if($a->ordering == $b->ordering){ return 0; } return ($a->ordering < $b->ordering) ? -1 : 1;'));
 
 		return $objects;
 	}
@@ -179,7 +173,7 @@ class CategoryTable extends AppTable {
 		Returns:
 			Array - Array of categories
 	*/
-	public function getAll($application_id, $published = false, $item_count = false){
+	public function getAll($application_id, $published = false, $item_count = false, $user = null){
 
 		if ($item_count) {
 
@@ -199,7 +193,7 @@ class CategoryTable extends AppTable {
 				$select = 'c.*, GROUP_CONCAT(DISTINCT i.id) as item_ids';
 
 				$from  .= ' LEFT JOIN '.ZOO_TABLE_ITEM.' AS i USE INDEX (MULTI_INDEX2) ON ci.item_id = i.id'
-						.' AND i.'.$this->app->user->getDBAccessString()
+						.' AND i.'.$this->app->user->getDBAccessString($user)
 						.' AND i.state = 1'
 						.' AND (i.publish_up = '.$null.' OR i.publish_up <= '.$now.')'
 						.' AND (i.publish_down = '.$null.' OR i.publish_down >= '.$now.')';
@@ -221,7 +215,7 @@ class CategoryTable extends AppTable {
 
 		} else {
 			$where = "application_id = ?" . ($published == true ? " AND published = 1" : "");
-			
+
 			$categories = $this->all(array('conditions' => array($where, $application_id), 'order' => 'ordering'));
 		}
 
@@ -250,24 +244,6 @@ class CategoryTable extends AppTable {
 	}
 
 	/*
-		Function: count
-			Method to retrieve count categories of an application.
-
-		Parameters:
-			$application_id - Application id
-
-		Returns:
-			Int
-	*/
-	public function count($application_id){
-		$query = "SELECT COUNT(*)"
-			." FROM ".$this->name
-			." WHERE application_id = ".(int) $application_id;
-
-		return (int) $this->_queryResult($query);
-	}
-	
-	/*
 		Function: updateorder
 			Method to check/fix category ordering.
 
@@ -279,7 +255,7 @@ class CategoryTable extends AppTable {
 			Boolean. True on success
 	*/
 	public function updateorder($application_id, $parents = array()) {
-		
+
 		if (!is_array($parents)) {
 			$parents = array($parents);
 		}
@@ -330,7 +306,7 @@ class CategoryTable extends AppTable {
 
 			$i++;
 		}
-		
+
 		// do the ordering update
 		foreach ($update as $diff => $ids) {
 
@@ -344,7 +320,7 @@ class CategoryTable extends AppTable {
 		}
 
 		return true;
-	}	
+	}
 
 }
 

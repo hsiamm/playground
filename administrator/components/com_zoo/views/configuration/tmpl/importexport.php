@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      importexport.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -27,36 +25,13 @@ $app_item_count 	= (int) $this->application->getItemCount();
 
 	<div class="uploadbox importbox">
 		<div>
-			<h3><?php echo JText::_('Import from XML:'); ?></h3>
+			<h3><?php echo JText::_('Import from JSON:'); ?></h3>
 			<input type="text" class="filename" readonly="readonly" />
 			<div class="button-container">
 			  <button class="button-grey search" type="button"><?php echo JText::_('Search'); ?></button>
-			  <input type="file" accept="application/xml" name="import-xml" />
+			  <input type="file" accept="application/json" name="import-json" />
 			</div>
 			<button class="button-green upload" type="button"><?php echo JText::_('Upload'); ?></button>
-		</div>
-	</div>
-
-	<div class="importbox">
-		<div>
-			<h3><?php echo JText::_('EXPORT_APP_INSTANCE'); ?></h3>
-			
-
-			<?php if ($app_category_count || $app_item_count) : ?>
-
-				<button class="button-grey export" type="button">
-					<span><?php echo JText::_('Start Export'); ?></span>
-					<?php echo $app_category_count; ?> <?php echo $app_category_count == 1 ? JText::_('Category') : JText::_('Categories');?>
-					<?php echo JText::_('and'); ?>
-					<?php echo $app_item_count; ?> <?php echo $app_item_count == 1 ? JText::_('Item') : JText::_('Items'); ?>
-				</button>
-			
-			<?php else : ?>
-			
-				<?php echo JText::_('NO_CATEGORIES_NO_ITEMS')?>
-			
-			<?php endif; ?>
-		
 		</div>
 	</div>
 
@@ -74,8 +49,38 @@ $app_item_count 	= (int) $this->application->getItemCount();
 
 	<div class="importbox">
 		<div>
+			<h3><?php echo JText::_('EXPORT_APP_INSTANCE'); ?></h3>
+
+
+			<?php if ($app_category_count || $app_item_count) : ?>
+
+				<button class="button-grey export" data-task="doexport" type="button">
+					<span><?php echo JText::_('JSON'); ?></span>
+					<?php echo $app_category_count; ?> <?php echo $app_category_count == 1 ? JText::_('Category') : JText::_('Categories');?>
+					<?php echo JText::_('and'); ?>
+					<?php echo $app_item_count; ?> <?php echo $app_item_count == 1 ? JText::_('Item') : JText::_('Items'); ?>
+				</button>
+
+				<button class="button-grey export" data-task="doexportcsv" type="button">
+					<span><?php echo JText::_('CSV'); ?></span>
+					<?php echo $app_category_count; ?> <?php echo $app_category_count == 1 ? JText::_('Category') : JText::_('Categories');?>
+					<?php echo JText::_('and'); ?>
+					<?php echo $app_item_count; ?> <?php echo $app_item_count == 1 ? JText::_('Item') : JText::_('Items'); ?>
+				</button>
+
+			<?php else : ?>
+
+				<?php echo JText::_('NO_CATEGORIES_NO_ITEMS')?>
+
+			<?php endif; ?>
+
+		</div>
+	</div>
+
+	<div class="importbox">
+		<div>
 			<h3><?php echo JText::_('IMPORT_INSTALLED_SOFTWARE'); ?></h3>
-			
+
 			<?php foreach ($this->exporter as $exporter) : ?>
 				<?php if ($exporter->isEnabled()) : ?>
 					<a id="<?php echo $exporter->getType();?>" class="button-grey exporter-link" href="javascript:void(0);">
@@ -87,7 +92,7 @@ $app_item_count 	= (int) $this->application->getItemCount();
 					</a>
 				<?php endif; ?>
 			<?php endforeach; ?>
-		
+
 		</div>
 	</div>
 
@@ -98,6 +103,7 @@ $app_item_count 	= (int) $this->application->getItemCount();
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="format" value="html" />
 <input type="hidden" name="exporter" value="" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: route.php 1339 2011-11-25 16:00:20Z lefteris.kavadas $
+ * @version		$Id: route.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -39,6 +39,13 @@ class K2HelperRoute
 	}
 
 	function getUserRoute($userID) {
+		
+		if(K2_CB) {
+			global $_CB_framework;
+			return $_CB_framework->userProfileUrl( (int) $userID );
+		}
+		
+		
 		$needles = array (
 			'user'=>(int)$userID
 		);
@@ -84,6 +91,9 @@ class K2HelperRoute
 		if ($item = K2HelperRoute::_findItem($needles)) {
 			$link .= '&Itemid='.$item->id;
 		}
+		else if(K2_USERS_ITEMID) {
+			$link .= '&Itemid='.K2_USERS_ITEMID;
+		}
 		return $link;
 	}
 
@@ -94,6 +104,9 @@ class K2HelperRoute
 		$link = 'index.php?option=com_k2&view=itemlist&task=tag&tag='.urlencode($tag);
 		if ($item = K2HelperRoute::_findItem($needles)) {
 			$link .= '&Itemid='.$item->id;
+		}
+		else if(K2_TAGS_ITEMID) {
+			$link .= '&Itemid='.K2_TAGS_ITEMID;
 		}
 		return $link;
 	}

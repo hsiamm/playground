@@ -1,19 +1,22 @@
-/* Copyright (C) 2007 - 2011 YOOtheme GmbH, YOOtheme Proprietary Use License (http://www.yootheme.com/license) */
+/* Copyright (C) YOOtheme GmbH, http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only */
 
-.zoo-category.flatlist a { display: block; }
-
-.zoo-category.flatlist ul {
-	margin: 0px;
-	padding: 0px;
+ul.zoo-list {
+	margin: 0;
+	padding: 0;
 	list-style: none;
 }
 
-.zoo-category.flatlist  ul  li  a {
-	padding: 6px 0px 5px 0px;
-	background: url(images/line_dotted_h.png) 0 0 repeat-x;
-	overflow: hidden;
-}
-.zoo-category.flatlist > ul > li:first-child > a {
+ul.zoo-list > li {
+	margin-top: 5px;
 	padding-top: 5px;
-	background: none;
+	border-top: 1px solid #ddd;
 }
+
+ul.zoo-list > li:first-child {
+	margin-top: 0;
+	padding-top: 0;
+	border: none;
+}
+
+ul.zoo-list > li > a:first-child { display: block; }
+

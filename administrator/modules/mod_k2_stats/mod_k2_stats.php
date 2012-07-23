@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: mod_k2_stats.php 1220 2011-10-18 13:11:26Z joomlaworks $
+ * @version		$Id: mod_k2_stats.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -19,19 +19,19 @@ if(K2_JVERSION == '16'){
 
 require_once(dirname(__FILE__).DS.'helper.php');
 
-if($params->get('latestItems')){
+if($params->get('latestItems', 1)){
 	$latestItems = modK2StatsHelper::getLatestItems();
 }
-if($params->get('popularItems')){
+if($params->get('popularItems', 1)){
 	$popularItems = modK2StatsHelper::getPopularItems();
 }
-if($params->get('mostCommentedItems')){
+if($params->get('mostCommentedItems', 1)){
 	$mostCommentedItems = modK2StatsHelper::getMostCommentedItems();
 }
-if($params->get('latestComments')){
+if($params->get('latestComments', 1)){
 	$latestComments = modK2StatsHelper::getLatestComments();
 }
-if($params->get('statistics')){
+if($params->get('statistics', 1)){
 	$statistics = modK2StatsHelper::getStatistics();
 }
 

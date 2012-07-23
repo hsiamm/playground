@@ -1,23 +1,21 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$id = 'elements['.$element.']['.$index.']';
-
 ?>
 
-<div id="<?php echo $id; ?>">
+<div>
 
-	<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][value]', $email, 'size="60" title="'.JText::_('Email').'"'); ?>
+	<?php echo $this->app->html->_('control.text', $this->getControlname('value'), $this->get('value'), 'size="60" title="'.JText::_('Email').'"'); ?>
+
+	<?php if ($trusted_mode) : ?>
 
 	<div class="more-options">
 		<div class="trigger">
@@ -29,16 +27,19 @@ $id = 'elements['.$element.']['.$index.']';
 
 		<div class="advanced options">
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][text]', $text, 'size="60" title="'.JText::_('Link Text').'" placeholder="'.JText::_('Link Text').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('text'), $this->get('text'), 'size="60" title="'.JText::_('Link Text').'" placeholder="'.JText::_('Link Text').'"'); ?>
 			</div>
 
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][subject]', $subject, 'size="60" title="'.JText::_('Subject').'" placeholder="'.JText::_('Subject').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('subject'), $this->get('subject'), 'size="60" title="'.JText::_('Subject').'" placeholder="'.JText::_('Subject').'"'); ?>
 			</div>
 
 			<div class="row">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.']['.$index.'][body]', $body, 'size="60" title="'.JText::_('Body').'" placeholder="'.JText::_('Body').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('body'), $this->get('body'), 'size="60" title="'.JText::_('Body').'" placeholder="'.JText::_('Body').'"'); ?>
 			</div>
 		</div>
 	</div>
+
+	<?php endif; ?>
+
 </div>

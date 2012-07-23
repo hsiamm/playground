@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: helper.php 1243 2011-10-19 14:26:23Z joomlaworks $
+ * @version		$Id: helper.php 1541 2012-04-06 16:27:47Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -164,7 +164,7 @@ class modK2CommentsHelper {
 				if ($row->counter > 0) {
 					$row->link = JRoute::_(K2HelperRoute::getUserRoute($row->userID));
 
-					if($params->get(commenterNameOrUsername,1)==2){
+					if($params->get('commenterNameOrUsername',1)==2){
 						$getExistingUser = &JFactory::getUser($row->userID);
 						$row->userName = $getExistingUser->username;
 					}

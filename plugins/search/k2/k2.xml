@@ -2,11 +2,11 @@
 <install version="1.5" type="plugin" group="search" method="upgrade">
 	<name>Search - K2</name>
 	<author>JoomlaWorks</author>
-	<creationDate>November 28th, 2011</creationDate>
-	<copyright>Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.</copyright>
-	<authorEmail>contact@joomlaworks.gr</authorEmail>
-	<authorUrl>www.joomlaworks.gr</authorUrl>
-	<version>2.5.3</version>
+	<creationDate>May 9th, 2012</creationDate>
+	<copyright>Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>contact@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>2.5.7</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>K2_THIS_PLUGIN_EXTENDS_THE_DEFAULT_JOOMLA_SEARCH_FUNCTIONALITY_TO_K2_CONTENT</description>
 	<files>

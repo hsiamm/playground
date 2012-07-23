@@ -2,22 +2,18 @@
 <install type="module" version="1.5.0" method="upgrade" client="site">
 	<name>ZOO Comment</name>
 	<author>YOOtheme</author>
-	<creationDate>June 2011</creationDate>
-	<copyright>Copyright (C) 2007 - 2011 YOOtheme GmbH</copyright>
+	<creationDate>December 2011</creationDate>
+	<copyright>Copyright (C) YOOtheme GmbH</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only</license>
 	<assetsLicense>YOOtheme Proprietary Use License (http://www.yootheme.com/license)</assetsLicense>
 	<authorEmail>info@yootheme.com</authorEmail>
 	<authorUrl>http://www.yootheme.com</authorUrl>
-	<version>2.4.3</version>
+	<version>2.5.0</version>
 	<description>Comment module for ZOO developed by YOOtheme (http://www.yootheme.com)</description>
-	<languages>
-		<language tag="en-GB">language/en-GB.mod_zoocomment.ini</language>
-	</languages>
 	<files>
 		<filename module="mod_zoocomment">mod_zoocomment.php</filename>
 		<filename>mod_zoocomment.js</filename>
 		<filename>changelog.php</filename>
-		<filename>helper.php</filename>
 		<folder>elements</folder>
 		<folder>fields</folder>
 		<folder>tmpl</folder>

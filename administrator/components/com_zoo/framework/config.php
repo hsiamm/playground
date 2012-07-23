@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      config.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 if (!class_exists('App')) {
@@ -17,18 +15,16 @@ if (!class_exists('App')) {
 	jimport('joomla.filesystem.file');
 	jimport('joomla.filesystem.folder');
 	jimport('joomla.filesystem.path');
-	jimport('joomla.application.component.model');
-	jimport('joomla.application.component.view');
-	jimport('joomla.application.component.controller');
 	jimport('joomla.user.helper');
 	jimport('joomla.mail.helper');
 
 	// load classes
-	require_once($path.'/classes/app.php');
-	require_once($path.'/classes/controller.php');
-	require_once($path.'/classes/helper.php');
-	require_once($path.'/classes/view.php');
-	require_once($path.'/helpers/component.php');
-	require_once($path.'/helpers/path.php');
+	JLoader::register('App', $path.'/classes/app.php');
+	JLoader::register('AppController', $path.'/classes/controller.php');
+	JLoader::register('AppHelper', $path.'/classes/helper.php');
+	JLoader::register('AppView', $path.'/classes/view.php');
+	JLoader::register('ComponentHelper', $path.'/helpers/component.php');
+	JLoader::register('PathHelper', $path.'/helpers/path.php');
+	JLoader::register('UserAppHelper', $path.'/helpers/user.php');
 
 }

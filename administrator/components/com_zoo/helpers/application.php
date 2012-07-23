@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      application.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
    Class: ApplicationHelper
@@ -27,11 +22,11 @@ class ApplicationHelper extends AppHelper {
 		Returns:
 			Array - The applications of the application group
 	*/
-    public function getApplications($group) {
+    public function getApplications($group = false) {
         // get application instances for selected group
         $applications = array();
         foreach ($this->app->table->application->all(array('order' => 'name')) as $application) {
-            if ($application->getGroup() == $group) {
+            if (!$group || $application->getGroup() == $group) {
                 $applications[$application->id] = $application;
             }
         }
@@ -39,83 +34,27 @@ class ApplicationHelper extends AppHelper {
     }
 
 	/*
-		Function: translateIDToAlias
-			Translate application id to alias.
-
-		Parameters:
-			$id - Application id
+		Function: groups
+			Get all application groups.
 
 		Returns:
-			Mixed - Null or Category alias string
+			Array - The application groups
 	*/
-	public function translateIDToAlias($id){
-		$application = $this->app->table->application->get($id);
+	public function groups() {
 
-		if ($application) {
-			return $application->alias;
-		}
+		// get applications
+		$apps = array();
 
-		return null;
-	}
-
-	/*
-		Function: translateAliasToID
-			Translate application alias to id.
-
-		Return:
-			Int - The application id or 0 if not found
-	*/
-	public function translateAliasToID($alias) {
-
-		// search alias
-		$query = 'SELECT id'
-			    .' FROM '.ZOO_TABLE_APPLICATION
-			    .' WHERE alias = '.$this->app->database->Quote($alias)
-				.' LIMIT 1';
-
-		return $this->app->database->queryResult($query);
-	}
-
-	/*
-		Function: getAlias
-			Get unique application alias.
-
-		Parameters:
-			$id - Application id
-			$alias - Application alias
-
-		Returns:
-			Mixed - Null or Application alias string
-	*/
-	public function getUniqueAlias($id, $alias = '') {
-
-		if (empty($alias) && $id) {
-			$alias = JFilterOutput::stringURLSafe($this->app->table->application->get($id)->name);
-		}
-
-		if (!empty($alias)) {
-			$i = 2;
-			$new_alias = $alias;
-			while ($this->checkAliasExists($new_alias, $id)) {
-				$new_alias = $alias . '-' . $i++;
+		if ($folders = $this->app->path->dirs('applications:')) {
+			foreach ($folders as $folder) {
+				if ($this->app->path->path("applications:$folder/application.xml")) {
+					$apps[$folder] = $this->app->object->create('Application');
+					$apps[$folder]->setGroup($folder);
+				}
 			}
-			return $new_alias;
 		}
 
-		return $alias;
+		return $apps;
 	}
 
-	/*
- 		Function: checkAliasExists
- 			Method to check if a alias already exists.
-	*/
-	public function checkAliasExists($alias, $id = 0) {
-
-		$xid = intval($this->translateAliasToID($alias));
-		if ($xid && $xid != intval($id)) {
-			return true;
-		}
-
-		return false;
-	}
 }

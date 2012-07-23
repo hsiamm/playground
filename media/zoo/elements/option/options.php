@@ -1,44 +1,33 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      options.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+// get element from parent parameter form
+$element = $parent->element;
+$config  = $element->config;
 
-class JElementOptions extends JElement {
+// init vars
+$id = uniqid('option-');
+$i  = 0;
 
-	function fetchElement($name, $value, $node, $control_name) {
+?>
 
-		// get element from parent parameter form
-		$element = $this->_parent->element;
-		$config  = $element->getConfig();
-		
-		// init vars
-		$id         = str_replace(array('[', ']'), '_', $control_name).'options';		
-		$i          = 0;
+<div id="<?php echo $id; ?>" class="options">
+	<ul>
+		<?php
+			foreach ($config->get('option', array()) as $opt) {
+				echo '<li>'.$element->editOption($control_name, $i++, $opt['name'], $opt['value']).'</li>';
+			}
+		?>
+		<li class="hidden" ><?php echo $element->editOption($control_name, '0', '', ''); ?></li>
+	</ul>
+	<div class="add"><?php echo JText::_('Add Option'); ?></div>
+</div>
 
-		// create options
-		$options  = '<div id="'.$id.'" class="options">';
-		$options .= '<ul>';
-		foreach ($config->get('options', array()) as $opt) {
-			$options .= '<li>'.$element->editOption($control_name, $i++, $opt['name'], $opt['value']).'</li>';
-		}
-		$options .= '<li class="hidden" >'.$element->editOption($control_name, '0', '', '').'</li>';		
-		$options .= '</ul>';
-		$options .= '<div class="add">'.JText::_('Add Option').'</div>';
-		$options .= '</div>';
-				
-		// create js
-		$javascript  = "jQuery('#$id').ElementSelect({variable: '$control_name' });";
-		$javascript  = "<script type=\"text/javascript\">\n// <!--\n$javascript\n// -->\n</script>\n";
-
-		return $options.$javascript;
-	}
-
-}
+<script type="text/javascript">
+	jQuery('#<?php echo $id; ?>').ElementSelect({variable: '<?php echo $control_name; ?>'});
+</script>

@@ -1,20 +1,7 @@
-/* ERROR CSS ERROR
+/* ERROR CSS
 *********************************************/
-
 body {background:#fff; color:#000; font-family:Arial,Helvetica,Sans Serif; font-size:78%; margin:0; padding:0; text-align:center;}
+
+#error { margin:0; padding:0; padding-top:40px; padding-bottom:60px; width:814px; }
 h1 {margin:0 0 20px 0;}
-
-a.ihrlogo:link, a.ihrlogo:visited {}
-a.ihrlogo:hover {}
-
-#outline { margin:0; padding:0; padding-top:60px; padding-bottom:60px; width:814px; }
-#errorboxoutline { background-color:#fff; border:1px solid #000000; width:600px; }
-#errorboxheader { background:#E44249; border-bottom:1px solid #000000; color:#fff; font-weight:bold; font-size:18px; line-height:26px; text-align:center; width:600px; }
-#errorboxbody { text-align:left; }
-#errorboxbody ol { list-style:none; margin:0 25px; }
-#errorboxbody ul { list-style:none; margin:0 25px; }
-#errorboxbody p { padding:10px; }
-#techinfo { border:1px solid #ccc; color:#ccc; margin:10px; padding:10px; text-align:left; }
-#techinfo p { color:#ccc; }
-
 .search label {display:none}

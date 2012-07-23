@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: tags.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version		$Id: tags.php 1540 2012-04-06 16:04:55Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -130,6 +130,15 @@ class K2ModelTags extends JModel
 		$rows = $db->loadObjectList();
 		return $rows;
 
+	}
+	
+	function countTagItems($id)
+	{
+		$db = JFactory::getDBO();
+	    $query = "SELECT COUNT(*) FROM #__k2_tags_xref WHERE tagID = ".(int)$id;
+		$db->setQuery($query);
+		$result = $db->loadResult();
+		return $result;
 	}
 
 }

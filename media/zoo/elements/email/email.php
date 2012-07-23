@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      email.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -29,12 +27,12 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
 
 		Returns:
 			Boolean - true, on success
-	*/	
+	*/
 	protected function _hasValue($params = array()) {
-		$value = $this->_data->get('value');
+		$value = $this->get('value');
 		return $this->_containsEmail($value);
-	}	
-	
+	}
+
 	/*
 		Function: getText
 			Gets the email text.
@@ -43,8 +41,8 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
 			String - text
 	*/
 	public function getText() {
-		$text = $this->_data->get('text', '');
-		return empty($text) ? $this->_data->get('value', '') : $text;
+		$text = $this->get('text', '');
+		return empty($text) ? $this->get('value', '') : $text;
 	}
 
 	/*
@@ -61,20 +59,19 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
 
 		// init vars
 		$mode 		= $this->_containsEmail($this->getText());
-		$subject	= $this->_data->get('subject', '');
+		$subject	= $this->get('subject', '');
 		$subject 	= !empty($subject) ? 'subject=' . $subject : '';
-		$body		= $this->_data->get('body', '');
+		$body		= $this->get('body', '');
 		$body 		= !empty($body) ? 'body=' . $body : '';
-		$mailto 	= $this->_data->get('value', '');
-		$text	 	= $this->getText();
-						
+		$mailto 	= $this->get('value', '');
+
 		if ($subject && $body) {
 			$mailto	.= '?' . $subject . '&' . $body;
 		} elseif ($subject || $body) {
 			$mailto	.= '?' . $subject . $body;
 		}
-		
-		return ltrim($this->app->html->_('email.cloak', $mailto, true, $text, $mode));
+
+		return ltrim($this->app->html->_('email.cloak', $mailto, true, $this->getText(), $mode));
 
 	}
 
@@ -84,21 +81,10 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
 
 	   Returns:
 	       String - html
-	*/		
+	*/
 	protected function _edit(){
-        if ($layout = $this->getLayout('edit.php')) {
-            return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'index' => $this->index(),
-                    'text' => $this->_data->get('text'),
-                    'email' => $this->_data->get('value'),
-                    'subject' => $this->_data->get('subject', ''),
-                    'body' => $this->_data->get('body', '')
-                )
-            );
-        }
-	}	
+		return $this->_editForm();
+	}
 
 	/*
 	   Function: _containsEmail
@@ -116,30 +102,22 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
 	*/
 	public function _renderSubmission($params = array()) {
+		return $this->_editForm($params->get('trusted_mode'));
+	}
 
-        // get params
-        $params       = $this->app->data->create($params);
-        $trusted_mode = $params->get('trusted_mode');
-
-        if ($layout = $this->getLayout('submission.php')) {
+	protected function _editForm($trusted_mode = true) {
+        if ($layout = $this->getLayout('edit.php')) {
             return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'index' => $this->index(),
-                    'text' => $this->_data->get('text'),
-                    'email' => $this->_data->get('value'),
-                    'subject' => $this->_data->get('subject', ''),
-                    'body' => $this->_data->get('body', ''),
-                    'trusted_mode' => $trusted_mode
+                array('trusted_mode' => $trusted_mode
                 )
             );
-        }        
+        }
 	}
 
 	/*
@@ -160,9 +138,10 @@ class ElementEmail extends ElementRepeatable implements iRepeatSubmittable {
         $text      = $validator->clean($values->get('text'));
         $subject   = $validator->clean($values->get('subject'));
         $body      = $validator->clean($values->get('body'));
-        
-        $validator = $this->app->validator->create('email', array('required' => $params->get('required')), array('required' => 'Please enter an email address.'));
-        $value     = $validator->clean($values->get('value'));
+
+        $value     = $this->app->validator
+				->create('email', array('required' => $params->get('required')), array('required' => 'Please enter an email address.'))
+				->clean($values->get('value'));
 
 		return compact('value', 'text', 'subject', 'body');
     }

@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.feed.php 1300 2011-10-31 11:46:44Z lefteris.kavadas $
+ * @version		$Id: view.feed.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -159,7 +159,12 @@ class K2ViewItemlist extends JView {
 			}
 
 			//Get items
-			$items = $model->getData($ordering);
+			if(!isset($ordering)) {
+				$items = $model->getData();
+			}
+			else {
+				$items = $model->getData($ordering);
+			}
 
 
 		}

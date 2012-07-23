@@ -1,9 +1,8 @@
 <?php
 /**
- * @version		$Id: edit_ftp.php 20196 2011-01-09 02:40:25Z ian $
  * @package		Joomla.Administrator
  * @subpackage	com_templates
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -15,7 +14,7 @@ defined('_JEXEC') or die;
 
 	<?php echo JText::_('COM_TEMPLATES_FTP_DESC'); ?>
 
-	<?php if (JError::isError($this->ftp)): ?>
+	<?php if ($this->ftp instanceof Exception): ?>
 		<p class="error"><?php echo JText::_($this->ftp->message); ?></p>
 	<?php endif; ?>
 
@@ -40,5 +39,3 @@ defined('_JEXEC') or die;
 		</tbody>
 	</table>
 </fieldset>
-
-

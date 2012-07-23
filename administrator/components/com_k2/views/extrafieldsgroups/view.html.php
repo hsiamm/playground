@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1112 2011-10-11 14:34:53Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -27,11 +27,15 @@ class K2ViewExtraFieldsGroups extends JView
 		$filter_order_Dir = $mainframe->getUserStateFromRequest($option.$view.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 		$model = & $this->getModel();
+		$total = $model->getTotalGroups();
+		if ($limitstart > $total - $limit){
+			$limitstart = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+			JRequest::setVar('limitstart', $limitstart);
+		}
 		$extraFieldGroups = $model->getGroups();
 
 		$this->assignRef('rows', $extraFieldGroups);
-		$total = $model->getTotalGroups();
-
+		
 		jimport('joomla.html.pagination');
 		$pageNav = new JPagination($total, $limitstart, $limit);
 		$this->assignRef('page', $pageNav);

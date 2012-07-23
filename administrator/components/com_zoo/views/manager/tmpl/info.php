@@ -16,16 +16,16 @@
 		<?php endif; ?>
 
 		<div class="application-details">
-			<h1><?php echo $metadata['name']; ?></h1>
-			<h2>Version <?php echo $metadata['version']; ?> - <?php echo $metadata['creationdate']; ?></h2>
+			<h1><?php echo $metadata->get('name'); ?></h1>
+			<h2>Version <?php echo $metadata->get('version'); ?> - <?php echo $metadata->get('creationdate'); ?></h2>
 			<ul>
-				<li><strong>Author:</strong> <?php echo $metadata['author']; ?></li>
-				<li><strong>E-Mail:</strong> <a href="mailto:<?php echo $metadata['authorEmail']; ?>" target="_blank"><?php echo $metadata['authorEmail']; ?></a></li>
-				<li><strong>Website:</strong> <a href="<?php echo $metadata['authorUrl']; ?>" target="_blank"><?php echo $metadata['authorUrl']; ?></a></li>
-				<li><strong>Copyright:</strong> <?php echo $metadata['copyright']; ?></li>
-				<li><strong>License:</strong> <?php echo $metadata['license']; ?></li>
+				<li><strong>Author:</strong> <?php echo $metadata->get('author'); ?></li>
+				<li><strong>E-Mail:</strong> <a href="mailto:<?php echo $metadata->get('authorEmail'); ?>" target="_blank"><?php echo $metadata->get('authorEmail'); ?></a></li>
+				<li><strong>Website:</strong> <a href="<?php echo $metadata->get('authorUrl'); ?>" target="_blank"><?php echo $metadata->get('authorUrl'); ?></a></li>
+				<li><strong>Copyright:</strong> <?php echo $metadata->get('copyright'); ?></li>
+				<li><strong>License:</strong> <?php echo $metadata->get('license'); ?></li>
 			</ul>
-			<div><?php echo $metadata['description']; ?></div>
+			<div><?php echo $metadata->get('description'); ?></div>
 		</div>
 		
 	</fieldset>

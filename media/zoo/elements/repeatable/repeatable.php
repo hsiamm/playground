@@ -1,80 +1,44 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      repeatable.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
    Class: ElementRepeatable
        The repeatable element class
 */
-abstract class ElementRepeatable extends Element implements Iterator {
+abstract class ElementRepeatable extends Element implements Countable, SeekableIterator {
 
 	/*
-       Variable: $_data_array
-         Element data array.
+       Variable: $_position
+         Stores the current data pointer.
     */
-	protected $_data_array = array();
-	
+	private $_position = 0;
+
 	/*
-	   Function: Constructor
-	*/
-	public function __construct() {
-		parent::__construct();
-
-		// set callbacks
-		$this->registerCallback('_edit');
-		
-		// initialize data
-		$this->_data = $this->_data_array[0] = $this->app->element->createData($this);
-
-	}		
-	
-	/*
-		Function: setData
-			Set data through xml string.
-
-		Parameters:
-			$xml - string
+		Function: get
+			Gets the elements data.
 
 		Returns:
-			Void
-	*/	
-	public function setData($xml) {
-		$this->_data_array = array();
-
-		if (!empty($xml) && ($xml = $this->app->xml->loadString($xml))) {
-			foreach ($xml->children() as $xml_element) {
-				if ((string) $xml_element->attributes()->identifier == $this->identifier) {
-					$data = $this->app->element->createData($this);
-					$data->decodeXML($xml_element);
-					$this->_data_array[] = $data;
-				}
-			}
-		}
-		
-		if (empty($this->_data_array)) {
-			$this->_data_array[0] = $this->app->element->createData($this);
-		}
-
-		$this->_data = $this->_data_array[0];
+			Mixed - the elements data
+	*/
+	public function get($key, $default = null) {
+		return parent::get("{$this->_position}.{$key}", $default);
 	}
 
 	/*
-    	Function: unsetData
-    	  Unsets element data
+		Function: set
+			Sets the elements data.
 
-	   Returns:
-	      Void
- 	*/
-	public function unsetData() {
-		foreach ($this->_data_array as $data) {
-			$data->unsetData();
-		}
+		Returns:
+			Element - this
+	*/
+	public function set($key, $value) {
+		$this->_item->elements[$this->identifier][$this->_position][$key] = $value;
+		return $this;
 	}
 
 	/*
@@ -82,44 +46,17 @@ abstract class ElementRepeatable extends Element implements Iterator {
 			Set data through data array.
 
 		Parameters:
-			$array - Data array
+			$data - array
 
 		Returns:
 			Void
 	*/
-	public function bindData($array = array()) {
-		$this->_data_array = array();
-
-		foreach ($array as $instance_data) {
-			$data = $this->app->element->createData($this);
-			foreach ($instance_data as $key => $value) {
-				$data->set($key, $value);
-			}
-			$this->_data_array[] = $data;
+	public function bindData($data = array()) {
+		if (isset($this->_item)) {
+			$this->_item->elements->set($this->identifier, array_merge((array) $data));
 		}
-		
-		if (empty($this->_data_array)) {
-			$this->_data_array[0] = $this->app->element->createData($this);
-		}
-
-		$this->_data = $this->_data_array[0];	
 	}
 
-	/*
-	   Function: toXML
-	       Get elements XML representation.
-
-	   Returns:
-	       string - XML representation
-	*/
-	public function toXML() {
-		$xml = '';
-		foreach ($this->_data_array as $data) {
-			$xml .= $data->encodeData()->asXml(true);
-		}
-		return $xml;
-	}	
-	
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -130,7 +67,7 @@ abstract class ElementRepeatable extends Element implements Iterator {
 	public function edit() {
 		return $this->_renderRepeatable('_edit');
 	}
-	
+
 	/*
 	   Function: _edit
 	       Renders the repeatable edit form field.
@@ -138,37 +75,37 @@ abstract class ElementRepeatable extends Element implements Iterator {
 
 	   Returns:
 	       String - html
-	*/	
+	*/
 	abstract protected function _edit();
-	
+
 	/*
 		Function: getSearchData
 			Get elements search data.
-					
+
 		Returns:
 			String - Search data
 	*/
 	public function getSearchData() {
 		$result = array();
 		foreach($this as $self) {
-			$result[] = $self->_getSearchData();
+			$result[] = $this->_getSearchData();
 		}
-		
-		return (empty($result) ? null : implode("\n", $result));	
+
+		return (empty($result) ? null : implode("\n", $result));
 	}
 
 	/*
 		Function: _getSearchData
 			Get repeatable elements search data.
-					
+
 		Returns:
 			String - Search data
-	*/	
+	*/
 	protected function _getSearchData() {
-		return null;		
+		return null;
 	}
 
-	
+
 	/*
 		Function: hasValue
 			Checks if the element's value is set.
@@ -181,13 +118,13 @@ abstract class ElementRepeatable extends Element implements Iterator {
 	*/
 	public function hasValue($params = array()) {
 		foreach($this as $self) {
-			if ($self->_hasValue($params)) {
+			if ($this->_hasValue($params)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/*
 		Function: _hasValue
 			Checks if the repeatables element's value is set.
@@ -197,9 +134,9 @@ abstract class ElementRepeatable extends Element implements Iterator {
 
 		Returns:
 			Boolean - true, on success
-	*/	
+	*/
 	protected function _hasValue($params = array()) {
-		$value = $this->_data->get('value');
+		$value = $this->get('value', $this->config->get('default'));
 		return !empty($value);
 	}
 
@@ -214,13 +151,14 @@ abstract class ElementRepeatable extends Element implements Iterator {
 			String - html
 	*/
 	public function render($params = array()) {
-		
+
+		$params = $this->app->data->create($params);
 		$result = array();
 		foreach ($this as $self) {
 			$result[] = $this->_render($params);
 		}
-		
-		return $this->app->element->applySeparators($params['separated_by'], $result);
+
+		return $this->app->element->applySeparators($params->get('separated_by'), $result);
 	}
 
 	/*
@@ -234,15 +172,15 @@ abstract class ElementRepeatable extends Element implements Iterator {
 			String - html
 	*/
 	protected function _render($params = array()) {
-		
+
 		// render layout
 		if ($layout = $this->getLayout()) {
-			return $this->renderLayout($layout, array('value' => $this->_data->get('value')));
+			return $this->renderLayout($layout, array('value' => $this->get('value', $this->config->get('default'))));
 		}
-		
-		return $this->_data->get('value');		
-	}	
-	
+
+		return $this->get('value', $this->config->get('default'));
+	}
+
 	/*
 		Function: loadAssets
 			Load elements css/js assets.
@@ -251,18 +189,18 @@ abstract class ElementRepeatable extends Element implements Iterator {
 			Void
 	*/
 	public function loadAssets() {
-		if ($this->_config->get('repeatable')) {
+		if ($this->config->get('repeatable')) {
 			$this->app->document->addScript('elements:repeatable/repeatable.js');
 		}
 		return $this;
 	}
-	
+
 	/*
 		Function: renderSubmission
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -288,16 +226,17 @@ abstract class ElementRepeatable extends Element implements Iterator {
 	public function validateSubmission($value, $params) {
 		$result = array();
 		foreach($value as $single_value) {
-
-            $single_value = $single_value ? $this->app->data->create($single_value) : $this->app->data->create();
-
 			try {
-				$result[] = $this->_validateSubmission($single_value, $params);
+
+				$result[] = $this->_validateSubmission($this->app->data->create($single_value), $params);
+
 			} catch (AppValidatorException $e) {
+
 				if ($e->getCode() != AppValidator::ERROR_CODE_REQUIRED) {
 					throw $e;
 				}
 			}
+
 		}
 		if ($params->get('required') && !count($result)) {
 			if (isset($e)) {
@@ -307,7 +246,7 @@ abstract class ElementRepeatable extends Element implements Iterator {
 		}
 		return $result;
 	}
-	
+
 	/*
 		Function: _validateSubmission
 			Validates the submitted element
@@ -320,81 +259,79 @@ abstract class ElementRepeatable extends Element implements Iterator {
 			Array - cleaned value
 	*/
 	public function _validateSubmission($value, $params) {
-		$validator = $this->app->validator->create('string', array('required' => $params->get('required')));
-		$clean     = $validator->clean($value->get('value'));
-		return array('value' => $clean);
+		return array('value' => $this->app->validator->create('string', array('required' => $params->get('required')))->clean($value->get('value')));
 	}
 
+	/*
+		Function: _renderRepeatable
+			Renders the repeatable
+
+		Returns:
+			String - output
+	*/
     protected function _renderRepeatable($function, $params = array()) {
-
-		if ($this->_config->get('repeatable')) {
-
-			// create repeat-elements
-			$html = array();
-			$html[] = '<div id="'.$this->identifier.'" class="repeat-elements">';
-			$html[] = '<ul class="repeatable-list">';
-
-			foreach($this as $self) {
-				$html[] = '<li class="repeatable-element">';
-				$html[] = $self->$function($params);
-				$html[] = '</li>';
-			}
-
-			$this->rewind();
-			$html[] = '<li class="repeatable-element hidden">';
-			$html[] = preg_replace('/(elements\[\S+])\[(\d+)\]/', '$1[-1]', $this->$function($params));
-			$html[] = '</li>';
-
-			$html[] = '</ul>';
-			$html[] = '<p class="add"><a href="javascript:void(0);">'.JText::sprintf('Add another %s', $this->app->string->ucfirst($this->getElementType())).'</a></p>';
-			$html[] = '</div>';
-
-			// create js
-			$javascript  = "jQuery('#$this->identifier').ElementRepeatable({ msgDeleteElement : '".JText::_('Delete Element')."', msgSortElement : '".JText::_('Sort Element')."' });";
-			$javascript  = "<script type=\"text/javascript\">\n// <!--\n$javascript\n// -->\n</script>\n";
-
-			return implode("\n", $html).$javascript;
-
-		} else {
-
-			return $this->$function($params);
-            
-		}
+		return $this->config->get('repeatable') ? $this->renderLayout($this->app->path->path("elements:repeatable/tmpl/edit.php"), compact('function', 'params')) : $this->$function($params);
     }
 
-	public function isSortable() {
-		return $this->_is_sortable;
-	}	
-	
+	/*
+		Function: getControlName
+			Gets the controle name for given name.
+
+		Returns:
+			String - the control name
+	*/
+	public function getControlName($name, $array = false) {
+		return "elements[{$this->identifier}][{$this->index()}][{$name}]" . ($array ? "[]":"");
+	}
+
+	/* @deprecated as of version 2.5 beta */
+	public function getElementData() {
+		return $this->app->data->create(parent::get("{$this->_position}"));
+	}
+
 	public function current() {
-		return $this;
+		return parent::get($this->_position);
 	}
 
 	public function next() {
-		$this->_data = next($this->_data_array);
-		
-		return $this->_data ? $this : false;
+		++$this->_position;
 	}
 
 	public function key() {
-		return key($this->_data_array);
+		return $this->_position;
 	}
 
 	public function valid() {
-		return $this->_data !== false;
+		if ($this->_position == 0 && (!isset($this->_item->elements[$this->identifier]) || !isset($this->_item->elements[$this->identifier][0]))) {
+			parent::set(0, array());
+		}
+
+		return parent::get($this->_position) !== null;
 	}
 
 	public function rewind() {
-		if (isset($this->_data_array[0])) {
-			$this->_data = $this->_data_array[0];
-		}
-		reset($this->_data_array);
+		$this->_position = 0;
 	}
-	
+
 	public function index() {
 		return $this->key();
 	}
-		
+
+	public function count() {
+		if (isset($this->_item) && isset($this->_item->elements[$this->identifier])) {
+			return count($this->_item->elements[$this->identifier]);
+		}
+		return 0;
+	}
+
+    public function seek($position) {
+      $this->_position = $position;
+
+      if (!$this->valid()) {
+          return null;
+      }
+    }
+
 }
 
 // Declare the interface 'iRepeatSubmittable'
@@ -405,7 +342,7 @@ interface iRepeatSubmittable extends iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html

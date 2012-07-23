@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      router.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // load config
@@ -22,9 +20,12 @@ function ZooBuildRoute(&$query) {
 	$task = 'frontpage';
 
 		if (@$query['task'] == $task || @$query['view'] == $task) {
-			$segments[] = $task;
+			if (@$query['task'] == $task) {
+				$segments[] = $task;
+			}
 			unset($query['task']);
 			unset($query['view']);
+			unset($query['layout']);
 
 			// pagination
 			if (isset($query['page'])) {
@@ -36,13 +37,16 @@ function ZooBuildRoute(&$query) {
 	// category
 	$task = 'category';
 
-		if ((@$query['task'] == $task || @$query['view'] == $task) && isset($query['category_id'])) {
-			$segments[] = $task;
-			if ($query['category_id']) {
-				$segments[] = $app->category->translateIDToAlias((int) $query['category_id']);
+		if (@$query['task'] == $task || @$query['view'] == $task) {
+			if (@$query['task'] == $task) {
+				$segments[] = $task;
+			}
+			if (@$query['category_id']) {
+				$segments[] = $app->alias->category->translateIDToAlias((int) $query['category_id']);
 			}
 			unset($query['task']);
 			unset($query['view']);
+			unset($query['layout']);
 			unset($query['category_id']);
 
 			// pagination
@@ -57,7 +61,7 @@ function ZooBuildRoute(&$query) {
 
 		if ((@$query['task'] == $task || @$query['view'] == $task) && isset($query['alpha_char']) && isset($query['app_id'])) {
 			$segments[] = $task;
-			$segments[] = $app->application->translateIDToAlias((int) $query['app_id']);
+			$segments[] = $app->alias->application->translateIDToAlias((int) $query['app_id']);
 			$segments[] = $query['alpha_char'];
 			unset($query['task']);
 			unset($query['view']);
@@ -76,7 +80,7 @@ function ZooBuildRoute(&$query) {
 
 		if ((@$query['task'] == $task || @$query['view'] == $task) && isset($query['tag']) && isset($query['app_id'])) {
 			$segments[] = $task;
-			$segments[] = $app->application->translateIDToAlias((int) $query['app_id']);
+			$segments[] = $app->alias->application->translateIDToAlias((int) $query['app_id']);
 			$segments[] = $query['tag'];
 			unset($query['task']);
 			unset($query['view']);
@@ -93,13 +97,15 @@ function ZooBuildRoute(&$query) {
 	// item
 	$task = 'item';
 
-		if ((@$query['task'] == $task || @$query['view'] == $task) && isset($query['item_id'])) {
-			$segments[] = $task;
-			$segments[] = $app->item->translateIDToAlias((int) $query['item_id']);
+		if (@$query['task'] == $task || @$query['view'] == $task) {
+			if (@$query['task'] == $task && @$query['item_id']) {
+				$segments[] = $task;
+				$segments[] = $app->alias->item->translateIDToAlias((int) $query['item_id']);
+			}
 			unset($query['task']);
 			unset($query['view']);
+			unset($query['layout']);
 			unset($query['item_id']);
-
 		}
 
 	// feed
@@ -108,9 +114,9 @@ function ZooBuildRoute(&$query) {
 		if ((@$query['task'] == $task || @$query['view'] == $task) && isset($query['type']) && isset($query['app_id']) && isset($query['category_id'])) {
 			$segments[] = $task;
 			$segments[] = $query['type'];
-			$segments[] = $app->application->translateIDToAlias((int) $query['app_id']);
+			$segments[] = $app->alias->application->translateIDToAlias((int) $query['app_id']);
 			if ($query['category_id']) {
-				$segments[] = $app->category->translateIDToAlias((int) $query['category_id']);
+				$segments[] = $app->alias->category->translateIDToAlias((int) $query['category_id']);
 			}
 			unset($query['task']);
 			unset($query['view']);
@@ -121,15 +127,14 @@ function ZooBuildRoute(&$query) {
 
 	// submission
 	$task = 'submission';
-    $layout = 'submission';
 
-		if (((@$query['task'] == $task || @$query['view'] == $task) && @$query['layout'] == $layout)) {
+		if (((@$query['task'] == $task || @$query['view'] == $task) && @$query['layout'] == 'submission')) {
 			$segments[] = $task;
-            $segments[] = $layout;
-			$segments[] = $app->submission->translateIDToAlias((int) $query['submission_id']);
-            $segments[] = $query['type_id'];
-            $segments[] = $query['submission_hash'];
-            $segments[] = $app->item->translateIDToAlias((int) @$query['item_id']);
+			$segments[] = @$query['layout'];
+			$segments[] = $app->alias->submission->translateIDToAlias((int) $query['submission_id']);
+			$segments[] = $query['type_id'];
+			$segments[] = $query['submission_hash'];
+			$segments[] = $app->alias->item->translateIDToAlias((int) @$query['item_id']);
 			unset($query['task']);
 			unset($query['view']);
 			unset($query['layout']);
@@ -141,17 +146,18 @@ function ZooBuildRoute(&$query) {
 
 	// submission mysubmissions
 	$task = 'submission';
-    $layout = 'mysubmissions';
 
-		if (((@$query['task'] == $task || @$query['view'] == $task) && @$query['layout'] == $layout)) {
+		if (((@$query['task'] == $task || @$query['view'] == $task) && @$query['layout'] == 'mysubmissions')) {
 			$segments[] = $task;
-            $segments[] = $layout;
-			$segments[] = $app->submission->translateIDToAlias((int) $query['submission_id']);
+			$segments[] = @$query['layout'];
+			$segments[] = $app->alias->submission->translateIDToAlias((int) @$query['submission_id']);
 			unset($query['task']);
 			unset($query['view']);
 			unset($query['layout']);
 			unset($query['submission_id']);
 		}
+
+	$app->event->dispatcher->notify($app->event->create(null, 'application:sefbuildroute', array('segments' => &$segments, 'query' => &$query)));
 
 	return $segments;
 }
@@ -186,12 +192,12 @@ function ZooParseRoute($segments) {
 
 		if ($count == 2 && $segments[0] == $task) {
 			$vars['task']        = $task;
-			$vars['category_id'] = (int) $app->category->translateAliasToID($segments[1]);
+			$vars['category_id'] = (int) $app->alias->category->translateAliasToID($segments[1]);
 		}
 
 		if ($count == 3 && $segments[0] == $task) {
 			$vars['task']        = $task;
-			$vars['category_id'] = (int) $app->category->translateAliasToID($segments[1]);
+			$vars['category_id'] = (int) $app->alias->category->translateAliasToID($segments[1]);
 			$vars['page']        = (int) $segments[2];
 		}
 
@@ -200,13 +206,13 @@ function ZooParseRoute($segments) {
 
 		if ($count == 3 && $segments[0] == $task) {
 			$vars['task']       = $task;
-			$vars['app_id']		= (int) $app->application->translateAliasToID($segments[1]);
+			$vars['app_id']		= (int) $app->alias->application->translateAliasToID($segments[1]);
 			$vars['alpha_char'] = (string) $segments[2];
 		}
 
 		if ($count == 4 && $segments[0] == $task) {
 			$vars['task']       = $task;
-			$vars['app_id']		= (int) $app->application->translateAliasToID($segments[1]);
+			$vars['app_id']		= (int) $app->alias->application->translateAliasToID($segments[1]);
 			$vars['alpha_char'] = (string) $segments[2];
 			$vars['page']       = (int) $segments[3];
 		}
@@ -216,13 +222,13 @@ function ZooParseRoute($segments) {
 
 		if ($count == 3 && $segments[0] == $task) {
 			$vars['task']   = $task;
-			$vars['app_id']	= (int) $app->application->translateAliasToID($segments[1]);
+			$vars['app_id']	= (int) $app->alias->application->translateAliasToID($segments[1]);
 			$vars['tag']    = (string) $segments[2];
 		}
 
 		if ($count == 4 && $segments[0] == $task) {
 			$vars['task']   = $task;
-			$vars['app_id']	= (int) $app->application->translateAliasToID($segments[1]);
+			$vars['app_id']	= (int) $app->alias->application->translateAliasToID($segments[1]);
 			$vars['tag']    = (string) $segments[2];
 			$vars['page']   = (int) $segments[3];
 		}
@@ -232,7 +238,7 @@ function ZooParseRoute($segments) {
 
 		if ($count == 2 && $segments[0] == $task) {
 			$vars['task']    = $task;
-			$vars['item_id'] = (int) $app->item->translateAliasToID($segments[1]);
+			$vars['item_id'] = (int) $app->alias->item->translateAliasToID($segments[1]);
 		}
 
 	// feed
@@ -241,14 +247,14 @@ function ZooParseRoute($segments) {
 		if ($count == 3 && $segments[0] == $task) {
 			$vars['task'] = $task;
 			$vars['type'] = (string) $segments[1];
-			$vars['app_id'] = (int) $app->application->translateAliasToID($segments[2]);
+			$vars['app_id'] = (int) $app->alias->application->translateAliasToID($segments[2]);
 		}
 
 		if ($count == 4 && $segments[0] == $task) {
 			$vars['task']        = $task;
 			$vars['type']        = (string) $segments[1];
-			$vars['app_id']		 = (int) $app->application->translateAliasToID($segments[2]);
-			$vars['category_id'] = (int) $app->category->translateAliasToID($segments[3]);
+			$vars['app_id']		 = (int) $app->alias->application->translateAliasToID($segments[2]);
+			$vars['category_id'] = (int) $app->alias->category->translateAliasToID($segments[3]);
 		}
 
 	// submission
@@ -263,7 +269,7 @@ function ZooParseRoute($segments) {
 		if ($count == 5 && $segments[0] == $task && $segments[1] == $layout) {
 			$vars['task']            = $task;
 			$vars['layout']          = (string) $segments[1];
-			$vars['submission_id']   = (int) $app->submission->translateAliasToID($segments[2]);
+			$vars['submission_id']   = (int) $app->alias->submission->translateAliasToID($segments[2]);
             $vars['type_id']         = (string) $segments[3];
             $vars['submission_hash'] = (string) $segments[4];
 		}
@@ -271,10 +277,10 @@ function ZooParseRoute($segments) {
 		if ($count == 6 && $segments[0] == $task && $segments[1] == $layout) {
 			$vars['task']            = $task;
 			$vars['layout']          = (string) $segments[1];
-			$vars['submission_id']   = (int) $app->submission->translateAliasToID($segments[2]);
+			$vars['submission_id']   = (int) $app->alias->submission->translateAliasToID($segments[2]);
             $vars['type_id']         = (string) $segments[3];
             $vars['submission_hash'] = (string) $segments[4];
-            $vars['item_id']         = (int) $app->item->translateAliasToID($segments[5]);
+            $vars['item_id']         = (int) $app->alias->item->translateAliasToID($segments[5]);
 		}
 
 	// submission mysubmissions
@@ -289,8 +295,32 @@ function ZooParseRoute($segments) {
 		if ($count == 3 && $segments[0] == $task && $segments[1] == $layout) {
 			$vars['task']          = $task;
 			$vars['layout']        = (string) $segments[1];
-			$vars['submission_id'] = (int) $app->submission->translateAliasToID($segments[2]);
+			$vars['submission_id'] = (int) $app->alias->submission->translateAliasToID($segments[2]);
 		}
+
+	// try to retrieve vars from menu item
+	if (empty($vars)) {
+		if (($count == 0 || $count == 1 && is_numeric($segments[0])) && $menu_item = $app->object->create('JSite')->getMenu()->getActive()) {
+			$vars['task'] = @$menu_item->query['view'];
+
+			switch ($vars['task']) {
+				case 'frontpage':
+					if ($count == 1) {
+						$vars['page'] = (int) $segments[0];
+					}
+
+					break;
+				case 'category':
+					if ($count == 1) {
+						$vars['page'] = (int) $segments[0];
+						$vars['category_id'] = @$menu_item->query['category_id'];
+					}
+					break;
+			}
+		}
+	}
+	
+	$app->event->dispatcher->notify($app->event->create(null, 'application:sefparseroute', array('segments' => &$segments, 'vars' => &$vars)));
 
 	return $vars;
 }

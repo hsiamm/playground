@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: helper.php 1322 2011-11-21 11:16:57Z lefteris.kavadas $
+ * @version		$Id: helper.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -160,7 +160,7 @@ class modK2UsersHelper {
 				$userObject->avatar = K2HelperUtilities::getAvatar($userObject->UID, $userObject->email, $params->get('userImageWidth'));
 				$userObject->link = JRoute::_(K2HelperRoute::getUserRoute($userObject->UID));
 				$userObject->feed = JRoute::_(K2HelperRoute::getUserRoute($userObject->UID).'&format=feed');
-
+				
 				if($params->get('userItemCount')){
 					$query = "SELECT i.*, c.name as categoryname,c.id as categoryid, c.alias as categoryalias, c.params as categoryparams FROM #__k2_items as i LEFT JOIN #__k2_categories AS c ON c.id = i.catid WHERE i.published = 1
 					AND {$itemAccessCheck}

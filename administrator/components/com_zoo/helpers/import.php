@@ -1,15 +1,10 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      import.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-
-// no direct access
-defined('_JEXEC') or die('Restricted access');
 
 /*
    Class: ImportHelper
@@ -22,7 +17,7 @@ class ImportHelper extends AppHelper {
 			Import from xml file.
 
 		Parameters:
-			$xml_file 			- The xml file
+			$json_file 			- The json file
 			$import_frontpage 	- if true, frontpage will be imported
 			$frontpage_params 	- frontpage params to import
 			$import_categories 	- if true, categories will be imported
@@ -33,78 +28,34 @@ class ImportHelper extends AppHelper {
 		Returns:
 			Boolean - true on success
 	*/
-	public function import(
-		$xml_file,
-		$import_frontpage = true,
-		$frontpage_params = array(),
-		$import_categories = true,
-		$category_params = array(),
-		$element_assignment = array(),
-		$types = array()) {
+	public function import($json_file, $import_frontpage = true, $import_categories = true, $element_assignment = array(), $types = array()) {
 
-		if ($xml = $this->app->xml->loadFile($xml_file)) {
+		// set_time_limit doesn't work in safe mode
+		if (!ini_get('safe_mode')) {
+			@set_time_limit(0);
+		}
+
+		if (JFile::exists($json_file) && $data = $this->app->data->create(JFile::read($json_file))) {
 
 			// get application
 			if ($application = $this->app->zoo->getApplication()) {
 
 				// import frontpage
-				if ($import_frontpage) {
-					$this->_importFrontpage($application, $xml->getElementByPath('categories/category[@id="_root"]'), $frontpage_params);
+				if (isset($data['categories']) && isset($data['categories']['_root']) && $import_frontpage) {
+					$this->_importFrontpage($application, $data['categories']['_root']);
 				}
 
 				// import categories
-				if ($import_categories) {
-					$categories = $this->_importCategories($application, $xml->getElementsByPath('categories/category[not(@id="_root")]'), $category_params);
+				$categories = array();
+				if (isset($data['categories']) && count($data['categories']) && $import_categories) {
+					$categories_to_import = $data['categories'];
+					unset($categories_to_import['_root']);
+					$categories = $this->_importCategories($application, $categories_to_import);
 				}
 
 				// import items
-				$items = $this->_importItems($application, $xml->items, $element_assignment, $types);
-
-				// save item -> category relationship
-				if ($import_categories) {
-					foreach($items as $item) {
-						$values = array();
-						foreach ($item->categories as $category_alias) {
-							if (isset($categories[$category_alias]) || $category_alias == '_root') {
-								$values[] = $category_alias == '_root' ? 0 : (int) $categories[$category_alias]->id;
-							}
-						}
-
-						if (!empty($values)) {
-							$this->app->category->saveCategoryItemRelations($item->id, $values);
-						}
-					}
-
-					// sanitize relatedcategories elements aliases
-					foreach($items as $item) {
-						$changed = false;
-						foreach ($item->getElements() as $element) {
-							if ($element->getElementType() == 'relatedcategories') {
-								$relatedcategories = $element->getElementData()->get('category', array());
-								$new_related_categories = array();
-								foreach ($relatedcategories as $relatedcategory) {
-									if (isset($categories[$relatedcategory])) {
-										$new_related_categories[] = $categories[$relatedcategory]->id;
-									}
-								}
-								$element->getElementData()->set('category', $new_related_categories);
-								$changed = true;
-							}
-						}
-
-						if ($changed) {
-							try {
-
-								$this->app->table->item->save($item);
-								$item->unsetElementData();
-
-							} catch (AppException $e) {
-
-								$this->app->error->raiseNotice(0, JText::_('Error Importing Item').' ('.$e.')');
-
-							}
-						}
-					}
+				if (isset($data['items'])) {
+					$this->_importItems($application, $data['items'], $element_assignment, $types, $categories);
 				}
 
 				return true;
@@ -115,301 +66,275 @@ class ImportHelper extends AppHelper {
 
 		}
 
-		throw new ImportHelperException('No valid xml file.');
+		throw new ImportHelperException('No valid json file.');
 
 	}
 
-	private function _importFrontpage(Application $application, AppXMLElement $frontpage_xml = null, $frontpage_params = array()) {
-		if (!empty($frontpage_xml)) {
-			$table = $this->app->table->application;
+	private function _importFrontpage(Application $application, $frontpage) {
 
-			$application->description = (string) $frontpage_xml->description;
+		$application->description = $frontpage['description'];
 
-			// set frontpage params
-			$params = $application->getParams();
-			foreach ($frontpage_params as $params_type => $assigned_params) {
-				foreach ($assigned_params as $assigned_frontpage_param => $param) {
-					$param_xml = $frontpage_xml->getElementByPath('content/*[@name="'.$assigned_frontpage_param.'"]');
-					if ($param && $param_xml) {
-						switch ($params_type) {
-							case 'zooimage':
-								if ($param_xml->path) {
-									$params->set('content.'.$param, (string) $param_xml->path);
-								}
-								if ($param_xml->width) {
-									$params->set('content.'.$param . '_width', (string) $param_xml->width);
-								}
-								if ($param_xml->height) {
-									$params->set('content.'.$param . '_height', (string) $param_xml->height);
-								}
-								break;
-							case 'text':
-							case 'textarea':
-								$params->set('content.'.$param, (string) $param_xml);
-								break;
-						}
-					}
-				}
-			}
+		// set frontpage params
+		$application->getParams()->set('content.', $frontpage['content']);
 
-			// save application
-			try {
-				$table->save($application);
-			} catch (AppException $e) {
-				$this->app->error->raiseNotice(0, JText::_('Error Importing Frontpage').' ('.$e.')');
-			}
+		// save application
+		try {
+			$this->app->table->application->save($application);
+		} catch (AppException $e) {
+			$this->app->error->raiseNotice(0, JText::_('Error Importing Frontpage').' ('.$e.')');
 		}
+
 	}
 
-	private function _importCategories(Application $application, $categoriy_xml_array = array(), $category_params = array()) {
+	private function _importCategories(Application $application, $categories = array()) {
 
-		$table = $this->app->table->category;
+		// init vars
+		$db			   = $this->app->database;
+		$table		   = $this->app->table->category;
+		$category_vars = array_keys(get_class_vars('Category'));
 
-		$categories = array();
 		// first iteration: save category vars
-		foreach ($categoriy_xml_array as $category_xml) {
+		$category_objects = array();
+		foreach ($categories as $alias => $category) {
 
-			$category 		 = $this->app->object->create('Category');
-
-            // store old alias
-			$category->old_alias = (string) $category_xml->attributes()->id;
-
-			$category->alias = $this->app->string->sluggify($category->old_alias);
-
-			// store old parent alias
-			if ($category_xml->parent) {
-				$category->old_parent_alias = (string) $category_xml->parent;
-			}
+			$category_obj = $this->app->object->create('Category');
+			$category_obj->alias = $this->app->string->sluggify($alias);
 
 			// set a valid category alias
-			while ($this->app->category->checkAliasExists($category->alias)) {
-				$category->alias .= '-2';
-			}
+			$category_obj->alias = $this->app->alias->category->getUniqueAlias(0, $category_obj->alias);
 
 			// set category values
-			$vars = get_object_vars($category);
-			foreach ($category_xml->children() as $name => $child) {
-				if (array_key_exists((string) $name, $vars)) {
-					$category->$name = (string) $child;
+			foreach ($category as $property => $value) {
+				if (in_array($property, $category_vars)) {
+					$category_obj->$property = $value;
 				}
 			}
-			$category->parent = 0;
-			$category->application_id = $application->id;
+			$category_obj->parent = 0;
+			$category_obj->application_id = $application->id;
 
-			// set category params
-			$params = $category->getParams();
-			foreach ($category_params as $params_type => $assigned_params) {
-				foreach ($assigned_params as $assigned_category_param => $param) {
-					$param_xml = $category_xml->getElementByPath('content/*[@name="'.$assigned_category_param.'"]');
-					if ($param && $param_xml) {
-						switch ($params_type) {
-							case 'zooimage':
-								if ($param_xml->path) {
-									$params->set('content.'.$param, (string) $param_xml->path);
-								}
-								if ($param_xml->width) {
-									$params->set('content.'.$param . '_width', (string) $param_xml->width);
-								}
-								if ($param_xml->height) {
-									$params->set('content.'.$param . '_height', (string) $param_xml->height);
-								}
-								break;
-							case 'text':
-							case 'textarea':
-								$params->set('content.'.$param, (string) $param_xml);
-								break;
-						}
-					}
-				}
+			// set category content params
+			if (isset($category['content'])) {
+				$category_obj->getParams()->set('content.', $category['content']);
 			}
 
-			// save category, to get id
-			try {
-				$table->save($category);
+			$db->query('INSERT INTO '. ZOO_TABLE_CATEGORY . '(alias) VALUES ('.$db->quote($category_obj->alias).')');
+			$category_obj->id = $db->insertid();
 
-			} catch (AppException $e) {
-
-				$this->app->error->raiseNotice(0, JText::_('Error Importing Category').' ('.$e.')');
-
-			}
 			// store category for second iteration
-			$categories[$category->old_alias] = $category;
+			$category_objects[$alias] = $category_obj;
 
 		}
 
 		// second iteration: set parent relationship
-		foreach ($categories as $category) {
+		foreach ($categories as $alias => $category) {
+
 			// only save if parent is set
-			if (isset($category->old_parent_alias) && (!empty($category->old_parent_alias) && $category->old_parent_alias != '_root')) {
-				$category->parent = $categories[$category->old_parent_alias]->id;
-				try {
-
-					$table->save($category);
-
-				} catch (AppException $e) {
-
-					$this->app->error->raiseNotice(0, JText::_('Error Importing Category').' ('.$e.')');
-
+			if (isset($category_objects[$alias])) {
+				if (!empty($category['parent']) && $category['parent'] != '_root') {
+					$category_objects[$alias]->parent = $category_objects[$category['parent']]->id;
 				}
 			}
+
+			// save the category
+			try {
+				$table->save($category_objects[$alias]);
+			} catch (AppException $e) {
+				$this->app->error->raiseNotice(0, JText::_('Error Importing Category').' ('.$e.')');
+			}
+
 		}
 
-		return $categories;
+		return $category_objects;
 	}
 
-	private function _importItems(Application $application, $items_xml_array = array(), $element_assignment = array(), $types = array()) {
+	private function _importItems(Application $application, $items = array(), $element_assignment = array(), $types = array(), $categories = array()) {
 
 		// init vars
-		$db		   = $this->app->database;
-		$table     = $this->app->table->item;
-		$item_vars = array_keys(get_class_vars('Item'));
-		$user_id   = $this->app->user->get()->get('id');
-		$app_types = $application->getTypes();
-		$authors   = $this->app->data->create($db->queryObjectList('SELECT id, username FROM #__users'));
+		$db		       = $this->app->database;
+		$table         = $this->app->table->item;
+		$comment_table = $this->app->table->comment;
+		$item_vars	   = array_keys(get_class_vars('Item'));
+		$comment_vars  = array_keys(get_class_vars('Comment'));
+		$user_id	   = $this->app->user->get()->get('id');
+		$app_types	   = $application->getTypes();
+		$authors       = $this->app->data->create($db->queryObjectList('SELECT id, username, name FROM #__users', 'id'));
 
-		$items = array();
-		foreach ($items_xml_array as $key => $items_xml) {
+		// disconnect from comment save event
+		$this->app->event->dispatcher->disconnect('comment:saved', array('CommentEvent', 'saved'));
 
-			$index = (string) $items_xml->attributes()->name;
-			if (isset($types[$index]) && !empty($types[$index]) && ($type = $app_types[$types[$index]])) {
+		$item_objects = array();
+		foreach ($items as $alias => $item) {
 
-				$elements = $type->getElements();
-				$traverse = true;
-				while ($traverse) {
+			if (isset($item['group']) && isset($types[$item['group']]) && !empty($types[$item['group']]) && ($type = $app_types[$types[$item['group']]])) {
 
-					$traverse = false;
+				$item_obj 		 	 = $this->app->object->create('Item');
+				$item_obj->alias 	 = $this->app->string->sluggify($alias);
+				$item_obj->type  	 = $type->id;
 
-					foreach ($items_xml->item as $item_xml) {
+				// set a valid category alias
+				$item_obj->alias = $this->app->alias->item->getUniqueAlias(0, $item_obj->alias);
 
-						$traverse = true;
+				$db->query('INSERT INTO '. $table->name . '(alias) VALUES ('.$db->quote($item_obj->alias).')');
+				$item_obj->id = $db->insertid();
 
-						$item 		 	 = $this->app->object->create('Item');
-						$item->old_alias = (string) $item_xml->attributes()->id;
-						$item->alias 	 = $this->app->string->sluggify($item->old_alias);
-						$item->type  	 = $type->id;
+				// set item values
+				foreach ($item as $property => $value) {
+					if (in_array($property, $item_vars)) {
+						$item_obj->$property = $value;
+					}
+				}
 
-						// set a valid category alias
-						while ($this->app->item->checkAliasExists($item->alias)) {
-							$item->alias .= '-2';
+				// fix access if j16
+				if (!$this->app->joomla->isVersion('1.5')) {
+					$item_obj->access = $item_obj->access == 0 ? $this->app->joomla->getDefaultAccess() : $item_obj->access;
+				}
+
+				// store application id
+				$item_obj->application_id = $application->id;
+
+				// store tags
+				if (isset($item['tags'])) {
+					$item_obj->setTags($item['tags']);
+				}
+
+				// store author
+				$item_obj->created_by_alias = "";
+				if (isset($item['author'])) {
+					if ($key = $authors->searchRecursive($item['author'])) {
+						$item_obj->created_by = (int) $authors[$key]->id;
+					} else {
+						$item_obj->created_by_alias = $item['author'];
+					}
+				}
+				// if author is unknown set current user as author
+				if (!$item_obj->created_by) {
+					$item_obj->created_by = $user_id;
+				}
+
+				// store modified_by
+				$item_obj->modified_by = $user_id;
+
+				// store element_data
+				$item_obj->elements = $this->app->data->create();
+				if (isset($item['elements'])) {
+					foreach ($item['elements'] as $old_element_alias => $element) {
+						if (isset($element['data'])
+								&& isset($element_assignment[$item['group']][$old_element_alias][$type->id])
+								&& ($element_alias = $element_assignment[$item['group']][$old_element_alias][$type->id])
+								&& ($element_obj = $item_obj->getElement($element_alias))) {
+
+							$element_obj->bindData($element['data']);
 						}
+					}
+				}
 
-						$db->query('INSERT INTO '. ZOO_TABLE_ITEM . '(alias) VALUES ('.$db->quote($item->alias).')');
-						$item->id = $db->insertid();
+				// set metadata, content, config params
+				$item_obj->getParams()->set('metadata.', @$item['metadata']);
+				$item_obj->getParams()->set('content.', @$item['content']);
+				$item_obj->getParams()->set('config.', @$item['config']);
+
+				$item_objects[$alias] = $item_obj;
+
+				// save item -> category relationship
+				if (isset($item['categories'])) {
+
+					if (isset($item['config']['primary_category']) && isset($categories[$item['config']['primary_category']])) {
+						$item_obj->getParams()->set('config.primary_category', $categories[$item['config']['primary_category']]->id);
+					} else if(isset($item['config']['primary_category']) && $id = $this->app->alias->category->translateAliasToID($item['config']['primary_category'])) {
+						$item_obj->getParams()->set('config.primary_category', $id);
+					}
+
+					$item_categories = array();
+					foreach ($item['categories'] as $category_alias) {
+						if (isset($categories[$category_alias]) || $category_alias == '_root') {
+							$item_categories[] = $category_alias == '_root' ? 0 : (int) $categories[$category_alias]->id;
+						} else if($id = $this->app->alias->category->translateAliasToID($category_alias)) {
+							$item_categories[] = $id;
+						}
+					}
+
+					if (!empty($item_categories)) {
+						$this->app->category->saveCategoryItemRelations($item_obj->id, $item_categories);
+					}
+				}
+
+				// save comments
+				if (isset($item['comments']) && is_array($item['comments'])) {
+					$comments = array();
+					foreach ($item['comments'] as $key => $comment) {
+						$comment_obj = $this->app->object->create('comment');
+						$comment_obj->item_id = $item_obj->id;
 
 						// set item values
-						foreach ($item_xml->children() as $child) {
-							$name = $child->getName();
-							if (in_array($name, $item_vars)) {
-								$item->$name = (string) $child;
+						foreach ($comment as $property => $value) {
+							if (in_array($property, $comment_vars)) {
+								$comment_obj->$property = $value;
 							}
 						}
 
-						// fix access if j16
-						if (!$this->app->joomla->isVersion('1.5')) {
-							$item->access = $item->access == 0 ? $this->app->joomla->getDefaultAccess() : $item->access;
-						}
-
-						// store application id
-						$item->application_id = $application->id;
-
-						// store categories
-						$item->categories = array();
-						foreach ($item_xml->getElementsByPath('categories/category') as $category_xml) {
-							$item->categories[] = (string) $category_xml;
-						}
-
-						// store tags
-						$tags = array();
-						foreach ($item_xml->getElementsByPath('tags/tag') as $tag_xml) {
-							$tags[] = (string) $tag_xml;
-						}
-						$item->setTags($tags);
-
-						// store author
-						$item->created_by_alias = "";
-						if ($item_xml->author) {
-							$author = (string) $item_xml->author;
-							$key = $authors->searchRecursive($author);
-							if ($key !== false) {
-								$item->created_by = (int) $authors[$key]->id;
+						if (isset($comment_obj->user_type) && $comment_obj->user_type == 'joomla') {
+							if (isset($comment['username']) && ($key = $authors->searchRecursive($comment['username']))) {
+								$comment_obj->user_id = (int) $authors[$key]->id;
+								$comment_obj->author = (string) $authors[$key]->name;
 							} else {
-								$item->created_by_alias = $author;
+								$comment_obj->user_id = $comment_obj->user_type = '';
 							}
 						}
-						// if author is unknown set current user as author
-						if (!$item->created_by) {
-							$item->created_by = $user_id;
+						$comment_table->save($comment_obj);
+						$comments[$key] = $comment_obj;
+					}
+					// sanatize parent ids
+					foreach ($comments as $key => $comment) {
+						if ($comment->parent_id && isset($comments[$comment->parent_id])) {
+							$comment->parent_id = $comments[$comment->parent_id]->id;
+							$comment_table->save($comment);
 						}
-
-						// store modified_by
-						$item->modified_by = $user_id;
-
-						// store element_data
-						if ($data = $item_xml->data) {
-							$elements_xml = $this->app->xml->create('elements');
-							$nodes_to_delete = array();
-							foreach ($data->children() as $key => $element_xml) {
-
-								$old_element_alias = (string) $element_xml->attributes()->identifier;
-
-								if (isset($element_assignment[$index][$old_element_alias][$type->id])
-										&& ($element_alias = $element_assignment[$index][$old_element_alias][$type->id])) {
-									$element_xml->addAttribute('identifier', $element_alias);
-									$elements_xml->appendChild($element_xml);
-								} else {
-									$nodes_to_delete[] = $element_xml;
-								}
-							}
-
-							foreach ($nodes_to_delete as $node) {
-								$data->removeChild($node);
-							}
-
-							$item->elements = $elements_xml->asXML(true, true);
-						}
-
-						// store metadata
-						$params = $item->getParams();
-						if ($metadata = $item_xml->metadata) {
-							foreach ($metadata->children() as $metadata_xml) {
-								$params->set('metadata.' . $metadata_xml->getName(), (string) $metadata_xml);
-							}
-						}
-						$items[$item->old_alias] = $item;
-
-						$items_xml->removeChild($item_xml);
 					}
 				}
 			}
 		}
 
-		// sanatize relateditems elements
-		foreach ($items as $key => $item) {
+		foreach ($item_objects as $item) {
+
 			foreach ($item->getElements() as $element) {
+
+				// sanatize relateditems elements
 				if ($element->getElementType() == 'relateditems') {
-					$relateditems = $element->getElementData()->get('item', array());
+					$relateditems = $element->get('item', array());
 					$new_related_items = array();
-					foreach ($relateditems as $key => $relateditem) {
+					foreach ($relateditems as $relateditem) {
 						if (isset($items[$relateditem])) {
-							$new_related_items[] = $items[$relateditem]->id;
+							$new_related_items[] = $item_objects[$relateditem]->id;
 						}
 					}
-					$element->getElementData()->set('item', $new_related_items);
+					$element->set('item', $new_related_items);
+
+				// sanitize relatedcategories elements aliases
+				} else if ($element->getElementType() == 'relatedcategories') {
+					$relatedcategories = $element->get('category', array());
+					$new_related_categories = array();
+					foreach ($relatedcategories as $relatedcategory) {
+						if (isset($categories[$relatedcategory])) {
+							$new_related_categories[] = $categories[$relatedcategory]->id;
+						} else if($id = $this->app->alias->category->translateAliasToID($relatedcategory)) {
+							$new_related_categories[] = $id;
+						}
+					}
+					$element->set('category', $new_related_categories);
 				}
 			}
+
 			try {
 
 				$table->save($item);
-				$item->unsetElementData();
 
 			} catch (AppException $e) {
-
 				$this->app->error->raiseNotice(0, JText::_('Error Importing Item').' ('.$e.')');
-
 			}
+
 		}
 
-		return $items;
+		return $item_objects;
 
 	}
 
@@ -418,58 +343,25 @@ class ImportHelper extends AppHelper {
 			Builds the assign element info from xml.
 
 		Parameters:
-			$export_xml - AppXMLElement: the export xml
+			$data - AppData: the export data
 
 		Returns:
 			Array - Assign element info
 	*/
-	public function getImportInfo(AppXMLElement $export_xml) {
+	public function getImportInfo(AppData $data) {
 
 		$info = array();
 
 		$application = $this->app->zoo->getApplication();
 
 		// get frontpage count
-		$info['frontpage_count'] = count($export_xml->getElementsByPath('categories/category[@id="_root"]'));
+		$info['frontpage_count'] = (bool) $data->find('categories._root');
 
 		// get category count
-		$info['category_count'] = count($export_xml->getElementsByPath('categories/category[not(@id="_root")]'));
-
-		// get frontpage params
-		$info['frontpage_params'] = array();
-		foreach ($application->getMetaXML()->getElementsByPath('params[@group="application-content"]/param') as $param) {
-			$info['frontpage_params'][(string) $param->attributes()->type][(string) $param->attributes()->name] = (string) $param->attributes()->label;
-		}
-
-		$info['frontpage_params_to_assign'] = array();
-		foreach ($export_xml->getElementsByPath('categories/category[@id="_root"]/content') as $content) {
-			foreach ($content->children() as $param) {
-				$name = (string) $param->attributes()->name;
-				if (!isset($info['frontpage_params_to_assign'][$param->getName()]) || !in_array($name, $info['frontpage_params_to_assign'][$param->getName()])) {
-					$param_name = ($param->getName() == 'image') ? 'zooimage' : $param->getName();
-					$info['frontpage_params_to_assign'][$param_name][] = $name;
-				}
-			}
-		}
-
-		// get category params
-		$info['category_params'] = array();
-		foreach ($application->getMetaXML()->getElementsByPath('params[@group="category-content"]/param') as $param) {
-			$info['category_params'][(string) $param->attributes()->type][(string) $param->attributes()->name] = (string) $param->attributes()->label;
-		}
-
-		$info['category_params_to_assign'] = array();
-		foreach ($export_xml->getElementsByPath('categories/category[not(@id="_root")]/content') as $content) {
-			foreach ($content->children() as $param) {
-				$name       = (string) $param->attributes()->name;
-				$param_name = ($param->getName() == 'image') ? 'zooimage' : $param->getName();
-				if (!isset($info['category_params_to_assign'][$param_name]) || !in_array($name, $info['category_params_to_assign'][$param_name])) {
-					$info['category_params_to_assign'][$param_name][] = $name;
-				}
-			}
-		}
+		$info['category_count'] = max(array(count($data->get('categories', array())) - ((int) $info['frontpage_count']), 0));
 
 		// get types
+		$type_elements = array();
 		foreach ($application->getTypes() as $type) {
 			foreach ($type->getElements() as $element) {
 				$type_elements[$type->id][$element->getElementType()][] = $element;
@@ -478,33 +370,33 @@ class ImportHelper extends AppHelper {
 
 		// get item types
 		$info['items'] = array();
-		foreach ($export_xml->items as $group => $items) {
-			$group = ($items->attributes()->name) ? (string) $items->attributes()->name : $group;
-			if (($count = count($items->item)) && ($data = $items->item[0]->data)) {
+		foreach ($data->get('items', array()) as $alias => $item) {
+			$group = $item['group'];
+			if (!isset($info['items'][$group])) {
+				$info['items'][$group]['item_count'] = 0;
 				$info['items'][$group]['elements'] = array();
-				foreach ($data->children() as $element_xml) {
-					$alias = (string) $element_xml->attributes()->identifier;
-					if (!isset($info['items'][$group]['elements'][$alias])){
-						$element_type = $element_xml->getName();
-						$element_name = (string) $element_xml->attributes()->name;
+				if (isset($item['elements'])) {
+					foreach ($item['elements'] as $alias => $element) {
+						if (!isset($info['items'][$group]['elements'][$alias])){
 
-						// add element type
-						$info['items'][$group]['elements'][$alias]['type'] = ucfirst($element_type);
+							// add element type
+							$info['items'][$group]['elements'][$alias]['type'] = ucfirst($element['type']);
 
-						// add element name
-						$info['items'][$group]['elements'][$alias]['name'] = $element_name;
+							// add element name
+							$info['items'][$group]['elements'][$alias]['name'] = $element['name'];
 
-						// add elements to assign too
-						$info['items'][$group]['elements'][$alias]['assign'] = array();
-						foreach ($type_elements as $type => $assign_elements) {
-							if (isset($assign_elements[$element_type])) {
-								$info['items'][$group]['elements'][$alias]['assign'][$type] = $assign_elements[$element_type];
+							// add elements to assign too
+							$info['items'][$group]['elements'][$alias]['assign'] = array();
+							foreach ($type_elements as $type => $assign_elements) {
+								if (isset($assign_elements[$element['type']])) {
+									$info['items'][$group]['elements'][$alias]['assign'][$type] = $assign_elements[$element['type']];
+								}
 							}
 						}
 					}
 				}
-				$info['items'][$group]['item_count'] = $count;
 			}
+			$info['items'][$group]['item_count'] += 1;
 		}
 
 		return $info;
@@ -525,25 +417,22 @@ class ImportHelper extends AppHelper {
 		Returns:
 			Boolean - true on success
 	*/
-	public function importCSV(
-		$file,
-		$type = '',
-		$contains_headers = false,
-		$field_separator = ',',
-		$field_enclosure = '"',
-		$element_assignment = array()) {
+	public function importCSV($file, $type = '', $contains_headers = false, $field_separator = ',', $field_enclosure = '"', $element_assignment = array()) {
+
+		// set_time_limit doesn't work in safe mode
+		if (!ini_get('safe_mode')) {
+			@set_time_limit(0);
+		}
 
 		// get application
 		if ($application = $this->app->zoo->getApplication()) {
 
 			if ($type_obj = $application->getType($type)) {
 
-				$c = 0;
 				$assignments = array();
 				foreach ($element_assignment as $column => $value) {
 					if (!empty($value[$type])) {
-						$name = $value[$type];
-						$assignments[$name][] = $column;
+						$assignments[$value[$type]][] = $column;
 					}
 				}
 
@@ -559,45 +448,44 @@ class ImportHelper extends AppHelper {
 					$item_table			= $this->app->table->item;
 					$category_table		= $this->app->table->category;
 					$user_id			= $this->app->user->get()->get('id');
-					$now				= $this->app->date->create();
-					$row				= 0;
+					$now				= $this->app->date->create()->toMySQL();
+					$access				= $this->app->joomla->getDefaultAccess();
 					$app_categories		= $application->getCategories();
-					$app_categories		= array_map(create_function('$cat', 'return $cat->name;'), $app_categories);
-					$elements			= $type_obj->getElements();
+					$app_category_names	= array_map(create_function('$cat', 'return $cat->name;'), $app_categories);
+					$app_category_alias	= array_map(create_function('$cat', 'return $cat->alias;'), $app_categories);
+					$alias_matches		= array();
 
 					while (($data = fgetcsv($handle, 0, $field_separator, $field_enclosure)) !== FALSE) {
-						if (!($contains_headers && $row == 0)) {
+						if (!($contains_headers)) {
 
 							$item = $this->app->object->create('Item');
 							$item->application_id = $application->id;
 							$item->type = $type;
 
 							// set access
-							$item->access = $this->app->joomla->getDefaultAccess();
+							$item->access = $access;
 
 							// store created by
 							$item->created_by  = $user_id;
 
-							// set created
-							$item->created	   = $now->toMySQL();
+							// set created, modified
+							$item->created = $item->modified = $now;
 
 							// store modified_by
 							$item->modified_by = $user_id;
 
-							// set modified
-							$item->modified	   = $now->toMySQL();
-
 							// store element_data and item name
 							$item_categories = array();
-
+							$tags = array();
+							$elements = $item->getElements();
 							foreach ($assignments as $assignment => $columns) {
 								$column = current($columns);
 								switch ($assignment) {
 									case '_name':
-										$item->name = $data[$column];
+										$item->name = @$data[$column];
 										break;
 									case '_created_by_alias':
-										$item->created_by_alias = $data[$column];
+										$item->created_by_alias = @$data[$column];
 										break;
 									case '_created':
 										if (!empty($data[$column])) {
@@ -607,10 +495,13 @@ class ImportHelper extends AppHelper {
 									default:
 										if (substr($assignment, 0, 9) == '_category') {
 											foreach ($columns as $column) {
-												$item_categories[] = $data[$column];
+												$item_categories[] = @$data[$column];
+											}
+										} else if (substr($assignment, 0, 4) == '_tag') {
+											foreach ($columns as $column) {
+												$tags[] = @$data[$column];
 											}
 										} else if (isset($elements[$assignment])) {
-											$elements[$assignment]->unsetData();
 											switch ($elements[$assignment]->getElementType()) {
 												case 'text':
 												case 'textarea':
@@ -625,16 +516,25 @@ class ImportHelper extends AppHelper {
 													}
 													$elements[$assignment]->bindData($element_data);
 													break;
+												case 'country':
+													$element_data = array();
+													foreach ($columns as $column) {
+														if (!empty($data[$column])) {
+															$element_data['country'][] = $data[$column];
+														}
+													}
+													$elements[$assignment]->bindData($element_data);
+													break;
 												case 'gallery':
-													$data[$column] = trim($data[$column], '/\\');
+													$data[$column] = trim(@$data[$column], '/\\');
 													$elements[$assignment]->bindData(array('value' => $data[$column]));
 													break;
 												case 'image':
 												case 'download':
-													$elements[$assignment]->bindData(array('file' => $data[$column]));
+													$elements[$assignment]->bindData(array('file' => @$data[$column]));
 													break;
 												case 'googlemaps':
-													$elements[$assignment]->bindData(array('location' => $data[$column]));
+													$elements[$assignment]->bindData(array('location' => @$data[$column]));
 													break;
 											}
 										}
@@ -642,12 +542,7 @@ class ImportHelper extends AppHelper {
 								}
 							}
 
-							$elements_string = '<?xml version="1.0" encoding="UTF-8"?><elements>';
-							foreach ($elements as $element) {
-								$elements_string .= $element->toXML();
-							}
-							$elements_string .= '</elements>';
-							$item->elements = $elements_string;
+							$item->setTags($tags);
 
 							$item->alias = $this->app->string->sluggify($item->name);
 
@@ -656,64 +551,84 @@ class ImportHelper extends AppHelper {
 							}
 
 							// set a valid category alias
-							while ($this->app->item->checkAliasExists($item->alias)) {
-								$item->alias .= '-2';
-							}
+							$item->alias = $this->app->alias->item->getUniqueAlias(0, $item->alias);
 
 							if (!empty($item->name)) {
 
 								try {
 
 									$item_table->save($item);
-									$item_id = $item->id;
-
-									$item->unsetElementData();
 
 									// store categories
 									$related_categories = array();
 									foreach ($item_categories as $category_name) {
+										$names = array_filter(explode('///', $category_name));
+										$previous_id = 0;
+										$found = true;
 
-										if (!in_array($category_name, $app_categories)) {
+										for ($i = 0; $i < count($names); $i++) {
 
-											$category = $this->app->object->create('Category');
-											$category->application_id = $application->id;
-											$category->name = $category_name;
-											$category->parent = 0;
+											list($name, $alias) = array_pad(explode('|||', $names[$i]), 2, false);
 
-											$category->alias = $this->app->string->sluggify($category_name);
+											// did the alias change?
+											$alias = $alias && isset($alias_matches[$alias]) ? $alias_matches[$alias] : $alias;
 
-											// set a valid category alias
-											while ($this->app->category->checkAliasExists($category->alias)) {
-												$category->alias .= '-2';
+											// try to find category through alias, if category is not found, try to match name
+											if (!($id = array_search($alias, $app_category_alias)) && !$alias) {
+												$id = array_search($name, $app_category_names);
+												foreach (array_keys($app_category_names, $name) as $key) {
+													if ($previous_id && isset($app_categories[$key]) && $app_categories[$key]->parent == $previous_id) {
+														$id = $key;
+													}
+												}
 											}
+											if (!$found || !$id) {
 
-											try {
+												$found = false;
 
-												$category_table->save($category);
-												$related_categories[] = $category->id;
-												$app_categories[$category->id] = $category->name;
+												$category = $this->app->object->create('Category');
+												$category->application_id = $application->id;
+												$category->name = $name;
+												$category->parent = $previous_id;
 
-											} catch (CategoryTableException $e) {}
+												// set a valid category alias
+												$category->alias = $this->app->alias->category->getUniqueAlias(0, $this->app->string->sluggify($alias ? $alias : $name));
 
-										} else {
+												try {
 
-											$related_categories[] = array_search($category_name, $app_categories);
+													$category_table->save($category);
+													$app_categories[$category->id] = $category;
+													$app_category_names[$category->id] = $category->name;
+													$app_category_alias[$category->id] = $alias_matches[$alias] = $category->alias;
+													$id = $category->id;
 
+												} catch (CategoryTableException $e) {}
+											}
+											if ($id && $i == count($names) - 1) {
+												$related_categories[] = $id;
+											} else {
+												$previous_id = $id;
+											}
 										}
 									}
 
 									// add category to item relations
 									if (!empty($related_categories)) {
 
-										$this->app->category->saveCategoryItemRelations($item_id, $related_categories);
+										$this->app->category->saveCategoryItemRelations($item->id, $related_categories);
+
+										// make first category found primary category
+										if (!$item->getPrimaryCategoryId()) {
+											$item->getParams()->set('config.primary_category', $related_categories[0]);
+											$item_table->save($item);
+										}
 
 									}
 
 								} catch (ItemTableException $e) {}
 							}
 						}
-
-						$row++;
+						$contains_headers = false;
 					}
 					fclose($handle);
 					return true;
@@ -752,7 +667,7 @@ class ImportHelper extends AppHelper {
 			$info['types'][$type->id] = array();
 			foreach ($type->getElements() as $element) {
 				// filter elements
-				if (in_array($element->getElementType(), array('text', 'textarea', 'link', 'email', 'image', 'gallery', 'download', 'date', 'googlemaps'))) {
+				if (in_array($element->getElementType(), array('text', 'textarea', 'link', 'email', 'image', 'gallery', 'download', 'date', 'googlemaps', 'country'))) {
 					$info['types'][$type->id][$element->getElementType()][] = $element;
 				}
 			}
@@ -768,10 +683,9 @@ class ImportHelper extends AppHelper {
 
 		// get column names and row count
 		$row = 0;
-		$columns = 0;
-		if (($handle = fopen($file, "r")) !== FALSE) {
+		if (($handle = fopen($file, "r")) !== false) {
 
-			while (($data = fgetcsv($handle, 0, $field_separator, $field_enclosure)) !== FALSE) {
+			while (($data = fgetcsv($handle, 0, $field_separator, $field_enclosure)) !== false) {
 				if ($row == 0) {
 					// get column names from header row
 					if ($contains_headers) {
@@ -783,7 +697,6 @@ class ImportHelper extends AppHelper {
 
 				// get max column count
 				$row++;
-
 			}
 
 			// get item count

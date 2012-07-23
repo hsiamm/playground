@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      validator.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -26,7 +24,7 @@ class AppValidator {
 		$this->app = App::getInstance('zoo');
 
         $this->_options  = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $this->_options);
-        $this->_messages = array_merge(array('required' => JText::_('This field is required'), 'invalid' => JText::_('Invalid')), $this->_messages);
+        $this->_messages = array_merge(array('required' => 'This field is required', 'invalid' => 'Invalid'), $this->_messages);
 
         $this->_configure($this->_options, $this->_messages);
 
@@ -91,6 +89,12 @@ class AppValidator {
         $this->_options = $options;
         return $this;
     }
+
+	public function removeOption($name) {
+		if (isset($this->_options[$name])) {
+			unset($this->_options);
+		}
+	}
 
     public function getEmptyValue() {
         return $this->getOption('empty_value');
@@ -242,7 +246,7 @@ class AppValidatorFile extends AppValidator {
 
         switch ($value['error']) {
 			case UPLOAD_ERR_INI_SIZE:
-				throw new AppValidatorException($this->getMessage('max_size'), UPLOAD_ERR_INI_SIZE);
+				throw new AppValidatorException(sprintf($this->getMessage('max_size'), $this->returnBytes(@ini_get('upload_max_filesize')) / 1024), UPLOAD_ERR_INI_SIZE);
 			case UPLOAD_ERR_FORM_SIZE:
 				throw new AppValidatorException($this->getMessage('max_size'), UPLOAD_ERR_FORM_SIZE);
 			case UPLOAD_ERR_PARTIAL:
@@ -274,11 +278,11 @@ class AppValidatorFile extends AppValidator {
 
         // check file size
         if ($this->hasOption('max_size') && $this->getOption('max_size') < (int) $value['size']) {
-			throw new AppValidatorException(sprintf($this->getMessage('max_size'), ($this->getOption('max_size') / 1024)));
+			throw new AppValidatorException(sprintf(JTEXT::_($this->getMessage('max_size')), ($this->getOption('max_size') / 1024)));
         }
 
 		// check extension
-		if ($this->hasOption('extension') && !in_array(YFile::getExtension($value['name']), $this->getOption('extension'))) {
+		if ($this->hasOption('extension') && !in_array($this->app->filesystem->getExtension($value['name']), $this->getOption('extension'))) {
 			throw new AppValidatorException($this->getMessage('extension'));
         }
 
@@ -290,6 +294,15 @@ class AppValidatorFile extends AppValidator {
 		$mime_types = $mime_types->flattenRecursive();
 		$mime_types = array_filter($mime_types, create_function('$a', 'return preg_match("/^'.$group.'\//i", $a);'));
 		return array_map('strtolower', $mime_types);
+	}
+
+	protected function returnBytes ($size_str) {
+	    switch (substr ($size_str, -1)) {
+	        case 'M': case 'm': return (int)$size_str * 1048576;
+	        case 'K': case 'k': return (int)$size_str * 1024;
+	        case 'G': case 'g': return (int)$size_str * 1073741824;
+	        default: return $size_str;
+	    }
 	}
 
 }
@@ -447,4 +460,10 @@ class AppValidatorForeach extends AppValidator {
 /*
 	Class: AppValidatorException
 */
-class AppValidatorException extends AppException {}
+class AppValidatorException extends AppException {
+
+	public function __toString() {
+		return JText::_($this->getMessage());
+	}
+
+}

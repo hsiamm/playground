@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      checkbox.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -18,7 +16,7 @@ App::getInstance('zoo')->loader->register('ElementOption', 'elements:option/opti
 	Class: ElementCheckbox
 		The checkbox element class
 */
-class ElementCheckbox extends ElementOption implements iSubmittable {
+class ElementCheckbox extends ElementOption {
 
 	/*
 	   Function: edit
@@ -30,46 +28,35 @@ class ElementCheckbox extends ElementOption implements iSubmittable {
 	public function edit(){
 
 		// init vars
-		$options_from_config 	= $this->_config->get('options', array());
-		$default				= $this->_config->get('default');
-		
+		$options_from_config = $this->config->get('option', array());
+		$default			 = $this->config->get('default');
+
 		if (count($options_from_config)) {
-		
+
 			// set default, if item is new
 			if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-				$this->_data->set('value', $default);
+				$default = array($default);
+			} else {
+				$default = array();
 			}
-			
-			$selected_options  = $this->_data->get('option', array());
-	
+
+			$selected_options  = $this->get('option', $default);
+
 			$i       = 0;
-			$html    = array();
-			foreach ($options_from_config as $option) {
-				$name = 'elements[' . $this->identifier . '][option][]';
-				$checked = in_array($option['value'], $selected_options) ? ' checked="checked"' : null;
-				$html[]  = '<input id="'.$name.$i.'" type="checkbox" name="elements[' . $this->identifier . '][option][]" value="'.$option['value'].'"'.$checked.' /><label for="'.$name.$i++.'">'.$option['name'].'</label>';
-			}
-			// workaround: if nothing is selected, the element is still being transfered 
-			$html[] = '<input type="hidden" name="elements[' . $this->identifier . '][check]" value="1" />';
-	
+			$html    = array('<div>');
+				foreach ($options_from_config as $option) {
+					$name = $this->getControlName('option', true);
+					$checked = in_array($option['value'], $selected_options) ? ' checked="checked"' : null;
+					$html[]  = '<div><input id="'.$name.$i.'" type="checkbox" name="'.$name.'" value="'.$option['value'].'"'.$checked.' /><label for="'.$name.$i++.'">'.$option['name'].'</label></div>';
+					}
+				// workaround: if nothing is selected, the element is still being transfered
+				$html[] = '<input type="hidden" name="'.$this->getControlName('check').'" value="1" />';
+			$html[] = '</div>';
+
 			return implode("\n", $html);
 		}
-		
+
 		return JText::_("There are no options to choose from.");
-	}
-
-	/*
-		Function: renderSubmission
-			Renders the element in submission.
-
-	   Parameters:
-            $params - submission parameters
-
-		Returns:
-			String - html
-	*/
-	public function renderSubmission($params = array()) {
-        return $this->edit();
 	}
 
 }

@@ -1,15 +1,16 @@
 <?php
 /**
- * @version		$Id: elFinderConnector.class.php 1090 2011-10-07 17:01:56Z lefteris.kavadas $
+ * @version		$Id: elFinderConnector.class.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+ob_start();
 // mb_internal_encoding("UTF-8");
 
 /**
@@ -37,7 +38,8 @@ class elFinderConnector {
 	 *
 	 * @var string
 	 **/
-	protected $header = 'Content-Type: text/html' /*'Content-Type: application/json'*/;
+	protected $header = 'Content-Type: application/json';
+	
 	
 	/**
 	 * Constructor
@@ -45,8 +47,12 @@ class elFinderConnector {
 	 * @return void
 	 * @author Dmitry (dio) Levashov
 	 **/
-	public function __construct($elFinder) {
+	public function __construct($elFinder, $debug=false) {
+		
 		$this->elFinder = $elFinder;
+		if ($debug) {
+			$this->header = 'Content-Type: text/html; charset=utf-8';
+		}
 	}
 	
 	/**
@@ -67,12 +73,12 @@ class elFinderConnector {
 		}
 		
 		if (!$this->elFinder->loaded()) {
-			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_VOL)));
+			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_VOL), 'debug' => $this->elFinder->mountErrors));
 		}
 		
 		// telepat_mode: on
 		if (!$cmd && $isPost) {
-			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UPLOAD_COMMON, elFinder::ERROR_UPLOAD_FILES_SIZE), 'header' => 'Content-Type: text/html'));
+			$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UPLOAD, elFinder::ERROR_UPLOAD_TOTAL_SIZE), 'header' => 'Content-Type: text/html'));
 		}
 		// telepat_mode: off
 		
@@ -89,7 +95,7 @@ class elFinderConnector {
 			if (!is_array($arg)) {
 				$arg = trim($arg);
 			}
-			if ($req && empty($arg)) {
+			if ($req && (!isset($arg) || $arg === '')) {
 				$this->output(array('error' => $this->elFinder->error(elFinder::ERROR_INV_PARAMS, $cmd)));
 			}
 			$args[$name] = $arg;
@@ -108,10 +114,9 @@ class elFinderConnector {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function output(array $data) {
-		$header = isset($data['header']) ? $data['header'] : 'Content-Type: text/html; charset=utf-8' /*'Content-Type: application/json'*/;
+		$header = isset($data['header']) ? $data['header'] : $this->header;
 		unset($data['header']);
-		// debug($header);
-		// exit();
+		ob_end_clean();
 		if ($header) {
 			if (is_array($header)) {
 				foreach ($header as $h) {
@@ -140,3 +145,5 @@ class elFinderConnector {
 	}
 	
 }// END class 
+
+?>

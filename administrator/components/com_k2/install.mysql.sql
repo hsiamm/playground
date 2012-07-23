@@ -158,6 +158,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_users` (
   `url` varchar(255) DEFAULT NULL,
   `group` int(11) NOT NULL DEFAULT '0',
   `plugins` text NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `hostname` varchar(255) NOT NULL,
+  `notes` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userID` (`userID`),
   KEY `group` (`group`)

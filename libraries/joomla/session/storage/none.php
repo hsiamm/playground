@@ -1,32 +1,34 @@
 <?php
 /**
- * @version		$Id:none.php 6961 2007-03-15 16:06:53Z tcp $
- * @package		Joomla.Framework
- * @subpackage	Session
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package     Joomla.Platform
+ * @subpackage  Session
+ *
+ * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// No direct access
-defined('JPATH_BASE') or die;
+defined('JPATH_PLATFORM') or die;
 
 /**
-* File session handler for PHP
-*
- * @package		Joomla.Framework
- * @subpackage	Session
- * @since		1.5
-* @see http://www.php.net/manual/en/function.session-set-save-handler.php
+ * File session handler for PHP
+ *
+ * @package     Joomla.Platform
+ * @subpackage  Session
+ * @see         http://www.php.net/manual/en/function.session-set-save-handler.php
+ * @since       11.1
  */
 class JSessionStorageNone extends JSessionStorage
 {
 	/**
-	* Register the functions of this class with PHP's session handler
-	*
-	* @access public
-	* @param array $options optional parameters
-	*/
-	function register($options = array())
+	 * Register the functions of this class with PHP's session handler
+	 *
+	 * @param   array  $options  Optional parameters.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	public function register($options = array())
 	{
 		//let php handle the session storage
 	}

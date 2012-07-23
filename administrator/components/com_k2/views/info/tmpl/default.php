@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1360 2011-11-25 18:27:12Z joomlaworks $
+ * @version		$Id: default.php 1496 2012-02-24 19:13:59Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -264,6 +264,16 @@ defined('_JEXEC') or die('Restricted access');
 			        </tr>
 			      </tfoot>
 			      <tbody>
+			        <?php if(version_compare(JVERSION,'2.5.0','ge')): ?>
+			        <tr>
+			          <td><strong>Finder - K2</strong></td>
+			          <td><?php echo (JFile::exists(JPATH_PLUGINS.DS.'finder'.DS.'k2.php') || JFile::exists(JPATH_PLUGINS.DS.'finder'.DS.'k2'.DS.'k2.php'))?JText::_('K2_INSTALLED'):JText::_('K2_NOT_INSTALLED'); ?> - <?php echo (JPluginHelper::isEnabled('finder', 'k2'))?JText::_('K2_ENABLED'):JText::_('K2_DISABLED'); ?></td>
+			        </tr>
+			        <?php endif; ?>
+			        <tr>
+			          <td><strong>Search - K2</strong></td>
+			          <td><?php echo (JFile::exists(JPATH_PLUGINS.DS.'search'.DS.'k2.php') || JFile::exists(JPATH_PLUGINS.DS.'search'.DS.'k2'.DS.'k2.php'))?JText::_('K2_INSTALLED'):JText::_('K2_NOT_INSTALLED'); ?> - <?php echo (JPluginHelper::isEnabled('search', 'k2'))?JText::_('K2_ENABLED'):JText::_('K2_DISABLED'); ?></td>
+			        </tr>
 			        <tr>
 			          <td><strong>System - K2</strong></td>
 			          <td><?php echo (JFile::exists(JPATH_PLUGINS.DS.'system'.DS.'k2.php') || JFile::exists(JPATH_PLUGINS.DS.'system'.DS.'k2'.DS.'k2.php'))?JText::_('K2_INSTALLED'):JText::_('K2_NOT_INSTALLED'); ?> - <?php echo (JPluginHelper::isEnabled('system', 'k2'))?JText::_('K2_ENABLED'):JText::_('K2_DISABLED'); ?></td>
@@ -271,10 +281,6 @@ defined('_JEXEC') or die('Restricted access');
 			        <tr>
 			          <td><strong>User - K2</strong></td>
 			          <td><?php echo (JFile::exists(JPATH_PLUGINS.DS.'user'.DS.'k2.php') || JFile::exists(JPATH_PLUGINS.DS.'user'.DS.'k2'.DS.'k2.php'))?JText::_('K2_INSTALLED'):JText::_('K2_NOT_INSTALLED'); ?> - <?php echo (JPluginHelper::isEnabled('user', 'k2'))?JText::_('K2_ENABLED'):JText::_('K2_DISABLED'); ?></td>
-			        </tr>
-			        <tr>
-			          <td><strong>Search - K2</strong></td>
-			          <td><?php echo (JFile::exists(JPATH_PLUGINS.DS.'search'.DS.'k2.php') || JFile::exists(JPATH_PLUGINS.DS.'search'.DS.'k2'.DS.'k2.php'))?JText::_('K2_INSTALLED'):JText::_('K2_NOT_INSTALLED'); ?> - <?php echo (JPluginHelper::isEnabled('search', 'k2'))?JText::_('K2_ENABLED'):JText::_('K2_DISABLED'); ?></td>
 			        </tr>
 			      </tbody>
 			    </table>

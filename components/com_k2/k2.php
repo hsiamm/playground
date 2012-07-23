@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: k2.php 1368 2011-11-28 15:04:11Z joomlaworks $
+ * @version		$Id: k2.php 1563 2012-05-04 16:09:39Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -56,4 +56,8 @@ else {
 	JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 }
 
-echo "\n<!-- JoomlaWorks \"K2\" (v2.5.3) | Learn more about K2 at http://getk2.org -->\n\n";
+if(JRequest::getCmd('format') != 'json')
+{
+    echo "\n<!-- JoomlaWorks \"K2\" (v2.5.7) | Learn more about K2 at http://getk2.org -->\n\n";
+}
+

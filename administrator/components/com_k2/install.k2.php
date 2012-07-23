@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: install.k2.php 1317 2011-11-03 13:47:31Z lefteris.kavadas $
+ * @version		$Id: install.k2.php 1532 2012-03-26 15:42:15Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -21,6 +21,7 @@ $status = new JObject();
 $status->modules = array();
 $status->plugins = array();
 $src = $this->parent->getPath('source');
+$isUpdate = JFile::exists(JPATH_SITE.DS.'modules'.DS.'mod_k2_content'.DS.'mod_k2_content.php');
 
 if(version_compare( JVERSION, '1.6.0', 'ge' )) {
 
@@ -34,14 +35,16 @@ if(version_compare( JVERSION, '1.6.0', 'ge' )) {
 		$result = $installer->install($path);
 		$status->modules[] = array('name'=>$mname,'client'=>$client, 'result'=>$result);
 	}
-	
-	$query = "UPDATE #__modules SET position='icon', ordering=99, published=1, access=3 WHERE module='mod_k2_quickicons'";
-	$db->setQuery($query);
-	$db->query();
-	
-	$query = "UPDATE #__modules SET position='cpanel', ordering=0, published=1, access=3 WHERE module='mod_k2_stats'";
-	$db->setQuery($query);
-	$db->query();
+	if(!$isUpdate) {
+		$query = "UPDATE #__modules SET position='icon', ordering=99, published=1, access=3 WHERE module='mod_k2_quickicons'";
+		$db->setQuery($query);
+		$db->query();
+		
+		$query = "UPDATE #__modules SET position='cpanel', ordering=0, published=1, access=3 WHERE module='mod_k2_stats'";
+		$db->setQuery($query);
+		$db->query();
+	}
+
 
 }
 else {
@@ -58,14 +61,15 @@ else {
 			$status->modules[] = array('name'=>$mname,'client'=>$client, 'result'=>$result);
 		}
 		
-		$query = "UPDATE #__modules SET position='icon', ordering=99, published=1 WHERE module='mod_k2_quickicons'";
-		$db->setQuery($query);
-		$db->query();
-		
-		$query = "UPDATE #__modules SET position='cpanel', ordering=0, published=1 WHERE module='mod_k2_stats'";
-		$db->setQuery($query);
-		$db->query();
-		
+		if(!$isUpdate) {
+			$query = "UPDATE #__modules SET position='icon', ordering=99, published=1 WHERE module='mod_k2_quickicons'";
+			$db->setQuery($query);
+			$db->query();
+			
+			$query = "UPDATE #__modules SET position='cpanel', ordering=0, published=1 WHERE module='mod_k2_stats'";
+			$db->setQuery($query);
+			$db->query();
+		}
 	}
 
 
@@ -86,6 +90,10 @@ if(version_compare( JVERSION, '1.6.0', 'ge' )) {
 	foreach($plugins as $plugin){
 		$pname = $plugin->getAttribute('plugin');
 		$pgroup = $plugin->getAttribute('group');
+		if($pgroup == 'finder' && version_compare( JVERSION, '2.5.0', '<' ))
+		{
+			continue;
+		}
 		$path = $src.DS.'plugins'.DS.$pgroup;
 		$installer = new JInstaller;
 		$result = $installer->install($path);
@@ -102,6 +110,10 @@ else {
 		foreach ($plugins->children() as $plugin) {
 			$pname = $plugin->attributes('plugin');
 			$pgroup = $plugin->attributes('group');
+			if($pgroup == 'finder')
+			{
+				continue;
+			}
 			$path = $src.DS.'plugins'.DS.$pgroup;
 			$installer = new JInstaller;
 			$result = $installer->install($path);
@@ -236,7 +248,15 @@ if(version_compare( JVERSION, '1.6.0', '<' )) {
 		$db->query();
 	}
 	
-	
+	$fields = $db->getTableFields('#__k2_users');
+	if (!array_key_exists('ip', $fields['#__k2_users'])) {
+		$query = "ALTER TABLE `#__k2_users` 
+		ADD `ip` VARCHAR( 15 ) NOT NULL , 
+		ADD `hostname` VARCHAR( 255 ) NOT NULL , 
+		ADD `notes` TEXT NOT NULL";
+		$db->setQuery($query);
+		$db->query();
+	}
 	
 }
 // Database modifications [end]

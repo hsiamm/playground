@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      filesystem.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -23,7 +21,7 @@ class FilesystemHelper extends AppHelper {
 
 		Returns:
 			String - Filesize
-	*/	
+	*/
 	public function formatFilesize($bytes) {
 		$exp    = 0;
 		$value  = 0;
@@ -46,7 +44,7 @@ class FilesystemHelper extends AppHelper {
 
 		Returns:
 			Void
-	*/	
+	*/
 	public function output($file) {
 		@error_reporting(E_ERROR);
 
@@ -54,7 +52,7 @@ class FilesystemHelper extends AppHelper {
 		$type = $this->getContentType($name);
 		$size = @filesize($file);
 		$mod  = date('r', filemtime($file));
-		
+
 		while (@ob_end_clean());
 
 		// required for IE, otherwise Content-disposition is ignored
@@ -75,7 +73,7 @@ class FilesystemHelper extends AppHelper {
         header("Content-Length: ".$size);
 
 		// set_time_limit doesn't work in safe mode
-        if (!ini_get('safe_mode')) { 
+        if (!ini_get('safe_mode')) {
 		    @set_time_limit(0);
         }
 
@@ -100,7 +98,7 @@ class FilesystemHelper extends AppHelper {
 	public function readDirectory($path, $prefix = '', $filter = false, $recursive = true) {
 
 		$dirs   = array();
-	    $ignore = array('.', '..', '.DS_Store', '.svn', 'cgi-bin');
+	    $ignore = array('.', '..', '.DS_Store', '.svn', '.git', '.gitignore', '.gitmodules', 'cgi-bin');
 
 		if (is_readable($path) && is_dir($path) && $handle = @opendir($path)) {
 			while (false !== ($file = readdir($handle))) {
@@ -111,7 +109,7 @@ class FilesystemHelper extends AppHelper {
 				}
 
 	            if (is_dir($path.'/'.$file)) {
-		
+
 					// continue if not recursive
 					if (!$recursive) {
 						continue;
@@ -121,12 +119,12 @@ class FilesystemHelper extends AppHelper {
 					if ($filter && !preg_match($filter, $file)) {
 						continue;
 					}
-										
+
 					// read subdirectory
 					$dirs[] = $prefix.$file;
 	            	$dirs   = array_merge($dirs, $this->readDirectory($path.'/'.$file, $prefix.$file.'/', $filter, $recursive));
 
-				} 
+				}
 		    }
 		    closedir($handle);
 		}
@@ -149,7 +147,7 @@ class FilesystemHelper extends AppHelper {
 	public function readDirectoryFiles($path, $prefix = '', $filter = false, $recursive = true) {
 
 		$files  = array();
-	    $ignore = array('.', '..', '.DS_Store', '.svn', 'cgi-bin');
+	    $ignore = array('.', '..', '.DS_Store', '.svn', '.git', '.gitignore', '.gitmodules', 'cgi-bin');
 
 		if (is_readable($path) && is_dir($path) && $handle = @opendir($path)) {
 			while (false !== ($file = readdir($handle))) {
@@ -160,22 +158,22 @@ class FilesystemHelper extends AppHelper {
 				}
 
 	            if (is_dir($path.'/'.$file)) {
-		
+
 					// continue if not recursive
 					if (!$recursive) {
 						continue;
 					}
-					
+
 					// read subdirectory
 	            	$files = array_merge($files, $this->readDirectoryFiles($path.'/'.$file, $prefix.$file.'/', $filter, $recursive));
 
 				} else {
-					
+
 					// continue if no regex filter match
 					if ($filter && !preg_match($filter, $file)) {
 						continue;
 					}
-					
+
 					$files[] = $prefix.$file;
 	            }
 		    }
@@ -207,7 +205,7 @@ class FilesystemHelper extends AppHelper {
 				$ext2 = strtolower(substr($file['filename'], $pos + 1).'.'.$ext);
 				if (array_key_exists($ext2, $mimes)) {
 					return $ext2;
-				}	
+				}
 			}
 
 			// check extensions content type
@@ -242,7 +240,7 @@ class FilesystemHelper extends AppHelper {
 				$ext2 = strtolower(substr($file['filename'], $pos + 1).'.'.$ext);
 				if (array_key_exists($ext2, $mimes)) {
 					return array_shift($mimes[$ext2]);
-				}	
+				}
 			}
 
 			// check extensions content type
@@ -406,6 +404,7 @@ class FilesystemHelper extends AppHelper {
 		$mimes['iff'][] = 'image/x-iff';
 		$mimes['iges'][] = 'model/iges';
 		$mimes['igs'][] = 'model/iges';
+		$mimes['igs'][] = 'application/iges';
 		$mimes['ilbm'][] = 'image/x-ilbm';
 		$mimes['iso'][] = 'application/x-cd-image';
 		$mimes['it'][] = 'audio/x-it';

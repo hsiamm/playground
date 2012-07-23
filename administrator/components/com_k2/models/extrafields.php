@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: extrafields.php 1345 2011-11-25 16:48:07Z lefteris.kavadas $
+ * @version		$Id: extrafields.php 1531 2012-03-26 09:54:29Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -220,7 +220,7 @@ class K2ModelExtraFields extends JModel
 		return $row;
 	}
 
-	function getGroups() {
+	function getGroups($filter = false) {
 
 		$mainframe = &JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -229,7 +229,15 @@ class K2ModelExtraFields extends JModel
 		$limitstart = $mainframe->getUserStateFromRequest($option.$view.'.limitstart', 'limitstart', 0, 'int');
 		$db = & JFactory::getDBO();
 		$query = "SELECT * FROM #__k2_extra_fields_groups ORDER BY `name`";
-		$db->setQuery($query, $limitstart, $limit);
+		if($filter)
+		{
+			$db->setQuery($query);
+		}
+		else 
+		{
+			$db->setQuery($query, $limitstart, $limit);
+		}
+		
 		$rows = $db->loadObjectList();
 		for ($i=0;$i<sizeof($rows);$i++){
 			$query = "SELECT name FROM #__k2_categories WHERE extraFieldsGroup=".(int)$rows[$i]->id;

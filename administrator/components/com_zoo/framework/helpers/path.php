@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      path.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -77,7 +75,7 @@ class PathHelper extends AppHelper {
 	            $url .= '?'.$parts[1];
 	        }
 
-	        $url = JURI::root(true).'/'.ltrim(preg_replace('/'.preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/').'/', '', $url, 1), '/');
+	        $url = JURI::root(true).'/'.$this->relative($url);
 	    }
 
 	    return $url;
@@ -138,6 +136,24 @@ class PathHelper extends AppHelper {
 	}
 
 	/*
+		Function: paths
+			Retrieve all absolute paths registered to a file or directory
+
+		Parameters:
+			$resource - Resource with namespace, example: "assets:js/app.js"
+
+		Returns:
+			Mixed
+	*/
+	public function paths($resource) {
+
+		// parse resource
+		extract($this->_parse($resource));
+
+		return $paths;
+	}
+
+	/*
 		Function: _parse
 			Parse resource string.
 
@@ -186,13 +202,8 @@ class PathHelper extends AppHelper {
 
 		$paths = (array) $paths;
 		$file  = ltrim($file, "\\/");
-
 		foreach ($paths as $path) {
-
-			$fullpath = realpath("$path/$file");
-			$path     = realpath($path);
-
-			if (file_exists($fullpath) && substr($fullpath, 0, strlen($path)) == $path) {
+			if (($fullpath = realpath("$path/$file")) && file_exists($fullpath) && stripos($fullpath, JPATH_ROOT, 0) === 0) {
 				return $fullpath;
 			}
 		}
@@ -216,7 +227,7 @@ class PathHelper extends AppHelper {
 	protected function _list($path, $prefix = '', $mode = 'file', $recursive = false, $filter = null) {
 
 		$files  = array();
-	    $ignore = array('.', '..', '.DS_Store', '.svn', 'cgi-bin');
+	    $ignore = array('.', '..', '.DS_Store', '.svn', '.git', '.gitignore', '.gitmodules', 'cgi-bin');
 
 		if (is_readable($path) && is_dir($path) && ($scan = scandir($path))) {
 			foreach ($scan as $file) {
@@ -266,6 +277,20 @@ class PathHelper extends AppHelper {
 		}
 
 		return $files;
+	}
+
+	/*
+		Function: relative
+			Makes a path relative to the Joomla root directory
+
+		Parameters:
+			$path - Path
+
+		Returns:
+			String - path
+	*/
+	public function relative($path) {
+		return ltrim(preg_replace('/^'.preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/').'/i', '', str_replace(DIRECTORY_SEPARATOR, '/', $path)), '/');
 	}
 
 }

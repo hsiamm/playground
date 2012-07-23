@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: script.k2.php 1289 2011-10-27 17:44:40Z joomlaworks $
+ * @version		$Id: script.k2.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -108,6 +108,16 @@ class Com_K2InstallerScript {
 			$db->setQuery($query);
 			$db->Query();
 
+		}
+		
+		$fields = $db->getTableFields('#__k2_users');
+		if (!array_key_exists('ip', $fields['#__k2_users'])) {
+			$query = "ALTER TABLE `#__k2_users` 
+			ADD `ip` VARCHAR( 15 ) NOT NULL , 
+			ADD `hostname` VARCHAR( 255 ) NOT NULL , 
+			ADD `notes` TEXT NOT NULL";
+			$db->setQuery($query);
+			$db->query();
 		}
 
 		// Database modifications [end]

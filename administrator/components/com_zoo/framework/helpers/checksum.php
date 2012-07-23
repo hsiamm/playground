@@ -1,17 +1,15 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      checksum.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
 	Class: ChecksumHelper
 		Checksum helper class
-*/    
+*/
 class ChecksumHelper extends AppHelper {
 
 	/*
@@ -24,7 +22,7 @@ class ChecksumHelper extends AppHelper {
 
 		Returns:
 			Boolean
-	*/	
+	*/
 	public function create($path, $filename = 'checksums') {
 
 		$path  = rtrim(str_replace(DIRECTORY_SEPERATOR, '/', $path), '/').'/';
@@ -45,7 +43,7 @@ class ChecksumHelper extends AppHelper {
 
 			return file_put_contents($path.$filename, $checksums);
 		}
-		
+
 		return false;
 	}
 
@@ -55,29 +53,48 @@ class ChecksumHelper extends AppHelper {
 
 		Parameters:
 			$path - Path to files
+			$checksum - Checksum file
 			$log - Log array
-			$filename - Checksum filename
+			$filter - Array of filter callback functions
+			$prefix - Prefix
 
 		Returns:
 			Boolean
-	*/	
-	public function verify($path, &$log = null, $filename = 'checksums') {
-		$path = rtrim(str_replace(DIRECTORY_SEPERATOR, '/', $path), '/').'/';
-		
-		if ($rows = file($path.$filename)) {
+	*/
+	public function verify($path, $checksum, &$log = null, array $filter = array(), $prefix = '') {
+		$path = rtrim(str_replace(DIRECTORY_SEPARATOR, '/', $path), '/').'/';
+
+		if ($rows = file($checksum)) {
+
+			$checksum_files = array();
 			foreach ($rows as $row) {
 				list($md5, $file) = explode(' ', trim($row), 2);
-				
+
+				foreach ($filter as $callback) {
+					if ($callback && !($file = call_user_func($callback, $file))) {
+						continue 2;
+					}
+				}
+
+				$checksum_files[] = $file;
+
 				if (!file_exists($path.$file)) {
-					$log['missing'][] = $file;
+					$log['missing'][] = $prefix.$file;
 				} elseif (md5_file($path.$file) != $md5) {
-					$log['modified'][] = $file;
+					$log['modified'][] = $prefix.$file;
 				}
 			}
+
+			foreach ($this->_readDirectory($path) as $file) {
+				if (!in_array($file, $checksum_files) && !preg_match('/'.preg_quote($file, '/').'$/i', $checksum)) {
+					$log['unknown'][] = $prefix.$file;
+				}
+			}
+
 		}
 
 		return empty($log);
-	}	
+	}
 
 	/*
 		Function: _readDirectory
@@ -97,7 +114,7 @@ class ChecksumHelper extends AppHelper {
 	    $ignore = array('.', '..', '.DS_Store', '.svn', '.git', '.gitignore', '.gitmodules', 'cgi-bin');
 
 		foreach (scandir($path) as $file) {
-			
+
 			// ignore file ?
 	        if (in_array($file, $ignore)) {
 				continue;

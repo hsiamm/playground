@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: category.php 1295 2011-10-30 19:22:36Z joomlaworks $
+ * @version		$Id: category.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -33,7 +33,7 @@ class JElementCategory extends JElement
 	function fetchElement($name, $value, &$node, $control_name)
 	{
 		$db = &JFactory::getDBO();
-		$query = 'SELECT m.* FROM #__k2_categories m WHERE published = 1 ORDER BY parent, ordering';
+		$query = 'SELECT m.* FROM #__k2_categories m WHERE trash = 0 ORDER BY parent, ordering';
 		$db->setQuery( $query );
 		$mitems = $db->loadObjectList();
 		$children = array();
@@ -55,6 +55,8 @@ class JElementCategory extends JElement
 
 		$list = JHTML::_('menu.treerecurse', 0, '', array(), $children, 9999, 0, 0 );
 		$mitems = array();
+		$option = JRequest::getCmd('option');
+		$prefix = ($option == 'com_joomfish') ? 'refField_':'';
 		if($name=='categories' || $name=='jform[params][categories]'){
 			$doc = & JFactory::getDocument();
 			$js = "
@@ -64,7 +66,7 @@ class JElementCategory extends JElement
 			
 			function setTask() {
 				var counter=0;
-				$$('#paramscategories option').each(function(el) {
+				$$('#".$prefix."paramscategories option').each(function(el) {
 					if (el.selected){
 						value=el.value;
 						counter++;
@@ -73,67 +75,67 @@ class JElementCategory extends JElement
 				if (counter>1 || counter==0){
 					$('urlparamsid').setProperty('value','');
 					$('urlparamstask').setProperty('value','');
-					$('paramssingleCatOrdering').setProperty('disabled', 'disabled');
+					$('".$prefix."paramssingleCatOrdering').setProperty('disabled', 'disabled');
 					enableParams();
 				}
 				if (counter==1){
 					$('urlparamsid').setProperty('value',value);
 					$('urlparamstask').setProperty('value','category');
-					$('paramssingleCatOrdering').removeProperty('disabled');
+					$('".$prefix."paramssingleCatOrdering').removeProperty('disabled');
 					disableParams();
 				}
 			}
 			
 			function disableParams(){
-				$('paramsnum_leading_items').setProperty('disabled','disabled');
-				$('paramsnum_leading_columns').setProperty('disabled','disabled');
-				$('paramsleadingImgSize').setProperty('disabled','disabled');
-				$('paramsnum_primary_items').setProperty('disabled','disabled');
-				$('paramsnum_primary_columns').setProperty('disabled','disabled');
-				$('paramsprimaryImgSize').setProperty('disabled','disabled');
-				$('paramsnum_secondary_items').setProperty('disabled','disabled');
-				$('paramsnum_secondary_columns').setProperty('disabled','disabled');
-				$('paramssecondaryImgSize').setProperty('disabled','disabled');
-				$('paramsnum_links').setProperty('disabled','disabled');
-				$('paramsnum_links_columns').setProperty('disabled','disabled');
-				$('paramslinksImgSize').setProperty('disabled','disabled');
-				$('paramscatCatalogMode').setProperty('disabled','disabled');
-				$('paramscatFeaturedItems').setProperty('disabled','disabled');
-				$('paramscatOrdering').setProperty('disabled','disabled');
-				$('paramscatPagination').setProperty('disabled','disabled');
-				$('paramscatPaginationResults0').setProperty('disabled','disabled');
-				$('paramscatPaginationResults1').setProperty('disabled','disabled');
-				$('paramscatFeedLink0').setProperty('disabled','disabled');
-				$('paramscatFeedLink1').setProperty('disabled','disabled');
-				$('paramscatFeedIcon0').setProperty('disabled','disabled');
-				$('paramscatFeedIcon1').setProperty('disabled','disabled');
-				$('paramstheme').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_leading_items').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_leading_columns').setProperty('disabled','disabled');
+				$('".$prefix."paramsleadingImgSize').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_primary_items').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_primary_columns').setProperty('disabled','disabled');
+				$('".$prefix."paramsprimaryImgSize').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_secondary_items').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_secondary_columns').setProperty('disabled','disabled');
+				$('".$prefix."paramssecondaryImgSize').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_links').setProperty('disabled','disabled');
+				$('".$prefix."paramsnum_links_columns').setProperty('disabled','disabled');
+				$('".$prefix."paramslinksImgSize').setProperty('disabled','disabled');
+				$('".$prefix."paramscatCatalogMode').setProperty('disabled','disabled');
+				$('".$prefix."paramscatFeaturedItems').setProperty('disabled','disabled');
+				$('".$prefix."paramscatOrdering').setProperty('disabled','disabled');
+				$('".$prefix."paramscatPagination').setProperty('disabled','disabled');
+				$('".$prefix."paramscatPaginationResults0').setProperty('disabled','disabled');
+				$('".$prefix."paramscatPaginationResults1').setProperty('disabled','disabled');
+				$('".$prefix."paramscatFeedLink0').setProperty('disabled','disabled');
+				$('".$prefix."paramscatFeedLink1').setProperty('disabled','disabled');
+				$('".$prefix."paramscatFeedIcon0').setProperty('disabled','disabled');
+				$('".$prefix."paramscatFeedIcon1').setProperty('disabled','disabled');
+				$('".$prefix."paramstheme').setProperty('disabled','disabled');
 			}
 			
 			function enableParams(){
-				$('paramsnum_leading_items').removeProperty('disabled');
-				$('paramsnum_leading_columns').removeProperty('disabled');
-				$('paramsleadingImgSize').removeProperty('disabled');
-				$('paramsnum_primary_items').removeProperty('disabled');
-				$('paramsnum_primary_columns').removeProperty('disabled');
-				$('paramsprimaryImgSize').removeProperty('disabled');
-				$('paramsnum_secondary_items').removeProperty('disabled');
-				$('paramsnum_secondary_columns').removeProperty('disabled');
-				$('paramssecondaryImgSize').removeProperty('disabled');
-				$('paramsnum_links').removeProperty('disabled');
-				$('paramsnum_links_columns').removeProperty('disabled');
-				$('paramslinksImgSize').removeProperty('disabled');
-				$('paramscatCatalogMode').removeProperty('disabled');
-				$('paramscatFeaturedItems').removeProperty('disabled');
-				$('paramscatOrdering').removeProperty('disabled');
-				$('paramscatPagination').removeProperty('disabled');
-				$('paramscatPaginationResults0').removeProperty('disabled');
-				$('paramscatPaginationResults1').removeProperty('disabled');
-				$('paramscatFeedLink0').removeProperty('disabled');
-				$('paramscatFeedLink1').removeProperty('disabled');
-				$('paramscatFeedIcon0').removeProperty('disabled');
-				$('paramscatFeedIcon1').removeProperty('disabled');
-				$('paramstheme').removeProperty('disabled');
+				$('".$prefix."paramsnum_leading_items').removeProperty('disabled');
+				$('".$prefix."paramsnum_leading_columns').removeProperty('disabled');
+				$('".$prefix."paramsleadingImgSize').removeProperty('disabled');
+				$('".$prefix."paramsnum_primary_items').removeProperty('disabled');
+				$('".$prefix."paramsnum_primary_columns').removeProperty('disabled');
+				$('".$prefix."paramsprimaryImgSize').removeProperty('disabled');
+				$('".$prefix."paramsnum_secondary_items').removeProperty('disabled');
+				$('".$prefix."paramsnum_secondary_columns').removeProperty('disabled');
+				$('".$prefix."paramssecondaryImgSize').removeProperty('disabled');
+				$('".$prefix."paramsnum_links').removeProperty('disabled');
+				$('".$prefix."paramsnum_links_columns').removeProperty('disabled');
+				$('".$prefix."paramslinksImgSize').removeProperty('disabled');
+				$('".$prefix."paramscatCatalogMode').removeProperty('disabled');
+				$('".$prefix."paramscatFeaturedItems').removeProperty('disabled');
+				$('".$prefix."paramscatOrdering').removeProperty('disabled');
+				$('".$prefix."paramscatPagination').removeProperty('disabled');
+				$('".$prefix."paramscatPaginationResults0').removeProperty('disabled');
+				$('".$prefix."paramscatPaginationResults1').removeProperty('disabled');
+				$('".$prefix."paramscatFeedLink0').removeProperty('disabled');
+				$('".$prefix."paramscatFeedLink1').removeProperty('disabled');
+				$('".$prefix."paramscatFeedIcon0').removeProperty('disabled');
+				$('".$prefix."paramscatFeedIcon1').removeProperty('disabled');
+				$('".$prefix."paramstheme').removeProperty('disabled');
 			}
 			";
 			

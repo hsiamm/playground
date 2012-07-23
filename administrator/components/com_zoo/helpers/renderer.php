@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      renderer.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -60,6 +58,7 @@ class RendererHelper extends AppHelper {
 class AppRenderer {
 
 	protected $_path;
+	protected $_layout_paths;
 	protected $_layout;
 	protected $_folder = 'renderer';
 	protected $_separator = '.';
@@ -75,7 +74,8 @@ class AppRenderer {
 	const MAX_RENDER_RECURSIONS = 100;
 
 	public function  __construct($app, $path = null) {
-		$this->_path = $path ? $path : $app->object->create('PathHelper', array($this->app));
+		$this->_layout_paths = array();
+		$this->_path = $path ? $path : $app->object->create('PathHelper', array($app));
 	}
 
 	/*
@@ -97,12 +97,8 @@ class AppRenderer {
 
 		if ($count < self::MAX_RENDER_RECURSIONS) {
 
-			// init vars
-			$parts = explode($this->_separator, $layout);
-			$this->_layout = preg_replace('/[^A-Z0-9_\.-]/i', '', array_pop($parts));
-
 			// render layout
-			if ($__layout = $this->_path->path('default:'.implode('/', $parts).'/'.$this->_layout.$this->_extension)) {
+			if ($__layout = $this->_getLayoutPath($layout)) {
 
 				// import vars and layout output
 				extract($args);
@@ -128,6 +124,19 @@ class AppRenderer {
 		JError::raiseWarning(0, 'Warning! Render recursed indefinitly. ('.$this->app->utility->debugInfo(debug_backtrace()).')');
 
 		return null;
+	}
+
+	protected function _getLayoutPath($layout) {
+
+		if (!isset($this->_layout_paths[$layout])) {
+			// init vars
+			$parts = explode($this->_separator, $layout);
+			$this->_layout = preg_replace('/[^A-Z0-9_\.-]/i', '', array_pop($parts));
+			$this->_layout_paths[$layout] = $this->_path->path(implode('/', $parts).'/'.$this->_layout.$this->_extension);
+		}
+
+		return $this->_layout_paths[$layout];
+
 	}
 
 	/*
@@ -166,7 +175,7 @@ class AppRenderer {
 		$layouts = array();
 
 		// find layouts in path(s)
-		$layouts = $this->_path->files("default:$dir", false, '/' . preg_quote($this->_extension) . '$/i');
+		$layouts = $this->_path->files("$dir", false, '/' . preg_quote($this->_extension) . '$/i');
 
 		return array_map(create_function('$layout', 'return basename($layout, "'.$this->_extension.'");'), $layouts);
 	}
@@ -185,8 +194,8 @@ class AppRenderer {
 		$parts    = explode($this->_separator, $layout);
 		$name     = array_pop($parts);
 
-		if ($file = $this->_path->path('default:'.implode(DIRECTORY_SEPARATOR, $parts).'/'.$this->_metafile)) {
-			if ($xml = $this->app->xml->loadFile($file)) {
+		if ($file = $this->_path->path(implode(DIRECTORY_SEPARATOR, $parts).'/'.$this->_metafile)) {
+			if ($xml = simplexml_load_file($file)) {
 				foreach ($xml->children() as $child) {
 					$attributes = $child->attributes();
 					if ($child->getName() == 'layout' && (string) $attributes->name == $name) {
@@ -227,7 +236,123 @@ class AppRenderer {
 			Array
 	*/
 	protected function _getPath($dir = '') {
-		return $this->_path->path('default:'.$dir);
+		return $this->_path->path($dir);
+	}
+
+}
+
+/*
+	Class: PositionRenderer
+		The base class for rendering positions based on config files.
+*/
+abstract class PositionRenderer extends AppRenderer {
+
+    protected $_config;
+	protected $_config_file = 'positions.config';
+	protected $_xml_file = 'positions.xml';
+
+	/*
+		Function: getPositions
+			Retrieve positions of a layout.
+
+		Parameter:
+			$dir - point separated path to layout, last part is layout
+
+		Returns:
+			Array
+	*/
+	public function getPositions($dir) {
+
+		// init vars
+		$positions = array();
+
+		$parts  = explode('.', $dir);
+		$layout = array_pop($parts);
+		$path   = implode('/', $parts);
+
+		// parse positions xml
+		if ($xml = simplexml_load_file($this->_getPath($path.'/'.$this->_xml_file))) {
+			foreach ($xml->children() as $pos) {
+				if ((string) $pos->attributes()->layout == $layout) {
+					$positions['name'] = $layout;
+
+					foreach ($pos->children() as $child) {
+
+						if ($child->getName() == 'name') {
+							$positions['name'] = (string) $child;
+						}
+
+						if ($child->getName() == 'position') {
+							if ($child->attributes()->name) {
+								$name = (string) $child->attributes()->name;
+								$positions['positions'][$name] = (string) $child;
+							}
+						}
+					}
+
+					break;
+				}
+			}
+		}
+
+		return $positions;
+	}
+
+	/*
+		Function: getConfig
+			Retrieve position configuration.
+
+		Parameter:
+			$dir - path to config file
+
+		Returns:
+			AppData
+	*/
+	public function getConfig($dir) {
+
+		// config file
+		if (empty($this->_config)) {
+
+			if ($file = $this->_path->path($dir.'/'.$this->_config_file)) {
+				$content = JFile::read($file);
+			} else {
+				$content = null;
+			}
+
+			$this->_config = $this->app->parameter->create($content);
+		}
+
+		return $this->_config;
+	}
+
+	/*
+		Function: saveConfig
+			Save position configuration.
+
+		Parameter:
+			$config - Configuration
+			$file - File to save configuration
+
+		Returns:
+			Boolean
+	*/
+	public function saveConfig($config, $file) {
+
+		if (JFile::exists($file) && !is_writable($file)) {
+			throw new AppException(sprintf('The config file is not writable (%s)', $file));
+		}
+
+		if (!JFile::exists($file) && !is_writable(dirname($file))) {
+			throw new AppException(sprintf('Could not create config file (%s)', $file));
+		}
+
+		// Joomla 1.6 JFile::write expects $buffer to be reference
+		$config_string = (string) $config;
+		return JFile::write($file, $config_string);
+	}
+
+	public function pathExists($dir) {
+		return (bool) $this->_getPath($dir);
 	}
 
 }

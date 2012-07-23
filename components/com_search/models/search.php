@@ -1,16 +1,12 @@
 <?php
 /**
- * @version		$Id: search.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_search
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.model');
 
 /**
  * Search Component Search Model
@@ -19,7 +15,7 @@ jimport('joomla.application.component.model');
  * @subpackage	com_search
  * @since 1.5
  */
-class SearchModelSearch extends JModel
+class SearchModelSearch extends JModelLegacy
 {
 	/**
 	 * Sezrch data array
@@ -63,8 +59,8 @@ class SearchModelSearch extends JModel
 		$config = JFactory::getConfig();
 
 		// Get the pagination request variables
-		$this->setState('limit', $app->getUserStateFromRequest('com_search.limit', 'limit', $config->get('list_limit'), 'int'));
-		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+		$this->setState('limit', $app->getUserStateFromRequest('com_search.limit', 'limit', $config->get('list_limit'), 'uint'));
+		$this->setState('limitstart', JRequest::getUInt('limitstart', 0));
 
 		// Set the search parameters
 		$keyword		= urldecode(JRequest::getString('searchword'));
@@ -88,6 +84,10 @@ class SearchModelSearch extends JModel
 	function setSearch($keyword, $match = 'all', $ordering = 'newest')
 	{
 		if (isset($keyword)) {
+			$this->setState('origkeyword', $keyword);
+			if($match !== 'exact') {
+				$keyword 		= preg_replace('#\xE3\x80\x80#s', ' ', $keyword);
+			}
 			$this->setState('keyword', $keyword);
 		}
 

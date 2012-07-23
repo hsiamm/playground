@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      flickr.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -24,32 +22,32 @@ class ElementFlickr extends Element implements iSubmittable {
 		Returns:
 			String - html
 	*/
-	public function render() {
+	public function render($params = array()) {
 
 		// init vars
-		$height   = $this->_config->get('height');
-		$width 	  = $this->_config->get('width');		
-		$tags     = $this->_data->get('value');
-		$flickrid = $this->_data->get('flickrid', '');		
+		$height   = $this->config->get('height');
+		$width 	  = $this->config->get('width');
+		$tags     = $this->get('value');
+		$flickrid = $this->get('flickrid', '');
 
 		// render html
 		if ($width && $height && ($tags || $flickrid)) {
 
 			$vars = array();
-			
+
 			if ($flickrid) {
 				$vars[] = 'user_id='.$flickrid;
 			}
-			
+
 			if ($tags) {
 				$vars[] = 'tags='.$tags;
 			}
-		
+
 			$html  = '<iframe src="http://www.flickr.com/slideShow/index.gne?'.implode('&amp;', $vars). '"';
 			$html .= ' align="middle" frameborder="0" height="'. $height .'"';
 			$html .= ' scrolling="no" width="'. $width .'"';
 			$html .= '></iframe>'	;
-			
+
 			return $html;
 		}
 
@@ -65,13 +63,7 @@ class ElementFlickr extends Element implements iSubmittable {
 	*/
 	public function edit() {
         if ($layout = $this->getLayout('edit.php')) {
-            return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'tags' => $this->_data->get('value'),
-                    'flickrid' => $this->_data->get('flickrid')
-                )
-            );
+            return $this->renderLayout($layout);
         }
 
         return null;
@@ -82,7 +74,7 @@ class ElementFlickr extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -109,7 +101,7 @@ class ElementFlickr extends Element implements iSubmittable {
 		$validator = $this->app->validator->create('string', array('required' => false));
 
 		try {
-			$value     = $validator->clean($values->get('value'));
+			$value = $validator->clean($values->get('value'));
 		} catch (AppValidatorException $e) {
 			$value = $validator->getEmptyValue();
 		}

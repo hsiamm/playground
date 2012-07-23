@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      comment.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -52,8 +50,8 @@ class CommentController extends AppController {
 		$search		   = $this->app->string->strtolower($search);
 
 		// is filtered ?
-		$this->is_filtered = $filter_state <> '' || !empty($filter_item) || !empty($filter_author) || !empty($search);		
-		
+		$this->is_filtered = $filter_state <> '' || !empty($filter_item) || !empty($filter_author) || !empty($search);
+
 		// in case limit has been changed, adjust offset accordingly
 		$limitstart = $limit != 0 ? (floor($limitstart / $limit) * $limit) : 0;
 
@@ -62,12 +60,12 @@ class CommentController extends AppController {
 			$this->joomla->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Comments on') . ': ' . $item_object->name));
 		} else {
 			$this->joomla->set('JComponentTitle', $this->application->getToolbarTitle(JText::_('Comments')));
-		}			
-		$this->app->toolbar->custom('approve', 'publish', '', 'Approve');			
-		$this->app->toolbar->custom('unapprove', 'unpublish', '', 'Unapprove');			
-		$this->app->toolbar->custom('spam', 'trash', '', 'Spam');			
-		$this->app->toolbar->deleteList();		
-				
+		}
+		$this->app->toolbar->custom('approve', 'publish', '', 'Approve');
+		$this->app->toolbar->custom('unapprove', 'unpublish', '', 'Unapprove');
+		$this->app->toolbar->custom('spam', 'trash', '', 'Spam');
+		$this->app->toolbar->deleteList();
+
 		// build where condition
 		$where = array('b.application_id = '.(int) $this->application->id);
 
@@ -76,11 +74,11 @@ class CommentController extends AppController {
 		} else {
 			$where[] = 'a.state = '.(int) $filter_state;
 		}
-		
+
 		if ($filter_item) {
 			$where[] = 'a.item_id = '.(int) $filter_item;
 		}
-		
+
 		if ($filter_author == '_anonymous_') {
 			$where[] = 'a.author = ""';
 		} elseif ($filter_author) {
@@ -103,7 +101,7 @@ class CommentController extends AppController {
 		$limitstart = $limitstart > $count ? floor($count / $limit) * $limit : $limitstart;
 		$this->comments = $this->table->all($limit > 0 ? array_merge($options, array('offset' => $limitstart, 'limit' => $limit)) : $options);
 		$this->pagination = $this->app->pagination->create($count, $limitstart, $limit);
-		
+
 		// search filter
 		$this->lists['search'] = $search;
 
@@ -114,7 +112,7 @@ class CommentController extends AppController {
 			$this->app->html->_('select.option', '1', JText::_('Approved')),
 			$this->app->html->_('select.option', '2', JText::_('Spam')));
 		$this->lists['select_state'] = $this->app->html->_('select.genericlist', $options, 'filter-state', 'class="inputbox auto-submit"', 'value', 'text', $filter_state);
-		
+
 		// item select
 		$options = array($this->app->html->_('select.option', 0, '- '.JText::_('Select Item').' -'));
 		$this->lists['select_item'] = $this->app->html->_('zoo.itemlist', $this->application, $options, 'filter-item', 'class="inputbox auto-submit"', 'value', 'text', $filter_item);
@@ -127,7 +125,7 @@ class CommentController extends AppController {
 
 		// get comment params
 		$this->params = $this->app->parameter->create($this->application->getParams()->get('global.comments.', array()));
-		
+
 		// display view
 		$this->getView()->display();
 	}
@@ -139,22 +137,22 @@ class CommentController extends AppController {
 
 		// get comment
 		$this->comment = $this->table->get($cid);
-		
+
 		// display view
 		$this->getView()->setLayout('_edit')->display();
 	}
 
 	public function reply() {
-	
+
 		// get request vars
 		$this->cid = $this->app->request->getInt('cid');
-		
+
 		// display view
 		$this->getView()->setLayout('_reply')->display();
 	}
-	
+
 	public function save() {
-		
+
 		// check for request forgeries
 		$this->app->request->checkToken() or jexit('Invalid Token');
 
@@ -164,13 +162,13 @@ class CommentController extends AppController {
 		$cid  = $this->app->request->get('cid.0', 'int');
 		$pid  = $this->app->request->getInt('parent_id', 0);
 		$now  = $this->app->date->create();
-		
+
 		try {
 
 			// get content as raw and filter it
 			$post['content'] = $this->app->request->getVar('content', null, '', 'string', JREQUEST_ALLOWRAW);
 			$post['content'] = $this->app->comment->filterContentInput($post['content']);
-							
+
 			// get comment or create reply
 			if ($cid) {
 				$comment = $this->table->get($cid);
@@ -187,9 +185,9 @@ class CommentController extends AppController {
 			}
 
 			// bind post data
-			$this->bind($comment, $post);
-			
-			// save comment		
+			self::bind($comment, $post);
+
+			// save comment
 			$this->table->save($comment);
 
 			// get view
@@ -200,8 +198,7 @@ class CommentController extends AppController {
 			$view->comment = $comment;
 
 			// display view
-			$view->setLayout('_row');
-			$view->display();		
+			$view->setLayout('_row')->display();
 
 		} catch (AppException $e) {
 
@@ -215,7 +212,7 @@ class CommentController extends AppController {
 	}
 
 	public function remove() {
-	
+
 		// check for request forgeries
 		$this->app->request->checkToken() or jexit('Invalid Token');
 
@@ -233,10 +230,10 @@ class CommentController extends AppController {
 			foreach ($cid as $id) {
 				$this->table->delete($this->table->get((int) $id));
 			}
-					
+
 			// set redirect message
 			$msg = JText::_('Comment(s) Deleted');
-			
+
 
 		} catch (AppException $e) {
 
@@ -252,10 +249,10 @@ class CommentController extends AppController {
 	/*
 		Function: approve
 			Approve a comment
-								
+
 		Returns:
 			Void
-	*/	
+	*/
 	public function approve() {
 		$this->_editState(1);
 	}
@@ -263,10 +260,10 @@ class CommentController extends AppController {
 	/*
 		Function: unapprove
 			Unapprove a comment
-								
+
 		Returns:
 			Void
-	*/	
+	*/
 	public function unapprove() {
 		$this->_editState(0);
 	}
@@ -274,10 +271,10 @@ class CommentController extends AppController {
 	/*
 		Function: spam
 			Mark comment as spam
-								
+
 		Returns:
 			Void
-	*/	
+	*/
 	public function spam() {
 		$this->_editState(2);
 	}
@@ -293,7 +290,7 @@ class CommentController extends AppController {
 		if (count($cid) < 1) {
 			$this->app->error->raiseError(500, JText::_('Select a comment to edit state'));
 		}
-		
+
 		try {
 
 			// update comment state

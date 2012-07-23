@@ -1,64 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <renderer>
-    <positions layout="default">
-        <position name="title">Title</position>
-        <position name="link">Link</position>
-    </positions>
-    <positions layout="feed">
-        <position name="title">Title</position>
-        <position name="categories">Categories</position>
-        <position name="speaker">Speaker</position>
-        <position name="date">Date</position>
-        <position name="passage">Passage</position>
-        <position name="description">Description</position>
-        <position name="artwork">Artwork</position>
-        <position name="mp3">Audio File Name</position>
-        <position name="size">Audio File Size</position>
-        <position name="guid">GUID</position>
-        <position name="duration">Audio File Duration</position>
-    </positions>
-    <positions layout="staff">
-        <position name="placeholder">Placeholder</position>
-        <position name="name">Name</position>
-        <position name="categories">Categories</position>
-        <position name="job_title">Job Title</position>
-        <position name="picture">Picture</position>
-        <position name="blog">Blog</position>
-        <position name="email">Email</position>
-        <position name="twitter">Twitter</position>
-        <position name="bio">Bio</position>
-        <position name="what_i_do">What I Do</position>
-    </positions>
-        <positions layout="elders">
-        <position name="name">Name</position>
-        <position name="categories">Categories</position>
-        <position name="picture">Picture</position>
-        <position name="blog">Blog</position>
-        <position name="email">Email</position>
-        <position name="twitter">Twitter</position>
-        <position name="bio">Bio</position>
-        <position name="what_i_do">What I Do</position>
-    </positions>
-    <positions layout="current_hap_page">
-        <position name="picture">Picture</position>
-        <position name="title">Title</position>
-        <position name="description">Description</position>
-        <position name="link">Link</position>
-    </positions>
-    <positions layout="service_all">
-        <position name="title">Title</position>
-        <position name="hours">Hours</position>
-        <position name="description">Description</position>
-        <position name="signup">Sign up</position>
-    </positions>
-    <positions layout="service_featured">
-        <position name="title">Title</position>
-        <position name="hours">Hours</position>
-        <position name="description">Description</position>
-        <position name="signup">Sign up</position>
-    </positions>
-    <positions layout="home_page_slider">
-        <position name="image">Image</position>
-        <position name="text">Text</position>
-    </positions>
+	<positions layout="default">
+		<position name="title">Title</position>
+		<position name="media">Media</position>
+		<position name="meta">Meta</position>
+		<position name="description">Description</position>
+		<position name="links">Links</position>
+	</positions>
+	<positions layout="layout2">
+		<position name="title">Title</position>
+		<position name="media">Media</position>
+		<position name="meta">Meta</position>
+		<position name="description">Description</position>
+		<position name="links">Links</position>
+	</positions>
+	<positions layout="layout3">
+		<position name="title">Title</position>
+		<position name="media">Media</position>
+		<position name="meta">Meta</position>
+		<position name="description">Description</position>
+		<position name="links">Links</position>
+	</positions>
 </renderer>

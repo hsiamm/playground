@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      block.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -15,23 +13,23 @@ $params = $this->app->data->create($params);
 
 // add tooltip
 $tooltip = '';
-if ($params->get('show_tooltip') && ($description = $element->getConfig()->get('description'))) {
+if ($params->get('show_tooltip') && ($description = $element->config->get('description'))) {
 	$tooltip = ' class="hasTip" title="'.$description.'"';
 }
 
 // create label
 $label  = '<strong'.$tooltip.'>';
-$label .= $params->get('altlabel') ? $params->get('altlabel') : $element->getConfig()->get('name');
+$label .= $params->get('altlabel') ? $params->get('altlabel') : $element->config->get('name');
 $label .= '</strong>';
 
 // create error
 $error = '';
-if ($field->hasError()) {
-    $error = '<p class="error-message">'.(string) $field->getError().'</p>';
+if (@$element->error) {
+    $error = '<p class="error-message">'.(string) $element->error.'</p>';
 }
 
 // create class attribute
-$class = 'element element-'.$element->getElementType().($params->get('first') ? ' first' : '').($params->get('last') ? ' last' : '').($params->get('required') ? ' required' : '').($field->hasError() ? ' error' : '');
+$class = 'element element-'.$element->getElementType().($params->get('first') ? ' first' : '').($params->get('last') ? ' last' : '').($params->get('required') ? ' required' : '').(@$element->error ? ' error' : '');
 
 $element->loadAssets();
 

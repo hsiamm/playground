@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      update.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -25,7 +23,7 @@ class UpdateController extends AppController {
 	public function display() {
 
 		// set toolbar items
-		$this->app->toolbar->title(JText::_('ZOO Update'), ZOO_ICON);
+		$this->app->toolbar->title(JText::_('ZOO Update'), $this->app->get('icon'));
 		$this->app->zoo->toolbarHelp();
 
 		$this->app->html->_('behavior.tooltip');
@@ -33,6 +31,8 @@ class UpdateController extends AppController {
 		if (!$this->update = $this->app->update->required()) {
 			$this->app->system->application->redirect($this->app->link());
 		}
+
+		$this->notifications = $this->app->update->getNotifications();
 
 		// display view
 		$this->getView()->display();
@@ -47,7 +47,7 @@ class UpdateController extends AppController {
 
 		echo json_encode($response);
 	}
-	
+
 }
 
 /*

@@ -1,12 +1,10 @@
-/* Copyright (C) 2007 - 2011 YOOtheme GmbH, YOOtheme Proprietary Use License (http://www.yootheme.com/license) */
+/* Copyright (C) YOOtheme GmbH, http://www.gnu.org/licenses/gpl.html GNU/GPL */
 
 /*
  * general
  */
 
-html {
-	overflow-y: scroll;
-}
+html { overflow-y: scroll; }
 
 a:focus { outline: none; }
 
@@ -27,7 +25,8 @@ span.loader {
 	vertical-align: middle;
 }
 
-fieldset {
+fieldset,
+.rounded {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
@@ -43,7 +42,7 @@ fieldset {
 span.image-cancel {
 	width: 10px;
 	height: 10px;
-	margin: 0px 3px 0px 0px;
+	margin: 0px 3px;
 	background: url(../images/cancel.png) 0 0 no-repeat;
 	vertical-align: middle;
 	display: inline-block;
@@ -169,6 +168,14 @@ input[type='radio'] { border: none; }
 	border-top-right-radius: 6px;
 	background: url(../images/nav.png) 0 -211px repeat-x;
 }
+
+#nav div.bar .version {
+	margin: 10px 5px;
+	float: right;
+	color: #AAA;
+	text-shadow: 0 1px 0 #FFF;
+}
+
 .menu-has-level3 #nav div.bar { height: 59px; }
 
 /* level1 */
@@ -243,7 +250,7 @@ input[type='radio'] { border: none; }
 
 #nav li.level2 .level2 > span {
 	height: 25px;
-	padding: 0px 10px 0px 10px;
+	padding: 0px 10px;
 	line-height: 25px;
 	font-size: 12px;
 	color: #787878;
@@ -410,17 +417,21 @@ input[type='radio'] { border: none; }
 
 .filter li.filter-right {
 	margin-left: 10px;
-	padding-top: 4px;
 	float: right;
 }
 
 .filter input#search {
+	height: 18px;
 	width: 250px;
 	padding: 2px;
 	font-size: 12px;
 	font-weight: bold;
 	vertical-align: top;
 }
+
+.filter select { padding: 2px; }
+
+.filter button { margin-top: 0px; }
 
 /*
  * table list
@@ -527,6 +538,7 @@ table.list tfoot .pagination {
  * table list: items - default
  */
 
+#items-default table.list .frontpage,
 #items-default table.list .searchable,
 #items-default table.list .comments,
 #items-default table.list .priority,
@@ -538,9 +550,10 @@ table.list tfoot .pagination {
 
 #items-default table.list .type,
 #items-default table.list .priority,
-#items-default table.list .access { width: 120px; }
+#items-default table.list .access,
 #items-default table.list .author { width: 120px; }
-#items-default table.list .searchable { width: 80px; }
+#items-default table.list .frontpage,
+#items-default table.list .searchable,
 #items-default table.list .comments { width: 80px; }
 #items-default table.list .date { width: 60px; }
 #items-default table.list .hits { width: 40px; }
@@ -579,9 +592,8 @@ table.list tfoot .pagination {
 }
 
 #manager-types table.list .template,
-#manager-types table.list .submission,
 #manager-types table.list .extension {
-	width: 25%;
+	width: 33%;
 	padding-left: 5px;
 }
 
@@ -633,6 +645,12 @@ table.list tfoot .pagination {
 	text-align: center;
 	white-space: nowrap;
 	width: 100px;
+}
+
+#submissions-default table.list .item_edit {
+	text-align: center;
+	white-space: nowrap;
+	width: 130px;
 }
 
 #submissions-default table.list .access {
@@ -1055,7 +1073,7 @@ fieldset {
 }
 
 .creation-form .element-image span.image-cancel {
-	margin: 0 15px 0 -25px;
+	margin: 5px 15px 0 -25px;
 	vertical-align: text-top;
 }
 
@@ -1107,7 +1125,6 @@ fieldset {
 }
 
 /* download preview */
-.creation-form div.download-select.hidden,
 .creation-form div.download-preview.hidden { display: none; }
 
 .creation-form div.download-preview span.download-cancel {
@@ -1121,6 +1138,11 @@ fieldset {
 }
 
 .creation-form div.download-preview { padding-top: 6px; }
+
+.creation-form .reset-container {
+	float: left;
+	margin-top: 3px;
+}
 
 /* date */
 .creation-form input.calendar-element { width: 140px !important;  }
@@ -1358,6 +1380,7 @@ div.repeat-elements p.add a {}
 
 .creation-form .element .more-options .trigger .link.button:before,
 .creation-form .element .more-options .trigger .lightbox.button:before,
+.creation-form .element .more-options .trigger .spotlight.button:before,
 .creation-form .element .more-options .trigger .file.button:before,
 .creation-form .element .more-options .trigger .url.button:before {
 	content: "|";
@@ -1373,7 +1396,8 @@ div.repeat-elements p.add a {}
 .creation-form .element .more-options.show-advanced .options.advanced,
 .creation-form .element .more-options.show-title .options.title,
 .creation-form .element .more-options.show-link .options.link,
-.creation-form .element .more-options.show-lightbox .options.lightbox { display: block; }
+.creation-form .element .more-options.show-lightbox .options.lightbox,
+.creation-form .element .more-options.show-spotlight .options.spotlight { display: block; }
 
 .creation-form .element div.repeat-elements .hide-options .more-options .options { display: none; }
 .creation-form .element div.repeat-elements li.repeatable-element.ghost .more-options .trigger { display: none; }
@@ -1474,6 +1498,8 @@ ul.parameter-form li .field select { min-width: 110px; }
 ul.parameter-form li .field textarea {
 	min-width: 200px;
 	max-width: 90%;
+	margin-left: 0px;
+	min-height: 70px;
 }
 
 /*
@@ -1554,6 +1580,11 @@ ul.element-list li.hideconfig div.config { display: none; }
 
 ul.element-list li.dragging { border: 1px dashed #000000; }
 ul.element-list li.dragging:hover { background: none; }
+
+.core-element-configuration > .toggler { margin: 10px; }
+.core-element-configuration ul.element-list div.delete-element { display: none; }
+.core-element-configuration ul.element-list li.element div.name { cursor: default; }
+.core-element-configuration ul.element-list li.element div.name span { display: none; }
 
 /* edit elements */
 #add-element { overflow: hidden; }
@@ -1884,8 +1915,9 @@ div.importbox h3 {
 }
 
 div.importbox button.button-grey.export {
-	width: 360px;
+	width: 240px;
 	padding: 20px 10px 20px 10px;
+	margin-right: 10px;
 }
 
 div.importbox button.button-grey.export:hover {
@@ -2379,10 +2411,13 @@ div.header {
 
 div.col { float: left; }
 
+div.col.width-60 { min-width: 660px; }
+
 .creation-form .element div.row { overflow: hidden; }
 
 div.element label,
 div.element input,
+div.element select,
 div.element button {
 	float: none;
 	clear: none;
@@ -2399,8 +2434,30 @@ div.uploadbox button { margin-top: 0px; }
 
 fieldset div.groups ul.elements li { padding: 0px; }
 
+fieldset .element-date img {
+	float: none;
+	margin: 0px 3px;
+	vertical-align: middle;
+}
+
+fieldset .element-textarea textarea {
+	float: none;
+	margin: 0px;
+}
+
+fieldset .element-checkbox > div > div {
+	padding-top: 6px;
+	float:left;
+}
+
+fieldset .element-checkbox label { vertical-align: middle; }
+
+div.label label,
 div.field label,
-div.field input { margin-right: 3px; }
+div.field input,
+div.field select { margin: 1px 0; }
+
+div.field label { margin: 0 5px; }
 
 div#element-box div.m { background-color: #FFFFFF; }
 
@@ -2409,6 +2466,8 @@ form#assign-elements, fieldset div.label label {
     font-size: 11px;
     float: none;
 }
+
+fieldset .element li { padding: 0px; }
 
 /*
  * update: default
@@ -2457,3 +2516,124 @@ div.updatebox button.button-green.update span {
 div.updatebox div.message.success { border: 1px solid #9BD732; }
 div.updatebox div.message.error { border: 1px solid #E52525; }
 div.updatebox div.message.loading { background: url(../images/loader.gif) 100% 50% no-repeat; }
+
+/*
+ * Item Order Parameter
+ */
+
+fieldset.panelform #item-order { float: left; }
+
+#item-order .type,
+#item-order .reverse { overflow: hidden }
+
+#item-order label {
+    color: #666666;
+    font-weight: bold;
+    text-align: left;
+	margin: 5px 5px 3px 5px;
+	clear: none;
+	display: block;
+	float: left;
+}
+
+#item-order select.element,
+#item-order .reverse input,
+#item-order .random input {
+	float: left;
+	margin: 5px 5px 3px 0px;
+}
+
+#item-order select.element { width: 110px; }
+
+#item-order .select-message { display: none; }
+
+/* Finder (Used in Gallery Element)
+----------------------------------------------------------------------------------------------------*/
+
+.creation-form span.folders,
+.creation-form span.files,
+.creation-form span.delete-file {
+	display: inline-block;
+	height: 16px;
+	width: 20px;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.creation-form span.folders { background: url(../../assets/images/folder.png) 5px 0px no-repeat;}
+
+.creation-form span.files { background: url(../../assets/images/page_white.png) 5px 0px no-repeat; }
+
+.creation-form span.delete-file {
+	height: 10px;
+	background: url(../../assets/images/cancel.png) 5px 0px no-repeat;
+	visibility: hidden;
+}
+
+.creation-form div.row:hover span.delete-file { visibility: visible; }
+
+.finder { overflow: auto; max-height: 300px; }
+
+.finder ul {
+	margin: 0px;
+	padding: 0px;
+	font-size: 11px;
+}
+
+.finder ul li {
+	list-style: none;
+	margin: 0px;
+	padding: 0px 0px 0px 20px;
+	white-space: nowrap;
+	line-height: 18px;
+}
+
+.finder ul a {
+	display: block;
+	padding: 0 2px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	color: #333;
+	text-decoration: none;
+}
+
+.finder ul a:hover,
+.finder ul .selected > a:hover { background: #DDD; }
+
+.finder ul .selected > a {
+	color: #21759B;
+	font-weight: bold;
+	background: #EDEDED;
+}
+
+.finder ul li.file { background: url('../images/page_white.png') 0px 0px no-repeat; }
+.finder ul li.folder { background: url('../images/folder.png') 0px 0px no-repeat; }
+.finder ul li.folder.open { background: url('../images/folder_open.png') 0px 0px no-repeat; }
+.finder ul li.loading { background: url('../images/loader.gif') 0px 0px no-repeat; }
+
+/*
+ * update view
+ */
+
+#update-default .changelog textarea { width: 100% }
+
+#update-default .wrapper {
+	padding: 5px;
+	box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+	border: 1px #fff solid;
+	margin: 20px 0px;
+	border-radius: 6px;
+}
+
+#update-default .notifications { color: #B90000; }
+
+span.hide-update-notification {
+	width: 10px;
+	height: 12px;
+	margin-left: 10px;
+	background: url(../images/cancel.png) 0px 0px no-repeat;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+}

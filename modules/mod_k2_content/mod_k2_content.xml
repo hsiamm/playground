@@ -2,11 +2,11 @@
 <install type="module" client="site" version="1.5.0" method="upgrade">
 	<name>K2 Content</name>
 	<author>JoomlaWorks</author>
-	<creationDate>November 28th, 2011</creationDate>
-	<copyright>Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.</copyright>
-	<authorEmail>contact@joomlaworks.gr</authorEmail>
-	<authorUrl>www.joomlaworks.gr</authorUrl>
-	<version>2.5.3</version>
+	<creationDate>May 9th, 2012</creationDate>
+	<copyright>Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>contact@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>2.5.7</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>K2_MOD_K2_CONTENT_DESCRIPTION</description>
 	<files>
@@ -37,6 +37,7 @@
 			<option value="">K2_DEFAULT</option>
 			<option value="date">K2_OLDEST_FIRST</option>
 			<option value="rdate">K2_MOST_RECENT_FIRST</option>
+			<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
 			<option value="alpha">K2_TITLE_ALPHABETICAL</option>
 			<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
 			<option value="order">K2_ORDERING</option>
@@ -59,6 +60,7 @@
 			<option value="7">K2_1_WEEK</option>
 			<option value="15">K2_2_WEEKS</option>
 			<option value="30">K2_1_MONTH</option>
+			<option value="90">K2_3_MONTHS</option>
 			<option value="180">K2_6_MONTHS</option>
 		</param>
 		<param name="videosOnly" type="radio" default="0" label="K2_FETCH_ONLY_ITEMS_WITH_VIDEOS" description="">
@@ -203,6 +205,7 @@
 					<option value="">K2_DEFAULT</option>
 					<option value="date">K2_OLDEST_FIRST</option>
 					<option value="rdate">K2_MOST_RECENT_FIRST</option>
+					<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
 					<option value="alpha">K2_TITLE_ALPHABETICAL</option>
 					<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
 					<option value="order">K2_ORDERING</option>
@@ -225,6 +228,7 @@
 					<option value="7">K2_1_WEEK</option>
 					<option value="15">K2_2_WEEKS</option>
 					<option value="30">K2_1_MONTH</option>
+					<option value="90">K2_3_MONTHS</option>
 					<option value="180">K2_6_MONTHS</option>
 				</field>
 				<field name="videosOnly" type="radio" default="0" label="K2_FETCH_ONLY_ITEMS_WITH_VIDEOS" description="">

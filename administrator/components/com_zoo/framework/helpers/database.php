@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      database.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -33,12 +31,12 @@ class DatabaseHelper extends AppHelper {
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->query();
-		
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
 		}
-	
+
 		return $result;
 	}
 
@@ -47,7 +45,7 @@ class DatabaseHelper extends AppHelper {
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadResult();
-	
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
@@ -61,7 +59,7 @@ class DatabaseHelper extends AppHelper {
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadObject();
-	
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
@@ -75,7 +73,7 @@ class DatabaseHelper extends AppHelper {
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadObjectList($key);
-		
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
@@ -83,13 +81,13 @@ class DatabaseHelper extends AppHelper {
 
 		return $result;
 	}
-	
+
 	public function queryResultArray($query, $numinarray = 0) {
 
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadResultArray($numinarray);
-		
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
@@ -97,34 +95,34 @@ class DatabaseHelper extends AppHelper {
 
 		return $result;
 	}
-	
+
 	public function queryAssoc($query) {
 
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadAssoc();
-		
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
 		}
 
 		return $result;
-	}		
-		
+	}
+
 	public function queryAssocList($query, $key = '') {
 
 		// query database table
 		$this->_database->setQuery($query);
 		$result = $this->_database->loadAssocList($key);
-		
+
 		// throw exception, on database error
 		if ($this->_database->getErrorNum()) {
 			throw new AppDatabaseException(__METHOD__.' failed. ('.$this->_database->getErrorMsg().')');
 		}
 
 		return $result;
-	}		
+	}
 
 	public function insertObject($table, $object, $key = null) {
 
@@ -187,10 +185,14 @@ class DatabaseHelper extends AppHelper {
 
 		return mysql_free_result($result);
 	}
-	
+
     public function __call($method, $args) {
 		return $this->_call(array($this->_database, $method), $args);
     }
+
+	public function replacePrefix($sql, $prefix='#__') {
+		return preg_replace('/'.preg_quote($prefix).'/', $this->_database->getPrefix(), $sql);
+	}
 
 }
 

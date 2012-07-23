@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      parameterform.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -13,21 +11,6 @@
 		ParmeterForm helper class.
 */
 class ParameterFormHelper extends AppHelper {
-
-	/*
-		Function: __construct
-			Class Constructor.
-	*/
-	public function __construct($app) {
-		parent::__construct($app);
-
-		// register paths
-		$this->app->path->register($this->app->path->path('classes:parameterform'), 'parameterform');
-
-		// load class
-		$this->app->loader->register('AppParameterFormXML', 'parameterform:xml.php');
-		$this->app->loader->register('AppParameterFormDefault', 'parameterform:default.php');
-	}
 
 	/*
 		Function: create
@@ -39,13 +22,29 @@ class ParameterFormHelper extends AppHelper {
 		Returns:
 			AppParameterForm
 	*/
-	public function create($args = array(), $type = 'default') {
+	public function create($args = array()) {
+		return $this->app->object->create('AppParameterForm', (array) $args);
+	}
 
-		$args = (array) $args;
-		$class = 'AppParameterForm' . $type;
+	/*
+		Function: convertParams
+			Convert params to AppData
 
-		return $this->app->object->create($class, $args);
+		Parameters:
+			$params - Misc
 
+		Returns:
+			AppData
+	*/
+	public function convertParams($params = array()) {
+
+		if ($params instanceof JParameter) {
+			$params = $params->toArray();
+		} elseif ($params instanceof AppParameterForm) {
+			$params = $params->getValues();
+		}
+
+		return $this->app->data->create($params);
 	}
 
 }
@@ -54,7 +53,7 @@ class ParameterFormHelper extends AppHelper {
 	Class: AppParameterForm
 		Render parameter XML as HTML form.
 */
-abstract class AppParameterForm {
+class AppParameterForm {
 
     /*
 		Variable: app
@@ -69,28 +68,23 @@ abstract class AppParameterForm {
 	protected $_values = array();
 
 	/*
-		Variable: _elements
-			Elements.
+		Variable: xml
+			The xml params object array, with each group as array key.
     */
-	protected $_elements = array();
-
-	/*
-		Variable: _element_path
-			Directories, where element types can be stored.
-    */
-	protected $_element_path = array();
+	protected $_xml;
 
 	/*
 		Function: __construct
 			Constructor
 	*/
-	public function __construct() {
+	public function __construct($xml = null) {
 
+		// get zoo app instance
 		$this->app = App::getInstance('zoo');
 
-		// set default element paths
-		$this->addElementPath(JPATH_LIBRARIES.'/joomla/html/parameter/element');
-		$this->addElementPath(dirname(__FILE__).'/element');
+		// init vars
+		$this->loadXML($xml);
+
 	}
 
 	/*
@@ -137,98 +131,270 @@ abstract class AppParameterForm {
 			Set form values
 
 		Parameters:
-			values - Parameter, Array, Object
+			values - ParameterData, Array, Object
 
 		Return:
 			AppParameterForm
 	*/
 	public function setValues($values) {
-
-		if ($values instanceof AppParameter) {
-			$this->_values = $values->toArray();
-		} else if (is_array($values)) {
-			$this->_values = $values;
-		} else if (is_object($values)) {
-			$this->_values = get_object_vars($values);
-		}
-
+		$this->_values = (array) $values;
 		return $this;
 	}
 
 	/*
-		Function: loadElement
-			Loads a element type
+		Function: addElementPath
+			Add a directory to search for field types
 
 		Parameters:
-			type - Element type
+			path - Element path (string)
 	*/
-	public function loadElement($type, $new = false) {
-		$signature = md5($type);
-
-		if ((isset($this->_elements[$signature]) && !is_a($this->_elements[$signature], '__PHP_Incomplete_Class'))  && $new === false) {
-			return $this->_elements[$signature];
-		}
-
-		$elementClass = 'JElement'.$type;
-
-		if(!class_exists($elementClass)) {
-			if (isset($this->_element_path)) {
-				$dirs = $this->_element_path;
-			} else {
-				$dirs = array();
-			}
-
-			$file = JFilterInput::clean(str_replace('_', DS, $type).'.php', 'path');
-
-			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file)) {
-				include_once $elementFile;
-			} else {
-				return false;
-			}
-		}
-
-		if (!class_exists($elementClass)) {
-			return false;
-		}
-
-		$this->_elements[$signature] = new $elementClass($this);
-
-		return $this->_elements[$signature];
+	public function addElementPath($path) {
+		$this->app->path->register($path, 'fields');
+		return $this;
 	}
 
 	/*
-		Function: addElementPath
-			Add a directory to search for element types
+		Function: getParamsCount
+			Return number of params to render
 
 		Parameters:
-			path - Element path (string or array)
+			group - Parameter group
+
+		Returns:
+			Int - Parameter count
 	*/
-	public function addElementPath($path) {
+	public function getParamsCount($group = '_default') {
+		if (!isset($this->_xml[$group]) || !count($this->_xml[$group]->children())) {
+			return false;
+		}
 
-		// just force path to array
-		settype($path, 'array');
+		return count($this->_xml[$group]->children());
+	}
 
-		// loop through the path directories
-		foreach ((array) $path as $dir) {
-			// no surrounding spaces allowed!
-			$dir = trim($dir);
+	/*
+		Function: getGroups
+			Get the number of params in each group
 
-			// add trailing separators as needed
-			if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
-				// directory
-				$dir .= DIRECTORY_SEPARATOR;
+		Returns:
+			Array - Array of all group names as key and parameter count as value
+	*/
+	public function getGroups() {
+		if (!is_array($this->_xml)) {
+			return false;
+		}
+
+		$results = array();
+
+		foreach ($this->_xml as $name => $group)  {
+			$results[$name] = $this->getParamsCount($name);
+		}
+
+		return $results;
+	}
+
+	/*
+		Function: setXML
+			Sets the XML object from custom xml files
+
+		Parameters:
+			xmlpath - Path to xml file
+
+		Returns:
+			Boolean - True, on success
+	*/
+	public function setXML($xml) {
+		if ($xml instanceof SimpleXMLElement) {
+
+			if ($group = (string) $xml->attributes()->group) {
+				$this->_xml[$group] = $xml;
+			} else {
+				$this->_xml['_default'] = $xml;
 			}
 
-			// add to the top of the search dirs
-			array_unshift($this->_element_path, $dir);
+			if ($path = (string) $xml->attributes()->addpath) {
+				$this->addElementPath(JPATH_ROOT.$path);
+			}
 		}
+	}
+
+	/*
+		Function: loadXML
+			Loads an xml file or formatted string and parses it
+
+		Parameters:
+			data - xml file or string
+
+		Returns:
+			Boolean - True, on success
+	*/
+	public function loadXML($data) {
+
+		// load xml file or string ?
+		if (($xml = @simplexml_load_file($data)) || ($xml = simplexml_load_string($data))) {
+			if (isset($xml->params)) {
+				foreach ($xml->params as $param) {
+					$this->setXML($param);
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/*
+		Function: addXML
+			Adds an xml file or formatted string and parses it
+
+		Parameters:
+			data - xml file or string
+
+		Returns:
+			Boolean - True, on success
+	*/
+	public function addXML($data) {
+
+		// load xml file or string ?
+		if (($xml = @simplexml_load_file($data)) || ($xml = simplexml_load_string($data))) {
+			if (isset($xml->params)) {
+				foreach ($xml->params as $params) {
+
+					$group = $params->attributes()->group ? (string) $params->attributes()->group : '_default';
+
+					if (!isset($this->_xml[$group])) {
+						$this->_xml[$group] = new AppSimpleXMLElement('<params></params>');
+					}
+
+					foreach ($params->param as $param) {
+						// Avoid parameters in the same group with the same name
+						$existing_params = $this->_xml[$group]->children();
+						foreach($existing_params as $existing_param){
+							// If it exists already ( Skip array params, they can have the same name )
+							if(((string)$existing_param->attributes()->name == (string)$param->attributes()->name)){
+								// remove the old and let it add the new
+								$dom = dom_import_simplexml($existing_param);
+        						$dom->parentNode->removeChild($dom);
+								continue;
+							}
+						}
+
+						$this->_xml[$group]->appendChild($param);
+					}
+
+					if ($path = (string) $params->attributes()->addpath) {
+						$this->addElementPath(JPATH_ROOT.$path);
+					}
+
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/*
+		Function: getXML
+			Get the xml for a specific group or all groups
+
+		Parameters:
+			$group - the group to return
+
+		Returns:
+			Mixed - Array of groups or the xml for a group
+	*/
+	public function getXML($group = null) {
+
+		if (!$group) {
+			return $this->_xml;
+		}
+
+		if (isset($this->_xml[$group])) {
+			return $this->_xml[$group];
+		}
+
+		return false;
 	}
 
 	/*
 		Function: render
-			Render parameter html
+			Render parameter HTML form
+
+		Parameters:
+			name - The name of the control, or the default text area if a setup file is not found
+			group - Parameter group
+
+		Returns:
+			String - HTML
 	*/
-	abstract public function render();
+	public function render($control_name = 'params', $group = '_default') {
+		if (!isset($this->_xml[$group])) {
+			return false;
+		}
+
+		$html = array('<ul class="parameter-form">');
+
+		// add group description
+		if ($description = (string) $this->_xml[$group]->attributes()->description) {
+			$html[]	= '<li class="description">'.JText::_($description).'</li>';
+		}
+
+		// add params
+		foreach ($this->_xml[$group]->param as $param) {
+
+			// init vars
+			$type  = (string) $param->attributes()->type;
+			$name  = (string) $param->attributes()->name;
+			$value = $this->getValue((string) $param->attributes()->name, (string) $param->attributes()->default);
+
+			$field = '<div class="field">'.$this->app->field->render($type, $name, $value, $param, array('control_name' => $control_name, 'parent' => $this)).'</div>';
+
+			if ($type != 'hidden') {
+				$html[] = '<li class="parameter">';
+
+				$output = '&#160;';
+				if ((string) $param->attributes()->label != '') {
+					$attributes = array('for' => $control_name.$name);
+					if ((string) $param->attributes()->description != '') {
+						$attributes['class'] = 'hasTip';
+						$attributes['title'] = JText::_($param->attributes()->label) . '::' . JText::_($param->attributes()->description);
+					}
+					$output = sprintf ('<label %s>%s</label>', $this->app->field->attributes($attributes), JText::_($param->attributes()->label));
+				}
+
+				$html[] = "<div class=\"label\">$output</div>";
+				$html[] = $field;
+				$html[] = '</li>';
+			} else {
+				$html[] = $field;
+			}
+		}
+
+		$html[] = '</ul>';
+
+		return implode("\n", $html);
+	}
+
+}
+
+class AppSimpleXMLElement extends SimpleXMLElement {
+
+	public function appendChild($append) {
+        if ($append) {
+            if (strlen(trim((string) $append))==0) {
+                $xml = $this->addChild($append->getName());
+                foreach($append->children() as $child) {
+                    $xml->appendChild($child);
+                }
+            } else {
+                $xml = $this->addChild($append->getName(), (string) $append);
+            }
+            foreach($append->attributes() as $n => $v) {
+                $xml->addAttribute($n, $v);
+            }
+        }
+    }
 
 }

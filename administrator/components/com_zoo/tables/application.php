@@ -1,15 +1,13 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      application.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
-	Class: TableApplication
+	Class: ApplicationTable
 		The table class for application.
 */
 class ApplicationTable extends AppTable {
@@ -101,14 +99,14 @@ class ApplicationTable extends AppTable {
 
 		// delete related categories
 		$table = $this->app->table->category;
-		$categories = $table->getAll($object->id);
+		$categories = $table->all(array('conditions' => array('application_id=?', $object->id)));
 		foreach ($categories as $category) {
 			$table->delete($category);
 		}
-		
+
 		// delete related items
 		$table = $this->app->table->item;
-		$items = $table->findAll($object->id);
+		$items = $table->all(array('conditions' => array('application_id=?', $object->id)));
 		foreach ($items as $item) {
 			$table->delete($item);
 		}
@@ -121,7 +119,7 @@ class ApplicationTable extends AppTable {
 		return $result;
 
 	}
-	
+
 }
 
 /*

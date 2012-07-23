@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Id: ord.php 20083 2011-01-05 01:47:43Z eddieajau $
+* @version $Id$
 * @package utf8
 * @subpackage strings
 */

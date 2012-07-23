@@ -1,9 +1,8 @@
 <?php
 /**
- * @version		$Id: edit_assignment.php 20986 2011-03-17 20:31:11Z chdemko $
  * @package		Joomla.Administrator
  * @subpackage	com_modules
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,10 +20,9 @@ $menuTypes = MenusHelper::getMenuLinks();
 			});
 			function validate(){
 				var value	= document.id('jform_assignment').value;
-				var button 	= document.id('jform_toggle');
 				var list	= document.id('menu-assignment');
 				if(value == '-' || value == '0'){
-					button.setProperty('disabled', true);
+					$$('.jform-assignments-button').each(function(el) {el.setProperty('disabled', true); });
 					list.getElements('input').each(function(el){
 						el.setProperty('disabled', true);
 						if (value == '-'){
@@ -34,7 +32,7 @@ $menuTypes = MenusHelper::getMenuLinks();
 						}
 					});
 				} else {
-					button.setProperty('disabled', false);
+					$$('.jform-assignments-button').each(function(el) {el.setProperty('disabled', false); });
 					list.getElements('input').each(function(el){
 						el.setProperty('disabled', false);
 					});
@@ -55,23 +53,48 @@ $menuTypes = MenusHelper::getMenuLinks();
 
 			<label id="jform_menuselect-lbl" for="jform_menuselect"><?php echo JText::_('JGLOBAL_MENU_SELECTION'); ?></label>
 
-			<button type="button" id="jform_toggle" class="jform-rightbtn" onclick="$$('.chk-menulink').each(function(el) { el.checked = !el.checked; });">
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = !el.checked; });">
 				<?php echo JText::_('JGLOBAL_SELECTION_INVERT'); ?>
 			</button>
-			
+
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = false; });">
+				<?php echo JText::_('JGLOBAL_SELECTION_NONE'); ?>
+			</button>
+
+			<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.chkbox').each(function(el) { el.checked = true; });">
+				<?php echo JText::_('JGLOBAL_SELECTION_ALL'); ?>
+			</button>
+
 			<div class="clr"></div>
-			
+
 			<div id="menu-assignment">
-			
-			<?php echo JHtml::_('tabs.start','module-menu-assignment-tabs', array('useCookie'=>1));?> 
-			
-			<?php foreach ($menuTypes as &$type) : 
+
+			<?php echo JHtml::_('tabs.start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
+
+			<?php foreach ($menuTypes as &$type) :
 				echo JHtml::_('tabs.panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details');
 				
+				$chkbox_class = 'chk-menulink-' . $type->id; ?>
+				
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = !el.checked; });">
+					<?php echo JText::_('JGLOBAL_SELECTION_INVERT'); ?>
+				</button>
+				
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = false; });">
+					<?php echo JText::_('JGLOBAL_SELECTION_NONE'); ?>
+				</button>
+				
+				<button type="button" class="jform-assignments-button jform-rightbtn" onclick="$$('.<?php echo $chkbox_class; ?>').each(function(el) { el.checked = true; });">
+					<?php echo JText::_('JGLOBAL_SELECTION_ALL'); ?>
+				</button>
+				
+				<div class="clr"></div>
+				
+				<?php 
 				$count 	= count($type->links);
 				$i		= 0;
 				if ($count) :
-				?>					
+				?>
 				<ul class="menu-links">
 					<?php
 					foreach ($type->links as $link) :
@@ -86,21 +109,21 @@ $menuTypes = MenusHelper::getMenuLinks();
 						endif;
 					?>
 					<li class="menu-link">
-						<input type="checkbox" class="chk-menulink" name="jform[assigned][]" value="<?php echo (int) $link->value;?>" id="link<?php echo (int) $link->value;?>"<?php echo $checked;?>/>
+						<input type="checkbox" class="chkbox <?php echo $chkbox_class; ?>" name="jform[assigned][]" value="<?php echo (int) $link->value;?>" id="link<?php echo (int) $link->value;?>"<?php echo $checked;?>/>
 						<label for="link<?php echo (int) $link->value;?>">
 							<?php echo $link->text; ?>
 						</label>
 					</li>
 					<?php if ($count > 20 && ++$i == ceil($count/2)) :?>
 					</ul><ul class="menu-links">
-					<?php endif; ?>						
+					<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
 				<div class="clr"></div>
-				<?php endif; ?>					
+				<?php endif; ?>
 			<?php endforeach; ?>
-			
+
 			<?php echo JHtml::_('tabs.end');?>
-			
+
 			</div>
 		</fieldset>

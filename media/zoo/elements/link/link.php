@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      link.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -29,13 +27,12 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 
 		Returns:
 			Boolean - true, on success
-	*/	
-	protected function _hasValue($params) {
-		$link = $this->_data->get('value', '');
-		return !empty($link);		
+	*/
+	protected function _hasValue($params = array()) {
+		$link = $this->get('value', '');
+		return !empty($link);
 	}
 
-	
 	/*
 		Function: getText
 			Gets the link text.
@@ -44,10 +41,10 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 			String - text
 	*/
 	public function getText() {
-		$text = $this->_data->get('text', '');
-		return empty($text) ? $this->_data->get('value', '') : $text;
+		$text = $this->get('text', '');
+		return empty($text) ? $this->get('value', '') : $text;
 	}
-	
+
 	/*
 		Function: getTitle
 			Gets the link title.
@@ -56,10 +53,10 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 			String - title
 	*/
 	public function getTitle() {
-		$title = $this->_data->get('custom_title', '');
+		$title = $this->get('custom_title', '');
 		return empty($title) ? $this->getText() : $title;
 	}
-	
+
 	/*
 		Function: render
 			Renders the repeatable element.
@@ -72,11 +69,11 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 	*/
 	protected function _render($params = array()) {
 
-		$target = ($this->_data->get('target', '')) ? 'target="_blank"' : '';
-		$rel	= $this->_data->get('rel', '');
+		$target = ($this->get('target', '')) ? 'target="_blank"' : '';
+		$rel	= $this->get('rel', '');
 		$rel	= !empty($rel) ? 'rel="' . $rel .'"' : '';
 
-		return '<a href="'.JRoute::_($this->_data->get('value', '')).'" title="'.$this->getTitle().'" '.$target.' '. $rel .'>'.$this->getText().'</a>';
+		return '<a href="'.JRoute::_($this->get('value', '')).'" title="'.$this->getTitle().'" '.$target.' '. $rel .'>'.$this->getText().'</a>';
 
 	}
 
@@ -86,21 +83,9 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 
 	   Returns:
 	       String - html
-	*/		
+	*/
 	protected function _edit(){
-        if ($layout = $this->getLayout('edit.php')) {
-            return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'index' => $this->index(),
-                    'text' => $this->_data->get('text'),
-                    'link' => $this->_data->get('value'),
-                    'target' => $this->_data->get('target'),
-                    'title' => $this->_data->get('custom_title'),
-					'rel' => $this->_data->get('rel')
-                )
-            );
-        }
+		return $this->_editForm();
 	}
 
 	/*
@@ -108,29 +93,19 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
 	*/
 	public function _renderSubmission($params = array()) {
+        return $this->_editForm($params->get('trusted_mode'));
+	}
 
-        // get params
-        $params       = $this->app->data->create($params);
-        $trusted_mode = $params->get('trusted_mode');
-
-        if ($layout = $this->getLayout('submission.php')) {
+	protected function _editForm($trusted_mode = true) {
+        if ($layout = $this->getLayout('edit.php')) {
             return $this->renderLayout($layout,
-                array(
-                    'element' => $this->identifier,
-                    'index' => $this->index(),
-                    'text' => $this->_data->get('text'),
-                    'link' => $this->_data->get('value'),
-                    'target' => $this->_data->get('target'),
-                    'title' => $this->_data->get('custom_title'),
-					'rel' => $this->_data->get('rel'),
-					'trusted_mode' => $trusted_mode
-                )
+                compact('trusted_mode')
             );
         }
 	}
@@ -154,9 +129,10 @@ class ElementLink extends ElementRepeatable implements iRepeatSubmittable {
         $target       = $validator->clean($values->get('target'));
         $custom_title = $validator->clean($values->get('custom_title'));
         $rel          = $validator->clean($values->get('rel'));
-        
-        $validator    = $this->app->validator->create('url', array('required' => $params->get('required')), array('required' => 'Please enter an URL.'));
-        $value        = $validator->clean($values->get('value'));
+
+        $value        = $this->app->validator
+				->create('url', array('required' => $params->get('required')), array('required' => 'Please enter an URL.'))
+				->clean($values->get('value'));
 
 		return compact('value', 'text', 'target', 'custom_title', 'rel');
     }

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      types.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -35,9 +33,6 @@ $this->app->html->_('behavior.tooltip');
 			<th class="template">
 				<?php echo JText::_('Template Layouts'); ?>
 			</th>
-			<th class="submission">
-				<?php echo JText::_('Submission Layouts'); ?>
-			</th>
 			<th class="extension">
 				<?php echo JText::_('Extension Layouts'); ?>
 			</th>
@@ -66,8 +61,7 @@ $this->app->html->_('behavior.tooltip');
 			</td>
 			<td class="template">
 				<?php foreach ($this->templates as $template) {
-					$metadata = $template->getMetadata();
-					echo '<div>'.$metadata['name'].': ';
+					echo '<div>'.$template->getMetadata('name').': ';
 
 					$renderer = $this->app->renderer->create('item')->addPath($template->getPath());
 
@@ -87,66 +81,30 @@ $this->app->html->_('behavior.tooltip');
                         if (in_array($metadata->get('type'), array(null, 'related', 'googlemaps'))) {
 
                             // create link
-							$path = trim(str_replace('\\', '/', preg_replace('/^'.preg_quote(JPATH_ROOT, '/').'/i', '', $template->getPath())), '/');
+							$path = $this->app->path->relative($template->getPath());
                             $link = '<a href="'.$this->app->link(array('controller' => $this->controller, 'task' => 'assignelements', 'group' => $this->group, 'type' => $type->id, 'path' => urlencode($path), 'layout' => $layout)).'">'.$metadata->get('name', $layout).'</a>';
 
-                            // create tooltip
-                            if ($description = $metadata->get('description')) {
-                                $link = '<span class="editlinktip hasTip" title="'.$metadata->get('name', $layout).'::'.$description.'">'.$link.'</span>';
-                            }
+                        } else if ($metadata->get('type') == 'submission') {
 
-                            $links[] = $link;
-                        }
+							// create link
+							$link = '<a href="'.$this->app->link(array('controller' => $this->controller, 'task' => 'assignsubmission', 'group' => $this->group, 'type' => $type->id, 'template' => $template->name, 'layout' => $layout)).'">'.$metadata->get('name', $layout).'</a>';
+
+						}
+
+						// create tooltip
+						if ($description = $metadata->get('description')) {
+							$link = '<span class="editlinktip hasTip" title="'.$metadata->get('name', $layout).'::'.$description.'">'.$link.'</span>';
+						}
+
+						$links[] = $link;
+
 					}
 					echo implode(' | ', $links);
 					echo '</div>';
 				} ?>
 			</td>
-            <td class="submission">
-				<?php
-					foreach ($this->templates as $template) {
-						$metadata = $template->getMetadata();
-						echo '<div>'.$metadata['name'].': ';
-
-						$renderer = $this->app->renderer->create('item')->addPath($template->getPath());
-
-						$path   = 'item';
-						$prefix = 'item.';
-						if ($renderer->pathExists($path.DIRECTORY_SEPARATOR.$type->id)) {
-							$path   .= DIRECTORY_SEPARATOR.$type->id;
-							$prefix .= $type->id.'.';
-						}
-
-						$links = array();
-						foreach ($renderer->getLayouts($path) as $layout) {
-
-							// get layout metadata
-							$metadata = $renderer->getLayoutMetaData($prefix.$layout);
-
-							if ($metadata->get('type') == 'submission') {
-
-								// create link
-								$link = '<a href="'.$this->app->link(array('controller' => $this->controller, 'task' => 'assignsubmission', 'group' => $this->group, 'type' => $type->id, 'template' => $template->name, 'layout' => $layout)).'">'.$metadata->get('name', $layout).'</a>';
-
-								// create tooltip
-								if ($description = $metadata->get('description')) {
-									$link = '<span class="editlinktip hasTip" title="'.$metadata->get('name', $layout).'::'.$description.'">'.$link.'</span>';
-								}
-
-								$links[] = $link;
-							}
-						}
-						echo implode(' | ', $links);
-						echo '</div>';
-					}
-				?>
-			</td>
 			<td class="extension">
 				<?php foreach ($this->extensions as $extension) {
-					// try to get extension name from xml
-					if (($xml = $this->app->xml->loadFile($extension['path'].DIRECTORY_SEPARATOR.$extension['name'].'.xml')) && $xml->getName() == 'install') {
-						$extension['name'] = (string) $xml->getElementByPath('name');
-					}
 
 					echo '<div>'.ucfirst($extension['name']).': ';
 
@@ -159,7 +117,7 @@ $this->app->html->_('behavior.tooltip');
 						$metadata = $renderer->getLayoutMetaData("item.$layout");
 
 						// create link
-						$path = trim(str_replace('\\', '/', preg_replace('/^'.preg_quote(JPATH_ROOT, '/').'/i', '', $extension['path'])), '/');
+						$path = $this->app->path->relative($extension['path']);
 						$link = '<a href="'.$this->app->link(array('controller' => $this->controller, 'task' => 'assignelements', 'group' => $this->group, 'type' => $type->id, 'path' => urlencode($path), 'layout' => $layout)).'">'.$metadata->get('name', $layout).'</a>';
 
 						// create tooltip

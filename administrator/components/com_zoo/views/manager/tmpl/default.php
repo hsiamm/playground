@@ -14,8 +14,7 @@
 			<a href="<?php echo $this->app->link(array('controller' => $this->controller, 'task' => 'types', 'group' => $application->getGroup())); ?>">
 				<span>
 					<img src="<?php echo $application->getIcon();?>" alt="<?php $application->getGroup(); ?>" />
-					<?php $metadata = $application->getMetaData(); ?>
-					<?php echo $metadata['name']; ?>
+					<?php echo $application->getMetaData('name'); ?>
 				</span>
 			</a>
 		<?php endforeach; ?>
@@ -27,7 +26,7 @@
 			<input type="text" id="filename" readonly="readonly" />
 			<div class="button-container">
 			  <button class="button-grey search" type="button"><?php echo JText::_('Search'); ?></button>
-			  <input type="file" name="install_package" onchange="javascript: document.getElementById('filename').value = this.value" />
+			  <input type="file" name="install_package" onchange="javascript: document.getElementById('filename').value = this.value.replace(/^.*[\/\\]/g, '');" />
 			</div>
 			<button class="button-green upload" type="button"><?php echo JText::_('Upload'); ?></button>
 		</div>
@@ -35,7 +34,7 @@
 
 	<div class="importbox uploadbox backup">
 		<div>
-			<h3><?php echo JText::_('Restore Backup'); ?></h3>
+			<h3><?php echo JText::_('Restore Database Backup'); ?></h3>
 			<input type="text" id="backupfile" readonly="readonly" />
 			<div class="button-container">
 			  <button class="button-grey search" type="button"><?php echo JText::_('Search'); ?></button>

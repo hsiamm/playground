@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 	defined('_JEXEC') or die('Restricted access');
@@ -19,7 +17,7 @@
 	$this->app->document->addScript('assets:js/tag.js');
 
 	// filter output
-	JFilterOutput::objectHTMLSafe($this->item, ENT_QUOTES, array('params', 'elements')); 
+	JFilterOutput::objectHTMLSafe($this->item, ENT_QUOTES, array('params', 'elements'));
 
 ?>
 
@@ -76,31 +74,33 @@
 				</div>
 				<?php
 				foreach ($this->item->getElements() as $element) {
-					$element->loadAssets();
+					if ($edit = $element->edit()) {
+						$element->loadAssets();
 
-					// set label
-					$name = $element->getConfig()->get('name');
+						// set label
+						$name = $element->config->get('name');
 
-					if ($description = $element->getConfig()->get('description')) {
-						$description = ' class="editlinktip hasTip" title="'.$description.'"';
+						if ($description = $element->config->get('description')) {
+							$description = ' class="editlinktip hasTip" title="'.$description.'"';
+						}
+
+						$html   = array();
+						$html[] = '<div class="element element-'.$element->getElementType().'">';
+						$html[] = '<strong'.$description.'>'.$name.'</strong>';
+						$html[] = $edit;
+						$html[] = '</div>';
+
+						// trigger afterEdit event
+						$this->app->event->dispatcher->notify($this->app->event->create($element, 'element:afteredit', array('html' => &$html, 'description' => $description, 'name' => $name)));
+
+						echo implode("\n", $html);
 					}
-
-					$html   = array();
-					$html[] = '<div class="element element-'.$element->getElementType().'">';
-					$html[] = '<strong'.$description.'>'.$name.'</strong>';
-					$html[] = $element->edit();
-					$html[] = '</div>';
-
-					// trigger afterEdit event
-					$this->app->event->dispatcher->notify($this->app->event->create($element, 'element:afteredit', array('html' => &$html, 'description' => $description, 'name' => $name)));
-					
-					echo implode("\n", $html);
 				}
 				?>
 			</fieldset>
 
 		</div>
-		
+
 		<div class="col col-right width-40">
 
 			<table width="100%" class="infobox">
@@ -122,7 +122,7 @@
 						<?php echo $this->item->getType()->name; ?>
 						<input type="hidden" name="type" value="<?php echo $this->item->type; ?>" />
 					</td>
-				</tr>					
+				</tr>
 				<tr>
 					<td>
 						<strong><?php echo JText::_('State'); ?></strong>
@@ -180,19 +180,19 @@
 			</table>
 
 			<?php
-							
+
 				// get item xml form
 				$form = $this->app->parameterform->create(dirname(__FILE__).'/params.xml');
-			
+
 				// set details parameter
 				$details = $this->app->parameter->create()
 					->set('created_by', $this->item->created_by == '' ? $this->app->user->get()->id : 'NO_CHANGE')
 					->set('access', $this->item->access)
 					->set('created_by_alias', $this->item->created_by_alias)
-					->set('created', $this->app->html->_('date', $this->item->created, $this->app->date->format('%Y-%m-%d %H:%M:%S')), $this->app->date->getOffset())
-					->set('publish_up', $this->app->html->_('date', $this->item->publish_up, $this->app->date->format('%Y-%m-%d %H:%M:%S')), $this->app->date->getOffset())
+					->set('created', $this->app->html->_('date', $this->item->created, $this->app->date->format('%Y-%m-%d %H:%M:%S'), $this->app->date->getOffset()))
+					->set('publish_up', $this->app->html->_('date', $this->item->publish_up, $this->app->date->format('%Y-%m-%d %H:%M:%S'), $this->app->date->getOffset()))
 					->set('publish_down', $this->app->html->_('date', $this->item->publish_down, $this->app->date->format('%Y'), $this->app->date->getOffset()) <= 1969 || $this->item->publish_down == $this->app->database->getNullDate() ? JText::_('Never') : $this->app->html->_('date', $this->item->publish_down, $this->app->date->format('%Y-%m-%d %H:%M:%S'), $this->app->date->getOffset()));
-			
+
 			?>
 
 			<div id="parameter-accordion">
@@ -204,28 +204,33 @@
 				<div class="content">
 					<?php echo $form->setValues($this->params->get('metadata.'))->render('params[metadata]', 'metadata'); ?>
 				</div>
-				<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
-				<div class="content">
-					<?php
-						if ($template = $this->application->getTemplate()) {
-							echo $template->getParamsForm(true)->setValues($this->params->get('template.'))->render('params[template]', 'item');
-						} else {
-							echo '<em>'.JText::_('Please select a Template').'</em>';
-						}
-					?>
-				</div>
 				<?php $form = $this->application->getParamsForm()->setValues($this->params->get('content.')); ?>
 				<?php if ($form->getParamsCount('item-content')) : ?>
 					<h3 class="toggler"><?php echo JText::_('Content'); ?></h3>
 					<div class="content">
-						<?php echo $this->application->getParamsForm()->setValues($this->params->get('content.'))->render('params[content]', 'item-content'); ?>
+						<?php echo $form->render('params[content]', 'item-content'); ?>
 					</div>
 				<?php endif; ?>
 				<?php $form = $this->application->getParamsForm()->setValues($this->params->get('config.')); ?>
 				<?php if ($form->getParamsCount('item-config')) : ?>
 					<h3 class="toggler"><?php echo JText::_('Config'); ?></h3>
 					<div class="content">
-						<?php echo $this->application->getParamsForm()->setValues($this->params->get('config.'))->render('params[config]', 'item-config'); ?>
+						<?php echo $form->render('params[config]', 'item-config'); ?>
+					</div>
+				<?php endif; ?>
+				<?php $template = $this->application->getTemplate(); ?>
+				<?php if ($template) : ?>
+					<?php $form = $template->getParamsForm(true)->setValues($this->params->get('template.')); ?>
+					<?php if ($form->getParamsCount('item')) : ?>
+					<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
+					<div class="content">
+						<?php echo $form->render('params[template]', 'item'); ?>
+					</div>
+					<?php endif; ?>
+				<?php else: ?>
+					<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
+					<div class="content">
+						<em><?php echo JText::_('Please select a Template'); ?></em>
 					</div>
 				<?php endif; ?>
 				<h3 class="toggler"><?php echo JText::_('Tags'); ?></h3>
@@ -233,7 +238,7 @@
 					<div id="tag-area">
 						<input type="text" value="<?php echo implode(', ', $this->item->getTags()); ?>" placeholder="<?php echo JText::_('Add new tag'); ?>" />
 						<p><?php echo JText::_('Choose from the most used tags');?>:</p>
-						<?php if (count($this->lists['most_used_tags'])) : ?>						
+						<?php if (count($this->lists['most_used_tags'])) : ?>
 						<div class="tag-cloud">
 							<?php foreach ($this->lists['most_used_tags'] as $tag) :?>
 								<a title="<?php echo $tag->items . ' ' . ($tag->items == 1 ? JText::_('item') : JText::_('items')); ?>"><?php echo $tag->name; ?></a>
@@ -252,6 +257,7 @@
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="hits" value="<?php echo $this->item->hits; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>
@@ -261,7 +267,7 @@
 		$('#item-edit').EditItem();
 		$('#name-edit').AliasEdit({ edit: <?php echo (int) $this->item->id; ?> });
 		$('#name-edit').find('input[name="name"]').focus();
-		$('#tag-area').Tag({ emptyText: '<?php echo JText::_('No Results'); ?>' });
+		$('#tag-area').Tag({ url: 'index.php?option=com_zoo&controller=item&format=raw&task=loadtags', addButtonText: '<?php echo JText::_('Add Tag'); ?>' });
 	});
 </script>
 

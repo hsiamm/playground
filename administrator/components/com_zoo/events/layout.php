@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      layout.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -23,7 +21,8 @@ class LayoutEvent {
 		// get modules
 		foreach ($app->path->dirs('modules:') as $module) {
 			if ($app->path->path("modules:$module/renderer")) {
-				$extensions[] = array('type' => 'modules', 'name' => $module, 'path' => $app->path->path("modules:$module"));
+				$name = ($xml = simplexml_load_file($app->path->path("modules:$module/$module.xml"))) && $xml->getName() == 'install' ? (string) $xml->name : $module;
+				$extensions[$name] = array('type' => 'modules', 'name' => $name, 'path' => $app->path->path("modules:$module"));
 			}
 		}
 
@@ -31,7 +30,10 @@ class LayoutEvent {
 		foreach ($app->path->dirs('plugins:') as $plugin_type) {
 			foreach ($app->path->dirs('plugins:'.$plugin_type) as $plugin) {
 				if ($app->path->path("plugins:$plugin_type/$plugin/renderer")) {
-					$extensions[] = array('type' => 'plugin', 'name' => $plugin, 'path' => $app->path->path("plugins:$plugin_type/$plugin"));
+					$resource = "plugins:$plugin_type".(!$app->joomla->isVersion('1.5') ? '/'.$plugin : '')."/$plugin.xml";
+					$name = ($xml = simplexml_load_file($app->path->path($resource))) && ($xml->getName() == 'install' || $xml->getName() == 'extension') ? (string) $xml->name : $plugin;
+					$name = preg_replace('/^\w* - (.*)/i', '$1', $name);
+					$extensions[$name] = array('type' => 'plugin', 'name' => $name, 'path' => $app->path->path("plugins:$plugin_type/$plugin"));
 				}
 			}
 		}

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      date.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -55,5 +53,42 @@ class DateHelper extends AppHelper {
 
 		return $delta;
 	}
-	
+
+	public function format($format) {
+		return $this->app->joomla->isVersion('1.5') ? $format : $this->strftimeToDateFormat($format);
+	}
+
+	public function dateFormatToStrftime($dateFormat) {
+		return strtr((string) $dateFormat, $this->_getDateFormatToStrftimeMapping());
+	}
+
+	public function strftimeToDateFormat($strftime) {
+		return strtr((string) preg_replace("/(?<![\%|\\\\])(\w)/i", '\\\\$1', $strftime), array_flip($this->_getDateFormatToStrftimeMapping()));
+	}
+
+	protected function _getDateFormatToStrftimeMapping() {
+		return array(
+			// Day - no strf eq : S
+			'd' => '%d', 'D' => '%a', 'j' => '%e', 'l' => '%A', 'N' => '%u', 'w' => '%w', 'z' => '%j',
+			// Week - no date eq : %U, %W
+			'W' => '%V',
+			// Month - no strf eq : n, t
+			'F' => '%B', 'm' => '%m', 'M' => '%b',
+			// Year - no strf eq : L; no date eq : %C, %g
+			'o' => '%G', 'Y' => '%Y', 'y' => '%y',
+			// Time - no strf eq : B, G, u; no date eq : %r, %R, %T, %X
+			'a' => '%P', 'A' => '%p', 'g' => '%l', 'h' => '%I', 'H' => '%H', 'i' => '%M', 's' => '%S',
+			// Timezone - no strf eq : e, I, P, Z
+			'O' => '%z', 'T' => '%Z',
+			// Full Date / Time - no strf eq : c, r; no date eq : %c, %D, %F, %x
+			'U' => '%s'
+		);
+	}
+
+	public function getOffset($user = null) {
+
+		$user = $user == null ? $this->app->user->get() : $user;
+		return $user->getParam('timezone', $this->app->system->config->getValue('config.offset'));
+
+	}
 }

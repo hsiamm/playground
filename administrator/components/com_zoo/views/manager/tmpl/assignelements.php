@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      assignelements.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -34,7 +32,7 @@ $this->app->document->addScript('assets:js/type.js');
 				if (isset($this->positions['positions']) && ($positions = $this->positions['positions']) && count($positions)) {
 					foreach ($positions as $position => $name) {
 						echo '<div class="position">'.$name.'</div>';
-						echo '<ul class="element-list" role="'.$position.'">';
+						echo '<ul class="element-list" data-position="'.$position.'">';
 
 						if ($this->config && isset($this->config[$position])) {
 							$i = 0;
@@ -67,7 +65,7 @@ $this->app->document->addScript('assets:js/type.js');
 		<?php
 			$elements = $this->type->getCoreElements();
 			if ($elements !== false) {
-				echo '<ul class="element-list unassigned core" role="unassigned">';
+				echo '<ul class="element-list unassigned core" data-position="unassigned">';
 				foreach ($elements as $element) {
 
 					// render partial
@@ -89,7 +87,7 @@ $this->app->document->addScript('assets:js/type.js');
 			}
 
 			if ($elements !== false) {
-				echo '<ul class="element-list unassigned" role="unassigned">';
+				echo '<ul class="element-list unassigned" data-position="unassigned">';
 				foreach ($elements as $element) {
 
 					// render partial

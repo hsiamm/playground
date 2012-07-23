@@ -1,14 +1,10 @@
 <?php
 /**
- * @version		$Id:
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.model');
 
 /**
  * This models supports retrieving lists of newsfeed categories.
@@ -17,7 +13,7 @@ jimport('joomla.application.component.model');
  * @subpackage	com_newsfeeds
  * @since		1.6
  */
-class NewsfeedsModelCategories extends JModel
+class NewsfeedsModelCategories extends JModelLegacy
 {
 	/**
 	 * Model context string.
@@ -97,7 +93,7 @@ class NewsfeedsModelCategories extends JModel
 			$params = new JRegistry();
 			if($active)
 			{
-				$params->loadJSON($active->params);
+				$params->loadString($active->params);
 			}
 			$options = array();
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);

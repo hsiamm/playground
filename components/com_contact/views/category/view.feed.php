@@ -1,16 +1,12 @@
 <?php
 /**
- * @version		$Id: view.feed.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_contact
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.view');
 
 /**
  * HTML View class for the Contact component
@@ -19,7 +15,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_contact
  * @since 1.5
  */
-class ContactViewCategory extends JView
+class ContactViewCategory extends JViewLegacy
 {
 	function display()
 	{
@@ -50,12 +46,9 @@ class ContactViewCategory extends JView
 			$row->slug = $row->alias ? ($row->id . ':' . $row->alias) : $row->id;
 
 			// url link to article
-			// & used instead of &amp; as this is converted by feed creator
-			$link = JRoute::_(ContactHelperRoute::getContactRoute($row->slug, $row->catid), false);
+			$link = JRoute::_(ContactHelperRoute::getContactRoute($row->slug, $row->catid));
 
-			// strip html from feed item description text
-			// TODO: Only pull fulltext if necessary (actually, just get the necessary fields).
-			$description	= ($params->get('feed_summary', 0) ? $row->introtext/*.$row->fulltext*/ : $row->introtext);
+			$description	= $row->introtext;
 			$author			= $row->created_by_alias ? $row->created_by_alias : $row->author;
 			@$date			= ($row->created ? date('r', strtotime($row->created)) : '');
 

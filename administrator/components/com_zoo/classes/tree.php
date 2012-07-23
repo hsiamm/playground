@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      tree.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -130,7 +128,7 @@ class AppTreeItem {
 		Returns:
 			AppTreeItem
 	*/
-	public function setParent(AppTreeItem $item) {
+	public function setParent($item) {
 		$this->_parent = $item;
 		return $this;
 	}
@@ -158,7 +156,7 @@ class AppTreeItem {
 			Boolean
 	*/
 	public function hasChild($id, $recursive = false) {
-		
+
 		if (isset($this->_children[$id])) {
 			return true;
 		}
@@ -169,8 +167,8 @@ class AppTreeItem {
 			}
 		}
 
-		return false;		
-	}	
+		return false;
+	}
 
 	/*
 		Function: hasChildren
@@ -239,6 +237,24 @@ class AppTreeItem {
 	}
 
 	/*
+		Function: removeChildById
+			Remove child with id from tree item
+
+		Parameters:
+			$id - AppTreeItem id
+
+		Returns:
+			AppTreeItem
+	*/
+	public function removeChildById($id) {
+		if ($this->hasChild($id)) {
+			$this->removeChild($this->_children[$id]);
+		}
+
+		return $this;
+	}
+
+	/*
 		Function: getPathway
 			Path to from current tree item to tree root
 
@@ -246,16 +262,16 @@ class AppTreeItem {
 			Array
 	*/
 	public function getPathway() {
-		
+
 		if ($this->_parent == null) {
 			return array();
 		}
-		
+
 		$pathway   = $this->_parent->getPathway();
 		$pathway[] = $this;
 
 		return $pathway;
-	}	
+	}
 
 	/*
 		Function: filter
@@ -265,7 +281,7 @@ class AppTreeItem {
 			Void
 	*/
 	public function filter($callback, $args = array()) {
-		
+
 		// call filter function
 		call_user_func_array($callback, array_merge(array($this), $args));
 
@@ -273,7 +289,7 @@ class AppTreeItem {
 		foreach ($this->getChildren() as $child) {
 			$child->filter($callback, $args);
 		}
-	}	
+	}
 
 }
 

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      k2.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 class AppExporterK2 extends AppExporter {
@@ -34,12 +32,6 @@ class AppExporterK2 extends AppExporter {
 	       		." LEFT JOIN #__k2_extra_fields_groups AS b ON b.id = a.extraFieldsGroup";
 	    $categories = $db->queryObjectList($query, 'id');
 
-    	// get category table
-		$category_table = $this->app->table->category;
-
-		// get item table
-		$item_table = $this->app->table->item;
-
 		// sanatize category aliases
 		$aliases = array();
 		foreach ($categories as $category) {
@@ -59,25 +51,23 @@ class AppExporterK2 extends AppExporter {
 		foreach ($categories as $category) {
 
 			// assign attributes
-			$attributes = array();
+			$data = array();
 			foreach ($this->category_attributes as $attribute) {
 				if (isset($category->$attribute)) {
-					$attributes[$attribute] = $category->$attribute;
+					$data[$attribute] = $category->$attribute;
 				}
 			}
 
 			// sanatize parent
 			if ($category->parent && isset($categories[$category->parent])) {
-				$attributes['parent'] = $categories[$category->parent]->alias;
+				$data['parent'] = $categories[$category->parent]->alias;
 			}
-
 
 			// add category
-			$category_xml = $this->_buildCategory($category->alias, $category->name, $attributes);
 			if ($category->image) {
-				$this->_attachCategoryImage($category_xml, '/media/k2/categories/'.$category->image, 'Image');
+				$data['content']['image'] = '/media/k2/categories/'.$category->image;
 			}
-			$this->_addCategory($category_xml);
+			$this->_addCategory($category->name, $category->alias, $data);
 		}
 
 		// get k2 items
@@ -120,7 +110,7 @@ class AppExporterK2 extends AppExporter {
                     $type = JText::_('K2-Unassigned');
                 }
 
-                $this->_addItem($type, $this->_itemToXML($item, $categories, $tags, $extra_fields));
+                $this->_addItem($item, $extra_fields, $categories, $tags, $type);
             }
 		}
 
@@ -128,39 +118,35 @@ class AppExporterK2 extends AppExporter {
 
 	}
 
-	protected function _itemToXML($item, $categories = array(), $tags = array(), $extra_fields) {
+	protected function _addItem($item, $extra_fields, $categories = array(), $tags = array(), $group = 'default') {
 
-		$attributes = array();
+		$data = array();
 		foreach ($this->item_attributes as $attribute) {
 			if (isset($item->$attribute)) {
-				$attributes[$attribute] = $item->$attribute;
+				$data[$attribute] = $item->$attribute;
 			}
 		}
 		// add author
-		$attributes['author'] = $this->app->user->get($item->created_by)->username;
+		$data['author'] = $this->app->user->get($item->created_by)->username;
 
 		// add state
-		$attributes['state'] = $item->published;
-
-		// build item xml
-		$item_xml = $this->_buildItem($item->alias, $item->title, $attributes);
+		$data['state'] = $item->published;
 
 		// add category
-		$this->_addItemCategory($item_xml, $categories[$item->catid]->alias);
+		$data['categories'][] = $categories[$item->catid]->alias;
 
 		// add tags
-		if (isset($tags[$item->id])) {
-			foreach ($tags[$item->id] as $tag) {
-				$this->_addItemTag($item_xml, $tag);
-			}
-		}
+		$data['tags'] = isset($tags[$item->id]) ? $tags[$item->id] : array();
 
 		// add item content
 		$i = 0;
-		$this->_addItemData($item_xml, $this->_buildElement('textarea', $i,   'content', array('value' => $item->introtext)));
-		$this->_addItemData($item_xml, $this->_buildElement('textarea', $i++, 'content', array('value' => $item->fulltext)));
+		$data['elements'][$i]['type'] = 'textarea';
+		$data['elements'][$i]['name'] = 'content';
+		$data['elements'][$i++]['data'] = array(array('value' => $item->introtext), array('value' => $item->fulltext));
 
-		$this->_addItemData($item_xml, $this->_buildElement('image', $i++, 'image', array('file' => 'media/k2/items/src/'.md5("Image".$item->id).'.jpg')));
+		$data['elements'][$i]['type'] = 'image';
+		$data['elements'][$i]['name'] = 'image';
+		$data['elements'][$i++]['data'] = array('file' => 'media/k2/items/src/'.md5("Image".$item->id).'.jpg');
 
 		// add extra fields
         if (isset($item->extra_fields)) {
@@ -170,27 +156,36 @@ class AppExporterK2 extends AppExporter {
 
                 switch ($extrafield->type) {
                     case 'textfield':
-                        $this->_addItemData($item_xml, $this->_buildElement('text', $i++, $extrafield->name, array('value' => $element->value)));
+						$data['elements'][$i]['type'] = 'text';
+						$data['elements'][$i]['name'] = $extrafield->name;
+						$data['elements'][$i++]['data'] = array(array('value' => $element->value));
                         break;
                     case 'textarea':
-                        $this->_addItemData($item_xml, $this->_buildElement('textarea', $i++, $extrafield->name, array('value' => $element->value)));
+						$data['elements'][$i]['type'] = 'textarea';
+						$data['elements'][$i]['name'] = $extrafield->name;
+						$data['elements'][$i++]['data'] = array(array('value' => $element->value));
                         break;
                     case 'select':
                     case 'multipleSelect':
-                        $this->_addItemData($item_xml, $this->_buildElement('select', $i++, $extrafield->name, array('option' => $element->value)));
+						$data['elements'][$i]['type'] = 'select';
+						$data['elements'][$i]['name'] = $extrafield->name;
+						$data['elements'][$i++]['data'] = array('option' => $element->value);
                         break;
                     case 'radio':
-                        $this->_addItemData($item_xml, $this->_buildElement('radio', $i++, $extrafield->name, array('value' => $element->value)));
+						$data['elements'][$i]['type'] = 'radio';
+						$data['elements'][$i]['name'] = $extrafield->name;
+						$data['elements'][$i++]['data'] = array('option' => $element->value);
                         break;
                     case 'link':
-                        $this->_addItemData($item_xml, $this->_buildElement('link', $i++, $extrafield->name, array('text' => $element->value[0], 'value' => $element->value[1])));
+						$data['elements'][$i]['type'] = 'link';
+						$data['elements'][$i]['name'] = $extrafield->name;
+						$data['elements'][$i++]['data'] = array(array('text' => $element->value[0], 'value' => $element->value[1]));
                         break;
                 }
-
             }
         }
 
-		return $item_xml;
+		parent::_addItem($item->title, $item->alias, $group, $data);
 	}
 
 }

@@ -1,29 +1,25 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      submission.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$id = 'elements'.$element;
-
 ?>
 
-<div id="<?php echo $id; ?>">
+<div id="<?php echo $this->identifier; ?>">
 
 	<div class="download-select">
-	
+
 		<div class="upload">
-			<input type="text" id="filename<?php echo $element; ?>" readonly="readonly" />
+			<input type="text" id="filename<?php echo $this->identifier; ?>" readonly="readonly" />
 			<div class="button-container">
 				<button class="button-grey search" type="button"><?php echo JText::_('Search'); ?></button>
-				<input type="file" name="elements_<?php echo $element; ?>" onchange="javascript: document.getElementById('filename<?php echo $element; ?>').value = this.value" />
+				<input type="file" name="elements_<?php echo $this->identifier; ?>" onchange="javascript: document.getElementById('filename<?php echo $this->identifier; ?>').value = this.value.replace(/^.*[\/\\]/g, '');" />
 			</div>
 		</div>
 
@@ -33,7 +29,7 @@ $id = 'elements'.$element;
 
 		<?php else : ?>
 
-			<input type="hidden" class="upload" name="elements[<?php echo $element; ?>][upload]" value="<?php echo $upload ? 1 : ''; ?>" />
+			<input type="hidden" class="upload" name="<?php echo $this->getControlName('upload'); ?>" value="<?php echo $upload ? 1 : ''; ?>" />
 
         <?php endif; ?>
 
@@ -57,7 +53,7 @@ $id = 'elements'.$element;
 		<div class="advanced options">
 
 			<div class="row short download-limit">
-				<?php echo $this->app->html->_('control.text', 'elements['.$element.'][download_limit]', ($upload ? $download_limit : ''), 'maxlength="255" title="'.JText::_('Download limit').'" placeholder="'.JText::_('Download limit').'"'); ?>
+				<?php echo $this->app->html->_('control.text', $this->getControlName('download_limit'), ($upload ? $this->get('download_limit') : ''), 'maxlength="255" title="'.JText::_('Download limit').'" placeholder="'.JText::_('Download limit').'"'); ?>
 			</div>
 
 		</div>
@@ -66,7 +62,7 @@ $id = 'elements'.$element;
 
     <script type="text/javascript">
 		jQuery(function($) {
-			$('#<?php echo $id; ?>').DownloadSubmission();
+			$('#<?php echo $this->identifier; ?>').DownloadSubmission();
 		});
     </script>
 

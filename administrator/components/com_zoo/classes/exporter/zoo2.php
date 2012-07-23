@@ -1,168 +1,161 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      zoo2.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 class AppExporterZoo2 extends AppExporter {
-	
+
 	protected $_application;
-	
+	protected $_categories;
+	protected $_comment_table;
+
 	public function __construct() {
 		parent::__construct();
 		$this->_name = 'Zoo v2';
 	}
-	
+
 	public function export() {
 
 		if (!$this->_application = $this->app->zoo->getApplication()) {
 			throw new AppExporterException('No application selected.');
 		}
-		
+
 		// export frontpage
 		$frontpage = $this->app->object->create('Category');
 		$frontpage->name  = 'Root';
 		$frontpage->alias = '_root';
 		$frontpage->description = $this->_application->description;
-		
+
 		// export categories
-		$categories = $this->_application->getCategories();
-		$categories[0] = $frontpage;
-		foreach ($categories as $category) {
-			$this->_addCategory($this->_categoryToXML($category, $categories));
+		$this->_categories = $this->_application->getCategories();
+		$this->_categories[0] = $frontpage;
+		foreach ($this->_categories as $category) {
+			$this->_addCategory($category);
 		}
 
-		$this->categories = $categories;
-
 		// export items
-		$types = $this->_application->getTypes();
+		$this->_comment_table = $this->app->table->comment;
 		$item_table = $this->app->table->item;
-		foreach ($types as $type) {
-			$items = $item_table->getByType($type->id, $this->_application->id);
-			foreach ($items as $key => $item) {
-				$this->_addItem($type->name, $this->_itemToXML($item));
-				$item->unsetElementData();
-				unset($items[$key]);				
+		foreach ($this->_application->getTypes() as $type) {
+			foreach ($item_table->getByType($type->id, $this->_application->id) as $key => $item) {
+				$this->_addItem($item, $type);
+				$item_table->unsetObject($key);
 			}
 		}
 
 		return parent::export();
-		
+
 	}
-	
-	protected function _categoryToXML(Category $category, $categories) {
-		
+
+	protected function _addCategory(Category $category) {
+
 		// store category attributes
-		$attributes = array();
+		$data = array();
 		foreach ($this->category_attributes as $attribute) {
 			if (isset($category->$attribute)) {
-				$attributes[$attribute] = $category->$attribute;
+				$data[$attribute] = $category->$attribute;
 			}
 		}
 
 		// store category parent
-		if (isset($categories[$category->parent])) {
-			$attributes['parent'] = $categories[$category->parent]->alias;
+		if (isset($this->_categories[$category->parent])) {
+			$data['parent'] = $this->_categories[$category->parent]->alias;
 		}
 
-		// build category
-		$category_xml = $this->_buildCategory($category->alias, $category->name, $attributes);
+		// store category content params
+		$data['content'] = $category->alias == '_root' ? $this->_application->getParams()->get('content.') : $category->getParams()->get('content.');
 
-		// store category params
-		if ($category->alias == '_root') {									   
-			$params = $this->_application->getMetaXML()->xpath('params[@group="application-content"]/param');
-			$category_params = $this->_application->getParams();
-		} else {
-			$params = $this->_application->getMetaXML()->xpath('params[@group="category-content"]/param');
-			$category_params = $category->getParams();
-		}
-		
-		foreach ($params as $param) {
-			$type = (string) $param->attributes()->type;
-			$name = (string) $param->attributes()->name;
-			
-			switch ($type) {
-				case 'zooimage':
-					if ($path = $category_params->get('content.'.$name, '')) {
-						$this->_attachCategoryImage($category_xml, $path, (string) $param->attributes()->label, $category_params->get('content.'.$name . '_width'), $category_params->get('content.'.$name . '_height'));
-					}
-					break;
-				case 'text':
-				case 'textarea':
-					if ($value = $category_params->get('content.'.$name, '')) {
-						$this->_attachCategoryParam($category_xml, $type, $value, (string) $param->attributes()->label);
-					}
-					break;
-			}
-		}
-		return $category_xml;	
+		parent::_addCategory($category->name, $category->alias, $data);
 	}
-	
-	protected function _itemToXML(Item $item) {
-		
-		$attributes = array();
+
+	protected function _addItem(Item $item, Type $type) {
+
+		$data = array();
 		foreach ($this->item_attributes as $attribute) {
 			if (isset($item->$attribute)) {
-				$attributes[$attribute] = $item->$attribute;
+				$data[$attribute] = $item->$attribute;
 			}
-		}		
-		$attributes['author'] = $this->app->user->get($item->created_by)->username;				
+		}
+		if ($user = $this->app->user->get($item->created_by)) {
+			$data['author'] = $user->username;
+		}
 
-		$item_xml = $this->_buildItem($item->alias, $item->name, $attributes);
+		$data['tags']	  = $item->getTags();
 
+		// store item content, metadata, config params
+		$data['content']  = $item->getParams()->get('content.');
+		$data['metadata'] = $item->getParams()->get('metadata.');
+		$data['config']   = $item->getParams()->get('config.');
+
+		// add categories
 		foreach ($item->getRelatedCategoryIds() as $category_id) {
 			$alias = '';
 			if (empty($category_id)) {
 				$alias = '_root';
-			} else if (isset($this->categories[$category_id])) {				
-				$alias = $this->categories[$category_id]->alias;
+			} else if (isset($this->_categories[$category_id])) {
+				$alias = $this->_categories[$category_id]->alias;
 			}
 			if (!empty($alias)) {
-				$this->_addItemCategory($item_xml, $alias);
+				$data['categories'][] = $alias;
+			}
+			if ($item->getPrimaryCategoryId() == $category_id) {
+				$data['config']['primary_category'] = $alias;
 			}
 		}
 
-		foreach ($item->getTags() as $tag) {
-			$this->_addItemTag($item_xml, $tag);
-		}
+		foreach ($item->elements as $identifier => $element_data) {
 
-		foreach ($item->getElements() as $element) {
-			$xml = $this->app->xml->loadString('<wrapper>'.$element->toXML().'</wrapper>');
-			foreach ($xml->children() as $element_xml) {
-				$element_xml->addAttribute('name', $element->getConfig()->get('name'));
-				$this->_addItemData($item_xml, $element_xml);
+			if (!$element = $type->getElement($identifier)) {
+				continue;
 			}
-		}
+			$element_type = $element->getElementType();
 
-		$metadata = array();
-		foreach ($item->getParams()->get('metadata.', array()) as $key => $value) {
-			$metadata[preg_replace('/^metadata\./', '', $key)] = $value;
-		}
-		if (!empty($metadata)) {
-			$this->_addItemMetadata($item_xml, $metadata);
-		}
+			switch ($element_type) {
+				case 'relateditems':
+					$items = array();
+					if (isset($element_data['item'])) {
+						foreach ($element_data['item'] as $item_id) {
+							$items[] = $this->app->alias->item->translateIDToAlias($item_id);
+						}
+					}
+					$element_data['item'] = $items;
 
-		// sanitize relateditems elements
-		$related_items_xmls = $item_xml->xpath('data/relateditems/item');
-		if ($related_items_xmls) {
-			foreach ($related_items_xmls as $related_items_xml) {
-				$item_xml->replaceChild($this->app->xml->create('item', $this->app->item->translateIDToAlias((string)$related_items_xml), true), $related_items_xml);
+					break;
+
+				case 'relatedcategories':
+					$categories = array();
+					if (isset($element_data['category'])) {
+						foreach ($element_data['category'] as $category_id) {
+							$categories[] = isset($this->_categories[$category_id]) ? $this->_categories[$category_id]->alias : $this->app->alias->category->translateIDToAlias($category_id);
+						}
+					}
+					$element_data['category'] = $categories;
+
+					break;
+
 			}
-		}
 
-		// sanitize relatedcategories elements
-		$related_categories_xmls = $item_xml->xpath('data/relatedcategories/category');
-		if ($related_categories_xmls) {
-			foreach ($related_categories_xmls as $related_categories_xml) {
-				$item_xml->replaceChild($this->app->xml->create('category', $this->app->category->translateIDToAlias((string)$related_categories_xml), true), $related_categories_xml);
+			$data['elements'][$identifier]['type'] = $element_type;
+			$data['elements'][$identifier]['name'] = $element->config->get('name');
+			$data['elements'][$identifier]['data'] = $element_data;
+
+			foreach ($this->_comment_table->getCommentsForItem($item->id) as $comment) {
+				foreach ($this->comment_attributes as $attribute) {
+					if (isset($comment->$attribute)) {
+						$data['comments'][$comment->id][$attribute] = $comment->$attribute;
+					}
+				}
+				if ($comment->user_type == 'joomla' && ($user = $this->app->user->get($comment->user_id))) {
+					$data['comments'][$comment->id]['username'] = $user->username;
+				}
 			}
+
 		}
 
-		return $item_xml;
+		parent::_addItem($item->name, $item->alias, $type->name, $data);
 	}
-	
+
 }

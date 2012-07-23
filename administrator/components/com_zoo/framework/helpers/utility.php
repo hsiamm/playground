@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      utility.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -21,7 +19,7 @@ class UtilityHelper extends AppHelper {
 
 		Returns:
 			String
-	*/	
+	*/
 	public function generateUUID() {
 		return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 			mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff),
@@ -40,13 +38,29 @@ class UtilityHelper extends AppHelper {
 	public function debugInfo($trace, $index = 0) {
 
 		if (isset($trace[$index])) {
-			$file = str_replace('\\', '/', preg_replace('/^'.preg_quote(JPATH_ROOT, '/').'/i', '', $trace[$index]['file']));
+			$file = $this->app->path->relative($trace[$index]['file']);
 			$line = $trace[$index]['line'];
 
 			return sprintf('File: %s, Line: %s', $file, $line);
 		}
 
 		return null;
+	}
+
+	/*
+		Function: returnBytes
+			Translates PHP ini's shorthand notation to bytes
+
+		Returns:
+			String
+	*/
+	public function returnBytes ($size_str) {
+	    switch (substr ($size_str, -1)) {
+	        case 'M': case 'm': return (int)$size_str * 1048576;
+	        case 'K': case 'k': return (int)$size_str * 1024;
+	        case 'G': case 'g': return (int)$size_str * 1073741824;
+	        default: return $size_str;
+	    }
 	}
 
 }

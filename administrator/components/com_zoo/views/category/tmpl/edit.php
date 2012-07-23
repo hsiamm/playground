@@ -1,22 +1,20 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      edit.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
-	defined('_JEXEC') or die('Restricted access'); 
+	defined('_JEXEC') or die('Restricted access');
 
 	$this->app->html->_('behavior.tooltip');
 
 	// add script
 	$this->app->document->addScript('assets:js/alias.js');
 	$this->app->document->addScript('assets:js/category.js');
-	
+
 	// filter output
-	JFilterOutput::objectHTMLSafe($this->category, ENT_QUOTES, array('params')); 
+	JFilterOutput::objectHTMLSafe($this->category, ENT_QUOTES, array('params'));
 ?>
 
 <form id="category-default" action="index.php" method="post" name="adminForm" accept-charset="utf-8">
@@ -26,7 +24,7 @@
 <div class="box-bottom">
 
 	<div class="col col-left width-60">
-		
+
 		<fieldset class="creation-form">
 		<legend><?php echo JText::_('Details'); ?></legend>
 			<div class="element element-name">
@@ -67,27 +65,43 @@
 		</fieldset>
 
 	</div>
-	
+
 	<div class="col col-right width-40">
 
 		<div id="parameter-accordion">
+			<?php $form = $this->application->getParamsForm()->setValues($this->params->get('content.')); ?>
+			<?php if ($form->getParamsCount('category-content')) : ?>
 			<h3 class="toggler"><?php echo JText::_('Content'); ?></h3>
 			<div class="content">
 				<?php echo $this->application->getParamsForm()->setValues($this->params->get('content.'))->render('params[content]', 'category-content'); ?>
 			</div>
+			<?php endif; ?>
+			<?php $form = $this->application->getParamsForm()->setValues($this->params->get('config.')); ?>
+			<?php if ($form->getParamsCount('category-config')) : ?>
 			<h3 class="toggler"><?php echo JText::_('Config'); ?></h3>
 			<div class="content">
 				<?php echo $this->application->getParamsForm()->setValues($this->params->get('config.'))->render('params[config]', 'category-config'); ?>
 			</div>
-			<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
+			<?php endif; ?>
+			<?php $template = $this->application->getTemplate(); ?>
+			<?php if ($template) : ?>
+				<?php $form = $template->getParamsForm(true)->setValues($this->params->get('template.')); ?>
+				<?php if ($form->getParamsCount('category')) : ?>
+				<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
+				<div class="content">
+					<?php echo $form->render('params[template]', 'category'); ?>
+				</div>
+				<?php endif; ?>
+			<?php else: ?>
+				<h3 class="toggler"><?php echo JText::_('Template'); ?></h3>
+				<div class="content">
+					<em><?php echo JText::_('Please select a Template'); ?></em>
+				</div>
+			<?php endif; ?>
+			<?php $form = $this->app->parameterform->create(dirname(__FILE__).'/params.xml'); ?>
+			<h3 class="toggler"><?php echo JText::_('Metadata'); ?></h3>
 			<div class="content">
-				<?php
-					if ($template = $this->application->getTemplate()) {
-						echo $template->getParamsForm(true)->setValues($this->params->get('template.'))->render('params[template]', 'category');
-					} else {
-						echo '<em>'.JText::_('Please select a Template').'</em>';
-					}
-				?>
+				<?php echo $form->setValues($this->params->get('metadata.'))->render('params[metadata]', 'metadata'); ?>
 			</div>
 		</div>
 
@@ -100,6 +114,7 @@
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />
 <input type="hidden" name="cid[]" value="<?php echo $this->category->id; ?>" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>

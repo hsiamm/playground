@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      radio.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -18,8 +16,8 @@ App::getInstance('zoo')->loader->register('ElementOption', 'elements:option/opti
 	Class: ElementRadio
 		The radio element class
 */
-class ElementRadio extends ElementOption implements iSubmittable {
-	
+class ElementRadio extends ElementOption {
+
 	/*
 	   Function: edit
 	       Renders the edit form field.
@@ -28,43 +26,29 @@ class ElementRadio extends ElementOption implements iSubmittable {
 	       String - html
 	*/
 	public function edit(){
-		
+
 		// init vars
-		$options_from_config = $this->_config->get('options', array());
-		$default 			 = $this->_config->get('default');
-		
+		$options_from_config = $this->config->get('option', array());
+		$default 			 = $this->config->get('default');
+
 		if (count($options_from_config)) {
-						
+
 			// set default, if item is new
 			if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-				$this->_data->set('option', array($default));
+				$this->set('option', array($default));
 			}
-			
+
 			$options = array();
 			foreach ($options_from_config as $option) {
 				$options[] = $this->app->html->_('select.option', $option['value'], $option['name']);
 			}
-	
-			$option = $this->_data->get('option', array());
 
-			return $this->app->html->_('select.radiolist', $options, 'elements[' . $this->identifier . '][option][]', null, 'value', 'text', (isset($option[0]) ? $option[0] : null));
+			$option = $this->get('option', array());
+
+			return $this->app->html->_('select.radiolist', $options, $this->getControlName('option', true), null, 'value', 'text', (isset($option[0]) ? $option[0] : null));
 		}
-		
+
 		return JText::_("There are no options to choose from.");
-	}
-
-	/*
-		Function: renderSubmission
-			Renders the element in submission.
-
-	   Parameters:
-            $params - submission parameters
-
-		Returns:
-			String - html
-	*/
-	public function renderSubmission($params = array()) {
-        return $this->edit();
 	}
 
 }

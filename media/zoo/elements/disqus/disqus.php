@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      disqus.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -25,8 +23,8 @@ class ElementDisqus extends Element implements iSubmittable {
 			Boolean - true, on success
 	*/
 	public function hasValue($params = array()) {
-		$value = $this->_data->get('value');
-		$website   = $this->_config->get('website');
+		$value   = $this->get('value', $this->config->get('default'));
+		$website = $this->config->get('website');
 		return !empty($value) && !empty($website);
 	}
 
@@ -43,38 +41,15 @@ class ElementDisqus extends Element implements iSubmittable {
 	public function render($params = array()) {
 
 		// init vars
-		$website   = $this->_config->get('website');
-		$developer = $this->_config->get('developer');
-		
-		// render html
-		if ($website && $this->_data->get('value')) {
+		$developer = $this->config->get('developer');
 
-			// developer mode
-			if ($developer) {
-				$html[] = "<script type='text/javascript'>";
-				$html[] = "var disqus_developer = 1;";
-				$html[] = "</script>";			
+		// render html
+		if (($website = $this->config->get('website')) && $this->get('value', $this->config->get('default'))) {
+
+			if ($layout = $this->getLayout()) {
+				return $this->renderLayout($layout, compact('website', 'developer'));
 			}
 
-			$html[] = "<div id=\"disqus_thread\"></div>";
-			$html[] = "<script type=\"text/javascript\" src=\"http://disqus.com/forums/$website/embed.js\"></script>";
-			$html[] = "<noscript><a href=\"http://$website.disqus.com/?url=ref\">View the discussion thread.</a></noscript>";
-			$html[] = "<a href=\"http://disqus.com\" class=\"dsq-brlink\">blog comments powered by <span class=\"logo-disqus\">Disqus</span></a>";
-			$html[] = "<script type=\"text/javascript\">
-							//<![CDATA[
-							(function() {
-									var links = document.getElementsByTagName('a');
-									var query = '?';
-									for(var i = 0; i < links.length; i++) {
-										if(links[i].href.indexOf('#disqus_thread') >= 0) {
-											query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
-										}
-									}
-									document.write('<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://disqus.com/forums/$website/get_num_replies.js' + query + '\"></' + 'script>');
-								})();
-							//]]>
-                       </script>";
-			return implode("\n", $html);
 		}
 
 		return null;
@@ -88,15 +63,7 @@ class ElementDisqus extends Element implements iSubmittable {
 	       String - html
 	*/
 	public function edit() {
-
-		// init vars
-		$default = $this->_config->get('default');
-		
-		if ($default != '' && $this->_item != null && $this->_item->id == 0) {
-			$this->_data->set('value', 1);
-		}
-
-		return $this->app->html->_('select.booleanlist', 'elements[' . $this->identifier . '][value]', '', $this->_data->get('value'));
+		return $this->app->html->_('select.booleanlist', $this->getControlName('value'), '', $this->get('value', $this->config->get('default')));
 	}
 
 	/*
@@ -104,7 +71,7 @@ class ElementDisqus extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html

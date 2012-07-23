@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1336 2011-11-25 14:45:04Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -50,7 +50,7 @@ class K2ViewCategory extends JView
 		
 		require_once (JPATH_COMPONENT.DS.'models'.DS.'categories.php');
 		$categoriesModel = new K2ModelCategories;
-		$tree=$categoriesModel->categoriesTree($category);
+		$tree=$categoriesModel->categoriesTree($category, true, false);
 		$categories = array_merge($categories,$tree);
 		$lists['parent'] = JHTML::_('select.genericlist', $categories, 'parent', 'class="inputbox"', 'value', 'text', $category->parent);
 		

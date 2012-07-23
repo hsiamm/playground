@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1190 2011-10-17 14:31:26Z lefteris.kavadas $
+ * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -38,6 +38,7 @@ $document->addScriptDeclaration("
 				<button id="k2ResetButton"><?php echo JText::_('K2_RESET'); ?></button>
 			</td>
 			<td class="k2AdminTableFiltersSelects">
+				<?php echo $this->lists['categories']; ?>
 				<?php echo $this->lists['trash']; ?> <?php echo $this->lists['state']; ?>
 				<?php if(isset($this->lists['language'])): ?>
 				<?php echo $this->lists['language']; ?>
@@ -99,14 +100,14 @@ $document->addScriptDeclaration("
 				<td>
 					<?php if ($this->filter_trash): ?>
 					<?php if ($row->trash): ?>
-					<strong><?php echo $row->treename; ?></strong>
+					<strong><?php echo $row->treename; ?> (<?php echo $row->numOfTrashedItems; ?>)</strong>
 					<?php else: ?>
-					<?php echo $row->treename; ?>
+					<?php echo $row->treename; ?> (<?php echo $row->numOfItems.' '.JText::_('K2_ACTIVE'); ?> / <?php echo $row->numOfTrashedItems.' '.JText::_('K2_TRASHED'); ?>)
 					<?php endif; ?>
 					<?php else: ?>
 					<a href="<?php echo JRoute::_('index.php?option=com_k2&view=category&cid='.$row->id); ?>"><?php echo $row->treename; ?>
 					<?php if($this->params->get('showItemsCounterAdmin')): ?>
-					(<?php echo $row->numOfItems; ?>)
+					(<?php echo $row->numOfItems.' '.JText::_('K2_ACTIVE'); ?> / <?php echo $row->numOfTrashedItems.' '.JText::_('K2_TRASHED'); ?>)
 					<?php endif; ?>
 					</a>
 					<?php endif; ?>

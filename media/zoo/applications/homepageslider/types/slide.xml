@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<type version="1.0.0" name="Slide">
-  <params>
-    <param type="text" identifier="8912e483-cfad-4429-a2e2-51e58ec40e1a" name="Address of Image" description="" access="1" default="/home_images/" repeatable="0"/>
-    <param type="textarea" identifier="e70e4d58-72fe-453b-830a-903d5472a873" name="Text (one line, very short)" description="" access="1" default="" jplugins="1" repeatable="0"/>
-  </params>
-</type>

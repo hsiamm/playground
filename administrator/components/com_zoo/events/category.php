@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      category.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -25,11 +23,17 @@ class CategoryEvent {
 		$category = $event->getSubject();
 		$new = $event['new'];
 
+		JPluginHelper::importPlugin('content');
+		JDispatcher::getInstance()->trigger('onContentAfterSave', array($category->app->component->self->name.'.category', &$category, $new));
+
 	}
 
 	public static function deleted($event) {
 
 		$category = $event->getSubject();
+
+		JPluginHelper::importPlugin('content');
+		JDispatcher::getInstance()->trigger('onContentAfterDelete', array($category->app->component->self->name.'.category', &$category));
 
 	}
 
@@ -37,7 +41,10 @@ class CategoryEvent {
 
 		$category = $event->getSubject();
 		$old_state = $event['old_state'];
-		
+
+		JPluginHelper::importPlugin('content');
+		JDispatcher::getInstance()->trigger('onContentChangeState', array($category->app->component->self->name.'.category', array($category->id), $category->published));
+
 	}
 
 }

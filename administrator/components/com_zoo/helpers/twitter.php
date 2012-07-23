@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      twitter.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -24,7 +22,8 @@ class TwitterHelper extends AppHelper {
 	public function client() {
 
 		// get comment params
-		$params = $this->app->parameter->create()->loadArray($this->app->zoo->getApplication()->getParams()->get('global.comments.'));
+		$application = $this->app->zoo->getApplication();
+		$params = $this->app->parameter->create()->loadArray($application ? $application->getParams()->get('global.comments.') : array());
 
 		if (!function_exists('curl_init')) {
 			return null;

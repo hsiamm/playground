@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      application.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -67,16 +65,16 @@ class Application {
          Related categories.
     */
 	public $_categories;
-	
+
     /*
        Variable: _category_tree
          Related categories tree.
     */
-	public $_category_tree;	
-	
+	public $_category_tree;
+
 	/*
 		Variable: _metaxml
-			Application meta data AppXMLElement.
+			Application meta data SimpleXMLElement.
     */
 	public $_metaxml;
 
@@ -104,6 +102,12 @@ class Application {
     */
 	protected $_elements_path_registered = false;
 
+	/*
+		Variable: _itemcount
+			Has the category tree been retrieved with item count?
+    */
+	protected $_itemcount = false;
+
  	/*
 		Function: Constructor
 
@@ -127,7 +131,7 @@ class Application {
 		Returns:
 			Void
 	*/
-	public function dispatch() {	
+	public function dispatch() {
 		// delegate dispatch
 		$this->app->dispatch('default');
 	}
@@ -160,44 +164,40 @@ class Application {
 
 		Returns:
 			String - Application URI
-	*/		
+	*/
 	public function getURI() {
 		return $this->app->path->url($this->getResource());
 	}
-	
+
 	/*
 		Function: hasIcon
 			Checks for icon existence.
 
 		Returns:
 			Boolean - true if icon exists
-	*/		
+	*/
 	public function hasIcon() {
 		return (bool) $this->app->path->path($this->getResource() . 'application.png');
 	}
-	
+
 	/*
 		Function: getIcon
 			Retrieve application icon.
 
 		Returns:
 			String - icon URI
-	*/		
+	*/
 	public function getIcon() {
-		if ($this->hasIcon()) {
-			return $this->app->path->url($this->getResource() . 'application.png');
-		} else {
-			return $this->app->path->url('assets:images/zoo.png');
-		}
+		return $this->app->path->url($this->hasIcon() ? $this->getResource() . 'application.png' : 'assets:images/zoo.png');
 	}
-	
+
 	/*
 		Function: getInfoImage
 			Retrieve application info image.
 
 		Returns:
 			String - icon URI
-	*/		
+	*/
 	public function getInfoImage() {
 		if ($this->app->path->path($this->getResource() . 'application_info.png')) {
 			return $this->app->path->url($this->getResource() . 'application_info.png');
@@ -211,10 +211,10 @@ class Application {
 
 		Returns:
 			String - toolbar title html
-	*/	
+	*/
 	public function getToolbarTitle($title) {
 
-		$html[] = '<div class="header icon-48-'.(($this->hasIcon()) ? 'application"' : 'zoo"').'>';
+		$html   = array('<div class="header icon-48-'.(($this->hasIcon()) ? 'application"' : 'zoo"').'>');
 		$html[] = $this->hasIcon() ? '<img src="'.$this->getIcon().'" width="48" height="48" style="margin-left:-55px;vertical-align:middle;" />' : null;
 		$html[] = $title;
 		$html[] = '</div>';
@@ -241,15 +241,13 @@ class Application {
 			Application
 	*/
 	public function setGroup($group) {
-
 		$this->application_group = $group;
 		return $this;
-		
 	}
-	
+
 	/*
     	Function: getCategories
-    	  Get categories. 
+    	  Get categories.
 
 		Parameters:
 	      $published - If true, return only published categories.
@@ -257,63 +255,67 @@ class Application {
 	   Returns:
 	      Array - Categories
  	*/
-	public function getCategories($published = false, $item_count = false) {
+	public function getCategories($published = false, $item_count = false, $user = null) {
 
 		// get categories
-		if (empty($this->_categories)) {
-			$this->_categories = $this->app->table->category->getAll($this->id, $published, $item_count);
+		if (empty($this->_categories) || (!$this->_itemcount && $item_count)) {
+			$this->_categories = $this->app->table->category->getAll($this->id, $published, $item_count, $user);
 		}
-		
+
+		$this->_itemcount = $item_count || $this->_itemcount;
+
 		return $this->_categories;
 	}
 
 	/*
     	Function: getCategoryTree
-    	  Get categories as tree. 
+    	  Get categories as tree.
 
 		Parameters:
 	      $published - If true, return only published categories.
 	      $user - User
-	
+
 	   Returns:
 	      Array - Categories
  	*/
 	public function getCategoryTree($published = false, $user = null, $item_count = false) {
 
 		// get category tree
-		if (empty($this->_category_tree)) {
+		if (empty($this->_category_tree) || (!$this->_itemcount && $item_count)) {
 			// get categories and item count
-			$categories = $this->getCategories($published, $item_count);
-			
+			$categories = $this->getCategories($published, $item_count, $user);
+
 			$this->_category_tree = $this->app->tree->build($categories, 'Category');
 			$this->_category_tree[0]->application_id = $this->id;
 		}
-		
+
+		$this->_itemcount = $item_count || $this->_itemcount;
+
 		return $this->_category_tree;
 	}
 
 	/*
     	Function: getCategoryCount
-    	  Get categories count. 
+    	  Get categories count.
 
 	   Returns:
 	      Int
  	*/
 	public function getCategoryCount() {
-		return $this->app->table->category->count($this->id);
+		return $this->app->table->category->count(array('conditions' => array('application_id=?',$this->id)));
 	}
-	
+
 	/*
     	Function: getItemCount
-    	  Get item count. 
+    	  Get item count.
 
 	   Returns:
 	      Int
  	*/
 	public function getItemCount() {
 		return $this->app->table->item->getApplicationItemCount($this->id);
-	}	
-	
+	}
+
 	/*
 		Function: getTemplate
 			Get active application template.
@@ -326,10 +328,10 @@ class Application {
 		if (($name = $this->getParams()->get('template')) && isset($templates[$name])) {
 			return $templates[$name];
 		}
-		
+
 		return null;
-	}	
-	
+	}
+
 	/*
 		Function: getTemplates
 			Get application templates.
@@ -344,12 +346,12 @@ class Application {
 				foreach ($folders as $folder) {
 					$this->_templates[$folder] = $this->app->template->create(array($folder, $this->getResource().'templates/'.$folder));
 				}
-			}		
+			}
 		}
-		
+
 		return $this->_templates;
 	}
-	
+
 	/*
 		Function: getType
 			Retrieve application type by id.
@@ -381,17 +383,18 @@ class Application {
 
 		if (empty($this->_types)) {
 
+			$this->_types = array();
 			$path   = $this->getResource() . '/types';
-			$filter = '/^.*xml$/';
+			$filter = '/^.*config$/';
 
 			if ($files = $this->app->path->files($path, false, $filter)) {
 				foreach ($files as $file) {
-					$alias = basename($file, '.xml');
+					$alias = basename($file, '.config');
 					$this->_types[$alias] = $this->app->object->create('Type', array($alias, $this));
 				}
-			}		
+			}
 		}
-		
+
 		return $this->_types;
 	}
 
@@ -410,6 +413,23 @@ class Application {
 
 		if (isset($submissions[$id])) {
 			return $submissions[$id];
+		}
+
+		return null;
+	}
+	
+	/*
+		Function: getItemEditSubmission
+			Retrieve application item edit submission
+
+		Returns:
+			Submission
+	*/
+	public function getItemEditSubmission() {
+		foreach ($this->getSubmissions() as $submission) {
+			if ($submission->isItemEditSubmission()) {
+				return $submission;
+			}
 		}
 
 		return null;
@@ -439,12 +459,12 @@ class Application {
   			$for - Get params for a specific use, including overidden values.
 
 		Returns:
-			Object - AppParameter
+			ParameterData - params
 	*/
 	public function getParams($for = null) {
 
 		// get site params
-		if ($for == 'site') {			
+		if ($for == 'site') {
 
 			return $this->app->parameter->create()
 				->loadArray($this->params)
@@ -457,7 +477,7 @@ class Application {
 			return $this->app->parameter->create()
 				->set('config.', $this->params->get('global.config.'))
 				->set('template.', $this->params->get('global.template.'))
-				->loadArray($this->params->getData());
+				->loadArray($this->params);
 		}
 
 		return $this->params;
@@ -474,43 +494,30 @@ class Application {
 
 		// get parameter xml file
 		if ($xml = $this->app->path->path($this->getResource().$this->metaxml_file)) {
-
-			// get form
-			$form = $this->app->parameterform->create($xml);
-			$form->addElementPath($this->app->path->path('joomla:elements'));
-
-			return $form;
+			return $this->app->parameterform->create($xml);
 		}
-		
+
 		return null;
 	}
-	
+
 	/*
 		Function: getAddonParamsForm
 			Gets application addon params form.
 
 		Returns:
 			AppParameterForm
-	*/	
+	*/
 	public function getAddonParamsForms() {
 
 		$forms = array();
 
-		if ($files = $this->app->path->files($this->getResource() . 'config/', false, '/\.xml$/i')) {
-
-			foreach ($files as $file) {
-
-				$file = $this->app->path->path($this->getResource() . 'config/' . $file);
-
-				// load xml
-				$xml = $this->app->xml->loadFile($file);
-
-				// get form
+		// load xml config files
+		foreach ($this->app->path->files($this->getResource() . 'config/', false, '/\.xml$/i') as $file) {
+			if (($file = $this->app->path->path($this->getResource() . 'config/' . $file)) && ($xml = simplexml_load_file($file))) {
 				if ($xml->getName() == 'config') {
-					$forms[(string)$xml->name] = $this->app->parameterform->create($file);
+					$forms[(string) $xml->name] = $this->app->parameterform->create($file);
 				}
 			}
-
 		}
 
 		return $forms;
@@ -523,15 +530,15 @@ class Application {
 		Returns:
 			Array - Meta information
 	*/
-	public function getMetaData() {
+	public function getMetaData($key = null) {
 
-		$data = array();
+		$data = $this->app->data->create();
 		$xml  = $this->getMetaXML();
 
 		if (!$xml) {
 			return false;
 		}
-		
+
 		if ($xml->getName() != 'application') {
 			return false;
 		}
@@ -553,20 +560,21 @@ class Application {
 			}
 		}
 
-		return $data;
+		return $key == null ? $data : $data->get($key);
+
 	}
-	
+
 	/*
 		Function: getMetaXML
 			Get application xml meta file.
 
 		Returns:
-			Object - AppXMLElement
+			Object - SimpleXMLElement
 	*/
 	public function getMetaXML() {
 
 		if (empty($this->_metaxml)) {
-			$this->_metaxml = $this->app->xml->loadFile($this->getMetaXMLFile());
+			$this->_metaxml = simplexml_load_file($this->getMetaXMLFile());
 		}
 
 		return $this->_metaxml;
@@ -581,59 +589,56 @@ class Application {
 	*/
 	public function getMetaXMLFile() {
 		return $this->getPath() . '/' . $this->metaxml_file;
-	}	
-	
+	}
+
 	/*
 		Function: getImage
 		  Get image resource info.
 
 		Parameters:
 	      $name - the param name of the image
-	
+
 	   Returns:
 	      Array - Image info
-	*/	
+	*/
 	public function getImage($name) {
-		$params = $this->getParams();
-		if ($image = $params->get($name)) {
-			
-			return $this->app->html->_('zoo.image', $image, $params->get($name . '_width'), $params->get($name . '_height'));
-			
+		if ($image = $this->params->get($name)) {
+			return $this->app->html->_('zoo.image', $image, $this->params->get($name . '_width'), $this->params->get($name . '_height'));
 		}
 		return null;
-	}	
-	
+	}
+
 	/*
 		Function: getImage
 		  Executes Content Plugins on text.
 
 		Parameters:
 	      $text - the text
-	
+
 	   Returns:
 	      text - string
-	*/		
+	*/
 	public function getText($text) {
-		return $this->app->zoo->triggerContentPlugins($text);
+		return $this->app->zoo->triggerContentPlugins($text, array(), 'com_zoo.application.description');
 	}
-	
+
 	/*
 		Function: addMenuItems
 		  Add menu items of application in administrator menu.
 
 	   Returns:
 	      Void
-	*/	
+	*/
 	public function addMenuItems($menu) {
-		
+
 		// get current controller
 		$controller = $this->app->request->getWord('controller');
 		$controller = in_array($controller, array('new', 'manager')) ? 'item' : $controller;
-		
+
 		// create application tab
 		$tab = $this->app->object->create('AppMenuItem', array($this->id, $this->name, $this->app->link(array('controller' => $controller, 'changeapp' => $this->id))));
 		$menu->addChild($tab);
-		
+
 		// menu items
 		$items = array(
 			'item'          => JText::_('Items'),
@@ -656,8 +661,12 @@ class Application {
 		$config->addChild($this->app->object->create('AppMenuItem', array($id, JText::_('Application'), $link)));
 		$config->addChild($this->app->object->create('AppMenuItem', array($id.'-importexport', JText::_('Import / Export'), $this->app->link(array('controller' => 'configuration', 'changeapp' => $this->id, 'task' => 'importexport')))));
 		$tab->addChild($config);
+
+		// trigger event for adding custom menu items
+		$this->app->event->dispatcher->notify($this->app->event->create($this, 'application:addmenuitems', array('tab' => &$tab)));
+
 	}
-	
+
 	/*
     	Function: isCommentsEnabled
     	  Checks wether comments are activated, globally and item specific.
@@ -684,7 +693,7 @@ class Application {
 
 		return $this;
 	}
-	
+
 }
 
 /*

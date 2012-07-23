@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      element.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -27,6 +25,12 @@ abstract class Element {
 	public $app;
 
     /*
+       Variable: $config
+         Config AppData object.
+    */
+	public $config;
+
+    /*
        Variable: $_type
          Elements related type object.
     */
@@ -44,30 +48,6 @@ abstract class Element {
     */
 	protected $_callbacks = array();
 
-    /*
-       Variable: $_config
-         Config parameter object.
-    */
-	protected $_config;
-	
-	/*
-       Variable: $_metaxml
-         Element meta xml.
-    */
-	protected $_metaxml;
-
-	/*
-       Variable: $_data
-         Element data.
-    */
-	protected $_data;
-	
-	/*
-       Variable: $_path
-         Element file path.
-    */
-	protected $_path;	
-		
 	/*
 	   Function: Constructor
 	*/
@@ -76,12 +56,10 @@ abstract class Element {
 		// set app
 		$this->app = App::getInstance('zoo');
 
-		$this->_config = $this->app->parameter->create();
-		
-		// initialize data
-		$this->_data = $this->app->element->createData($this);
-	}	
-	
+		$this->config = $this->app->data->create();
+
+	}
+
 	/*
 		Function: getElementType
 			Gets the elements type.
@@ -92,57 +70,30 @@ abstract class Element {
 	public function getElementType() {
 		return strtolower(str_replace('Element', '', get_class($this)));
 	}
-	
+
 	/*
-		Function: getElementData
+		Function: get
 			Gets the elements data.
 
 		Returns:
-			ElementData - the elements data
-	*/	
-	public function getElementData() {
-		return $this->_data;
+			Mixed - the elements data
+	*/
+	public function get($key, $default = null) {
+		return $this->_item->elements->find("{$this->identifier}.{$key}", $default);
 	}
-	
-	/*
-		Function: setData
-			Set data through xml string.
 
-		Parameters:
-			$xml - string
+	/*
+		Function: set
+			Sets the elements data.
 
 		Returns:
-			Void
-	*/	
-	public function setData($xml) {
-		$this->_data = $this->app->element->createData($this);
-
-		if (!empty($xml) && ($xml = $this->app->xml->loadString($xml))) {
-			foreach ($xml->children() as $xml_element) {
-				if ((string) $xml_element->attributes()->identifier == $this->identifier) {
-					$this->_data->decodeXML($xml_element);
-					break;
-				}
-			}
-		}
-
-        return $this;
-	}
-
-	/*
-    	Function: unsetData
-    	  Unsets element data
-
-	   Returns:
-	      Void
- 	*/
-	public function unsetData() {
-		if (isset($this->_data)) {
-			$this->_data->unsetData();
-		}
+			Element - this
+	*/
+	public function set($key, $value) {
+		$this->_item->elements[$this->identifier][$key] = $value;
 		return $this;
 	}
-	
+
 	/*
 		Function: bindData
 			Set data through data array.
@@ -152,29 +103,38 @@ abstract class Element {
 
 		Returns:
 			Void
-	*/	
+	*/
 	public function bindData($data = array()) {
-		$this->_data = $this->app->element->createData($this);
-		foreach ($data as $key => $value) {
-			$this->_data->set($key, $value);
+		if (isset($this->_item)) {
+			$this->_item->elements->set($this->identifier, $data);
 		}
 	}
 
 	/*
-	   Function: toXML
-	       Get elements XML representation.
+		Function: data
+			Gets data array.
 
-	   Returns:
-	       string - XML representation
+		Returns:
+			Array - data
 	*/
-	public function toXML() {
-		return $this->_data->encodeData()->asXML(true);
+	public function data() {
+		return $this->_item->elements->get($this->identifier);
 	}
-	
+
+	/* @deprecated as of version 2.5 beta */
+	public function getElementData() {
+		return $this->app->data->create($this->data());
+	}
+
+	/* @deprecated as of version 2.5 beta */
+	public function getConfig() {
+		return $this->config;
+	}
+
 	/*
 		Function: getLayout
 			Get element layout path and use override if exists.
-		
+
 		Returns:
 			String - Layout path
 	*/
@@ -196,18 +156,18 @@ abstract class Element {
 	/*
 		Function: getSearchData
 			Get elements search data.
-					
+
 		Returns:
 			String - Search data
 	*/
 	public function getSearchData() {
-		return null;	
+		return null;
 	}
 
 	/*
 		Function: getItem
 			Get related item object.
-		
+
 		Returns:
 			Item - item object
 	*/
@@ -234,10 +194,9 @@ abstract class Element {
 			string - group
 	*/
 	public function getGroup() {
-		$metadata = $this->getMetadata();
-		return $metadata['group'];
-	}	
-	
+		return $this->getMetadata('group');
+	}
+
 	/*
 		Function: setItem
 			Set related item object.
@@ -277,7 +236,7 @@ abstract class Element {
 			Boolean - true, on success
 	*/
 	public function hasValue($params = array()) {
-		$value = $this->_data->get('value');
+		$value = $this->get('value', $this->config->get('default'));
 		return !empty($value);
 	}
 
@@ -292,13 +251,13 @@ abstract class Element {
 			String - html
 	*/
 	public function render($params = array()) {
-		
+
 		// render layout
 		if ($layout = $this->getLayout()) {
-			return $this->renderLayout($layout, array('value' => $this->_data->get('value')));
+			return $this->renderLayout($layout, array('value' => $this->get('value')));
 		}
-		
-		return $this->_data->get('value');		
+
+		return $this->get('value');
 	}
 
 	/*
@@ -313,21 +272,21 @@ abstract class Element {
 			String - html
 	*/
 	protected function renderLayout($__layout, $__args = array()) {
-				
+
 		// init vars
 		if (is_array($__args)) {
 			foreach ($__args as $__var => $__value) {
 				$$__var = $__value;
 			}
 		}
-	
+
 		// render layout
 		$__html = '';
 		ob_start();
 		include($__layout);
 		$__html = ob_get_contents();
 		ob_end_clean();
-		
+
 		return $__html;
 	}
 
@@ -348,7 +307,20 @@ abstract class Element {
 		Returns:
 			Void
 	*/
-	public function loadAssets() {}
+	public function loadAssets() {
+		return $this;
+	}
+
+	/*
+		Function: loadConfigAssets
+			Load elements css/js config assets.
+
+		Returns:
+			Element
+	*/
+	public function loadConfigAssets() {
+		return $this;
+	}
 
 	/*
 		Function: registerCallback
@@ -384,72 +356,6 @@ abstract class Element {
 	}
 
 	/*
-		Function: getConfig
-			Retrieve element configuration.
-
-		Returns:
-			AppParameter
-	*/
-	public function getConfig() {
-		return $this->_config;
-	}
-
-	/*
-		Function: bindConfig
-			Binds the data array.
-
-		Parameters:
-			$data - data array
-	        $ignore - An array or space separated list of fields not to bind
-
-		Returns:
-			Element
-	*/
-	public function bindConfig($data, $ignore = array()) {
-
-		$this->_config = $this->app->parameter->create()->set('identifier', $this->identifier);
-		
-		// convert space separated list
-		if (!is_array($ignore)) {
-			$ignore = explode(' ', $ignore);
-		}
-
-		// bind data array
-		if (is_array($data)) {
-			foreach ($data as $name => $value) {
-				if (!in_array($name, $ignore)) {
-					$this->_config->set($name, $value);
-				}
-			}
-		}
-
-		return $this;
-	}
-
-	/*
-   		Function: loadConfig
-       		Load xml element configuration.
-
-		Parameters:
-			$xml - XML for this element
-
-		Returns:
-			Element
-	*/	
-	public function loadConfig(AppXMLElement $xml) {
-
-		// bind xml data
-		foreach ($xml->attributes() as $name => $value) {
-			$this->_config->set($name, (string) $value);
-		}
-		
-		// set identifier
-		$this->identifier = $this->_config->get('identifier');
-		
-		return $this;
-	}
-
-	/*
 		Function: getConfigForm
 			Get parameter form object to render input form.
 
@@ -458,70 +364,46 @@ abstract class Element {
 	*/
 	public function getConfigForm() {
 
-		$xml = $this->getPath().'/'.$this->getElementType().'.xml';
+		// get form
+		$form = $this->app->parameterform->create();
 
-		// get parameter xml file
-		if (JFile::exists($xml)) {
-
-			// get form
-			$form = $this->app->parameterform->create($xml);
-			$form->addElementPath($this->app->path->path('joomla:elements'));
-			$form->setValues($this->_config);
-			$form->element = $this; // add reference to element
-
-			// trigger configform event
-			$this->app->event->dispatcher->notify($this->app->event->create($this, 'element:configform', compact('form')));
-
-			return $form;
-		}
-		
-		return null;
-	}
-	
-	/*
-		Function: getConfigXML
-			Get element configuration as xml formatted string.
-
-		Returns:
-			String
-	*/
-	public function getConfigXML($ignore = array()) {
-		
-		$xml = $this->app->xml->create('param')
-			->addAttribute('type', $this->getElementType())
-			->addAttribute('identifier', $this->_config->get('identifier'))
-			->addAttribute('name', $this->_config->get('name'));
-		
-		if ($xmlfile = $this->getMetaXML()) {
-			$params = $xmlfile->xpath('params/param');
-			if ($params) {
-				foreach ($params as $param) {
-					$name  = (string) $param->attributes()->name;
-					$value = $this->_config->get($name);
-					if (isset($value) && !in_array($name, $ignore)) {
-						$xml->addAttribute($name, $value);
-					}
-				}
+		// get config xml files
+		$params = array();
+		$class = new ReflectionClass($this);
+		while ($class !== false) {
+			$type = $class->getName() == 'Element' ? 'element' : strtolower(str_replace('Element', '', $class->getName()));
+			if ($xml = $this->app->path->path("elements:$type/$type.xml")) {
+				array_unshift($params, $xml);
 			}
+			$class = $class->getParentClass();
 		}
 
-		// trigger configxml event
-		$this->app->event->dispatcher->notify($this->app->event->create($this, 'element:configxml', compact('xml')));
-		
-		return $xml;
-	}
-	
-	/*
-		Function: loadConfigAssets
-			Load elements css/js config assets.
+		// trigger configparams event
+		$params = $this->app->event->dispatcher->notify($this->app->event->create($this, 'element:configparams')->setReturnValue($params))->getReturnValue();
 
-		Returns:
-			Element
-	*/
-	public function loadConfigAssets() {
-		return $this;
-	}	
-	
+		// skip if there are no config files
+		if (empty($params)) {
+			return null;
+		}
+
+		// add config xml files
+		foreach ($params as $xml) {
+			$form->addXML($xml);
+		}
+
+		// set values
+		$form->setValues($this->config);
+
+		// add reference to element
+		$form->element = $this;
+
+		// trigger configform event
+		$this->app->event->dispatcher->notify($this->app->event->create($this, 'element:configform', compact('form')));
+
+		return $form;
+
+	}
+
 	/*
 		Function: getMetaData
 			Get elements xml meta data.
@@ -529,10 +411,11 @@ abstract class Element {
 		Returns:
 			Array - Meta information
 	*/
-	public function getMetaData() {
+	public function getMetaData($key = null) {
 
 		$data = array();
-		$xml  = $this->getMetaXML();
+		$type = $this->getElementType();
+		$xml  = simplexml_load_file($this->app->path->path("elements:$type/$type.xml"));
 
 		if (!$xml) {
 			return false;
@@ -542,6 +425,7 @@ abstract class Element {
 		$data['group'] 		  = $xml->attributes()->group ? (string) $xml->attributes()->group : 'Unknown';
 		$data['hidden'] 	  = $xml->attributes()->hidden ? (string) $xml->attributes()->hidden : 'false';
         $data['trusted'] 	  = $xml->attributes()->trusted ? (string) $xml->attributes()->trusted : 'false';
+		$data['orderable']	  = $xml->attributes()->orderable ? (string) $xml->attributes()->orderable : 'false';
 		$data['name'] 		  = (string) $xml->name;
 		$data['creationdate'] = $xml->creationDate ? (string) $xml->creationDate : 'Unknown';
 		$data['author'] 	  = $xml->author ? (string) $xml->author : 'Unknown';
@@ -551,38 +435,20 @@ abstract class Element {
 		$data['version'] 	  = (string) $xml->version;
 		$data['description']  = (string) $xml->description;
 
-		return $data;
+		$data = $this->app->data->create($data);
+
+		return $key == null ? $data : $data->get($key);
 	}
-	
+
 	/*
-		Function: getMetaXML
-			Get elements xml meta file.
+		Function: getControlName
+			Gets the controle name for given name.
 
 		Returns:
-			Object - AppXMLElement
+			String - the control name
 	*/
-	public function getMetaXML() {
-
-		if (empty($this->_metaxml)) {
-			$this->_metaxml = $this->app->xml->loadFile($this->getPath().'/'.$this->getElementType().'.xml');
-		}
-		
-		return $this->_metaxml;
-	}	
-	
-	/*
-		Function: getPath
-			Get path to element's base directory.
-
-		Returns:
-			String - Path
-	*/
-	public function getPath() {
-		if (empty($this->_path)) {
-			$rc = new ReflectionClass(get_class($this));
-			$this->_path = dirname($rc->getFileName());
-		}
-		return $this->_path;
+	public function getControlName($name, $array = false) {
+		return "elements[{$this->identifier}][{$name}]" . ($array ? "[]":"");
 	}
 
 	/*
@@ -593,61 +459,36 @@ abstract class Element {
 	      Boolean - True, if access granted
  	*/
 	public function canAccess($user = null) {
-		return $this->app->user->canAccess($user, $this->_config->get('access', $this->app->joomla->getDefaultAccess()));
+		return $this->app->user->canAccess($user, $this->config->get('access', $this->app->joomla->getDefaultAccess()));
 	}
 
-}
+	/*
+		Function: getPath
+			Get path to element's base directory.
 
-class ElementData {
-
-	public    $app;
-
-	protected $_data;
-	protected $_element;
-
-	public function __construct($element) {
-		$this->_element = $element;
-		$this->app		= $element->app;
-		$this->_data	= $this->app->data->create();
+		Returns:
+			String - Path
+	*/
+	public function getPath() {
+		return $this->app->path->path("elements:".$this->getElementType());
 	}
 
-	public function getElement() {
-		return $this->_element;
-	}
+	/*
+		Function: __get
+			Magic getter for deprecated _data and _config properties
 
-	public function getParams() {
-		return $this->_data;
-	}
-
-	public function set($name, $value) {
-		$this->_data->set($name, $value);
-	}
-
-	public function get($name, $default = null) {
-		return $this->_data->get($name, $default);
-	}
-
-	public function encodeData() {
-		$xml = $this->app->xml->create($this->getElement()->getElementType())->addAttribute('identifier', $this->_element->identifier);
-		foreach ($this->_data as $key => $value) {
-			$xml->addChild($key, $value, null, true);
+		Returns:
+			misc
+	*/
+	public function __get($name) {
+		switch ($name) {
+			case '_data':
+				return $this->getElementData();
+			case '_config':
+				return $this->config;
 		}
-
-		return $xml;
 	}
 
-	public function decodeXML(AppXMLElement $element_xml) {
-		foreach ($element_xml->children() as $child) {
-			$this->set($child->getName(), (string) $child);
-		}
-		return $this;
-	}	
-
-	public function unsetData() {
-		$this->_data->exchangeArray(array());
-		$this->_element = null;
-	}
-	
 }
 
 // Declare the interface 'iSubmittable'
@@ -658,7 +499,7 @@ interface iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -679,15 +520,10 @@ interface iSubmittable {
     public function validateSubmission($value, $params);
 }
 
+// deprecated as of version 2.5.7
 interface iSubmissionUpload {
 
-    /*
-		Function: doUpload
-			Does the actual upload during submission
-
-		Returns:
-			void
-	*/
+	// deprecated as of version 2.5.7 use beforeSubmissionSave callback instead
     public function doUpload();
 }
 

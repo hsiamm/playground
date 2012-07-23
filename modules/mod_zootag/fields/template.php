@@ -1,10 +1,8 @@
 <?php
 /**
 * @package   ZOO Tag
-* @file      template.php
-* @version   2.4.1
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
@@ -28,7 +26,7 @@ class JFormFieldTemplate extends JFormField {
 		$options = array();
 
 		if (is_dir($path)) {
-			foreach (JFolder::files($path, '^([-_A-Za-z]*)\.php$') as $tmpl) {
+			foreach (JFolder::files($path, '^([-_A-Za-z0-9]+)\.php$') as $tmpl) {
 				$tmpl = basename($tmpl, '.php');
 				$options[] = $app->html->_('select.option', $tmpl, ucwords($tmpl));
 			}

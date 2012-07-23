@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: default.php 1251 2011-10-19 17:50:13Z joomlaworks $
+ * @version		$Id: default.php 1499 2012-02-28 10:28:38Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -47,6 +47,11 @@ defined('_JEXEC') or die('Restricted access');
 				<?php else: ?>
 				<?php echo $item->author; ?>
 				<?php endif; ?>
+				
+				<?php if($params->get('userDescription')): ?>
+				<?php echo $item->authorDescription; ?>
+				<?php endif; ?>
+				
 			</div>
 			<?php endif; ?>
 

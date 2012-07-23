@@ -1,16 +1,12 @@
 <?php
 /**
- * @version		$Id: controller.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_search
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 /**
  * Search Component Controller
@@ -19,7 +15,7 @@ jimport('joomla.application.component.controller');
  * @subpackage	com_search
  * @since 1.5
  */
-class SearchController extends JController
+class SearchController extends JControllerLegacy
 {
 	/**
 	 * Method to display a view.
@@ -32,7 +28,7 @@ class SearchController extends JController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		JRequest::setVar('view','search'); // force it to be the search view
+		JRequest::setVar('view', 'search'); // force it to be the search view
 
 		return parent::display($cachable, $urlparams);
 	}
@@ -40,11 +36,11 @@ class SearchController extends JController
 	function search()
 	{
 		// slashes cause errors, <> get stripped anyway later on. # causes problems.
-		$badchars = array('#','>','<','\\');
+		$badchars = array('#', '>', '<', '\\');
 		$searchword = trim(str_replace($badchars, '', JRequest::getString('searchword', null, 'post')));
 		// if searchword enclosed in double quotes, strip quotes and do exact match
-		if (substr($searchword,0,1) == '"' && substr($searchword, -1) == '"') {
-			$post['searchword'] = substr($searchword,1,-1);
+		if (substr($searchword, 0, 1) == '"' && substr($searchword, -1) == '"') {
+			$post['searchword'] = substr($searchword, 1, -1);
 			JRequest::setVar('searchphrase', 'exact');
 		}
 		else {
@@ -52,7 +48,7 @@ class SearchController extends JController
 		}
 		$post['ordering']	= JRequest::getWord('ordering', null, 'post');
 		$post['searchphrase']	= JRequest::getWord('searchphrase', 'all', 'post');
-		$post['limit']  = JRequest::getInt('limit', null, 'post');
+		$post['limit']  = JRequest::getUInt('limit', null, 'post');
 		if ($post['limit'] === null) unset($post['limit']);
 
 		$areas = JRequest::getVar('areas', null, 'post', 'array');
@@ -70,7 +66,7 @@ class SearchController extends JController
 
 		if(isset($items[0])) {
 			$post['Itemid'] = $items[0]->id;
-		} else if (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
+		} elseif (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
 			$post['Itemid'] = JRequest::getInt('Itemid');
 		}
 

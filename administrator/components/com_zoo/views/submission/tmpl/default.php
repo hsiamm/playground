@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      default.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -36,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 					<th class="trusted">
 						<?php echo JText::_('Trusted Mode'); ?>
 					</th>
+					<th class="item_edit">
+						<?php echo JText::_('Item Edit'); ?>
+					</th>
 					<th class="published">
 						<?php echo $this->app->html->_('grid.sort', 'Published', 'state', @$this->lists['order_Dir'], @$this->lists['order']); ?>
 					</th>
@@ -58,12 +59,19 @@ defined('_JEXEC') or die('Restricted access');
 					$types = array_map(create_function('$type', 'return $type->name;'), $row->getSubmittableTypes());
 
 					// access
-					$group_access = isset($this->groups[$row->access]) ? JText::_($this->groups[$row->access]->name) : '';
+					$group = $this->app->zoo->getGroup($row->access);
+					$group_access = JText::_($group->name);
+					$public = $this->app->joomla->isVersion('1.5') ? $row->access == 0 : !JAccess::checkGroup($group->id, 'core.login.site');
 
 					// trusted mode
 					$trusted_mode     = (int) $row->isInTrustedMode();
 					$trusted_mode_img = $trusted_mode ? 'tick.png' : 'publish_x.png';
 					$trusted_mode_alt = $trusted_mode ? JText::_('Trusted Mode enabled') : JText::_('Trusted Mode disabled');
+					
+					// item edit submission
+					$item_edit     = (int) $row->getParams()->get('item_edit', 0);
+					$item_edit_img = $item_edit ? 'tick.png' : 'publish_x.png';
+					$item_edit_alt = $item_edit ? JText::_('Set as Item Edit') : JText::_('Disable Item Edit');			
 
 					?>
 					<tr>
@@ -73,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 						<td class="icon"></td>
 						<td class="name">
 							<span class="editlinktip hasTip" title="<?php echo JText::_('Edit Submission');?>::<?php echo $row->name; ?>">
-								<a href="<?php echo $this->app->link(array('controller' => $this->controller, 'task' => 'edit', 'cid[]' => $row->id));  ?>"><?php echo $row->name; ?></a>
+								<a href="<?php echo $this->app->link(array('controller' => $this->controller, 'changeapp' => $this->application->id, 'task' => 'edit', 'cid[]' => $row->id));  ?>"><?php echo $row->name; ?></a>
 							</span>
 						</td>
 						<td class="types">
@@ -84,8 +92,17 @@ defined('_JEXEC') or die('Restricted access');
 							<?php endif; ?>
 						</td>
 						<td class="trusted">
-							<a href="#" rel="task-<?php echo $trusted_mode ? 'disabletrustedmode' : 'enabletrustedmode' ?>" title="<?php echo JText::_('Enable/Disable Trusted Mode');?>" <?php echo $row->access == 0 ? 'disabled="disabled"' : ''; ?>>
-								<img src="<?php echo $this->app->path->url('assets:images/'.$trusted_mode_img); ?>" border="0" alt="<?php echo $trusted_mode_alt; ?>" />
+							<?php if (!$public) : ?>
+								<a href="#" rel="task-<?php echo $trusted_mode ? 'disabletrustedmode' : 'enabletrustedmode' ?>" title="<?php echo JText::_('Enable/Disable Trusted Mode');?>">
+							<?php endif; ?>
+									<img src="<?php echo $this->app->path->url('assets:images/'.$trusted_mode_img); ?>" border="0" alt="<?php echo $trusted_mode_alt; ?>" />
+							<?php if (!$public) : ?>
+								</a>
+							<?php endif; ?>
+						</td>
+						<td class="item_edit">
+							<a href="#" rel="task-<?php echo $item_edit ? 'disableItemEdit' : 'enableItemEdit' ?>" title="<?php echo JText::_('Enable/Disable as Item Edit Submission');?>">
+								<img src="<?php echo $this->app->path->url('assets:images/'.$item_edit_img); ?>" border="0" alt="<?php echo $item_edit_alt; ?>" />
 							</a>
 						</td>
 						<td class="published">
@@ -118,6 +135,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+	<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 	<?php echo $this->app->html->_('form.token'); ?>
 
 </form>

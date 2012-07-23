@@ -1,11 +1,9 @@
-<?php 
+<?php
 /**
-* @package   com_zoo Component
-* @file      default.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -18,7 +16,7 @@ $this->app->document->addScript('assets:js/comment.js');
 
 ?>
 
-<form id="comments-default" action="index.php" method="post" name="adminForm" accept-charset="utf-8">
+<form id="comments-default" action="<?php echo $this->app->link(array('controller' => $this->controller)); ?>" method="post" name="adminForm" accept-charset="utf-8">
 
 <?php echo $this->partial('menu'); ?>
 
@@ -26,21 +24,21 @@ $this->app->document->addScript('assets:js/comment.js');
 
 	<ul class="filter">
 		<li class="filter-left">
-			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" />
+			<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="rounded" />
 			<button onclick="this.form.submit();"><?php echo JText::_('Search'); ?></button>
 			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
 		</li>
 		<li class="filter-right">
 			<?php echo $this->lists['select_author'];?>
-		</li>		
+		</li>
 		<li class="filter-right">
 			<?php echo $this->lists['select_item'];?>
-		</li>		
+		</li>
 		<li class="filter-right">
 			<?php echo $this->lists['select_state'];?>
-		</li>		
+		</li>
 	</ul>
-	
+
 	<?php  if($this->pagination->total > 0) : ?>
 
 	<table id="actionlist" class="list stripe">
@@ -66,9 +64,9 @@ $this->app->document->addScript('assets:js/comment.js');
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
-		</tfoot>    
+		</tfoot>
 	    <tbody id="table-body">
-	    	<?php 
+	    	<?php
 				foreach ($this->comments as $comment) {
 					$this->comment = $comment;
 					echo $this->partial('row');
@@ -83,21 +81,21 @@ $this->app->document->addScript('assets:js/comment.js');
 			$message = null;
 			echo $this->partial('message', compact('title', 'message'));
 
-		else : 
+		else :
 
 			$title   = JText::_('NO_COMMENTS_YET').'!';
 			$message = JText::_('COMMENTS_MANAGER_DESCRIPTION');
 			echo $this->partial('message', compact('title', 'message'));
-		
+
 		endif;
 	?>
 
-</div>	
+</div>
 
-<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>

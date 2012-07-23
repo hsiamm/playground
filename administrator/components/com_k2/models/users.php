@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: users.php 1034 2011-10-04 17:00:00Z joomlaworks $
+ * @version		$Id: users.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -354,6 +354,7 @@ class K2ModelUsers extends JModel
 		$k2group = JRequest::getInt('k2group');
 		if(K2_JVERSION == '16') {
 			JArrayHelper::toInteger($group);
+			$group = array_filter($group);
 			if(count($group)) {
 				foreach($cid as $id) {
 					$query = "DELETE FROM #__user_usergroup_map WHERE user_id = ".$id;
@@ -377,9 +378,20 @@ class K2ModelUsers extends JModel
 		}
 
 		if($k2group){
-			$query = "UPDATE #__k2_users SET `group`={$k2group} WHERE userID IN(".implode(',',$cid).")";
-			$db->setQuery( $query );
-			$db->query();
+			foreach($cid as $id) {
+				$query = "SELECT COUNT(*) FROM #__k2_users WHERE userID = ".$id;
+				$db->setQuery($query);
+				$result = $db->loadResult();
+				if($result) {
+					$query = "UPDATE #__k2_users SET `group`={$k2group} WHERE userID = ".$id;
+				}
+				else {
+					$user = JFactory::getUser($id);
+					$query = "INSERT INTO #__k2_users VALUES ('', {$id}, {$db->Quote($user->username)}, '', '', '', '', {$k2group}, '')";
+				}
+				$db->setQuery( $query );
+				$db->query();
+			}
 		}
 		$mainframe->redirect('index.php?option=com_k2&view=users', JText::_('K2_MOVE_COMPLETED'));
 

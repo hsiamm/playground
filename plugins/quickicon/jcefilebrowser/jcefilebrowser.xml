@@ -18,15 +18,6 @@
 		<language tag="en-GB">en-GB.plg_quickicon_jcefilebrowser.sys.ini</language>
 	</languages>
 	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="width"
-					type="text"
-					default=""
-					description="PLG_QUICKICON_JCEFILEBROWSER_DESC"
-					label="PLG_QUICKICON_JCEFILEBROWSER_LABEL"
-				/>
-			</fieldset>
-		</fields>
+		<fields name="params"></fields>
 	</config>
 </extension>

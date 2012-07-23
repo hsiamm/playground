@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      tag.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -50,9 +48,9 @@ class TagController extends AppController {
 		$limitstart		  = $this->joomla->getUserStateFromRequest($state_prefix.'limitstart', 'limitstart', 0,	'int');
 		$search	          = $this->joomla->getUserStateFromRequest($state_prefix.'search', 'search', '', 'string');
 		$search			  = $this->app->string->strtolower($search);
-		
+
 		// is filtered ?
-		$this->is_filtered = !empty($search);		
+		$this->is_filtered = !empty($search);
 
 		// in case limit has been changed, adjust limitstart accordingly
 		$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
@@ -62,15 +60,15 @@ class TagController extends AppController {
 
 		$count = (int) $this->table->count($this->application->id, $search);
 		$limitstart = $limitstart > $count ? floor($count / $limit) * $limit : $limitstart;
-		
+
 		$this->tags = $this->table->getAll($this->application->id, $search, '', $filter, $limitstart, $limit);
 
 		$this->pagination = $this->app->pagination->create($count, $limitstart, $limit);
 
 		// table ordering and search filter
 		$this->lists['order_Dir'] = $filter_order_Dir;
-		$this->lists['order']     = $filter_order;		
-		$this->lists['search']    = $search;		
+		$this->lists['order']     = $filter_order;
+		$this->lists['search']    = $search;
 
 		// display view
 		$this->getView()->display();
@@ -84,8 +82,8 @@ class TagController extends AppController {
 		if (count($tags) < 1) {
 			$this->app->error->raiseError(500, JText::_('Select a tag to delete'));
 		}
-		
-		try {		
+
+		try {
 
 			// delete tags
 			$this->table->delete($this->application->id, $tags);
@@ -102,16 +100,16 @@ class TagController extends AppController {
 		}
 
 		$this->setRedirect($this->baseurl, $msg);
-	}	
-	
+	}
+
 	public function update() {
-	
+
 		// init vars
 		$old = $this->app->request->getString('old');
 		$new = $this->app->request->getString('new');
 		$msg = null;
-		
-		try {		
+
+		try {
 
 			// update tag
 			if (!empty($new) && $old != $new) {
@@ -120,7 +118,7 @@ class TagController extends AppController {
 				// set redirect message
 				$msg = JText::_('Tag Updated Successfully');
 			}
-			
+
 		} catch (AppException $e) {
 
 			// raise notice on exception
@@ -129,8 +127,8 @@ class TagController extends AppController {
 		}
 
 		$this->setRedirect($this->baseurl, $msg);
-	}		
-	
+	}
+
 }
 
 /*

@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      zoo.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -14,8 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 // load config
 require_once(dirname(__FILE__).'/config.php');
 
-// set config
+// get zoo instance
 $zoo = App::getInstance('zoo');
+
+// set zoo icon
+$zoo->set('icon', 'zoo.png');
 
 // add css, js
 $zoo->document->addScript('libraries:jquery/jquery-ui.custom.min.js');
@@ -40,6 +41,24 @@ if ($zoo->update->required() && $controller != 'update') {
 	$zoo->system->application->redirect($zoo->link(array('controller' => 'update'), false));
 }
 
+// check if update is available
+$zoo->update->available();
+
+// check for ZOO extension dependencies
+$zoo->dependency->check();
+
+// cache writable ?
+if (!($cache_path = $zoo->path->path('cache:')) || !is_writable($cache_path)) {
+	$zoo->error->raiseNotice(0, sprintf("Zoo cache folder is not writable! Please check directory permissions (%s)", $cache_path));
+}
+
+// media folders writable ?
+foreach (array_merge(array(''), $zoo->path->dirs('media:zoo', true)) as $dir) {
+	if (!is_writable($zoo->path->path('media:zoo/'.$dir))) {
+		$zoo->error->raiseNotice(0, sprintf("Zoo media folder is not writable! Please check directory permissions (%s)", $zoo->path->path('media:zoo/'.$dir)));
+	}
+}
+
 // change application
 if ($id = $zoo->request->getInt('changeapp')) {
 	$zoo->system->application->setUserState('com_zooapplication', $id);
@@ -53,10 +72,6 @@ if (!$controller) {
 	$controller = $application ? 'item' : 'new';
 	$zoo->request->setVar('controller', $controller);
 }
-
-// set toolbar button include path
-$toolbar = JToolBar::getInstance('toolbar');
-$toolbar->addButtonPath($zoo->path->path('joomla:button'));
 
 // build menu
 $menu = $zoo->menu->get('nav');
@@ -73,26 +88,14 @@ $menu->addChild($new);
 $menu->addChild($manager);
 
 if ($controller == 'new' && $task == 'add' && $group) {
-
-	// get application meta
-	$app_group = $zoo->object->create('Application');
-	$app_group->setGroup($group);
-	$meta = $app_group->getMetaData();
-
 	// add info item
-	$new->addChild($zoo->object->create('AppMenuItem', array('new', $meta['name'])));
+	$new->addChild($zoo->object->create('AppMenuItem', array('new', $zoo->object->create('Application')->setGroup($group)->getMetaData('name'))));
 }
 
 if ($controller == 'manager' && $group) {
-		
-	// get application meta
-	$app_group = $zoo->object->create('Application');
-	$app_group->setGroup($group);
-	$meta = $app_group->getMetaData();
-
 	// add info item
 	$link = $zoo->link(array('controller' => 'manager', 'task' => 'types', 'group' => $group));
-	$info = $zoo->object->create('AppMenuItem', array('manager-types', $meta['name'], $link));
+	$info = $zoo->object->create('AppMenuItem', array('manager-types', $zoo->object->create('Application')->setGroup($group)->getMetaData('name'), $link));
 	$info->addChild($zoo->object->create('AppMenuItem', array('manager-types', 'Types', $link)));
 	$info->addChild($zoo->object->create('AppMenuItem', array('manager-info', 'Info', $zoo->link(array('controller' => 'manager', 'task' => 'info', 'group' => $group)))));
 	$manager->addChild($info);
@@ -107,7 +110,7 @@ try {
 
 	} else {
 
-		// dispatch current app
+		// dispatch app
 		$zoo->dispatch();
 	}
 

@@ -2,11 +2,11 @@
 <install type="component" version="1.5.0" method="upgrade">
 	<name>K2</name>
 	<author>JoomlaWorks</author>
-	<creationDate>November 28th, 2011</creationDate>
-	<copyright>Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.</copyright>
-	<authorEmail>contact@joomlaworks.gr</authorEmail>
-	<authorUrl>www.joomlaworks.gr</authorUrl>
-	<version>2.5.3</version>
+	<creationDate>May 9th, 2012</creationDate>
+	<copyright>Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>contact@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>2.5.7</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Thank you for installing K2 by JoomlaWorks, the powerful content extension for Joomla!</description>
 	<installfile>install.k2.php</installfile>
@@ -24,6 +24,9 @@
 			<file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
 		</sql>
 	</uninstall>
+	<updateservers>
+	   <server type="extension" priority="1" name="K2 Updates">http://getk2.org/update.xml</server>
+	</updateservers>
 	<files folder="components/com_k2">
 		<folder>controllers</folder>
 		<folder>css</folder>
@@ -49,11 +52,17 @@
 	<languages folder="language/en-GB">
 		<language tag="en-GB">en-GB.com_k2.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_comments.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_comments.sys.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_content.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_content.sys.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_login.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_login.sys.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_tools.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_tools.sys.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_users.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_users.sys.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_user.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_user.sys.ini</language>
 	</languages>
 	<administration>
 		<menu img="../media/k2/assets/images/system/k2_16x16.png" view="items">COM_K2</menu>
@@ -73,6 +82,7 @@
 			<folder>controllers</folder>
 			<folder>elements</folder>
 			<folder>helpers</folder>
+			<folder>jupgrade</folder>
 			<folder>lib</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
@@ -88,15 +98,26 @@
 			<language tag="en-GB">en-GB.com_k2.menu.ini</language>
 			<language tag="en-GB">en-GB.com_k2.j16.ini</language>
 			<language tag="en-GB">en-GB.mod_k2_quickicons.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_quickicons.sys.ini</language>
 			<language tag="en-GB">en-GB.mod_k2_stats.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_stats.sys.ini</language>
 			<language tag="en-GB">en-GB.mod_k2.j16.ini</language>
+			<language tag="en-GB">en-GB.plg_finder_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_finder_k2.sys.ini</language>
 			<language tag="en-GB">en-GB.plg_search_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_search_k2.sys.ini</language>
 			<language tag="en-GB">en-GB.plg_system_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_system_k2.sys.ini</language>
 			<language tag="en-GB">en-GB.plg_user_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_user_k2.sys.ini</language>
 		</languages>
 	</administration>
 	<params>
+		<!-- ######################### CSS Settings ######################### -->
 		<param name="enable_css" default="1" />
+		<param name="jQueryHandling" default="1.7remote" />
+		<param name="backendJQueryHandling" default="remote" />
+		<!-- ######################### Layout and view options for user (blog/profile) pages ######################### -->
 		<param name="userName" default="1" />
 		<param name="userImage" default="1" />
 		<param name="userDescription" default="1" />
@@ -115,6 +136,8 @@
 		<param name="userItemCommentsAnchor" default="1" />
 		<param name="userItemReadMore" default="1" />
 		<param name="userItemK2Plugins" default="1" />
+		<param name="defaultUsersItemid" />
+		<!-- ######################### Layout and view options for Tag listings ######################### -->
 		<param name="tagItemCount" default="10" />
 		<param name="tagItemTitle" default="1" />
 		<param name="tagItemTitleLinked" default="1" />
@@ -127,6 +150,8 @@
 		<param name="tagOrdering" default="" />
 		<param name="tagFeedLink" default="1" />
 		<param name="tagFeedIcon" default="1" />
+		<param name="defaultTagsItemid" />
+		<!-- ######################### Layout and view options for Search and Date listings ######################### -->
 		<param name="genericItemCount" default="10" />
 		<param name="genericItemTitle" default="1" />
 		<param name="genericItemTitleLinked" default="1" />
@@ -138,6 +163,7 @@
 		<param name="genericItemExtraFields" default="0" />
 		<param name="genericFeedLink" default="1" />
 		<param name="genericFeedIcon" default="1" />
+		<!-- ######################### RSS Feed Settings ######################### -->
 		<param name="feedLimit" default="10" />
 		<param name="feedItemImage" default="1" />
 		<param name="feedImgSize" default="S" />
@@ -149,6 +175,7 @@
 		<param name="feedItemGallery" default="0" />
 		<param name="feedItemAttachments" default="0" />
 		<param name="feedBogusEmail" default="" />
+		<!-- ######################### Content Cleanup Settings ######################### -->
 		<param name="introTextCleanup" default="0" />
 		<param name="introTextCleanupExcludeTags" default="" />
 		<param name="introTextCleanupTagAttr" default="" />
@@ -156,8 +183,10 @@
 		<param name="fullTextCleanupExcludeTags" default="" />
 		<param name="fullTextCleanupTagAttr" default="" />
 		<param name="xssFiltering" default="0" />
+		<!-- ######################### Extra Fields Settings ######################### -->
 		<param name="linkPopupWidth" default="900" />
 		<param name="linkPopupHeight" default="600" />
+		<!-- ######################### Image Settings ######################### -->
 		<param name="imagesQuality" default="100" />
 		<param name="itemImageXS" default="100" />
 		<param name="itemImageS" default="200" />
@@ -173,18 +202,24 @@
 		<param name="onlineImageEditor" default="splashup" />
 		<param name="imageTimestamp" default="0" />
 		<param name="imageMemoryLimit" default="" />
+		<!-- ######################### Social Settings ######################### -->
 		<param name="socialButtonCode" default="" />
 		<param name="twitterUsername" default="" />
-		<param name="urlShortener" default="1" />
+		<param name="facebookImage" default="Small" />
+		<!-- ######################### Comments ######################### -->
 		<param name="comments" default="1" />
 		<param name="commentsOrdering" default="DESC" />
 		<param name="commentsLimit" default="10" />
 		<param name="commentsFormPosition" default="below" />
 		<param name="commentsPublishing" default="1" />
+		<param name="commentsReporting" default="2" />
+		<param name="commentsReportRecipient" default="" />
+		<param name="inlineCommentsModeration" default="0" />
 		<param name="gravatar" default="1" />
 		<param name="recaptcha" default="0" />
 		<param name="commentsFormNotes" default="1" />
-		<param name="commentsFormNotesText" default="" rows="8" cols="40" />
+		<param name="commentsFormNotesText" default="" />
+		<!-- ######################### Frontend Editing ######################### -->
 		<param name="frontendEditing" default="1" />
 		<param name="showImageTab" default="1" />
 		<param name="showImageGalleryTab" default="1" />
@@ -193,6 +228,7 @@
 		<param name="showAttachmentsTab" default="1" />
 		<param name="showK2Plugins" default="1" />
 		<param name="sideBarDisplayFrontend" default="0" />
+		<!-- ######################### Advanced Settings ######################### -->
 		<param name="mergeEditors" default="1" />
 		<param name="sideBarDisplay" default="1" />
 		<param name="attachmentsFolder" default="" />
@@ -207,25 +243,33 @@
 		<param name="redirect" default="" />
 		<param name="adminSearch" default="simple" />
 		<param name="cookieDomain" default="" />
+		<!-- ######################### Anti-spam Settings ######################### -->
 		<param name="recaptcha_public_key" default="" />
 		<param name="recaptcha_private_key" default="" />
 		<param name="recaptcha_theme" default="clean" />
 		<param name="recaptchaOnRegistration" default="0" />
+		<!-- ######################### Performance Settings ######################### -->
 		<param name="showItemsCounterAdmin" default="1" />
 		<param name="showChildCatItems" default="1" />
 		<param name="disableCompactOrdering" default="0" />
-		<param name="SEFReplacements" default="" />
+		<!-- ######################### SEO Settings ######################### -->
 		<param name="metaDescLimit" default="150" />
+		<param name="SEFReplacements" default="" />
 		<param name="sh404SefLabelCat" default="" />
 		<param name="sh404SefLabelUser" default="blog" />
 		<param name="sh404SefLabelItem" default="2" />
 		<param name="sh404SefTitleAlias" default="alias" />
 		<param name="sh404SefModK2ContentFeedAlias" default="feed" />
+		<param name="cbIntegration" default="0" />
 	</params>
 	<config>
 		<fields>
 			<fieldset>
+				<!-- ######################### CSS Settings ######################### -->
 				<field name="enable_css" default="1" />
+				<field name="jQueryHandling" default="1.7remote" />
+				<field name="backendJQueryHandling" default="remote" />
+				<!-- ######################### Layout and view options for user (blog/profile) pages ######################### -->
 				<field name="userName" default="1" />
 				<field name="userImage" default="1" />
 				<field name="userDescription" default="1" />
@@ -244,6 +288,8 @@
 				<field name="userItemCommentsAnchor" default="1" />
 				<field name="userItemReadMore" default="1" />
 				<field name="userItemK2Plugins" default="1" />
+				<field name="defaultUsersItemid" />
+				<!-- ######################### Layout and view options for Tag listings ######################### -->
 				<field name="tagItemCount" default="10" />
 				<field name="tagItemTitle" default="1" />
 				<field name="tagItemTitleLinked" default="1" />
@@ -256,6 +302,8 @@
 				<field name="tagOrdering" default="" />
 				<field name="tagFeedLink" default="1" />
 				<field name="tagFeedIcon" default="1" />
+				<field name="defaultTagsItemid" />
+				<!-- ######################### Layout and view options for Search and Date listings ######################### -->
 				<field name="genericItemCount" default="10" />
 				<field name="genericItemTitle" default="1" />
 				<field name="genericItemTitleLinked" default="1" />
@@ -267,6 +315,7 @@
 				<field name="genericItemExtraFields" default="0" />
 				<field name="genericFeedLink" default="1" />
 				<field name="genericFeedIcon" default="1" />
+				<!-- ######################### RSS Feed Settings ######################### -->
 				<field name="feedLimit" default="10" />
 				<field name="feedItemImage" default="1" />
 				<field name="feedImgSize" default="S" />
@@ -278,6 +327,7 @@
 				<field name="feedItemGallery" default="0" />
 				<field name="feedItemAttachments" default="0" />
 				<field name="feedBogusEmail" default="" />
+				<!-- ######################### Content Cleanup Settings ######################### -->
 				<field name="introTextCleanup" default="0" />
 				<field name="introTextCleanupExcludeTags" default="" />
 				<field name="introTextCleanupTagAttr" default="" />
@@ -285,8 +335,10 @@
 				<field name="fullTextCleanupExcludeTags" default="" />
 				<field name="fullTextCleanupTagAttr" default="" />
 				<field name="xssFiltering" default="0" />
+				<!-- ######################### Extra Fields Settings ######################### -->
 				<field name="linkPopupWidth" default="900" />
 				<field name="linkPopupHeight" default="600" />
+				<!-- ######################### Image Settings ######################### -->
 				<field name="imagesQuality" default="100" />
 				<field name="itemImageXS" default="100" />
 				<field name="itemImageS" default="200" />
@@ -302,18 +354,24 @@
 				<field name="onlineImageEditor" default="splashup" />
 				<field name="imageTimestamp" default="0" />
 				<field name="imageMemoryLimit" default="" />
+				<!-- ######################### Social Settings ######################### -->
 				<field name="socialButtonCode" default="" />
 				<field name="twitterUsername" default="" />
-				<field name="urlShortener" default="1" />
+				<field name="facebookImage" default="Small" />
+				<!-- ######################### Comments ######################### -->
 				<field name="comments" default="1" />
 				<field name="commentsOrdering" default="DESC" />
 				<field name="commentsLimit" default="10" />
 				<field name="commentsFormPosition" default="below" />
 				<field name="commentsPublishing" default="1" />
+				<field name="commentsReporting" default="2" />
+				<field name="commentsReportRecipient" default="" />
+				<field name="inlineCommentsModeration" default="0" />
 				<field name="gravatar" default="1" />
 				<field name="recaptcha" default="0" />
 				<field name="commentsFormNotes" default="1" />
-				<field name="commentsFormNotesText" default="" rows="8" cols="40" />
+				<field name="commentsFormNotesText" default="" />
+				<!-- ######################### Frontend Editing ######################### -->
 				<field name="frontendEditing" default="1" />
 				<field name="showImageTab" default="1" />
 				<field name="showImageGalleryTab" default="1" />
@@ -322,6 +380,7 @@
 				<field name="showAttachmentsTab" default="1" />
 				<field name="showK2Plugins" default="1" />
 				<field name="sideBarDisplayFrontend" default="0" />
+				<!-- ######################### Advanced Settings ######################### -->
 				<field name="mergeEditors" default="1" />
 				<field name="sideBarDisplay" default="1" />
 				<field name="attachmentsFolder" default="" />
@@ -336,20 +395,24 @@
 				<field name="redirect" default="" />
 				<field name="adminSearch" default="simple" />
 				<field name="cookieDomain" default="" />
+				<!-- ######################### Anti-spam Settings ######################### -->
 				<field name="recaptcha_public_key" default="" />
 				<field name="recaptcha_private_key" default="" />
 				<field name="recaptcha_theme" default="clean" />
 				<field name="recaptchaOnRegistration" default="0" />
+				<!-- ######################### Performance Settings ######################### -->
 				<field name="showItemsCounterAdmin" default="1" />
 				<field name="showChildCatItems" default="1" />
 				<field name="disableCompactOrdering" default="0" />
-				<field name="SEFReplacements" default="" />
+				<!-- ######################### SEO Settings ######################### -->
 				<field name="metaDescLimit" default="150" />
+				<field name="SEFReplacements" default="" />
 				<field name="sh404SefLabelCat" default="" />
 				<field name="sh404SefLabelUser" default="blog" />
 				<field name="sh404SefLabelItem" default="2" />
 				<field name="sh404SefTitleAlias" default="alias" />
 				<field name="sh404SefModK2ContentFeedAlias" default="feed" />
+				<field name="cbIntegration" default="0" />
 			</fieldset>
 		</fields>
 	</config>
@@ -364,6 +427,7 @@
 		<module module="mod_k2_stats" client="administrator" />
 	</modules>
 	<plugins>
+		<plugin plugin="k2" group="finder" />
 		<plugin plugin="k2" group="search" />
 		<plugin plugin="k2" group="system" />
 		<plugin plugin="k2" group="user" />

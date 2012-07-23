@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<element type="Rating" group="Social">
+<element type="Rating" group="Social" orderable="true">
 	<name>Rating</name>
 	<author>YOOtheme</author>
-	<creationDate>March 2009</creationDate>
-	<copyright>Copyright (C) 2007 - 2011 YOOtheme GmbH</copyright>
+	<creationDate>August 2011</creationDate>
+	<copyright>Copyright (C) YOOtheme GmbH</copyright>
 	<authorEmail>info@yootheme.com</authorEmail>
 	<authorUrl>http://www.yootheme.com</authorUrl>
-	<version>1.0.0</version>
+	<version>2.5.0</version>
 	<description>Rating</description>
 	<params>
-		<param name="name" type="text" default="" label="Name" description="Name used in item editor" />
-		<param name="description" type="text" default="" label="Description" description="DESCRIPTION_TOOLTIP_ITEM_EDITOR" />
-		<param name="access" type="zooaccesslevel" default="" label="Access Level" description="DETAILACCESS" />
 		<param name="stars" type="list" default="5" label="Stars" description="">
 			<option value="3">J3</option>
 			<option value="4">J4</option>
@@ -25,11 +22,6 @@
 		<param name="allow_vote" type="zooaccesslevel" default="" label="Allow Vote For" description="" />
 	</params>
 	<params group="render">
-		<param name="showlabel" type="radio" default="0" label="Show Label" description="Show/Hide element label">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</param>
-		<param name="altlabel" type="text" default="" label="Alternative Label" description="CUSTOM_LABEL" />
 		<param name="rating_disabled" type="radio" default="0" label="Enable Rating" description="">
 			<option value="1">JNO</option>
 			<option value="0">JYES</option>

@@ -1,24 +1,19 @@
 <?php
 /**
- * @version		$Id: controller.php 21097 2011-04-07 15:38:03Z dextercowley $
  * @package		Joomla.Site
  * @subpackage	com_mailto
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 /**
  * @package		Joomla.Site
  * @subpackage	com_mailto
  */
-class MailtoController extends JController
+class MailtoController extends JControllerLegacy
 {
-
 	/**
 	 * Show the form so that the user can send the link to someone
 	 *
@@ -42,7 +37,7 @@ class MailtoController extends JController
 	function send()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$app	= JFactory::getApplication();
 		$session = JFactory::getSession();
@@ -54,13 +49,11 @@ class MailtoController extends JController
 			return $this->mailto();
 		}
 
-		jimport('joomla.mail.helper');
-
 		$SiteName	= $app->getCfg('sitename');
 		$MailFrom	= $app->getCfg('mailfrom');
 		$FromName	= $app->getCfg('fromname');
 
-		$link		= MailtoHelper::validateHash(JRequest::getCMD('link', '', 'post')); 
+		$link		= MailtoHelper::validateHash(JRequest::getCMD('link', '', 'post'));
 
 		// Verify that this is a local link
 		if (!$link || !JURI::isInternal($link)) {
@@ -141,7 +134,7 @@ class MailtoController extends JController
 		$sender	 = JMailHelper::cleanAddress($sender);
 
 		// Send the email
-		if (JUtility::sendMail($from, $sender, $email, $subject, $body) !== true)
+		if (JFactory::getMailer()->sendMail($from, $sender, $email, $subject, $body) !== true)
 		{
 			JError::raiseNotice(500, JText:: _ ('COM_MAILTO_EMAIL_NOT_SENT'));
 			return $this->mailto();

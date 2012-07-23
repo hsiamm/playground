@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      application.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 defined('_JEXEC') or die('Restricted access');
@@ -17,7 +15,7 @@ $this->app->document->addScript('assets:js/alias.js');
 $this->app->html->_('behavior.tooltip');
 
 // filter output
-JFilterOutput::objectHTMLSafe($this->application, ENT_QUOTES, array('params')); 
+JFilterOutput::objectHTMLSafe($this->application, ENT_QUOTES, array('params'));
 
 ?>
 
@@ -27,7 +25,7 @@ JFilterOutput::objectHTMLSafe($this->application, ENT_QUOTES, array('params'));
 
 <div class="box-bottom">
 	<div class="col col-left width-60">
-	
+
 		<fieldset class="creation-form">
 		<legend><?php echo JText::_('Details'); ?></legend>
 		<div class="element element-name">
@@ -59,7 +57,7 @@ JFilterOutput::objectHTMLSafe($this->application, ENT_QUOTES, array('params'));
 	<div class="col col-right width-40">
 
 		<div id="parameter-accordion">
-			<?php echo $this->partial('applicationparams')?>	
+			<?php echo $this->partial('applicationparams')?>
 		</div>
 
 	</div>
@@ -69,6 +67,7 @@ JFilterOutput::objectHTMLSafe($this->application, ENT_QUOTES, array('params'));
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="format" value="" />
+<input type="hidden" name="changeapp" value="<?php echo $this->application->id; ?>" />
 <?php echo $this->app->html->_('form.token'); ?>
 
 </form>

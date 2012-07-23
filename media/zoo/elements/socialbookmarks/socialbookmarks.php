@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      socialbookmarks.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -25,7 +23,7 @@ class ElementSocialBookmarks extends Element implements iSubmittable {
 			Boolean - true, on success
 	*/
 	public function hasValue($params = array()) {
-		return (bool) $this->_data->get('value', true);
+		return (bool) $this->get('value', $this->config->get('default'));
 	}
 
 	/*
@@ -40,22 +38,22 @@ class ElementSocialBookmarks extends Element implements iSubmittable {
 	*/
 	public function render($params = array()) {
 
-		if ($this->_data->get('value', true)) {
+		if ($this->get('value', $this->config->get('default'))) {
 
 			// init vars
-			$bookmarks_config = $this->_config->get('bookmarks');
+			$bookmarks_config = $this->config->get('bookmarks');
 			$bookmarks 		  = array();
 
 			// get active bookmarks
 			foreach (self::getBookmarks() as $bookmark => $data) {
-				if (isset($bookmarks_config[$bookmark]) && $bookmarks_config[$bookmark]) {
+				if ($this->config->get($bookmark)) {
 					$bookmarks[$bookmark] = $data;
 				}
 			}
 
 			// render layout
 			if ($layout = $this->getLayout()) {
-				return $this->renderLayout($layout, array('bookmarks' => $bookmarks));
+				return $this->renderLayout($layout, compact('bookmarks'));
 			}
 		}
 
@@ -70,7 +68,7 @@ class ElementSocialBookmarks extends Element implements iSubmittable {
 	       String - html
 	*/
 	public function edit() {
-		return $this->app->html->_('select.booleanlist', 'elements[' . $this->identifier . '][value]', '', $this->_data->get('value', 1));
+		return $this->app->html->_('select.booleanlist', $this->getControlName('value'), '', $this->get('value', $this->config->get('default')));
 	}
 
 	/*
@@ -78,7 +76,7 @@ class ElementSocialBookmarks extends Element implements iSubmittable {
 			Renders the element in submission.
 
 	   Parameters:
-            $params - submission parameters
+            $params - AppData submission parameters
 
 		Returns:
 			String - html
@@ -160,75 +158,6 @@ class ElementSocialBookmarks extends Element implements iSubmittable {
 		$bookmarks['email']['click'] = "this.href='mailto:?subject='+document.title+'&amp;body='+encodeURIComponent(location.href);";
 
 		return $bookmarks;
-	}
-
-	/*
-		Function: bindConfig
-			Binds the data array.
-
-		Parameters:
-			$data - data array
-	        $ignore - An array or space separated list of fields not to bind
-
-		Returns:
-			Void
-	*/
-	public function bindConfig($data, $ignore = array()) {
-		parent::bindConfig($data, $ignore);
-
-		$bookmarks = array();
-
-		foreach (self::getBookmarks() as $bookmark => $value) {
-			if (isset($data[$bookmark])) {
-				$bookmarks[$bookmark] = $data[$bookmark];
-			}
-		}
-
-		$this->_config->set('bookmarks', $bookmarks);
-	}
-
-	/*
-	   Function: loadConfig
-	       Converts the XML to a Dataarray and calls the bind method.
-
-	   Parameters:
-	      XML - The XML for this Element
-	*/
-	public function loadConfig($xml) {
-		parent::loadConfig($xml);
-
-		$bookmarks = array();
-
-		foreach (self::getBookmarks() as $bookmark => $value) {
-			$bookmarks[$bookmark] = (string) $xml->attributes()->$bookmark;
-		}
-
-		$this->_config->set('bookmarks', $bookmarks);
-	}
-
-	/*
-		Function: getConfigXML
-			Get elements XML.
-
-		Parameters:
-	        $ignore - An array or space separated list of fields not to include
-
-		Returns:
-			Object - AppXMLElement
-	*/
-	public function getConfigXML($ignore = array()) {
-
-		$xml = parent::getConfigXML($ignore);
-
-		$bookmarks = $this->_config->get('bookmarks');
-
-		foreach (self::getBookmarks() as $bookmark => $value) {
-			if (isset($bookmarks[$bookmark])) {
-				$xml->addAttribute($bookmark, $bookmarks[$bookmark]);
-			}
-		}
-
-		return $xml;
 	}
 
 }

@@ -1,8 +1,8 @@
 /**
- * @version		$Id: k2.css 1363 2011-11-25 19:07:00Z joomlaworks $
+ * @version		$Id: k2.css 1508 2012-03-01 21:14:04Z joomlaworks $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -14,11 +14,14 @@ hr.sep {line-height:0;height:0;border:none;border-bottom:1px dotted #ccc;padding
 .k2Center {text-align:center;}
 .k2Left {text-align:left;}
 .k2Right {text-align:right;}
+.k2ForceWrap {white-space:normal !important;max-width:120px;overflow:hidden;}
 .k2Date {white-space:nowrap;text-align:center;}
-.k2Order {white-space:nowrap !important; text-align:right; width:auto !important; min-width: 80px;}
+.k2Order {white-space:nowrap !important; text-align:right; width:auto !important; min-width:80px;}
 	.k2Order span {}
 	.k2OrderBox {text-align:center;}
 .k2NoWrap {white-space:nowrap;}
+.k2IsIcon {font-family:Arial, Helvetica, sans-serif !important;font-size:16px !important;}
+.k2IsIcon:hover {color:#BB3A00;text-decoration:none;}
 .k2TitleBox {width:99%;font-size:20px;}
 .k2TitleAliasBox {width:60%;font-size:14px;}
 .k2TextBox {background:#fff;padding:4px;}
@@ -37,6 +40,7 @@ ul.k2GenericList {list-style:square;margin:0 8px 8px;padding:2px 8px;}
 ul.k2GenericList li {list-style:square;padding:2px 0;}
 
 /* -------------- Admin Common -------------- */
+a.k2ReportUserButton {}
 
 div#k2AdminContainer {padding:2px;}
 div#k2AdminContainer h1 {padding:0 0 8px 0;margin:0;}
@@ -283,6 +287,9 @@ div#groupContainer {display:inline;margin-left:16px;}
 div#groupContainer span {font-weight:bold;}
 
 /* Admin - Extra field groups */
+
+/* Admin - Media Manager */
+#elfinder { font-size: 16px; font-family: Arial, Helvetica, sans-serif;}
 
 /* Admin - Information */
 table#k2InfoPage {}

@@ -1,10 +1,8 @@
 <?php
 /**
 * @package   ZOO Item
-* @file      changelog.php
-* @version   2.4.2
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
@@ -15,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 
 Changelog
 ------------
+
+2.4.3
+^ changed paths
 
 2.4.2
 # fixed space for for floated media elements (display: block)

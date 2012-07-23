@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		$Id: view.html.php 1329 2011-11-25 09:55:32Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1524 2012-03-09 14:09:34Z lefteris.kavadas $
  * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.gr
- * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -60,13 +60,15 @@ class K2ViewUser extends JView
 		JToolBarHelper::cancel();
 		$toolbar=JToolBar::getInstance('toolbar');
 		if(K2_JVERSION == '16'){
-			$link = JURI::base().'index.php?option=com_users&view=user&task=user.edit&id='.$user->userID;
+			$buttonUrl = JURI::base().'index.php?option=com_users&view=user&task=user.edit&id='.$user->userID;
 		}
 		else {
-			$link = JURI::base().'index.php?option=com_users&view=user&task=edit&cid[]='.$user->userID;
+			$buttonUrl = JURI::base().'index.php?option=com_users&view=user&task=edit&cid[]='.$user->userID;
 		}
-		$toolbar->prependButton('Link', 'edit', 'K2_EDIT_JOOMLA_USER', $link);
-	
+		$buttonText = JText::_('K2_EDIT_JOOMLA_USER');
+		$button	= '<a target="_blank" href="'.$buttonUrl.'"><span class="icon-32-edit" title="'.$buttonText.'"></span>'.$buttonText.'</a>';
+		$toolbar->prependButton('Custom', $button);
+			
 		parent::display($tpl);
 	}
 

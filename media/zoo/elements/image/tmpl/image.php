@@ -1,37 +1,25 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      image.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$target = ($target) ? 'target="_blank"' : '';
-$rel	= ($rel) ? 'rel="' . $rel .'"' : '';
-$title  = !empty($title) ? ' title="'.$title.'"' : '';
-?>
+$target = $target ? 'target="_blank"' : '';
+$rel	= $rel ? 'rel="' . $rel .'"' : '';
+$title  = $title ? ' title="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'"' : '';
 
-<?php if ($file && JFile::exists($file)) : ?>
+$link_enabled = !empty($url);
 
-	<?php if ($link_enabled) : ?>
-	<a href="<?php echo JRoute::_($url); ?>" <?php echo $target;?> <?php echo $rel;?><?php echo $title; ?>>
-	<?php endif ?>
+$info = getimagesize($file);
+$content = '<img src="'.$link.'"'.$title.' alt="'.$alt.'" '.$info[3].' />';
 
-	<?php $info = getimagesize($file); ?>
-	
-	<img src="<?php echo $link; ?>"<?php echo $title; ?> alt="<?php echo $alt; ?>" <?php echo $info[3]; ?> />
-		
-	<?php if ($link_enabled) : ?>
-	</a>
-	<?php endif ?>
-	
-<?php else : ?>
-
-	<?php echo JText::_('No file selected.'); ?>
-	
-<?php endif; ?>
+if ($link_enabled) {
+	echo '<a href="'.JRoute::_($url).'" '.$rel.$title.$target.'>'.$content.'</a>';
+} else {
+	echo $content;
+}

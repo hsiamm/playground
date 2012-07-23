@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install PUBLIC "-//Joomla! 1.7//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.7/template-install.dtd">
-<install version="1.7" type="template">
-	<name>blank</name>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/2.5/template-install.dtd">
+<extension version="2.5" type="template" method="upgrade">
+	<name>templatename</name>
 	<creationDate>xxxx-xx-xx</creationDate>
-	<author>Your Name</author>
-	<copyright>Copyright © xxxx yourcompany</copyright>
-	<authorEmail>your.name@yourcompany.com</authorEmail>
-	<authorUrl>http://www.yourcompany.com</authorUrl>
+	<author>your name</author>
+	<copyright>Copyright © xxxx example.com</copyright>
+	<authorEmail>your.name@example.com</authorEmail>
+	<authorUrl>http://www.example.com</authorUrl>
 	<version>1.0.0</version>
 	<description><![CDATA[
 		<h1>templatename</h1>
 		<p><img src="../templates/templatename/template_preview.png" /></p>
-		<h2>Modulpositionen</h2>
+		<h2>Module positions</h2>
 		<ol>
 			<li>header</li>
 			<li>menu</li>
 			<li>footer</li>
 			<li>debug</li>
 		</ol>
-		<p>Erstellt von <a href="http://www.yourcompany.com" target="_blank">your name</a>.</p>
+		<p>Created by <a href="http://www.example.com" target="_blank">your name | example.com</a>.</p>
 	]]></description>
 	
 	<files>
@@ -26,7 +26,6 @@
 		<folder>html</folder>
 		<folder>images</folder>
 		<folder>js</folder>
-		<folder>languages</folder>
 		<filename>apple-touch-icon-57x57.png</filename>
 		<filename>apple-touch-icon-72x72.png</filename>
 		<filename>apple-touch-icon-114x114.png</filename>
@@ -40,11 +39,9 @@
 		<filename>templateDetails.xml</filename>
 	</files>
 	
-	<languages folder="languages">
+	<languages folder="language">
 		<language tag="de-DE">de-DE.tpl_templatename.ini</language>
-		<language tag="de-DE">de-DE.tpl_templatename.sys.ini</language>
 		<language tag="en-GB">en-GB.tpl_templatename.ini</language>
-		<language tag="en-GB">en-GB.tpl_templatename.sys.ini</language>
 	</languages>
 	
 	<positions>
@@ -61,4 +58,4 @@
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

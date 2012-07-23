@@ -1,15 +1,12 @@
 <?php
 /**
- * @version		$Id: controller.php 20553 2011-02-06 06:32:09Z infograf768 $
  * @package		Joomla.Site
  * @subpackage	com_users
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.controller');
 
 /**
  * Base controller class for Users.
@@ -18,7 +15,7 @@ jimport('joomla.application.component.controller');
  * @subpackage	com_users
  * @since		1.5
  */
-class UsersController extends JController
+class UsersController extends JControllerLegacy
 {
 	/**
 	 * Method to display a view.

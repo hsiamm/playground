@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.1.3
+ * JCE Editor                 2.2.0
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    19 May 2012
+ * @date                    20 June 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -22,4 +22,4 @@ return;self._onChangeEditableSelect(e);});if($(this.element).is(':disabled')){$(
 if(v!=''){if($('option[value="'+v+'"]',this.element).length==0){$(this.element).append(new Option(v,v));}
 $(this.element).val(v);}}}
 self.options.change.call(self,v);}else{$(this.element).val('')||$('option:first',this.element).attr('selected','selected');}
-$(this.element).show();$(this.input).remove();},_onKeyDown:function(e){if(e.which==13||e.which==27){this._onBlurEditableSelectInput();}},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.combobox,{version:"2.1.3"});})(jQuery);
+$(this.element).show();$(this.input).remove();},_onKeyDown:function(e){if(e.which==13||e.which==27){this._onBlurEditableSelectInput();}},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.combobox,{version:"2.2.0"});})(jQuery);

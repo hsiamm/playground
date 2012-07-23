@@ -1,18 +1,13 @@
 <?php
 /**
 * @package   ZOO Search
-* @file      zoosearch.php
-* @version   2.4.0
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
+* @copyright Copyright (C) YOOtheme GmbH
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
-// load config
-require_once(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php');
 
 jimport('joomla.plugin.plugin');
 
@@ -35,7 +30,20 @@ class plgSearchZoosearch extends JPlugin {
 	      Void
 	*/
 	function plgSearchZoosearch($subject, $params) {
+
+		// make sure ZOO exists
+		if (!JComponentHelper::getComponent('com_zoo', true)->enabled) {
+			return;
+		}
+
 		parent::__construct($subject, $params);
+
+		// load config
+		jimport('joomla.filesystem.file');
+		if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php') || !JComponentHelper::getComponent('com_zoo', true)->enabled) {
+			return;
+		}
+		require_once(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php');
 
 		$this->app = App::getInstance('zoo');
 	}
@@ -193,7 +201,17 @@ class plgSearchZoosearch extends JPlugin {
 		onSearch - Joomla 1.6
 	*/
 	function onContentSearch($text, $phrase = '', $ordering = '', $areas = null) {
-		return $this->onSearch($text, $phrase = '', $ordering = '', $areas = null);
+		return $this->onSearch($text, $phrase, $ordering, $areas);
+	}
+
+	public function registerZOOEvents() {
+		if ($this->app) {
+			$this->app->event->dispatcher->connect('type:assignelements', array($this, 'assignElements'));
+		}
+	}
+
+	public function assignElements() {
+		$this->app->system->application->enqueueMessage(JText::_('Only text based elements are allowed in the search layouts'), 'notice');
 	}
 
 }

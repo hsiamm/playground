@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      component.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 /*
@@ -23,7 +21,7 @@ class AppComponent {
 		Function: __construct
 			Constructor
  	*/
-	public function __construct($app, $name) {		
+	public function __construct($app, $name) {
 		$this->app        = $app;
 		$this->name       = $name;
 		$this->_component = JComponentHelper::getComponent($name);
@@ -41,19 +39,16 @@ class AppComponent {
 		            1: Make URI secure using global secure site URI
 		  		    0: Leave URI in the same secure state as it was passed to the function
 		  		   -1: Make URI unsecure using the global unsecure site URI
-		
+
 		Returns:
 			String
 	*/
 	public function link($query = array(), $xhtml = true, $ssl = null) {
 
-		// set query and url
-		$option = $this->name;
-		$tmpl   = $this->app->request->get('tmpl', 'string');
-		$query  = array_merge($tmpl ? compact('option', 'tmpl') : compact('option'), $query);
-		$url    = 'index.php?'.http_build_query($query, '', '&');
+		// prepend option to query
+		$query = array_merge(array('option' => $this->name), $query);
 
-		return JRoute::_($url, $xhtml, $ssl);
+		return JRoute::_('index.php?'.http_build_query($query, '', '&'), $xhtml, $ssl);
 	}
 
 	/*
@@ -94,7 +89,7 @@ class AppComponent {
 			Void
 	*/
 	public function save() {
-		
+
 		// init vars
 		$table     = $this->app->table->get('components', '#__');
 		$component = $table->get($this->_component->id);

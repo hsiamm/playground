@@ -1,11 +1,9 @@
 <?php
 /**
-* @package   com_zoo Component
-* @file      changelog.php
-* @version   2.4.10 June 2011
+* @package   com_zoo
 * @author    YOOtheme http://www.yootheme.com
-* @copyright Copyright (C) 2007 - 2011 YOOtheme GmbH
-* @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+* @copyright Copyright (C) YOOtheme GmbH
+* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
 */
 
 // no direct access
@@ -16,14 +14,349 @@ defined('_JEXEC') or die('Restricted access');
 Changelog
 ------------
 
+2.5.20
++ added metadata to frontpage (Menu Settings)
++ limit the number of submissions per user
++ added param to show item count on categories (Category module)
++ added option to show empty categories
+^ Date Element will accept more date formats now (Frontend Submission)
+^ Frontpage RSS shows its own items only
+^ updated mediaelement.js to 2.9.1
+# fixed conflict between Widgetkit and ZOO (Media Element)
+
+2.5.19
+# fixed issue with core elements assignment
+
+2.5.18
++ added Captcha support to submissions/comments (Joomla 2.5)
++ primary category will be set on submissions
++ redirect user to login if item is not accessible
+^ updated MediaElement.js to 2.8.2
+^ updated jQuery UI to 1.8.20
+# fix to 404 redirect if ZOO is set as home page
+# fixed problem with display of Itemaccess Element and Itemstate Element
+# fix to "edit core elements"
+# fixed issue with type copying
+# fixed issue with setting a file value in IE9 (Download Element)
+
+2.5.17
++ added Item Edit Element
+^ updated social buttons element (Google Plus One)
+^ updated media element
+^ updated jquery.cookie.js to the latest version
+^ updated timepicker.js to version 1.0.0
+^ protocol is prepended to the link by default now (Link Element)
+^ authors of spam comments won't be subscribed to items any longer
+^ updated jQuery UI to 1.8.19
+# removed API Key from Geocoding Requests (Googlemaps Element)
+# finder component now ignores unsearchable items (Smart Search)
+# item order priority is ignored for feed now
+# fixed conflict between mootools and jQuery slider (Timepicker in J2.5 now works properly again)
+# fixed display of googlemaps (My Submissions view)
+# fixed file upload submission (Image and Download Element)
+# fixed search bug in items default view
+# fixed css issue with tag submission
+# fixed socialbuttons element
+# fixed primary category selection
+# fixed to search ordering (J2.5)
+
+2.5.16
++ added "addmenuitems" event
++ added map type "Terrain" (GoogleMaps Element)
++ API Key will be used for Geocoding Requests too (Googlemaps Element)
+^ updated jQuery to version 1.7.2
+^ updated jQuery UI to 1.8.18
+^ longitude/latitude coordinates may now contain a space (Google Maps element)
+# fixed type copying
+# fixes to checkbox element edit view css
+
+
+2.5.15
++ you can now hide the update notifications for current session
+# fixed problem with ZOO administration with open_basedir restriction in effect
+# fixed issue with Publish Down date on some systems (Submission)
+# fixes to protocoll part of url in Socialbutton and Media elements
+# fix to DB backup functionality
+
+2.5.14
+# download element will check against default access value now, if none is set
+# fixed bugs related to the field API change
+
+2.5.13
++ added option to fully hide/show categories on category/frontpage views
++ assign access level to core elements
+# editing a submission in none trusted mode will set the item to unpublished
+# fixed bug with submission (Documentation app)
+# Item Frontpage, Item Searchable and Item State elements no longer sortable
+# fix to Page Titles on frontpage (J2.5)
+# fixed css issues (Social Buttons Element)
+# fixed language problem with Facebook Like Button (Social Buttons Element)
+
+2.5.12
+# fixed problem with Download element introduced in 2.5.11
+# fixed issue with CSV export (PHP < 5.3)
+
+2.5.11
+# fixed issue in cookbook app (full layout)
+# fixed bug with access level in download element
++ Widgetkit Element now submittable
++ Joomla Module Element now submittable
++ added CSV export
++ import into subcategories by separating categories through "///" (CSV)
++ import into existing categories by adding category alias (CSV)
+# fixed metadata import (Joomla)
+# fix to sh404SEF plugin
+^ updated K2 importer to reflect latest changes
+^ updated MediaElement.js to 2.6.5
+# fix to Social Buttons element (IE)
++ you can now add an API Key (Googlemaps Element)
+
+2.5.10
+# fixed build problem with Finder plugin (SmartSearch)
+# fixed tag autocompletion
+
+2.5.9
++ added option to select primary category (frontend submission)
++ added MIME TYPE "application/iges"
++ added sunburst style to syntaxhighlighter (Documentation app - Choose in app template settings)
++ added War6 Sidebar Style (Category Module)
+^ changes to renderer (Category Module)
++ added Finder plugin (SmartSearch)
++ item, category and comments save, delete and stateChanged events now trigger Joomla content plugin events (J2.5)
+# Fixed Joomla Exporter (J2.5)
+# Fixed Image Frontend Submission
+
+2.5.8
+# elements will receive new identifier on type copy
++ added application:installed event
+^ updated German translation
+# fixed Norwegian translation
++ category submission: added param to allow for single or multiple selection
+^ updated MediaElement.js to 2.6.4
+# text and textarea element now show default value, without having to edit the item
+
+2.5.7
+^ it is now possible to assign item core elements to submissions
++ added a few item core elements (mainly for item submissions)
++ beforesave event (submission)
++ new option to display date in Blog App + Warp 6 theme
+# fixed problems with page title on category view
+^ submission errors are now being translated
+# fixed problem with Blog application if no template is selected
+# minor css fixes
+^ update to comments module
+# consistent ordering of items related categories
++ Norwegian translation (Thanks to Yngve Rodli)
+# fixed bug with adding images into textarea editor (submission) (J1.7)
+
+2.5.6
+# fixed bug with twitter connect
+^ cleanup of some javascripts
++ reintroduced the index.html files in ZOO folders (hello JED ;-) )
++ updated MediaElement.js to 2.6.1
+# it is now possible to change the width of the audio player
+
+2.5.5
+# fixed bug with Twitter and Facebook connect
+# fixed bug with changing menu item types
+^ change for Joomla 2.5 compatibility
++ you can now import into existing categories (JSON import)
+^ disallow "/" character in tags
+^ improved consistency with category links
+# fixed a redirect on item view
+
+2.5.4
+^ improved error message if ZOO minimum requirements are not met
+^ improved consistency with item links
+^ updated MediaElement.js to 2.5.0
++ added tags to CSV import
+# fixed problems with showing comments from unpublished items (Comments module)
+# links in notification mails are now SEOed
+# fixed bug with email notifications on comments
+# fixed compatibility issue with Rockettheme Mission Control admin template
+
+2.5.3
++ ZOO automatically checks for updates now
+# fixed bug with ordering by rating element
++ added "toggle frontpage" button to item view
+# minor css fixes
++ added ZOO version to manager view
+# fixed problem with sorting by publish up date
++ you can now use youtube shortlinks e.g. "http://youtu.be/XYZ" (Media Element)
+# fixed bug with odd number of tags and outward, inward sorting (Tag module)
++ csv import: first category is set to primary category
+
+2.5.2
+# fixed possible cause for JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING upon update
+# fixed default select options of several applications
++ added "Publish Up" core element (useful for displaying dates in blog)
+^ updated MediaElement.js to 2.3.2
+^ updated jQuery to version 1.7.1
++ added editDisplay event to type edit view
+# fixed problems with J1.7 import of categories having the same alias
+# minor css fixes in item edit view
+# fixed item ordering of RSS feeds
+
+2.5.1
++ added installer check for missing DB tables (J1.7)
++ added import of country element to csv import
++ readded deprecated functions for submission renderer
+^ Tag view now displays tag in page title
+^ updated Hungarian language files
+# fixed problem with installing ZOO Quickicon module with open_basedir restriction in effect
+
+2.5
+# fixed bug with form field values in submission
+# fixed bug with comments export
+# alpha index in Documentation app won't show empty categories tab
+^ changed syntaxhighlighter of documentation app
+^ reverted interface of elements hasvalue and render methods to version 2.4
+^ updated jQuery to version 1.7
++ added ordering to "my submissions" view
++ added "clean database" functionality
+^ merged "update search data" functionality into "clean database"
++ added search to mysubmissions view
+^ readded separated_by params to elements xml
+
+2.5 BETA 9
+# fixed bug in sh404SEF plugin
+# fixed item ordering
+
+2.5 BETA 8
+# fixed bug where updating would delete custom layouts/positions
+# couple minor bugfixes and improvements
+
+2.5 BETA 7
+# fixed bug with category view, introduced in BETA 6
+
+2.5 BETA 6
+# fixed bug with having multiple tabs from different app instances open (administration)
+# items and categories won't inherit Browser Page Titles any longer
+# improved html validation of social buttons element
+
+2.5 BETA 5
++ added possibility to specify custom link text (Item Link element)
+# fixed bug with including subcategories in modules
++ added search by tag in items overview
+# fixed pagination links
+# fixed problems with saving options of select, radio, checkbox elements
+
+2.5 BETA 4
++ readded Socialbookmarks element
++ added separator "none" to textarea element
+# fixed importers
+- removed J1.6, mtree, docman importer
++ added SEO Pagetitle option (J1.7)
+^ pagetitle of categories changed
+# fixed display of category metadata
+# fixed comments for WARP blog template
+# fixed csv import
+# fixed problems with update process (e.g. Gallery element won't loose data anymore)
+# fixed problems with saving options of select elements
+# when upgrading from 2.4 ZOO will not loose video files any more
+# fixed problems with media element
+
+2.5 BETA 3
++ added swf support to media element
++ added random item ordering
+# fixed bug with renaming types
+# fixed bug with copying types
+^ updated media element
+
+2.5 BETA 2
+# fixed bug where type config would be overwritten
+
+2.5 BETA
+^ updated jQuery UI to 1.8.15
++ added new WARP6 Blog template
+- removed ZOOtools (use Widgetkit instead)
++ added Social Buttons element
++ added Media element
++ added Widgetkit element
+^ revamped Download element
+^ revamped Image element
+^ revamped Gallery element
+- removed Video element
+- removed Social Bookmarks element
+- removed Facebook I Like element
+^ element data now being stored as JSON
+^ ex-/import now uses JSON
++ added comments ex-/import
+# fixed minor issues with submission.css
++ new "Update Search Data" button in ZOO manager
++ update screen now shows changelog
+
+2.4.17
+# item slug will not change after frontend submission
+^ remove path info from file upload
+# content plugins will be triggered on frontpage and category descriptions in Blog app
+# improved html validation of comments form
+# updated language packages
+# fixed typo in language files
+^ updated framework
+
+2.4.16
+# fix to path handling on unix systems where root path is empty
+^ updated jQuery to 1.6.4
+^ updated jQuery UI to 1.8.16
+# fixed item frontpage toggle
+
+2.4.15
+# fixed params for zoosearch module (J1.7)
+# tags are being removed upon item deletion
+# added some missing language strings
+# fixed minor css issue (J1.7)
+# fixed bug with repeatable element and advanced options
+
+2.4.14
+# fixed bug with params array introduced in 2.4.13
+
+2.4.13
+# fixed SQL dump functionality
++ frontpage can be edited from items view now
+# fixed display of plugin names in layout view (J1.7)
+
+2.4.12
++ item id being passed to content plugins handling textareas
+# fixed bug with path helper on BSD systems
++ primary category now being im-/exported
++ name matching on item xml import
+# fixed problem with timezone offset in item edit view
+^ renamed shortcut to shortcode plugin
+# enforcing nonetrusted mode for public submissions again (Joomla 1.7)
+# fixed pagination and filtering issues
+# fixed options.css for Joomla 1.7
+- removed metadata "title" from item views
++ you can now assign metadata to categories
++ you can now assign individual page titles to items and categories
++ added import of Joomla 1.7 articles
+# fixed bug with display of comment dates in Joomla 1.7
+
+2.4.11
+^ updated jQuery UI to 1.8.14
+^ updated jQuery to 1.6.2
+# fixed bug with detecting superadmin priviliges on Joomla 1.6+
+^ admins won't receive email notifications, if new comments are rated as spam
++ added warning if cache path is unwritable
+^ zoo modules now use the components language files instead of their own
+^ modifications to reflect changes in Joomla 1.7
+# fixed minor issue with installer
+# 'Add Tag' button now being translated
+# fixed problems with zoo uninstaller (Joomla 1.6)
+# fixed translation issue with some blog templates
+# fixed translations of validation errors
++ output Google Geocoding API errors (Googlemaps element)
+^ updated ZOOmaps module
+# fixed issue with ZOO export
+
 2.4.10
 # ZOO tools load mootools again
-# fixed issues with sh404SEF (J1.5 and J1.6)
-# fixed bug with rating element (J1.6)
+# fixed issues with sh404SEF (Joomla 1.5 and Joomla 1.6)
+# fixed bug with rating element (Joomla 1.6)
 ^ updated ZOOcomment module to 2.4.3
 # fixed issue with lightbox not loading
 # fixed bug in slideshow.js
-# fixed bug with access level on csv imported items (J1.6)
+# fixed bug with access level on csv imported items (Joomla 1.6)
 
 2.4.9
 # fixed bug introduced in 2.4.8
@@ -50,7 +383,7 @@ Changelog
 
 2.4.7
 ^ fixed minor issue with RSS feed link
-^ changed syntaxhighlighter syntax in documentation app ( <pre class="brush: php"> )
+^ changed syntaxhighlighter syntax in documentation app
 ^ changed plugin names
 + added access levels for elements
 + added ZOOitemshortcut plugin
@@ -70,7 +403,7 @@ Changelog
 
 2.4.5
 # fixed timezone problem with publishing dates (submission)
-# fixed display problem with Finish Publishing date (J16)
+# fixed display problem with Finish Publishing date (Joomla 1.6)
 # fixed typo in notification emails
 # fixed bug with pagination link generation
 # fixed bug where users would have to enter a url while commenting (introduced in 2.4.4)
@@ -86,10 +419,10 @@ Changelog
 # applications language files are loaded whenever application is initialized in frontend
 ^ allow for German Umlaute in URLs
 # fixed bug, where directions would not show in IE8 (Googlemaps element)
-+ make use of "default access level" for new items and submissions (J16)
-# fixed problem with storing params in ZOO tag module (J16)
++ make use of "default access level" for new items and submissions (Joomla 1.6)
+# fixed problem with storing params in ZOO tag module (Joomla 1.6)
 + added element:beforedisplay event
-# fixed gallery element (J16)
+# fixed gallery element (Joomla 1.6)
 + added frontpage to category filter on items view (contributed by Rene Jeppesen - Thanks!)
 # fixed translation string in rating element
 
@@ -102,7 +435,7 @@ Changelog
 # fixed pagination in related items element (submission)
 # fixed typo in German language file
 # fixed problems with install.sql file
-# fixed editing in mysubmissions view (J16)
+# fixed editing in mysubmissions view (Joomla 1.6)
 + added editing of access level to submission
 
 2.4.2
@@ -111,7 +444,7 @@ Changelog
 ^ updated install.sql script to use the ENGINE keyword (needed for newer MySQL versions)
 # fixed bug with counting category items (mysqli)
 ^ timepicker now includes seconds
-# fixed problem with storing params in some modules (J16)
+# fixed problem with storing params in some modules (Joomla 1.6)
 # corrected typo in language files
 # fixed redirect problem after comment state change in administration
 ^ empty folders are removed upon installation and modification cleanup
@@ -121,7 +454,7 @@ Changelog
 2.4.1
 # fixed bug with deleted Joomla users and comment system
 # fixed bug with module params
-# fixed bug with zoosearch plugin on J16
+# fixed bug with zoosearch plugin on Joomla 1.6
 ^ unknown files are removed automatically upon installation (media folder is ignored)
 # fixed bugs in sh404sef standard plugin
 # fixed bug with submitting items in untrusted mode
