@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-I'm in the Category Page
+I'm in the Category Page.  Here is my migrated change.
 {modulepos toolsmodule}
 Just passed the code
 <!-- Start K2 Category Layout -->
