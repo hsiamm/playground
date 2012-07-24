@@ -15,6 +15,7 @@ K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
 
 ?>
 i'm in the category_item_links page.  Hi this is my first change
+this is my second change. 
 <!-- Start K2 Item Layout (links) -->
 <div class="catItemView group<?php echo ucfirst($this->item->itemGroup); ?><?php if($this->item->params->get('pageclass_sfx')) echo ' '.$this->item->params->get('pageclass_sfx'); ?>">
 	  <?php if($this->item->params->get('catItemTitle')): ?>
