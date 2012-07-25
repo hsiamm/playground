@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-I'm in the Category Page.  Here is my migrated change.
+Does the hook work again?
 {modulepos toolsmodule}
 Just passed the code
 <!-- Start K2 Category Layout -->
