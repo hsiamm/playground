@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-Does the hook work again?  Because I'm adding another line.
+Does the hook work again?  Because I'm adding another line. And another.
 {modulepos toolsmodule}
 Just passed the code
 <!-- Start K2 Category Layout -->
