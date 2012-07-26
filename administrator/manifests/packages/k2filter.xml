@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7.0" type="package" method="upgrade">
+	<name>K2 Content Filter Module for Joomla</name>
+	<packagename>k2filter</packagename>
+	<author>Andrey M</author>
+	<authorEmail>molotow11@gmail.com</authorEmail>
+	<authorUrl>http://joomcar.net</authorUrl>
+	<packager>Andrey M</packager>
+	<packagerurl>http://joomcar.net</packagerurl>
+	<creationDate>July 2012</creationDate>
+	<copyright>Copyright (C) 2011 - 2012 Joomcar.net. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.4.7</version>
+	<description>
+	<![CDATA[
+	K2 Filter and Search module 
+	<br />
+	This module may filter your K2 content by several extra fields at the same time.
+	]]>
+	</description>
+	<files>
+		<file id="mod_k2_filter" type="module" client="site">module.zip</file>
+		<file id="plg_k2_filter" type="plugin" group="system">plugin.zip</file>
+	</files>
+</extension>

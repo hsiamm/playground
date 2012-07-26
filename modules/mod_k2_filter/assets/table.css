@@ -1,0 +1,34 @@
+.K2FilterBlock {
+
+}
+.k2filter-table {
+	display: table;
+}
+
+.k2filter-row {
+	display: table-row;
+}
+
+.k2filter-cell {
+	display: table-cell;
+	padding: 0 10px 10px 0;
+}
+
+.K2FilterBlock input.button {
+	margin-top: 10px;
+}
+
+.K2FilterBlock .k2filter-field-slider {
+	padding-right: 20px;
+}
+
+.K2FilterBlock .k2filter-slider-amount {
+	border:0; 
+	color:#f6931f; 
+	font-weight:bold;
+}
+
+.K2FilterClear {
+	display: block;
+	clear: both;
+}

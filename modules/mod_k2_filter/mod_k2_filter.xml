@@ -1,0 +1,1160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0" method="upgrade">
+	<name>K2 Filter &amp; Search module</name>
+	<author>Piotr Konieczny &amp; JoomlaWorks &amp; Andrey M</author>
+	<creationDate>12/07/2012</creationDate>
+	<copyright>Copyright (c) 2009 Piotr Konieczny &amp; Andrey M (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail></authorEmail>
+	<authorUrl></authorUrl>
+	<version>1.4.7</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Thank you for installing the K2 Extra fields Filter and Search module</description>
+	
+	<files>
+		<filename module="mod_k2_filter">mod_k2_filter.php</filename>
+		<filename>helper.php</filename>
+		<filename>template.php</filename>
+		<filename>index.html</filename>
+		<folder>includes</folder>
+		<folder>tmpl</folder>
+		<folder>assets</folder>
+	</files>
+    
+	<languages>
+		<language tag="en-GB">language/en-GB.mod_k2_filter.ini</language>
+		<language tag="pl-PL">language/pl-PL.mod_k2_filter.ini</language>
+		<language tag="pt-BR">language/pt-BR.mod_k2_filter.ini</language>
+		<language tag="ru-RU">language/ru-RU.mod_k2_filter.ini</language>
+		<language tag="uk-UA">language/uk-UA.mod_k2_filter.ini</language>
+	</languages>	
+	
+ <params addpath="/modules/mod_k2_filter/includes/">
+	<param name="" type="header" default="MOD_K2_FILTER_MAIN_PARAMS_HEADER" label="" description=""/>
+	
+	<param name="moduleclass_sfx" type="text" default="" label="MOD_K2_FILTER_MODULE_CLASS_SUFFIX" description="MOD_K2_FILTER_PARAMMODULECLASSSUFFIX" />
+	
+	<param name="getTemplate" type="moduletemplate" modulename="mod_k2_filter" default="Default" label="MOD_K2_FILTER_SELECT_SUBTEMPLATE" description=""/>
+	
+    <param name="page_heading" type="text" default="" label="MOD_K2_FILTER_PAGE_TITLE" description="MOD_K2_FILTER_PARAMPAGETITLE" />
+	
+	<param name="descr" type="textarea" default="" label="MOD_K2_FILTER_FORM_DESC" description="MOD_K2_FILTER_FORM_DESC_DESC" rows="7" cols="25" />
+	
+	<param name="resultf" type="text" default="Search results" label="MOD_K2_FILTER_RESULT_PHRASE" description="MOD_K2_FILTER_RESULT_PHRASE_DESC" />
+	
+	<param name="noresult" type="text" default="No results" label="MOD_K2_FILTER_PHRASE_NO_RESULT" description="MOD_K2_FILTER_PHRASE_NO_RESULT_DESC" />
+
+	<param name="" type="header" default="MOD_K2_FILTER_CATEGORY_REST_HEADER" label="" description=""/>
+	
+	<param name="restrict" type="radio" default="0" label="MOD_K2_FILTER_RESTRICT_CAT" description="MOD_K2_FILTER_RESTRICT_CAT_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>
+	<param name="restmode" type="radio" default="0" label="MOD_K2_FILTER_RESTRICTION_MODE" description="MOD_K2_FILTER_RESTRICTION_MODE_DESC">
+		<option value="0">MOD_K2_FILTER_RESTRICTION_MODE_CATID</option>
+		<option value="1">MOD_K2_FILTER_RESTRICTION_MODE_AUTO</option>
+    </param>
+	<param name="restcat" type="text" default="" label="MOD_K2_FILTER_RESTRICTION_CAT_ID" description="MOD_K2_FILTER_RESTRICTION_CAT_ID_DESC" />
+	<param name="restsub" type="radio" default="1" label="MOD_K2_FILTER_RESTRICTION_CAT_SUB" description="MOD_K2_FILTER_RESTRICTION_CAT_SUB_DESC">
+		<option value="1">MOD_K2_FILTER_YES</option>
+		<option value="0">MOD_K2_FILTER_NO</option>
+    </param>
+	
+	<param name="" type="header" default="MOD_K2_FILTER_FILTER_PARAMS_HEADER" label="" description=""/>
+	
+	<param name="field_type1" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_1" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+    </param>
+	
+	<param name="field_type2" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_2" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+	
+	<param name="field_type3" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_3" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type4" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_4" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type5" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_5" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+	
+	<param name="field_type6" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_6" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type7" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_7" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type8" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_8" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type9" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_9" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type10" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_10" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+	
+	<param name="field_type11" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_11" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type12" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_12" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type13" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_13" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type14" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_14" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+
+	<param name="field_type15" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_15" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+		<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+		<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+		<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+		<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+		<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+		<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+		<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+		<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+		<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+		<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+		<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+		<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+		<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+		<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+		<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+		<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+		<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+		<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+		<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+		<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+		<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+		<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+		<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+		<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+		<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+		<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+	</param>
+	
+	<param name="field_id" type="extraelements" label="MOD_K2_FILTER_SELECT_EXTRA_FIELD" description="MOD_K2_FILTER_SELECT_EXTRA_FIELD_DESC" default="1" />
+	
+	<param name="order1" type="text" default="1" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_1" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order2" type="text" default="2" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_2" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order3" type="text" default="3" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_3" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order4" type="text" default="4" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_4" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order5" type="text" default="5" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_5" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order6" type="text" default="6" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_6" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order7" type="text" default="7" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_7" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order8" type="text" default="8" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_8" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order9" type="text" default="9" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_9" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order10" type="text" default="10" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_10" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order11" type="text" default="11" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_11" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order12" type="text" default="12" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_12" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order13" type="text" default="13" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_13" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order14" type="text" default="14" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_14" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	<param name="order15" type="text" default="15" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_15" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+	
+	<field name="" type="header" default="" label="" description=""/>
+	
+	<param name="cols" type="text" default="1" size="5" label="MOD_K2_FILTER_NUMBER_OF_COLS" description="MOD_K2_FILTER_NUMBER_OF_COLS_DESC" />
+	<param name="elems" type="text" default="" size="5" label="MOD_K2_FILTER_NUMBER_OF_ELEMS" description="MOD_K2_FILTER_NUMBER_OF_ELEMS_DESC" />
+	
+    <param name="showtitles" type="radio" default="1" label="MOD_K2_FILTER_SHOW_TITLES" description="MOD_K2_FILTER_SHOW_TITLES_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>
+    <param name="button" type="radio" default="1" label="MOD_K2_FILTER_SUBMIT_BUTTON_SHOW" description="MOD_K2_FILTER_SUBMIT_BUTTON_SHOW_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>
+	<param name="button_text" type="text" default="" label="MOD_K2_FILTER_BUTTON_TEXT" description="MOD_K2_FILTER_BUTTON_TEXT_DESC" />
+    <param name="onchange" type="radio" default="0" label="MOD_K2_FILTER_SUBMIT_ON_CHANGE" description="MOD_K2_FILTER_SUBMIT_ON_CHANGE_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>
+    <param name="clear_btn" type="radio" default="0" label="MOD_K2_FILTER_CLEAR_BUTTON_SHOW" description="MOD_K2_FILTER_CLEAR_BUTTON_SHOW_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>
+
+	<field name="" type="header" default="MOD_K2_FILTER_ORDERING" label="" description=""/>
+	
+	<param name="ordering" type="radio" default="0" label="MOD_K2_FILTER_SHOW_ORDERING" description="MOD_K2_FILTER_SHOW_ORDERING_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>	
+	
+	<param name="ordering_default" type="orderingdefault" default="id" label="MOD_K2_FILTER_ORDERING_DEFAULT" description="MOD_K2_FILTER_ORDERING_DEFAULT_DESC" />
+	
+	<param name="ordering_default_method" type="radio" default="asc" label="MOD_K2_FILTER_ORDERING_DEFAULT_METHOD" description="MOD_K2_FILTER_ORDERING_DEFAULT_METHOD_DESC">
+		<option value="asc">MOD_K2_FILTER_ASC</option>
+		<option value="desc">MOD_K2_FILTER_DESC</option>
+    </param>
+	
+	<param name="ordering_extra" type="radio" default="1" label="MOD_K2_FILTER_ORDERING_EXTRA" description="MOD_K2_FILTER_ORDERING_EXTRA_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>	
+	
+	<param name="ordering_extra_exclude" type="text" default="" label="MOD_K2_FILTER_ORDERING_EXTRA_EXCLUDE" description="MOD_K2_FILTER_ORDERING_EXTRA_EXCLUDE_DESC" />
+	
+	<field name="" type="header" default="MOD_K2_FILTER_RESULTS_ITEMID" label="" description=""/>
+    <param name="itemidv" type="radio" default="0" label="MOD_K2_FILTER_RESULTS_ITEMID_TYPE" description="">
+		<option value="0">MOD_K2_FILTER_RESULTS_ITEMID_TYPE_AUTO</option>
+		<option value="1">MOD_K2_FILTER_RESULTS_ITEMID_TYPE_SELECTED</option>
+    </param>
+	<param name="itemid" type="menuitem" default="" label="MOD_K2_FILTER_RESULTS_ITEMID_SELECT" description="MOD_K2_FILTER_RESULTS_ITEMID_DESC" />	
+	
+	<field name="" type="header" default="MOD_K2_FILTER_RESULTS_TEMPLATE" label="" description=""/>
+    <param name="results_template" type="list" default="0" label="MOD_K2_FILTER_RESULTS_TEMPLATE" description="MOD_K2_FILTER_RESULTS_TEMPLATE_DESC">
+		<option value="0">MOD_K2_FILTER_RESULTS_TEMPLATE_GENERIC</option>
+		<option value="1">MOD_K2_FILTER_RESULTS_TEMPLATE_GENERIC_TABLE</option>
+		<option value="2">MOD_K2_FILTER_RESULTS_TEMPLATE_CATEGORY</option>
+    </param>
+	<param name="template_selector" type="radio" default="0" label="MOD_K2_FILTER_TEMPLATE_SELECTOR" description="">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>	
+	<param name="ajax_results" type="radio" default="0" label="MOD_K2_FILTER_AJAX_RESULTS" description="MOD_K2_FILTER_AJAX_RESULTS_DESC">
+		<option value="0">MOD_K2_FILTER_NO</option>
+		<option value="1">MOD_K2_FILTER_YES</option>
+    </param>	
+	
+ </params>
+ <params group="advanced">
+	<param name="cache" type="list" default="1" label="MOD_K2_FILTER_CACHING" description="MOD_K2_FILTER_CACHING_DESC">
+		<option value="1">MOD_K2_FILTER_USE_GLOBAL</option>
+		<option value="0">MOD_K2_FILTER_NOCACHING</option>
+	</param>
+	<param name="cache_time" type="text" default="900" label="MOD_K2_FILTER_CACHE_TIME_LABEL" description="MOD_K2_FILTER_CACHE_TIME_DESC"/>
+  </params>
+  
+  	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/modules/mod_k2_filter/includes/">
+				<field name="" type="header" default="MOD_K2_FILTER_MAIN_PARAMS_HEADER" label="" description=""/>
+				
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_K2_FILTER_MODULE_CLASS_SUFFIX" description="MOD_K2_FILTER_PARAMMODULECLASSSUFFIX" />
+				
+				<field name="getTemplate" type="moduletemplate" modulename="mod_k2_filter" default="Default" label="MOD_K2_FILTER_SELECT_SUBTEMPLATE" description=""/>
+				
+				<field name="page_heading" type="text" default="" label="MOD_K2_FILTER_PAGE_TITLE" description="MOD_K2_FILTER_PARAMPAGETITLE" />
+				
+				<field name="descr" type="textarea" default="" label="MOD_K2_FILTER_FORM_DESC" description="MOD_K2_FILTER_FORM_DESC_DESC" rows="7" cols="25" />
+				
+				<field name="resultf" type="text" default="" label="MOD_K2_FILTER_RESULT_PHRASE" description="MOD_K2_FILTER_RESULT_PHRASE_DESC" />
+				
+				<field name="noresult" type="text" default="" label="MOD_K2_FILTER_PHRASE_NO_RESULT" description="MOD_K2_FILTER_PHRASE_NO_RESULT_DESC" />
+
+				<field name="" type="header" default="MOD_K2_FILTER_CATEGORY_REST_HEADER" label="" description=""/>
+				
+				<field name="restrict" type="radio" default="0" label="MOD_K2_FILTER_RESTRICT_CAT" description="MOD_K2_FILTER_RESTRICT_CAT_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>
+				
+				<field name="restmode" type="radio" default="0" label="MOD_K2_FILTER_RESTRICTION_MODE" description="MOD_K2_FILTER_RESTRICTION_MODE_DESC">
+					<option value="0">MOD_K2_FILTER_RESTRICTION_MODE_CATID</option>
+					<option value="1">MOD_K2_FILTER_RESTRICTION_MODE_AUTO</option>
+				</field>
+				
+				<field name="restcat" type="text" default="" label="MOD_K2_FILTER_RESTRICTION_CAT_ID" description="MOD_K2_FILTER_RESTRICTION_CAT_ID_DESC" />
+				
+				<field name="restsub" type="radio" default="1" label="MOD_K2_FILTER_RESTRICTION_CAT_SUB" description="MOD_K2_FILTER_RESTRICTION_CAT_SUB_DESC">
+					<option value="1">MOD_K2_FILTER_YES</option>
+					<option value="0">MOD_K2_FILTER_NO</option>
+				</field>
+				
+				<field name="" type="header" default="MOD_K2_FILTER_FILTER_PARAMS_HEADER" label="" description=""/>
+				
+				<field name="field_type1" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_1" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+				
+				<field name="field_type2" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_2" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+				
+				<field name="field_type3" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_3" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type4" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_4" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type5" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_5" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+				
+				<field name="field_type6" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_6" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type7" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_7" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type8" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_8" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type9" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_9" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type10" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_10" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+				
+				<field name="field_type11" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_11" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type12" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_12" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type13" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_13" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type14" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_14" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+
+				<field name="field_type15" type="list" default="select" label="MOD_K2_FILTER_FILTER_TYPE_15" description="MOD_K2_FILTER_FILTER_TYPE_DESC">
+					<option value="text">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD</option>
+					<option value="text_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_RANGE</option>
+					<option value="text_date">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE</option>
+					<option value="text_date_range">MOD_K2_FILTER_FILTER_TYPE_TEXT_FIELD_DATE_RANGE</option>
+					<option value="select">MOD_K2_FILTER_FILTER_TYPE_DROPDOWN</option>
+					<option value="multi">MOD_K2_FILTER_FILTER_TYPE_MULTI_SELECT</option>
+					<option value="slider">MOD_K2_FILTER_FILTER_TYPE_SLIDER</option>
+					<option value="slider_range">MOD_K2_FILTER_FILTER_TYPE_SLIDER_RANGE</option>
+					<option value="radio">MOD_K2_FILTER_FILTER_TYPE_RADIO</option>
+					<option value="label">MOD_K2_FILTER_FILTER_TYPE_LABEL_MANUAL</option>
+					<option value="tag_text">MOD_K2_FILTER_FILTER_TYPE_TAG_TEXT</option>
+					<option value="tag_select">MOD_K2_FILTER_FILTER_TYPE_TAG_SELECT</option>
+					<option value="tag_multi">MOD_K2_FILTER_FILTER_TYPE_TAG_MULTI</option>
+					<option value="title">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_TEXT</option>
+					<option value="title_az">MOD_K2_FILTER_FILTER_TYPE_ITEM_TITLE_AZ</option>
+					<option value="item_text">MOD_K2_FILTER_FILTER_TYPE_ITEM_TEXT</option>
+					<option value="item_all">MOD_K2_FILTER_FILTER_TYPE_ITEM_ALL</option>
+					<option value="category_select">MOD_K2_FILTER_FILTER_TYPE_CAT_SELECT</option>
+					<option value="category_multiple">MOD_K2_FILTER_FILTER_TYPE_CAT_MULTI</option>
+					<option value="created">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE</option>
+					<option value="created_range">MOD_K2_FILTER_FILTER_TYPE_CREATE_DATE_RANGE</option>
+					<option value="publish_up">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE</option>
+					<option value="publish_up_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_UP_DATE_RANGE</option>
+					<option value="publish_down">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE</option>
+					<option value="publish_down_range">MOD_K2_FILTER_FILTER_TYPE_PUBLISH_DOWN_DATE_RANGE</option>
+					<option value="price_range">MOD_K2_FILTER_FILTER_TYPE_PRICE_RANGE</option>
+				</field>
+				
+				<field name="field_id" type="extraelements" label="MOD_K2_FILTER_SELECT_EXTRA_FIELD" description="MOD_K2_FILTER_SELECT_EXTRA_FIELD_DESC" default="1" />
+				
+				<field name="order1" type="text" default="1" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_1" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order2" type="text" default="2" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_2" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order3" type="text" default="3" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_3" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order4" type="text" default="4" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_4" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order5" type="text" default="5" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_5" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order6" type="text" default="6" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_6" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order7" type="text" default="7" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_7" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order8" type="text" default="8" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_8" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order9" type="text" default="9" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_9" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order10" type="text" default="10" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_10" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order11" type="text" default="11" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_11" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order12" type="text" default="12" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_12" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order13" type="text" default="13" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_13" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order14" type="text" default="14" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_14" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				<field name="order15" type="text" default="15" size="5" label="MOD_K2_FILTER_EXTRA_FIELD_ORDER_15" description="MOD_K2_FILTER_EXTRA_FIELD_ORDER_DESC" />
+				
+				<field name="" type="header" default="" label="" description=""/>
+				
+				<field name="cols" type="text" default="1" size="5" label="MOD_K2_FILTER_NUMBER_OF_COLS" description="MOD_K2_FILTER_NUMBER_OF_COLS_DESC" />
+				
+				<field name="elems" type="text" default="" size="5" label="MOD_K2_FILTER_NUMBER_OF_ELEMS" description="MOD_K2_FILTER_NUMBER_OF_ELEMS_DESC" />
+
+				<field name="showtitles" type="radio" default="1" label="MOD_K2_FILTER_SHOW_TITLES" description="MOD_K2_FILTER_SHOW_TITLES_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>
+				<field name="button" type="radio" default="1" label="MOD_K2_FILTER_SUBMIT_BUTTON_SHOW" description="MOD_K2_FILTER_SUBMIT_BUTTON_SHOW_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>
+				<field name="button_text" type="text" default="" label="MOD_K2_FILTER_BUTTON_TEXT" description="MOD_K2_FILTER_BUTTON_TEXT_DESC" />
+				<field name="onchange" type="radio" default="0" label="MOD_K2_FILTER_SUBMIT_ON_CHANGE" description="MOD_K2_FILTER_SUBMIT_ON_CHANGE_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>
+				<field name="clear_btn" type="radio" default="0" label="MOD_K2_FILTER_CLEAR_BUTTON_SHOW" description="MOD_K2_FILTER_CLEAR_BUTTON_SHOW_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>
+
+				<field name="" type="header" default="MOD_K2_FILTER_ORDERING" label="" description=""/>
+				
+				<field name="ordering" type="radio" default="0" label="MOD_K2_FILTER_SHOW_ORDERING" description="MOD_K2_FILTER_SHOW_ORDERING_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>	
+				
+				<field name="ordering_default" type="orderingdefault" default="id" label="MOD_K2_FILTER_ORDERING_DEFAULT" description="MOD_K2_FILTER_ORDERING_DEFAULT_DESC" />
+				
+				<field name="ordering_default_method" type="radio" default="asc" label="MOD_K2_FILTER_ORDERING_DEFAULT_METHOD" description="MOD_K2_FILTER_ORDERING_DEFAULT_METHOD_DESC">
+					<option value="asc">MOD_K2_FILTER_ASC</option>
+					<option value="desc">MOD_K2_FILTER_DESC</option>
+				</field>
+				
+				<field name="ordering_extra" type="radio" default="1" label="MOD_K2_FILTER_ORDERING_EXTRA" description="MOD_K2_FILTER_ORDERING_EXTRA_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>	
+				
+				<field name="ordering_extra_exclude" type="text" default="" label="MOD_K2_FILTER_ORDERING_EXTRA_EXCLUDE" description="MOD_K2_FILTER_ORDERING_EXTRA_EXCLUDE_DESC" />
+				
+				<field name="" type="header" default="MOD_K2_FILTER_RESULTS_ITEMID" label="" description=""/>
+				<field name="itemidv" type="radio" default="0" label="MOD_K2_FILTER_RESULTS_ITEMID_TYPE" description="">
+					<option value="0">MOD_K2_FILTER_RESULTS_ITEMID_TYPE_AUTO</option>
+					<option value="1">MOD_K2_FILTER_RESULTS_ITEMID_TYPE_SELECTED</option>
+				</field>
+				<field name="itemid" type="menuitem" default="" label="MOD_K2_FILTER_RESULTS_ITEMID_SELECT" description="MOD_K2_FILTER_RESULTS_ITEMID_DESC" />
+				
+				<field name="" type="header" default="MOD_K2_FILTER_RESULTS_TEMPLATE" label="" description=""/>
+				<field name="results_template" type="list" default="0" label="MOD_K2_FILTER_RESULTS_TEMPLATE" description="MOD_K2_FILTER_RESULTS_TEMPLATE_DESC">
+					<option value="0">MOD_K2_FILTER_RESULTS_TEMPLATE_GENERIC</option>
+					<option value="1">MOD_K2_FILTER_RESULTS_TEMPLATE_GENERIC_TABLE</option>
+					<option value="2">MOD_K2_FILTER_RESULTS_TEMPLATE_CATEGORY</option>
+				</field>
+				<field name="template_selector" type="radio" default="0" label="MOD_K2_FILTER_TEMPLATE_SELECTOR" description="">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>	
+				<field name="ajax_results" type="radio" default="0" label="MOD_K2_FILTER_AJAX_RESULTS" description="MOD_K2_FILTER_AJAX_RESULTS_DESC">
+					<option value="0">MOD_K2_FILTER_NO</option>
+					<option value="1">MOD_K2_FILTER_YES</option>
+				</field>	
+
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="1" label="MOD_K2_FILTER_CACHING" description="MOD_K2_FILTER_CACHING_DESC">
+					<option value="1">MOD_K2_FILTER_USE_GLOBAL</option>
+					<option value="0">MOD_K2_FILTER_NOCACHING</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="MOD_K2_FILTER_CACHE_TIME_LABEL" description="MOD_K2_FILTER_CACHE_TIME_DESC"/>
+			</fieldset>
+		</fields>
+	</config>	  
+</install>
