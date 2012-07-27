@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 Does the hook work again?  Because I'm adding another line. And another.
-Line to test hook.
+Line to test hook. Another line to test hook
 {modulepos awesomesearch}
 Just passed the code
 <!-- Start K2 Category Layout -->
