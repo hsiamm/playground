@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 Does the hook work again?  Because I'm adding another line. And another.
 Line to test hook. Another line to test hook
-{modulepos awesomesearch}
+{modulepos featured}
 Just passed the code
 <!-- Start K2 Category Layout -->
 <div id="k2Container" class="itemListView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
